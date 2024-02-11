@@ -1,0 +1,66 @@
+.Sidebar:global(.ant-layout-sider) {
+    position: relative;
+    padding-top: 30px;
+    background-color: var(--theme-neutral);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+}
+
+.Logo {
+    margin: 0 auto;
+    margin-bottom: 50px;
+}
+
+.Wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.Menu:global(.ant-menu) {
+    border-right: 0;
+    flex-grow: 1;
+}
+
+.Menu:global(.ant-menu) > :global(.ant-menu-item) {
+    margin-block: 0;
+    height: 42px;
+
+    @media (max-width: 575px) {
+        padding: 0 8px;
+    }
+
+    &:not(:is(:first-child, :last-child)) {
+        margin-block: 16px;
+
+        @media (max-width: 575px) {
+            margin-block: 8px;
+        }
+    }
+}
+
+.Menu :global(.ant-menu-item-icon) {
+    color: var(--theme-primary-light-9);
+    font-size: 16px !important;
+}
+
+.Menu :global(:is(.ant-menu-item-active, .ant-menu-item-selected) .ant-menu-item-icon) {
+    color: inherit;
+}
+
+.Exit {
+    border-top: 1px solid rgb(217, 217, 217);
+}
+
+.Exit :global(.ant-menu-item) {
+    margin: 0 !important;
+}
+
+.Exit :global(.ant-menu-title-content) {
+    @media (min-width: 575.98px) {
+        margin-left: 25px !important;
+    }
+
+    @media (max-width: 575px) {
+        text-align: center;
+    }
+}

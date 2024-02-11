@@ -2,8 +2,10 @@
     --page-container: 1440px;
     --theme-neutral: #fff;
     --theme-primary-light-1: #f0f5ff;
+    --theme-primary-light-9: #061178;
 }
 
 body {
     background-color: #404040;
+    font-family: Inter;
 }
