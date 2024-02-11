@@ -1,0 +1,4 @@
+:global(.ant-layout-sider).Sidebar {
+    width: 208px;
+    background-color: var(--theme-neutral);
+}

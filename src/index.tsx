@@ -6,6 +6,7 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import { store } from '@redux/configure-store';
 import { MainPage } from './pages';
 
+import 'antd/dist/antd.css';
 import 'normalize.css';
 import './index.css';
 
