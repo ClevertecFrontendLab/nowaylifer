@@ -8,7 +8,7 @@ import { MainPage } from './pages';
 
 import 'antd/dist/antd.css';
 import 'normalize.css';
-import './index.css';
+import './index.less';
 
 const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);

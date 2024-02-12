@@ -1,5 +1,5 @@
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
-import styles from './switcher.module.css';
+import styles from './switch.module.less';
 
 type SwitcherProps = {
     collapsed: boolean;

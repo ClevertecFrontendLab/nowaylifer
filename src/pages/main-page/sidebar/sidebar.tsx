@@ -1,8 +1,8 @@
 import { CalendarTwoTone, HeartFilled, TrophyFilled, IdcardOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { useState } from 'react';
-import { useBreakpoint } from '@hooks/use-breakpoint';
 import ExitSvg from '@assets/icons/exit.svg?react';
+import { useXs } from '@hooks/use-breakpoint';
 import { Logo } from '@components/logo';
 import { Switch } from './switch';
 import styles from './sidebar.module.less';
@@ -29,8 +29,8 @@ const menuItems = [
 ];
 
 export const Sidebar = () => {
-    const [collapsed, setCollapsed] = useState(false);
-    const { xs } = useBreakpoint();
+    const xs = useXs();
+    const [collapsed, setCollapsed] = useState(xs);
 
     return (
         <Sider
