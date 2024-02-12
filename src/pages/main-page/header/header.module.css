@@ -1,5 +1,0 @@
-:global(.ant-layout-header).Header {
-    background-color: var(--theme-primary-light-1);
-    height: 169px;
-    padding: 16px 24px;
-}
