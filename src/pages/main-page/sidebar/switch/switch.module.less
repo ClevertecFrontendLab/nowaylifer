@@ -1,0 +1,45 @@
+.SwitchPolygon {
+    width: 20px;
+    height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--theme-neutral);
+    clip-path: polygon(0 0, 100% 10%, 100% 90%, 0% 100%);
+    cursor: pointer;
+}
+
+.Switch {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    translate: 0 -50%;
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.15));
+
+    /* reset button styles */
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    -webkit-font-smoothing: inherit;
+    -moz-osx-font-smoothing: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+@media (max-width: 575px) {
+    .Switch {
+        top: 24px;
+        translate: 0 0;
+    }
+
+    .SwitchPolygon {
+        width: 32px;
+        height: 48px;
+    }
+}

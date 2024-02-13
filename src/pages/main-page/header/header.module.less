@@ -1,0 +1,29 @@
+.Header:global.ant-layout-header {
+    height: auto;
+    padding: 16px 24px;
+    line-height: inherit;
+    background-color: var(--theme-primary-light-1);
+}
+
+.Title:global.ant-typography {
+    margin: 6px 0;
+    font-size: clamp(1.5rem, calc(0.296rem + 2.31vw), 2.375rem);
+
+    @media (max-width: 834px) {
+        font-size: clamp(1.25rem, calc(1.06rem + 0.84vw), 1.5rem);
+    }
+}
+
+.Breadcrumb:global.ant-breadcrumb {
+    margin-bottom: 8px;
+
+    @media (max-width: 575px) {
+        margin-bottom: 0;
+    }
+}
+
+.TitleWrap {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}

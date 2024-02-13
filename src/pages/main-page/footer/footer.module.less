@@ -1,0 +1,36 @@
+.Footer:global.ant-layout-footer {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    padding-inline: 24px;
+    padding-bottom: 42px;
+    background: transparent;
+
+    @container content-container (width < 550px) {
+        flex-direction: column;
+        align-items: center;
+        row-gap: 24px;
+    }
+
+    @media (max-width: 575px) {
+        padding-inline: 16px;
+    }
+}
+
+.FooterDownloadApp {
+    width: 240px;
+
+    @container content-container (width < 550px) {
+        width: 100%;
+        order: 1;
+        text-align: center;
+    }
+}
+
+.Link {
+    padding: 10px 15px;
+
+    @container content-container (width < 550px) {
+        order: 2;
+    }
+}
