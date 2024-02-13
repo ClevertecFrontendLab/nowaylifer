@@ -42,7 +42,11 @@ export const Sidebar = () => {
             className={styles.Sidebar}
             trigger={null}
         >
-            <Switch collapsed={collapsed} onCollapse={setCollapsed} />
+            <Switch
+                collapsed={collapsed}
+                onCollapse={setCollapsed}
+                data-test-id={xs ? 'sider-switch-mobile' : 'sider-switch'}
+            />
             <div className={styles.Wrapper}>
                 <Logo
                     className={styles.Logo}
