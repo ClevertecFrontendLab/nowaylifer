@@ -26,7 +26,8 @@
             "@redux/*": ["./src/redux/*"],
             "@types/*": ["./src/types/*"],
             "@utils/*": ["./src/utils/*"],
-            "@assets/*": ["./src/assets/*"]
+            "@assets/*": ["./src/assets/*"],
+            "@router/*": ["./src/router/*"]
         },
         "plugins": [
             {
