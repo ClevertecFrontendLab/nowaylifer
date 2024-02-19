@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Layout, Tabs, TabsProps } from 'antd';
+import { useAppLocation } from '@hooks/use-app-location';
 import { Card } from '@components/card';
 import { Logo } from '@components/logo';
 import { Path } from '@router/routes';
@@ -20,9 +21,14 @@ const tabItems: TabsProps['items'] = [
 
 export const AuthPage = ({ tab = 'login' }: { tab?: AuthTab }) => {
     const navigate = useNavigate();
+    const location = useAppLocation();
+    const from = location.state?.from;
 
     const handleTabChange = (key: string) =>
-        navigate(key === AuthTab.Register ? Path.Register : Path.Auth, { replace: true });
+        navigate(key === AuthTab.Register ? Path.Register : Path.Auth, {
+            replace: true,
+            ...(from && { state: { from } }),
+        });
 
     return (
         <Layout className={styles.Layout}>
