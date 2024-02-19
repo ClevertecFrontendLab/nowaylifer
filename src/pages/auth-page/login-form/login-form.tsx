@@ -2,6 +2,7 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import styles from './login-form.module.less';
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { email, required } from '../validation-rules';
+import { useLoginMutation } from '@redux/api/auth-api';
 
 type FormValues = {
     email: string;
@@ -11,9 +12,14 @@ type FormValues = {
 
 export const LoginForm = () => {
     const [form] = Form.useForm<FormValues>();
+    const [login] = useLoginMutation();
+
+    const handleFinish = ({ email, password, remember }: FormValues) => {
+        login({ email, password, remember });
+    };
 
     return (
-        <Form className={styles.Form} form={form} onFinish={(values) => console.log(values)}>
+        <Form className={styles.Form} form={form} onFinish={handleFinish}>
             <Form.Item name='email' rules={[required, email]}>
                 <Input addonBefore='e-mail:' size='large' />
             </Form.Item>

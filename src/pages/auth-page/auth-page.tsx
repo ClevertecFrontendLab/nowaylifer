@@ -1,11 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { Layout, Tabs, TabsProps } from 'antd';
-import styles from './auth-page.module.less';
 import { Card } from '@components/card';
 import { Logo } from '@components/logo';
+import { Path } from '@router/routes';
 import { LoginForm } from './login-form';
 import { RegisterForm } from './register-form';
-import { Path } from '@router/routes';
-import { useNavigate } from 'react-router-dom';
+import styles from './auth-page.module.less';
 
 export type AuthTab = (typeof AuthTab)[keyof typeof AuthTab];
 export const AuthTab = {

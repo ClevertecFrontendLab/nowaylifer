@@ -36,7 +36,8 @@
     "react-redux": "^9.0.4",
     "react-responsive": "^9.0.2",
     "react-router-dom": "^6.21.1",
-    "redux-first-history": "^5.2.0"
+    "redux-first-history": "^5.2.0",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@types/css-modules": "^1.0.5",

@@ -1,5 +1,6 @@
 import { HistoryRouter as Router } from 'redux-first-history/rr6';
-import { history, store } from '@redux/configure-store';
+import { history, persistor, store } from '@redux/configure-store';
+import { PersistGate } from 'redux-persist/integration/react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ConfigProvider } from 'antd';
@@ -23,7 +24,9 @@ const root = createRoot(domNode);
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <Router history={history}>{routes}</Router>
+            <PersistGate persistor={persistor}>
+                <Router history={history}>{routes}</Router>
+            </PersistGate>
         </Provider>
     </React.StrictMode>,
 );

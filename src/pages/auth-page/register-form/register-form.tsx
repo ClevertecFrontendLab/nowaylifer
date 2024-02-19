@@ -3,6 +3,7 @@ import { Form, Input, Button } from 'antd';
 import { confirmPassword, email, required } from '../validation-rules';
 import { PasswordFormItem } from './password-form-item';
 import styles from './register-form.module.less';
+import { useRegisterMutation } from '@redux/api/auth-api';
 
 type FormValues = {
     email: string;
@@ -12,9 +13,14 @@ type FormValues = {
 
 export const RegisterForm = () => {
     const [form] = Form.useForm<FormValues>();
+    const [register] = useRegisterMutation();
+
+    const handleFinish = ({ email, password }: FormValues) => {
+        register({ email, password });
+    };
 
     return (
-        <Form className={styles.Form} form={form} onFinish={(values) => console.log(values)}>
+        <Form className={styles.Form} form={form} onFinish={handleFinish}>
             <Form.Item name='email' rules={[required, email]}>
                 <Input addonBefore='e-mail:' size='large' />
             </Form.Item>
