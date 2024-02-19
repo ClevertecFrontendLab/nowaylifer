@@ -3,7 +3,7 @@ import { Layout, Tabs, TabsProps } from 'antd';
 import { useAppLocation } from '@hooks/use-app-location';
 import { Card } from '@components/card';
 import { Logo } from '@components/logo';
-import { Path } from '@router/routes';
+import { Path } from '@router/paths';
 import { LoginForm } from './login-form';
 import { RegisterForm } from './register-form';
 import styles from './auth-page.module.less';

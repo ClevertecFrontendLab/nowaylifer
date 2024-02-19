@@ -3,24 +3,18 @@ import { MainPage } from '@pages/main-page';
 import { AuthPage } from '@pages/auth-page';
 import { RequireAuth } from './RequireAuth';
 import { NoAuth } from './NoAuth';
-
-export const Path = {
-    Root: '/',
-    Main: '/main',
-    Auth: '/auth',
-    Register: '/auth/registration',
-};
+import { Path } from './paths';
 
 export const routes = (
     <Routes>
         <Route path={Path.Root} element={<Navigate to={Path.Main} />} />
 
-        <Route element={<NoAuth />}>
+        <Route element={<NoAuth redirectTo={Path.Main} />}>
             <Route path={Path.Auth} element={<AuthPage tab='login' />} />
             <Route path={Path.Register} element={<AuthPage tab='register' />} />
         </Route>
 
-        <Route element={<RequireAuth />}>
+        <Route element={<RequireAuth redirectTo={Path.Auth} />}>
             <Route path={Path.Main} element={<MainPage />} />
         </Route>
     </Routes>
