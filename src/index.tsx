@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { ConfigProvider } from 'antd';
 import React from 'react';
 
-import { routes } from './router';
+import { routes } from './router/routes';
 
 import 'antd/dist/antd.variable.min.css';
 import 'normalize.css';
