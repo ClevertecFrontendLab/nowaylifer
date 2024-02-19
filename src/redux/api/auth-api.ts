@@ -1,36 +1,53 @@
-import { replace } from 'redux-first-history';
-import { createApi } from '@reduxjs/toolkit/query/react';
-import type { LocationWithState } from '@hooks/use-app-location';
+import type { QueryReturnValue } from 'node_modules/@reduxjs/toolkit/dist/query/baseQueryTypes';
+import {
+    createApi,
+    type FetchBaseQueryError,
+    type FetchBaseQueryMeta,
+} from '@reduxjs/toolkit/query/react';
+import { redirectAfterLogin, redirectToAuthResult, setToken } from '@redux/slices/auth-slice';
+import type { LoginResponse, UserCredentials } from 'src/types';
 import { baseQueryBackend } from '@redux/base-query-backend';
-import type { RootState } from '@redux/configure-store';
-import { setToken } from '@redux/slices/auth-slice';
-import type { UserCredentials } from 'src/types';
+
+type QueryReturn<T> = QueryReturnValue<T, FetchBaseQueryError, FetchBaseQueryMeta>;
 
 export const authApi = createApi({
     reducerPath: 'authApi',
     baseQuery: baseQueryBackend({ prefixUrl: '/auth', method: 'POST' }),
     endpoints: (builder) => ({
         register: builder.mutation<void, UserCredentials>({
-            query: (credentials) => ({
-                url: '/registration',
-                body: credentials,
-            }),
-        }),
-        login: builder.mutation<{ accessToken: string }, UserCredentials & { remember: boolean }>({
-            query: (credentials) => ({
-                url: '/login',
-                body: credentials,
-            }),
-            onQueryStarted: async ({ remember }, api) => {
-                const response = await api.queryFulfilled;
-                api.dispatch(setToken({ token: response.data.accessToken, remember }));
+            queryFn: async (credentials, api, _, fetchWithBq) => {
+                const response = (await fetchWithBq({
+                    url: '/registration',
+                    body: credentials,
+                })) as QueryReturn<void>;
 
-                const state = api.getState() as RootState;
-                const location = state.router.location as LocationWithState;
+                const err = response.error;
 
-                if (location.state?.from) {
-                    api.dispatch(replace(location.state.from));
+                if (err) {
+                    if (err.status === 409) api.dispatch(redirectToAuthResult('error-user-exist'));
+                    else api.dispatch(redirectToAuthResult('error', { retry: credentials }));
+                } else {
+                    api.dispatch(redirectToAuthResult('success'));
                 }
+
+                return response;
+            },
+        }),
+        login: builder.mutation<LoginResponse, UserCredentials & { remember: boolean }>({
+            queryFn: async ({ remember, ...credentials }, api, _, fetchWithBQ) => {
+                const response = (await fetchWithBQ({
+                    url: '/login',
+                    body: credentials,
+                })) as QueryReturn<LoginResponse>;
+
+                if (response.error) {
+                    api.dispatch(redirectToAuthResult('error-login'));
+                } else {
+                    api.dispatch(setToken({ token: response.data.accessToken, remember }));
+                    api.dispatch(redirectAfterLogin());
+                }
+
+                return response;
             },
         }),
     }),

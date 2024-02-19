@@ -1,26 +1,53 @@
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { Form, Input, Button } from 'antd';
+import { useEffect, useRef } from 'react';
 import { confirmPassword, email, required } from '../validation-rules';
 import { PasswordFormItem } from './password-form-item';
 import styles from './register-form.module.less';
 import { useRegisterMutation } from '@redux/api/auth-api';
+import { useLocation, type Location } from 'react-router-dom';
+import type { UserCredentials } from 'src/types';
 
-type FormValues = {
-    email: string;
-    password: string;
-    confirmPassword: string;
-};
+type FormValues = UserCredentials & { confirmPassword: string };
 
 export const RegisterForm = () => {
     const [form] = Form.useForm<FormValues>();
     const [register] = useRegisterMutation();
+    const location = useLocation() as Location<{ retry?: UserCredentials }>;
+    const retryPending = useRef(false);
+    const retry = location.state?.retry;
 
     const handleFinish = ({ email, password }: FormValues) => {
         register({ email, password });
     };
 
+    useEffect(() => {
+        let request: ReturnType<typeof register>;
+
+        if (retry && !retryPending.current) {
+            retryPending.current = true;
+            setTimeout(() => {
+                request = register(retry);
+                request.finally(() => (retryPending.current = false));
+            }, 2000);
+        }
+
+        return () => request?.abort();
+    }, [retry, register]);
+
     return (
-        <Form className={styles.Form} form={form} onFinish={handleFinish}>
+        <Form
+            className={styles.Form}
+            form={form}
+            onFinish={handleFinish}
+            {...(retry && {
+                initialValues: {
+                    email: retry.email,
+                    password: retry.password,
+                    confirmPassword: retry.password,
+                },
+            })}
+        >
             <Form.Item name='email' rules={[required, email]}>
                 <Input addonBefore='e-mail:' size='large' />
             </Form.Item>
@@ -38,10 +65,10 @@ export const RegisterForm = () => {
 
             <Button
                 className={styles.RegisterBtn}
-                block
                 type='primary'
                 htmlType='submit'
                 size='large'
+                block
             >
                 Войти
             </Button>

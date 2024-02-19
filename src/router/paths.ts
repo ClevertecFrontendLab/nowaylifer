@@ -2,7 +2,7 @@ export type Path = (typeof Path)[keyof typeof Path];
 export const Path = {
     Root: '/',
     Main: '/main',
-    Auth: '/auth',
+    Login: '/auth',
     Register: '/auth/registration',
-    Result: '/result/:status',
+    Result: '/result',
 } as const;
