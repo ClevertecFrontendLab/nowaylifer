@@ -1,7 +1,8 @@
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { Form, Input, Button } from 'antd';
+import { confirmPassword, email, required } from '../validation-rules';
+import { PasswordFormItem } from './password-form-item';
 import styles from './register-form.module.less';
-import { email, password, required } from '../validation-rules';
 
 type FormValues = {
     email: string;
@@ -18,16 +19,14 @@ export const RegisterForm = () => {
                 <Input addonBefore='e-mail:' size='large' />
             </Form.Item>
 
-            <Form.Item
-                className={styles.Pwd}
-                name='password'
-                rules={[required, password]}
-                extra={'Пароль не менее 8 символов, с заглавной буквой и цифрой'}
-            >
-                <Input.Password size='large' placeholder='Пароль' />
-            </Form.Item>
+            <PasswordFormItem name='password' className={styles.Pwd} />
 
-            <Form.Item className={styles.ConfirmPwd} name='confirmPassword'>
+            <Form.Item
+                className={styles.ConfirmPwd}
+                name='confirmPassword'
+                dependencies={['password']}
+                rules={[required, confirmPassword('password')]}
+            >
                 <Input.Password size='large' placeholder='Повторите пароль' />
             </Form.Item>
 
