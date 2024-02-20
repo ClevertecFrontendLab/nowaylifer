@@ -3,7 +3,7 @@ import type { Rule, RuleRender } from 'antd/lib/form';
 export const required: Rule = { required: true, message: '' };
 export const email: Rule = { type: 'email', message: '' };
 export const password: Rule = {
-    pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/,
     message: '',
 };
 
