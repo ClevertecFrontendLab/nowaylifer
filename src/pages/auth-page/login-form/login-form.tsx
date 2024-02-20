@@ -2,7 +2,7 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import styles from './login-form.module.less';
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { email, required } from '../validation-rules';
-import { useLoginMutation } from '@redux/api/auth-api';
+import { useLoginMutation } from '@redux/auth/api';
 import { useAuthLoader } from '../use-auth-loader';
 import type { UserCredentials } from 'src/types';
 

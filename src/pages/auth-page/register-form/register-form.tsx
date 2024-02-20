@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { confirmPassword, email, required } from '../validation-rules';
 import { PasswordFormItem } from './password-form-item';
 import styles from './register-form.module.less';
-import { useRegisterMutation } from '@redux/api/auth-api';
+import { useRegisterMutation } from '@redux/auth/api';
 import { useLocation, type Location } from 'react-router-dom';
 import type { UserCredentials } from 'src/types';
 import { useAuthLoader } from '../use-auth-loader';

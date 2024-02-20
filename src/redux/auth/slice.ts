@@ -1,10 +1,5 @@
 import { REHYDRATE } from 'redux-persist';
-import { push, replace } from 'redux-first-history';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { ResultStatus } from '@pages/auth-result-page/result-config';
-import type { AppDispatch, GetState } from '@redux/configure-store';
-import type { LocationWithState } from '@hooks/use-app-location';
-import { Path } from '@router/paths';
 
 export type AuthSliceState = {
     token: string | null;
@@ -40,15 +35,3 @@ export const authSlice = createSlice({
 });
 
 export const { setToken } = authSlice.actions;
-
-export const redirectAfterLogin = () => (dispatch: AppDispatch, getState: GetState) => {
-    const location = getState().router.location as LocationWithState;
-    const from = location.state?.from;
-    dispatch(replace(from ?? Path.Main));
-};
-
-export const redirectToAuthResult =
-    (status: ResultStatus, state?: Record<string, unknown>) =>
-    (dispatch: AppDispatch, getState: GetState) => {
-        dispatch(push(Path.Result + `/${status}`, { from: getState().router.location, ...state }));
-    };

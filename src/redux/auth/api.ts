@@ -4,11 +4,14 @@ import {
     type FetchBaseQueryError,
     type FetchBaseQueryMeta,
 } from '@reduxjs/toolkit/query/react';
-import { redirectAfterLogin, redirectToAuthResult, setToken } from '@redux/slices/auth-slice';
+import { redirectToAuthResult, redirectAfterLogin } from './thunks';
 import type { LoginResponse, UserCredentials } from 'src/types';
 import { baseQueryBackend } from '@redux/base-query-backend';
+import { setToken } from './slice';
 
 type QueryReturn<T> = QueryReturnValue<T, FetchBaseQueryError, FetchBaseQueryMeta>;
+
+const DELAY = 1000;
 
 export const authApi = createApi({
     reducerPath: 'authApi',
@@ -32,6 +35,7 @@ export const authApi = createApi({
 
                 return response;
             },
+            extraOptions: { minDelay: DELAY },
         }),
         login: builder.mutation<LoginResponse, UserCredentials & { remember: boolean }>({
             queryFn: async ({ remember, ...credentials }, api, _, fetchWithBQ) => {
@@ -49,6 +53,7 @@ export const authApi = createApi({
 
                 return response;
             },
+            extraOptions: { minDelay: DELAY },
         }),
     }),
 });
