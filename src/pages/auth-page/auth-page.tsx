@@ -1,12 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import { Tabs, TabsProps } from 'antd';
+import { Tabs } from 'antd';
+import { useState } from 'react';
+import cn from 'classnames';
 import { useAppLocation } from '@hooks/use-app-location';
 import { Card } from '@components/card';
 import { Logo } from '@components/logo';
 import { Path } from '@router/paths';
-import { LoginForm } from './login-form';
 import { RegisterForm } from './register-form';
+import { LoginForm } from './login-form';
+import { LoaderModal } from './loader-modal';
 import styles from './auth-page.module.less';
+import { AuthLoaderContext } from './use-auth-loader';
 
 export type AuthTab = (typeof AuthTab)[keyof typeof AuthTab];
 export const AuthTab = {
@@ -14,7 +18,7 @@ export const AuthTab = {
     Register: 'register',
 } as const;
 
-const tabItems: TabsProps['items'] = [
+const tabItems = [
     { label: 'Вход', key: AuthTab.Login, children: <LoginForm /> },
     { label: 'Регистрация', key: AuthTab.Register, children: <RegisterForm /> },
 ];
@@ -22,6 +26,7 @@ const tabItems: TabsProps['items'] = [
 export const AuthPage = ({ tab = 'login' }: { tab?: AuthTab }) => {
     const navigate = useNavigate();
     const location = useAppLocation();
+    const [loading, setLoading] = useState(false);
     const from = location.state?.from;
 
     const handleTabChange = (key: string) =>
@@ -31,14 +36,17 @@ export const AuthPage = ({ tab = 'login' }: { tab?: AuthTab }) => {
         });
 
     return (
-        <Card className={styles.Card}>
-            <Logo className={styles.Logo} />
-            <Tabs
-                className={styles.Tabs}
-                items={tabItems}
-                activeKey={tab}
-                onChange={handleTabChange}
-            />
-        </Card>
+        <AuthLoaderContext.Provider value={setLoading}>
+            {loading && <LoaderModal />}
+            <Card className={cn(styles.Card, loading && styles.Blur)}>
+                <Logo className={styles.Logo} />
+                <Tabs
+                    className={styles.Tabs}
+                    items={tabItems}
+                    activeKey={tab}
+                    onChange={handleTabChange}
+                />
+            </Card>
+        </AuthLoaderContext.Provider>
     );
 };

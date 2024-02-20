@@ -7,15 +7,17 @@ import styles from './register-form.module.less';
 import { useRegisterMutation } from '@redux/api/auth-api';
 import { useLocation, type Location } from 'react-router-dom';
 import type { UserCredentials } from 'src/types';
+import { useAuthLoader } from '../use-auth-loader';
 
 type FormValues = UserCredentials & { confirmPassword: string };
 
 export const RegisterForm = () => {
     const [form] = Form.useForm<FormValues>();
-    const [register] = useRegisterMutation();
+    const [register, { isLoading }] = useRegisterMutation();
     const location = useLocation() as Location<{ retry?: UserCredentials }>;
     const retryPending = useRef(false);
     const retry = location.state?.retry;
+    useAuthLoader(isLoading);
 
     const handleFinish = ({ email, password }: FormValues) => {
         register({ email, password });

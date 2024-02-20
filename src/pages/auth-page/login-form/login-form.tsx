@@ -3,16 +3,17 @@ import styles from './login-form.module.less';
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { email, required } from '../validation-rules';
 import { useLoginMutation } from '@redux/api/auth-api';
+import { useAuthLoader } from '../use-auth-loader';
+import type { UserCredentials } from 'src/types';
 
-type FormValues = {
-    email: string;
-    password: string;
+type FormValues = UserCredentials & {
     remember: boolean;
 };
 
 export const LoginForm = () => {
     const [form] = Form.useForm<FormValues>();
-    const [login] = useLoginMutation();
+    const [login, { isLoading }] = useLoginMutation();
+    useAuthLoader(isLoading);
 
     const handleFinish = ({ email, password, remember }: FormValues) => {
         login({ email, password, remember });
