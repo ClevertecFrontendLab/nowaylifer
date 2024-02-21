@@ -8,7 +8,11 @@ export type ResultConfig = {
     buttonText: string;
 };
 
-export const resultConfigs: Record<ResultStatus, ResultConfig> = {
+type ResultConfigMap = {
+    [K in ResultStatus]: ResultConfig;
+};
+
+export const resultConfigs: ResultConfigMap = {
     'error-login': {
         status: 'warning',
         title: 'Вход не выполнен',
@@ -34,5 +38,29 @@ export const resultConfigs: Record<ResultStatus, ResultConfig> = {
         title: 'Данные не сохранились',
         subTitle: 'Что-то пошло не так и ваша регистрация не завершилась. Попробуйте ещё раз.',
         buttonText: 'Повторить',
+    },
+    'error-check-email-no-exist': {
+        status: 'error',
+        title: 'Такой e-mail не зарегистрирован',
+        subTitle: 'Мы не нашли в базе вашего e-mail. Попробуйте войти с другим e-mail',
+        buttonText: 'Попробовать снова',
+    },
+    'error-check-email': {
+        status: 500,
+        title: 'Что-то пошло не так',
+        subTitle: 'Произошла ошибка, попробуйте отправить форму ещё раз',
+        buttonText: 'Назад',
+    },
+    'error-change-password': {
+        status: 'error',
+        title: 'Данные не сохранились',
+        subTitle: 'Что-то пошло не так. Попробуйте ещё раз',
+        buttonText: 'Повторить',
+    },
+    'success-change-password': {
+        status: 'success',
+        title: 'Пароль успешно изменен',
+        subTitle: 'Теперь можно войти в аккаунт, используя свой логин и новый пароль',
+        buttonText: 'Вход',
     },
 };

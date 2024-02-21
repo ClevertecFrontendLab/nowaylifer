@@ -23,7 +23,7 @@ export const authApi = createApi({
             }),
             extraOptions: { minDelay: DELAY },
         }),
-        checkEmail: builder.mutation<void, UserCredentials['email']>({
+        checkEmail: builder.mutation<{ email: string; message: string }, UserCredentials['email']>({
             query: (email) => ({
                 url: '/check-email',
                 body: { email },

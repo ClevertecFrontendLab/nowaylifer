@@ -8,6 +8,7 @@ export type AuthSliceState = {
     _persistedToken: string | null;
     authFrom: Location | null;
     retryRegister: UserCredentials | null;
+    retryCheckEmail: UserCredentials['email'] | null;
 };
 
 const initialState: AuthSliceState = {
@@ -15,6 +16,7 @@ const initialState: AuthSliceState = {
     token: null,
     authFrom: null,
     retryRegister: null,
+    retryCheckEmail: null,
 };
 
 const sliceName = 'auth';
@@ -32,8 +34,17 @@ export const authSlice = createSlice({
         setAuthFrom(store, action: PayloadAction<Location | null>) {
             store.authFrom = action.payload;
         },
-        setRetryRegister(store, action: PayloadAction<UserCredentials | null>) {
+        registerRetried(store, action: PayloadAction<UserCredentials>) {
             store.retryRegister = action.payload;
+        },
+        cleanRegisterRetry(store) {
+            store.retryRegister = null;
+        },
+        checkEmailRetried(store, action: PayloadAction<UserCredentials['email']>) {
+            store.retryCheckEmail = action.payload;
+        },
+        cleanCheckEmailRetry(store) {
+            store.retryCheckEmail = null;
         },
     },
     extraReducers(builder) {
@@ -53,4 +64,11 @@ export const redirectFromAuthResult = createAction<ResultStatus>(
     `${sliceName}/redirectFromAuthResult`,
 );
 
-export const { setToken, setAuthFrom, setRetryRegister } = authSlice.actions;
+export const {
+    setToken,
+    setAuthFrom,
+    registerRetried,
+    checkEmailRetried,
+    cleanRegisterRetry,
+    cleanCheckEmailRetry,
+} = authSlice.actions;

@@ -1,95 +1,124 @@
 import { replace, push } from 'redux-first-history';
 import { startAppListening } from '@redux/listener-middleware';
-import type { AppThunk } from '@redux/configure-store';
 import { Path } from '@router/paths';
-import { setAuthFrom, setRetryRegister, setToken } from './slice';
+import {
+    setAuthFrom,
+    registerRetried,
+    setToken,
+    checkEmailRetried,
+    cleanRegisterRetry,
+    cleanCheckEmailRetry,
+} from './slice';
 import { authApi } from './api';
 import type { ResultStatus } from 'src/types';
 import { redirectFromAuthResult } from './slice';
+import { isEmailNotExistError, isUserNotExistError } from './type-guards';
+import type { UnknownAction } from '@reduxjs/toolkit';
+import { createThunk } from '@redux/create-thunk';
 
-const redirectAfterLogin = (): AppThunk => (dispatch, getState) => {
-    const location = getState().auth.authFrom ?? Path.Main;
-    dispatch(replace(location));
-    dispatch(setAuthFrom(null));
-};
+const redirectAfterLogin = createThunk((api) => {
+    const location = api.getState().auth.authFrom ?? Path.Main;
+    api.dispatch(replace(location));
+    api.dispatch(setAuthFrom(null));
+});
 
-const redirectToAuthResult =
-    (status: ResultStatus): AppThunk =>
-    (dispatch, getState) => {
-        dispatch(push(Path.Result + `/${status}`, { from: getState().router.location }));
-    };
+const redirectToAuthResult = createThunk((api, status: ResultStatus) => {
+    api.dispatch(push(Path.Result + `/${status}`, { from: api.getState().router.location }));
+});
 
-const removeRetryRegister = (): AppThunk => (dispatch, getState) => {
-    if (getState().auth.retryRegister) {
-        dispatch(setRetryRegister(null));
+const isRedirectFromAuthResult = (resultStatus: ResultStatus) => (action: UnknownAction) => {
+    if (redirectFromAuthResult.match(action)) {
+        return action.payload === resultStatus;
     }
+    return false;
 };
+
+const redirectAndWaitForComeback = createThunk(({ dispatch }, to: ResultStatus) => {
+    dispatch(redirectToAuthResult(to));
+    return isRedirectFromAuthResult(to);
+});
+
+/**
+ * Login flow
+ */
 
 startAppListening({
     matcher: authApi.endpoints.login.matchFulfilled,
-    effect: (action, api) => {
-        const token = action.payload.accessToken;
-        const remember = action.meta.arg.originalArgs.remember;
-        api.dispatch(setToken({ token, remember }));
-        api.dispatch(redirectAfterLogin());
+    effect: ({ payload, meta }, { dispatch }) => {
+        const token = payload.accessToken;
+        const remember = meta.arg.originalArgs.remember;
+        dispatch(setToken({ token, remember }));
+        dispatch(redirectAfterLogin());
     },
 });
 
 startAppListening({
     matcher: authApi.endpoints.login.matchRejected,
-    effect: (_, api) => api.dispatch(redirectToAuthResult('error-login')),
+    effect: async (_, { dispatch, condition }) => {
+        await condition(dispatch(redirectAndWaitForComeback('error-login')));
+        dispatch(replace(Path.Login));
+    },
 });
+
+/**
+ * Registration flow
+ */
 
 startAppListening({
     matcher: authApi.endpoints.register.matchFulfilled,
-    effect: (_, api) => {
-        api.dispatch(redirectToAuthResult('success'));
-        api.dispatch(removeRetryRegister());
+    effect: async (_, { dispatch, condition }) => {
+        await condition(dispatch(redirectAndWaitForComeback('success')));
+        dispatch(replace(Path.Login));
+        dispatch(cleanRegisterRetry());
     },
 });
 
 startAppListening({
     matcher: authApi.endpoints.register.matchRejected,
-    effect: async ({ meta, payload }, api) => {
-        api.dispatch(removeRetryRegister());
+    effect: async ({ meta, payload }, { dispatch, condition }) => {
+        dispatch(cleanRegisterRetry());
 
-        if (payload?.status === 409) {
-            return api.dispatch(redirectToAuthResult('error-user-exist'));
+        if (isUserNotExistError(payload)) {
+            await condition(dispatch(redirectAndWaitForComeback('error-user-exist')));
+            dispatch(dispatch(replace(Path.Register)));
+            return;
         }
 
+        await condition(dispatch(redirectAndWaitForComeback('error')));
+
         const credentials = meta.arg.originalArgs;
-        api.dispatch(redirectToAuthResult('error'));
+        dispatch(registerRetried(credentials));
+        dispatch(replace(Path.Register));
+    },
+});
 
-        await api.condition((action) => {
-            if (redirectFromAuthResult.match(action)) {
-                return action.payload === 'error';
-            }
-            return false;
-        });
+/**
+ * Reset password flow
+ */
 
-        api.dispatch(setRetryRegister(credentials));
-        api.dispatch(replace(Path.Register));
+startAppListening({
+    matcher: authApi.endpoints.checkEmail.matchFulfilled,
+    effect: (_, api) => {
+        api.dispatch(push(Path.ConfirmEmail, { from: api.getState().router.location }));
+        api.dispatch(cleanCheckEmailRetry());
     },
 });
 
 startAppListening({
-    actionCreator: redirectFromAuthResult,
-    effect: ({ payload }, { dispatch }) => {
-        switch (payload) {
-            case 'success':
-            case 'error-login':
-                dispatch(replace(Path.Login));
-                break;
-            case 'error-user-exist':
-                dispatch(replace(Path.Register));
-                break;
-            default:
-                break;
+    matcher: authApi.endpoints.checkEmail.matchRejected,
+    effect: async ({ payload, meta }, { dispatch, condition }) => {
+        dispatch(cleanCheckEmailRetry());
+
+        if (isEmailNotExistError(payload)) {
+            await condition(dispatch(redirectAndWaitForComeback('error-check-email-no-exist')));
+            dispatch(replace(Path.Login));
+            return;
         }
+
+        await condition(dispatch(redirectAndWaitForComeback('error-check-email')));
+
+        const email = meta.arg.originalArgs;
+        dispatch(checkEmailRetried(email));
+        dispatch(replace(Path.Login));
     },
 });
-
-/* startAppListening({
-    matcher: authApi.endpoints.checkEmail.matchFulfilled,
-    effect: () => {},pia
-}); */
