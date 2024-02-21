@@ -1,13 +1,15 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Button, Result } from 'antd';
-import { ResultConfig, resultConfigs, type ResultStatus } from './result-config';
-import { useAppLocation } from '@hooks/use-app-location';
+import { ResultConfig, resultConfigs } from './result-config';
 import { Card } from '@components/card';
 import styles from './auth-result-page.module.less';
+import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
+import { redirectFromAuthResult } from '@redux/auth';
+import type { ResultStatus } from 'src/types';
 
 type ResultTemplateProps = {
     config: ResultConfig;
-    redirect: (to: string) => void;
+    redirect: () => void;
 };
 
 const ResultTemplate = ({ config, redirect }: ResultTemplateProps) => (
@@ -17,7 +19,7 @@ const ResultTemplate = ({ config, redirect }: ResultTemplateProps) => (
         title={config.title}
         subTitle={config.subTitle}
         extra={
-            <Button block type='primary' size='large' onClick={() => redirect(config.redirectTo)}>
+            <Button block type='primary' size='large' onClick={redirect}>
                 {config.buttonText}
             </Button>
         }
@@ -25,21 +27,11 @@ const ResultTemplate = ({ config, redirect }: ResultTemplateProps) => (
 );
 
 export const AuthResultPage = () => {
-    const { status } = useParams();
-    const location = useAppLocation();
-    const navigate = useNavigate();
-
-    const redirect = (to: string) =>
-        navigate(to, {
-            replace: true,
-            state: {
-                ...location.state,
-                // getting initial "from" location
-                from: location.state?.from?.state.from,
-            },
-        });
+    const { status } = useParams<{ status: ResultStatus }>();
+    const dispatch = useAppDispatch();
 
     const config = resultConfigs[status as ResultStatus];
+    const redirect = () => dispatch(redirectFromAuthResult(status as ResultStatus));
 
     return (
         <Card className={styles.Card}>

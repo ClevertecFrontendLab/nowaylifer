@@ -2,9 +2,10 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import styles from './login-form.module.less';
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { email, required } from '../validation-rules';
-import { useLoginMutation } from '@redux/auth/api';
+import { useCheckEmailMutation, useLoginMutation } from '@redux/auth';
 import { useAuthLoader } from '../use-auth-loader';
 import type { UserCredentials } from 'src/types';
+import { useState } from 'react';
 
 type FormValues = UserCredentials & {
     remember: boolean;
@@ -12,15 +13,28 @@ type FormValues = UserCredentials & {
 
 export const LoginForm = () => {
     const [form] = Form.useForm<FormValues>();
-    const [login, { isLoading }] = useLoginMutation();
-    useAuthLoader(isLoading);
+    const [login, { isLoading: isLoginLoading }] = useLoginMutation();
+    const [checkEmail, { isLoading: isCheckEmailLoading }] = useCheckEmailMutation();
+    const [formValid, setFormValid] = useState(false);
+    useAuthLoader(isLoginLoading, isCheckEmailLoading);
 
     const handleFinish = ({ email, password, remember }: FormValues) => {
         login({ email, password, remember });
     };
 
+    const handleResetPassword = () => {
+        checkEmail(form.getFieldValue('email'));
+    };
+
     return (
-        <Form className={styles.Form} form={form} onFinish={handleFinish}>
+        <Form
+            className={styles.Form}
+            form={form}
+            onFinish={handleFinish}
+            onFieldsChange={() =>
+                setFormValid(form.getFieldsError().every((item) => item.errors.length === 0))
+            }
+        >
             <Form.Item name='email' rules={[required, email]}>
                 <Input addonBefore='e-mail:' size='large' />
             </Form.Item>
@@ -30,10 +44,17 @@ export const LoginForm = () => {
             </Form.Item>
 
             <div className={styles.RememberWrap}>
-                <Form.Item name='remember' valuePropName='checked' noStyle>
+                <Form.Item name='remember' valuePropName='checked'>
                     <Checkbox>Запомнить меня</Checkbox>
                 </Form.Item>
-                <a href='/'>Забыли пароль?</a>
+                <Button
+                    className={styles.RestorePasswordBtn}
+                    type='link'
+                    disabled={!formValid}
+                    onClick={handleResetPassword}
+                >
+                    Забыли пароль?
+                </Button>
             </div>
 
             <Button

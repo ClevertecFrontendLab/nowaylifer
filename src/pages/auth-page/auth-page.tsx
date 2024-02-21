@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { Tabs } from 'antd';
 import { useState } from 'react';
 import cn from 'classnames';
-import { useAppLocation } from '@hooks/use-app-location';
 import { Card } from '@components/card';
 import { Logo } from '@components/logo';
 import { Path } from '@router/paths';
@@ -25,15 +24,10 @@ const tabItems = [
 
 export const AuthPage = ({ tab = 'login' }: { tab?: AuthTab }) => {
     const navigate = useNavigate();
-    const location = useAppLocation();
     const [loading, setLoading] = useState(false);
-    const from = location.state?.from;
 
     const handleTabChange = (key: string) =>
-        navigate(key === AuthTab.Register ? Path.Register : Path.Login, {
-            replace: true,
-            ...(from && { state: { from } }),
-        });
+        navigate(key === AuthTab.Register ? Path.Register : Path.Login, { replace: true });
 
     return (
         <AuthLoaderContext.Provider value={setLoading}>

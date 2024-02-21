@@ -1,12 +1,21 @@
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { Location } from 'react-router-dom';
 import { REHYDRATE } from 'redux-persist';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { ResultStatus, UserCredentials } from 'src/types';
 
 export type AuthSliceState = {
     token: string | null;
     _persistedToken: string | null;
+    authFrom: Location | null;
+    retryRegister: UserCredentials | null;
 };
 
-const initialState: AuthSliceState = { token: null, _persistedToken: null };
+const initialState: AuthSliceState = {
+    _persistedToken: null,
+    token: null,
+    authFrom: null,
+    retryRegister: null,
+};
 
 const sliceName = 'auth';
 
@@ -19,6 +28,12 @@ export const authSlice = createSlice({
             if (action.payload.remember) {
                 store._persistedToken = action.payload.token;
             }
+        },
+        setAuthFrom(store, action: PayloadAction<Location | null>) {
+            store.authFrom = action.payload;
+        },
+        setRetryRegister(store, action: PayloadAction<UserCredentials | null>) {
+            store.retryRegister = action.payload;
         },
     },
     extraReducers(builder) {
@@ -34,4 +49,8 @@ export const authSlice = createSlice({
     },
 });
 
-export const { setToken } = authSlice.actions;
+export const redirectFromAuthResult = createAction<ResultStatus>(
+    `${sliceName}/redirectFromAuthResult`,
+);
+
+export const { setToken, setAuthFrom, setRetryRegister } = authSlice.actions;

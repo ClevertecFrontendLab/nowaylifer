@@ -1,7 +1,7 @@
 import type { QueryReturnValue } from 'node_modules/@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { fetchBaseQuery, type BaseQueryEnhancer } from '@reduxjs/toolkit/query';
 import type { RootState } from './configure-store';
-import { delay } from '@utils/delay';
+import { waitFor } from '@utils/waitFor';
 
 type MinDelayOptions = {
     minDelay?: number;
@@ -15,7 +15,7 @@ const minDelay: BaseQueryEnhancer<unknown, MinDelayOptions, MinDelayOptions | vo
         const diff = Date.now() - start;
 
         if (options.minDelay && diff < options.minDelay) {
-            await delay(options.minDelay - diff);
+            await waitFor(options.minDelay - diff);
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

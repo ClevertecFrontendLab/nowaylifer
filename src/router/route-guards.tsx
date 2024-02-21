@@ -1,5 +1,6 @@
-import { useAppSelector } from '@hooks/typed-react-redux-hooks';
+import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { useAppLocation } from '@hooks/use-app-location';
+import { setAuthFrom } from '@redux/auth';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 export const RequireNoAuth = ({ redirectTo }: { redirectTo: string }) => {
@@ -10,7 +11,9 @@ export const RequireNoAuth = ({ redirectTo }: { redirectTo: string }) => {
 export const RequireAuth = ({ redirectTo }: { redirectTo: string }) => {
     const token = useAppSelector((state) => state.auth.token);
     const location = useLocation();
-    return token ? <Outlet /> : <Navigate to={redirectTo} state={{ from: location }} replace />;
+    const dispatch = useAppDispatch();
+    dispatch(setAuthFrom(location));
+    return token ? <Outlet /> : <Navigate to={redirectTo} replace />;
 };
 
 export const RequireRedirect = ({
@@ -21,14 +24,13 @@ export const RequireRedirect = ({
     redirectTo: string;
 }) => {
     const location = useAppLocation();
-    const fromState = location.state?.from;
+    const fromPath = location.state?.from?.pathname;
 
-    if (fromState) {
-        if (from instanceof RegExp && from.test(fromState.pathname)) {
-            return <Outlet />;
-        } else if (typeof from === 'string' && fromState.pathname === from) {
-            return <Outlet />;
-        }
+    if (
+        (fromPath && from instanceof RegExp && from.test(fromPath)) ||
+        (typeof from === 'string' && fromPath === from)
+    ) {
+        return <Outlet />;
     }
 
     return <Navigate to={redirectTo} replace />;

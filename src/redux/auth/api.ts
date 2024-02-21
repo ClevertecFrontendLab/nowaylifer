@@ -1,15 +1,6 @@
-import type { QueryReturnValue } from 'node_modules/@reduxjs/toolkit/dist/query/baseQueryTypes';
-import {
-    createApi,
-    type FetchBaseQueryError,
-    type FetchBaseQueryMeta,
-} from '@reduxjs/toolkit/query/react';
-import { redirectToAuthResult, redirectAfterLogin } from './thunks';
-import type { LoginResponse, UserCredentials } from 'src/types';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryBackend } from '@redux/base-query-backend';
-import { setToken } from './slice';
-
-type QueryReturn<T> = QueryReturnValue<T, FetchBaseQueryError, FetchBaseQueryMeta>;
+import type { LoginResponse, UserCredentials } from 'src/types';
 
 const DELAY = 1000;
 
@@ -18,44 +9,40 @@ export const authApi = createApi({
     baseQuery: baseQueryBackend({ prefixUrl: '/auth', method: 'POST' }),
     endpoints: (builder) => ({
         register: builder.mutation<void, UserCredentials>({
-            queryFn: async (credentials, api, _, fetchWithBq) => {
-                const response = (await fetchWithBq({
-                    url: '/registration',
-                    body: credentials,
-                })) as QueryReturn<void>;
-
-                const err = response.error;
-
-                if (err) {
-                    if (err.status === 409) api.dispatch(redirectToAuthResult('error-user-exist'));
-                    else api.dispatch(redirectToAuthResult('error', { retry: credentials }));
-                } else {
-                    api.dispatch(redirectToAuthResult('success'));
-                }
-
-                return response;
-            },
+            query: (credentials) => ({
+                url: '/registration',
+                body: credentials,
+            }),
             extraOptions: { minDelay: DELAY },
         }),
+        // remember is used in listener middleware
         login: builder.mutation<LoginResponse, UserCredentials & { remember: boolean }>({
-            queryFn: async ({ remember, ...credentials }, api, _, fetchWithBQ) => {
-                const response = (await fetchWithBQ({
-                    url: '/login',
-                    body: credentials,
-                })) as QueryReturn<LoginResponse>;
-
-                if (response.error) {
-                    api.dispatch(redirectToAuthResult('error-login'));
-                } else {
-                    api.dispatch(setToken({ token: response.data.accessToken, remember }));
-                    api.dispatch(redirectAfterLogin());
-                }
-
-                return response;
-            },
+            query: ({ remember: _, ...credentials }) => ({
+                url: '/login',
+                body: credentials,
+            }),
+            extraOptions: { minDelay: DELAY },
+        }),
+        checkEmail: builder.mutation<void, UserCredentials['email']>({
+            query: (email) => ({
+                url: '/check-email',
+                body: { email },
+            }),
+            extraOptions: { minDelay: DELAY },
+        }),
+        confirmEmail: builder.mutation<void, { email: string; code: string }>({
+            query: (arg) => ({
+                url: '/confirm-email',
+                body: arg,
+            }),
             extraOptions: { minDelay: DELAY },
         }),
     }),
 });
 
-export const { useRegisterMutation, useLoginMutation } = authApi;
+export const {
+    useRegisterMutation,
+    useLoginMutation,
+    useCheckEmailMutation,
+    useConfirmEmailMutation,
+} = authApi;

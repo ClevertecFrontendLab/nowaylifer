@@ -8,13 +8,21 @@
     height: 40px;
 }
 
-.RememberWrap {
+.RememberWrap :global {
     display: flex;
     justify-content: space-between;
     margin-top: 54px;
     margin-bottom: 24px;
+
+    .ant-form-item {
+        margin-bottom: 0 !important;
+    }
 }
 
 .LoginButton:global.ant-btn {
     margin-bottom: 16px;
+}
+
+.RestorePasswordBtn:global.ant-btn {
+    font-size: 1rem;
 }

@@ -1,22 +1,20 @@
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { Form, Input, Button } from 'antd';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { confirmPassword, email, required } from '../validation-rules';
 import { PasswordFormItem } from './password-form-item';
-import styles from './register-form.module.less';
-import { useRegisterMutation } from '@redux/auth/api';
-import { useLocation, type Location } from 'react-router-dom';
-import type { UserCredentials } from 'src/types';
 import { useAuthLoader } from '../use-auth-loader';
+import { useRegisterMutation } from '@redux/auth';
+import type { UserCredentials } from 'src/types';
+import styles from './register-form.module.less';
+import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 
 type FormValues = UserCredentials & { confirmPassword: string };
 
 export const RegisterForm = () => {
     const [form] = Form.useForm<FormValues>();
     const [register, { isLoading }] = useRegisterMutation();
-    const location = useLocation() as Location<{ retry?: UserCredentials }>;
-    const retryPending = useRef(false);
-    const retry = location.state?.retry;
+    const retry = useAppSelector((state) => state.auth.retryRegister);
     useAuthLoader(isLoading);
 
     const handleFinish = ({ email, password }: FormValues) => {
@@ -25,16 +23,18 @@ export const RegisterForm = () => {
 
     useEffect(() => {
         let request: ReturnType<typeof register>;
+        let timeoutId: number;
 
-        if (retry && !retryPending.current) {
-            retryPending.current = true;
-            setTimeout(() => {
+        if (retry) {
+            timeoutId = window.setTimeout(() => {
                 request = register(retry);
-                request.finally(() => (retryPending.current = false));
-            }, 2000);
+            }, 100);
         }
 
-        return () => request?.abort();
+        return () => {
+            window.clearTimeout(timeoutId);
+            request?.abort();
+        };
     }, [retry, register]);
 
     return (

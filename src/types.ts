@@ -6,3 +6,5 @@ export type UserCredentials = {
 export type LoginResponse = {
     accessToken: string;
 };
+
+export type ResultStatus = 'error-login' | 'error-user-exist' | 'error' | 'success';

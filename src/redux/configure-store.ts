@@ -12,8 +12,8 @@ import {
     REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { authSlice } from './auth/slice';
-import { authApi } from './auth/api';
+import { listenerMiddleware } from './listener-middleware';
+import { authSlice, authApi } from './auth';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
     history: createBrowserHistory(),
@@ -46,7 +46,9 @@ export const store = configureStore({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
-        }).concat(routerMiddleware, authApi.middleware),
+        })
+            .prepend(listenerMiddleware.middleware)
+            .concat(routerMiddleware, authApi.middleware),
 });
 
 export const persistor = persistStore(store);
