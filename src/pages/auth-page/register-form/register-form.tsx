@@ -7,6 +7,8 @@ import { useRegisterMutation } from '@redux/auth';
 import type { UserCredentials } from 'src/types';
 import styles from './register-form.module.less';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
+import cn from 'classnames';
+import { useXs } from '@hooks/use-breakpoint';
 
 type FormValues = UserCredentials & { confirmPassword: string };
 
@@ -14,6 +16,7 @@ export const RegisterForm = memo(function RegisterForm() {
     const [form] = Form.useForm<FormValues>();
     const [register] = useRegisterMutation();
     const retry = useAppSelector((state) => state.auth.retryRegister);
+    const xs = useXs();
 
     const handleFinish = ({ email, password }: FormValues) => {
         register({ email, password });
@@ -64,7 +67,7 @@ export const RegisterForm = memo(function RegisterForm() {
             </Form.Item>
 
             <Button
-                className={styles.RegisterBtn}
+                className={cn(styles.Btn, styles.RegisterBtn)}
                 type='primary'
                 htmlType='submit'
                 size='large'
@@ -72,7 +75,13 @@ export const RegisterForm = memo(function RegisterForm() {
             >
                 Войти
             </Button>
-            <Button icon={<GooglePlusOutlined />} block htmlType='button' size='large'>
+            <Button
+                className={styles.Btn}
+                block
+                htmlType='button'
+                size='large'
+                icon={xs ? undefined : <GooglePlusOutlined />}
+            >
                 Регистрация через Google
             </Button>
         </Form>

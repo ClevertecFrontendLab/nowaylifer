@@ -1,4 +1,7 @@
 .Form:global.ant-form {
+    margin-top: 24px;
+    margin-bottom: 89px;
+
     .ant-form-item {
         margin-bottom: 32px;
     }
@@ -19,10 +22,20 @@
     }
 }
 
+.Btn:global.ant-btn {
+    @media (max-width: 575px) {
+        font-size: 14px;
+    }
+}
+
 .LoginButton:global.ant-btn {
     margin-bottom: 16px;
 }
 
 .RestorePasswordBtn:global.ant-btn {
     font-size: 1rem;
+
+    @media (max-width: 575px) {
+        font-size: 14px;
+    }
 }

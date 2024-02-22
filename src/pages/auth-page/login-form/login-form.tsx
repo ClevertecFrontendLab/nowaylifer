@@ -1,20 +1,23 @@
 import { Form, Input, Button, Checkbox } from 'antd';
 import styles from './login-form.module.less';
 import { GooglePlusOutlined } from '@ant-design/icons';
-import { email, required } from '../validation-rules';
+import { email, password, required } from '../validation-rules';
 import { useCheckEmailMutation, useLoginMutation } from '@redux/auth';
 import type { UserCredentials } from 'src/types';
-import { useState, memo } from 'react';
+import { useState, memo, useEffect } from 'react';
+import cn from 'classnames';
+import { useXs } from '@hooks/use-breakpoint';
 
 type FormValues = UserCredentials & {
     remember: boolean;
 };
 
 export const LoginForm = memo(function LoginForm() {
+    const [emailValid, setEmailValid] = useState(false);
+    const [checkEmail] = useCheckEmailMutation();
     const [form] = Form.useForm<FormValues>();
     const [login] = useLoginMutation();
-    const [checkEmail] = useCheckEmailMutation();
-    const [formValid, setFormValid] = useState(false);
+    const xs = useXs();
 
     const handleFinish = ({ email, password, remember }: FormValues) => {
         login({ email, password, remember });
@@ -30,14 +33,16 @@ export const LoginForm = memo(function LoginForm() {
             form={form}
             onFinish={handleFinish}
             onFieldsChange={() =>
-                setFormValid(form.getFieldsError().every((item) => item.errors.length === 0))
+                setEmailValid(
+                    form.isFieldTouched('email') && form.getFieldError('email').length === 0,
+                )
             }
         >
             <Form.Item name='email' rules={[required, email]}>
                 <Input addonBefore='e-mail:' size='large' />
             </Form.Item>
 
-            <Form.Item name='password' rules={[required]}>
+            <Form.Item name='password' rules={[required, password]}>
                 <Input.Password size='large' placeholder='Пароль' />
             </Form.Item>
 
@@ -48,7 +53,7 @@ export const LoginForm = memo(function LoginForm() {
                 <Button
                     className={styles.RestorePasswordBtn}
                     type='link'
-                    disabled={!formValid}
+                    disabled={!emailValid}
                     onClick={handleResetPassword}
                 >
                     Забыли пароль?
@@ -56,7 +61,7 @@ export const LoginForm = memo(function LoginForm() {
             </div>
 
             <Button
-                className={styles.LoginButton}
+                className={cn(styles.Btn, styles.LoginButton)}
                 type='primary'
                 htmlType='submit'
                 size='large'
@@ -64,7 +69,13 @@ export const LoginForm = memo(function LoginForm() {
             >
                 Войти
             </Button>
-            <Button icon={<GooglePlusOutlined />} block htmlType='button' size='large'>
+            <Button
+                className={styles.Btn}
+                icon={xs ? undefined : <GooglePlusOutlined />}
+                block
+                htmlType='button'
+                size='large'
+            >
                 Войти через Google
             </Button>
         </Form>

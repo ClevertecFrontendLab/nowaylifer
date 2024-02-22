@@ -1,7 +1,12 @@
 .Card:global.ant-card {
     .ant-card-body {
-        padding-bottom: 56px !important;
-        height: 428px !important;
+        @media (min-width: 576px) {
+            padding-bottom: 56px !important;
+        }
+
+        @media (max-width: 576px) {
+            padding-inline: 16px !important;
+        }
     }
 }
 

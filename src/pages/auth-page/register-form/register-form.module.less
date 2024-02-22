@@ -1,4 +1,10 @@
 .Form:global.ant-form {
+    margin-top: 32px;
+
+    @media (max-width: 575px) {
+        margin-top: 24px;
+    }
+
     .ant-form-item {
         margin-bottom: 32px;
     }
@@ -10,6 +16,12 @@
 
 .RegisterBtn:global.ant-btn {
     margin-bottom: 16px;
+}
+
+.Btn:global.ant-btn {
+    @media (max-width: 575px) {
+        font-size: 14px;
+    }
 }
 
 .Pwd:global.ant-form-item {
@@ -25,5 +37,9 @@
 .ConfirmPwd:global.ant-form-item {
     .Form & {
         margin-bottom: 62px;
+
+        @media (max-width: 575px) {
+            margin-bottom: 54px;
+        }
     }
 }

@@ -13,7 +13,10 @@ export const AuthCard = ({ className, children }: AuthCardProps) => {
     const authLoading = useAppSelector((state) => state.auth.authLoading);
 
     return (
-        <Card className={cn(styles.AuthCard, className, authLoading && styles.Blur)}>
+        <Card
+            bordered={false}
+            className={cn(styles.AuthCard, className, authLoading && styles.Blur)}
+        >
             {children}
         </Card>
     );

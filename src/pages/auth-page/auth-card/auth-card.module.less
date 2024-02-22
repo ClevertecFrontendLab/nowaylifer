@@ -1,8 +1,11 @@
 .AuthCard:global.ant-card {
     position: relative;
     z-index: 1;
-    width: 539px;
+    max-width: 539px;
+    width: 100%;
+    display: flex;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    margin-inline: 32px;
 
     &:after {
         position: absolute;
@@ -25,7 +28,20 @@
         }
     }
 
+    @media (max-width: 500px) {
+        margin-inline: 16px;
+    }
+
     .ant-card-body {
+        flex: 1;
         padding: 64px 85.5px;
+
+        @media (max-width: 575px) {
+            padding: 32px 64px;
+        }
+
+        @media (max-width: 500px) {
+            padding-inline: 16px;
+        }
     }
 }

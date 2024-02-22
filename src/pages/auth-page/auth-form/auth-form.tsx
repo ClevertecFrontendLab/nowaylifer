@@ -25,7 +25,7 @@ export const AuthForm = ({ type = 'login' }: { type?: AuthTab }) => {
         navigate(key === AuthTab.Register ? Path.Register : Path.Login, { replace: true });
 
     return (
-        <AuthCard className={styles.Card}>
+        <AuthCard>
             <Logo className={styles.Logo} />
             <Tabs
                 className={styles.Tabs}
