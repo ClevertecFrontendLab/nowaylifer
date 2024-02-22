@@ -8,12 +8,13 @@ import {
     checkEmailRetried,
     cleanRegisterRetry,
     cleanCheckEmailRetry,
+    setAuthLoading,
 } from './slice';
 import { authApi } from './api';
 import type { ResultStatus } from 'src/types';
 import { redirectFromAuthResult } from './slice';
 import { isEmailNotExistError, isUserNotExistError } from './type-guards';
-import type { UnknownAction } from '@reduxjs/toolkit';
+import { isFulfilled, isPending, isRejected, type UnknownAction } from '@reduxjs/toolkit';
 import { createThunk } from '@redux/create-thunk';
 
 const redirectAfterLogin = createThunk((api) => {
@@ -36,6 +37,21 @@ const isRedirectFromAuthResult = (resultStatus: ResultStatus) => (action: Unknow
 const redirectAndWaitForComeback = createThunk(({ dispatch }, to: ResultStatus) => {
     dispatch(redirectToAuthResult(to));
     return isRedirectFromAuthResult(to);
+});
+
+startAppListening({
+    predicate: (action) => action.type.startsWith(authApi.reducerPath) && isPending(action),
+    effect: (_, { dispatch }) => {
+        dispatch(setAuthLoading(true));
+    },
+});
+
+startAppListening({
+    predicate: (action) =>
+        (action.type.startsWith(authApi.reducerPath) && isFulfilled(action)) || isRejected(action),
+    effect: (_, { dispatch }) => {
+        dispatch(setAuthLoading(false));
+    },
 });
 
 /**

@@ -3,20 +3,18 @@ import styles from './login-form.module.less';
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { email, required } from '../validation-rules';
 import { useCheckEmailMutation, useLoginMutation } from '@redux/auth';
-import { useAuthLoader } from '../use-auth-loader';
 import type { UserCredentials } from 'src/types';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 
 type FormValues = UserCredentials & {
     remember: boolean;
 };
 
-export const LoginForm = () => {
+export const LoginForm = memo(function LoginForm() {
     const [form] = Form.useForm<FormValues>();
-    const [login, { isLoading: isLoginLoading }] = useLoginMutation();
-    const [checkEmail, { isLoading: isCheckEmailLoading }] = useCheckEmailMutation();
+    const [login] = useLoginMutation();
+    const [checkEmail] = useCheckEmailMutation();
     const [formValid, setFormValid] = useState(false);
-    useAuthLoader(isLoginLoading, isCheckEmailLoading);
 
     const handleFinish = ({ email, password, remember }: FormValues) => {
         login({ email, password, remember });
@@ -71,4 +69,4 @@ export const LoginForm = () => {
             </Button>
         </Form>
     );
-};
+});

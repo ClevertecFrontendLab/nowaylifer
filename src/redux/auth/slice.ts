@@ -6,6 +6,7 @@ import type { ResultStatus, UserCredentials } from 'src/types';
 export type AuthSliceState = {
     token: string | null;
     _persistedToken: string | null;
+    authLoading: boolean;
     authFrom: Location | null;
     retryRegister: UserCredentials | null;
     retryCheckEmail: UserCredentials['email'] | null;
@@ -14,6 +15,7 @@ export type AuthSliceState = {
 const initialState: AuthSliceState = {
     _persistedToken: null,
     token: null,
+    authLoading: false,
     authFrom: null,
     retryRegister: null,
     retryCheckEmail: null,
@@ -33,6 +35,9 @@ export const authSlice = createSlice({
         },
         setAuthFrom(store, action: PayloadAction<Location | null>) {
             store.authFrom = action.payload;
+        },
+        setAuthLoading(store, action: PayloadAction<boolean>) {
+            store.authLoading = action.payload;
         },
         registerRetried(store, action: PayloadAction<UserCredentials>) {
             store.retryRegister = action.payload;
@@ -67,6 +72,7 @@ export const redirectFromAuthResult = createAction<ResultStatus>(
 export const {
     setToken,
     setAuthFrom,
+    setAuthLoading,
     registerRetried,
     checkEmailRetried,
     cleanRegisterRetry,

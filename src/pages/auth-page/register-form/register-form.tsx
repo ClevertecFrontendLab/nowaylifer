@@ -1,9 +1,8 @@
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { Form, Input, Button } from 'antd';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { confirmPassword, email, required } from '../validation-rules';
 import { PasswordFormItem } from './password-form-item';
-import { useAuthLoader } from '../use-auth-loader';
 import { useRegisterMutation } from '@redux/auth';
 import type { UserCredentials } from 'src/types';
 import styles from './register-form.module.less';
@@ -11,11 +10,10 @@ import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 
 type FormValues = UserCredentials & { confirmPassword: string };
 
-export const RegisterForm = () => {
+export const RegisterForm = memo(function RegisterForm() {
     const [form] = Form.useForm<FormValues>();
-    const [register, { isLoading }] = useRegisterMutation();
+    const [register] = useRegisterMutation();
     const retry = useAppSelector((state) => state.auth.retryRegister);
-    useAuthLoader(isLoading);
 
     const handleFinish = ({ email, password }: FormValues) => {
         register({ email, password });
@@ -79,4 +77,4 @@ export const RegisterForm = () => {
             </Button>
         </Form>
     );
-};
+});

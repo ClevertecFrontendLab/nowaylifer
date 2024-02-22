@@ -1,19 +1,21 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AuthLayout } from '@components/auth-layout';
 import { MainPage } from '@pages/main-page';
-import { AuthPage } from '@pages/auth-page';
 import { Path } from './paths';
 import { RequireAuth, RequireNoAuth, RequireRedirect } from './route-guards';
 import { AuthResultPage } from '@pages/auth-result-page/auth-result-page';
+import { ConfirmEmail } from '@pages/auth-page/confirm-email';
+import { AuthForm } from '@pages/auth-page';
 
 export const routes = (
     <Routes>
         <Route path={Path.Root} element={<Navigate to={Path.Main} />} />
 
         <Route element={<AuthLayout />}>
+            <Route path='confirm-email' element={<ConfirmEmail />} />
             <Route element={<RequireNoAuth redirectTo={Path.Main} />}>
-                <Route path={Path.Login} element={<AuthPage tab='login' />} />
-                <Route path={Path.Register} element={<AuthPage tab='register' />} />
+                <Route path={Path.Login} element={<AuthForm type='login' />} />
+                <Route path={Path.Register} element={<AuthForm type='register' />} />
             </Route>
 
             <Route

@@ -15,7 +15,6 @@ export const authApi = createApi({
             }),
             extraOptions: { minDelay: DELAY },
         }),
-        // remember is used in listener middleware
         login: builder.mutation<LoginResponse, UserCredentials & { remember: boolean }>({
             query: ({ remember: _, ...credentials }) => ({
                 url: '/login',
