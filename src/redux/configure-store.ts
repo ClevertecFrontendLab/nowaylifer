@@ -28,7 +28,7 @@ const rootPersistConfig = {
 const authSlicePersistConfig = {
     key: 'auth',
     storage,
-    whitelist: ['_persistedToken'],
+    whitelist: ['_persistedToken', 'emailToConfirm'],
 };
 
 const rootReducer = combineReducers({

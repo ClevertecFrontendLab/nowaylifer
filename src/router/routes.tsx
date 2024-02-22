@@ -4,15 +4,14 @@ import { MainPage } from '@pages/main-page';
 import { Path } from './paths';
 import { RequireAuth, RequireNoAuth, RequireRedirect } from './route-guards';
 import { AuthResultPage } from '@pages/auth-result-page/auth-result-page';
-import { ConfirmEmail } from '@pages/auth-page/confirm-email';
 import { AuthForm } from '@pages/auth-page';
+import { ConfirmEmail } from '@pages/auth-page/confirm-email';
 
 export const routes = (
     <Routes>
         <Route path={Path.Root} element={<Navigate to={Path.Main} />} />
 
         <Route element={<AuthLayout />}>
-            <Route path='confirm-email' element={<ConfirmEmail />} />
             <Route element={<RequireNoAuth redirectTo={Path.Main} />}>
                 <Route path={Path.Login} element={<AuthForm type='login' />} />
                 <Route path={Path.Register} element={<AuthForm type='register' />} />
@@ -22,6 +21,7 @@ export const routes = (
                 element={<RequireRedirect from={new RegExp(Path.Login)} redirectTo={Path.Login} />}
             >
                 <Route path={Path.Result + '/:status'} element={<AuthResultPage />} />
+                <Route path={Path.ConfirmEmail} element={<ConfirmEmail />} />
             </Route>
         </Route>
 

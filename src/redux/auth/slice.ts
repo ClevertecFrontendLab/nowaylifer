@@ -10,6 +10,7 @@ export type AuthSliceState = {
     authFrom: Location | null;
     retryRegister: UserCredentials | null;
     retryCheckEmail: UserCredentials['email'] | null;
+    emailToConfirm: string | null;
 };
 
 const initialState: AuthSliceState = {
@@ -19,6 +20,7 @@ const initialState: AuthSliceState = {
     authFrom: null,
     retryRegister: null,
     retryCheckEmail: null,
+    emailToConfirm: null,
 };
 
 const sliceName = 'auth';
@@ -38,6 +40,9 @@ export const authSlice = createSlice({
         },
         setAuthLoading(store, action: PayloadAction<boolean>) {
             store.authLoading = action.payload;
+        },
+        setEmailToConfirm(store, action: PayloadAction<string | null>) {
+            store.emailToConfirm = action.payload;
         },
         registerRetried(store, action: PayloadAction<UserCredentials>) {
             store.retryRegister = action.payload;
@@ -63,6 +68,13 @@ export const authSlice = createSlice({
             }
         });
     },
+    selectors: {
+        selectEmailToConfirm: (state) => {
+            const email = state.emailToConfirm;
+            if (email === null) throw new Error('Illegal emailToConfirm selecting, it is null');
+            return email;
+        },
+    },
 });
 
 export const redirectFromAuthResult = createAction<ResultStatus>(
@@ -73,8 +85,11 @@ export const {
     setToken,
     setAuthFrom,
     setAuthLoading,
+    setEmailToConfirm,
     registerRetried,
     checkEmailRetried,
     cleanRegisterRetry,
     cleanCheckEmailRetry,
 } = authSlice.actions;
+
+export const { selectEmailToConfirm } = authSlice.selectors;

@@ -15,6 +15,7 @@ import './index.less';
 ConfigProvider.config({
     theme: {
         primaryColor: '#2f54eb',
+        infoColor: '#2f54eb',
     },
 });
 

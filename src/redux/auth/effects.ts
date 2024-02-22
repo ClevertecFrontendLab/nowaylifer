@@ -9,6 +9,7 @@ import {
     cleanRegisterRetry,
     cleanCheckEmailRetry,
     setAuthLoading,
+    setEmailToConfirm,
 } from './slice';
 import { authApi } from './api';
 import type { ResultStatus } from 'src/types';
@@ -114,9 +115,11 @@ startAppListening({
 
 startAppListening({
     matcher: authApi.endpoints.checkEmail.matchFulfilled,
-    effect: (_, api) => {
-        api.dispatch(push(Path.ConfirmEmail, { from: api.getState().router.location }));
-        api.dispatch(cleanCheckEmailRetry());
+    effect: (action, { dispatch, getState }) => {
+        const email = action.meta.arg.originalArgs;
+        dispatch(setEmailToConfirm(email));
+        dispatch(push(Path.ConfirmEmail, { from: getState().router.location }));
+        dispatch(cleanCheckEmailRetry());
     },
 });
 
