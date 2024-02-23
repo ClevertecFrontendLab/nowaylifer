@@ -22,6 +22,7 @@ export const routes = (
             >
                 <Route path={Path.Result + '/:status'} element={<AuthResultPage />} />
                 <Route path={Path.ConfirmEmail} element={<ConfirmEmail />} />
+                <Route path={Path.ChangePassword} />
             </Route>
         </Route>
 

@@ -7,11 +7,8 @@ type AppThunkApi = {
 
 type CallbackFn<Return, Args extends unknown[]> = (api: AppThunkApi, ...args: Args) => Return;
 
-export const createThunk = <Return, Args extends unknown[]>(
-    callbackFn: CallbackFn<Return, Args>,
-) => {
-    return (...args: Args) =>
-        (dispatch: AppDispatch, getState: () => RootState) => {
-            return callbackFn({ dispatch, getState }, ...args);
-        };
-};
+export const createThunk =
+    <Return, Args extends unknown[]>(callbackFn: CallbackFn<Return, Args>) =>
+    (...args: Args) =>
+    (dispatch: AppDispatch, getState: () => RootState) =>
+        callbackFn({ dispatch, getState }, ...args);

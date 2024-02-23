@@ -1,4 +1,4 @@
-import { combineReducers, configureStore, type Action, type ThunkAction } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { createReduxHistoryContext } from 'redux-first-history';
 import { createBrowserHistory } from 'history';
 import {
@@ -13,7 +13,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { listenerMiddleware } from './listener-middleware';
-import { authSlice, authApi } from './auth';
+import { authSlice, authApi, authSlicePersistConfig } from './auth';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
     history: createBrowserHistory(),
@@ -23,12 +23,6 @@ const rootPersistConfig = {
     key: 'root',
     storage,
     whitelist: [],
-};
-
-const authSlicePersistConfig = {
-    key: 'auth',
-    storage,
-    whitelist: ['_persistedToken', 'emailToConfirm'],
 };
 
 const rootReducer = combineReducers({
@@ -56,4 +50,3 @@ export const history = createReduxHistory(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action>;

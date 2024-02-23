@@ -1,9 +1,9 @@
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { Form, Input, Button } from 'antd';
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { confirmPassword, email, required } from '../validation-rules';
 import { PasswordFormItem } from './password-form-item';
-import { useRegisterMutation } from '@redux/auth';
+import { useRegisterMutation, useRetryMutation } from '@redux/auth';
 import type { UserCredentials } from 'src/types';
 import styles from './register-form.module.less';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
@@ -22,32 +22,18 @@ export const RegisterForm = memo(function RegisterForm() {
         register({ email, password });
     };
 
-    useEffect(() => {
-        let request: ReturnType<typeof register>;
-        let timeoutId: number;
-
-        if (retry) {
-            timeoutId = window.setTimeout(() => {
-                request = register(retry);
-            }, 100);
-        }
-
-        return () => {
-            window.clearTimeout(timeoutId);
-            request?.abort();
-        };
-    }, [retry, register]);
+    useRetryMutation(register, retry);
 
     return (
         <Form
             className={styles.Form}
             form={form}
             onFinish={handleFinish}
-            {...(retry && {
+            {...(retry.shouldRetry && {
                 initialValues: {
-                    email: retry.email,
-                    password: retry.password,
-                    confirmPassword: retry.password,
+                    email: retry.data.email,
+                    password: retry.data.password,
+                    confirmPassword: retry.data.password,
                 },
             })}
         >

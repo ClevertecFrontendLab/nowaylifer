@@ -1,6 +1,6 @@
 import styles from './confirm-email.module.less';
 import { Result } from 'antd';
-import { selectEmailToConfirm, useConfirmEmailMutation } from '@redux/auth';
+import { useConfirmEmailMutation } from '@redux/auth';
 import { AuthCard } from '../auth-card';
 import OtpInput from 'react-otp-input';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
@@ -11,7 +11,7 @@ const OTP_LENGTH = 6;
 
 export const ConfirmEmail = () => {
     const [confirmEmail, { isError }] = useConfirmEmailMutation();
-    const email = useAppSelector(selectEmailToConfirm);
+    const email = useAppSelector((state) => state.auth.emailToConfirm);
     const [otp, setOtp] = useState('');
     const errorRef = useRef(isError);
 
@@ -21,7 +21,7 @@ export const ConfirmEmail = () => {
     }, [isError]);
 
     useEffect(() => {
-        if (otp.length === OTP_LENGTH) {
+        if (email && otp.length === OTP_LENGTH) {
             confirmEmail({ email, code: otp });
         }
     }, [otp, confirmEmail, email]);

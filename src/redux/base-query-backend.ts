@@ -7,7 +7,7 @@ type MinDelayOptions = {
     minDelay?: number;
 };
 
-const minDelay: BaseQueryEnhancer<unknown, MinDelayOptions, MinDelayOptions | void> =
+const withMinDelay: BaseQueryEnhancer<unknown, MinDelayOptions, MinDelayOptions | void> =
     (baseQuery, defaultOptons) => async (args, api, extraOptions) => {
         const options = { ...defaultOptons, ...extraOptions };
         const start = Date.now();
@@ -25,10 +25,15 @@ const minDelay: BaseQueryEnhancer<unknown, MinDelayOptions, MinDelayOptions | vo
 type BaseQueryBackendOptions = {
     prefixUrl?: string;
     method?: string;
+    minDelay?: number;
 };
 
-export const baseQueryBackend = ({ prefixUrl = '', method = 'GET' }: BaseQueryBackendOptions) =>
-    minDelay(
+export const baseQueryBackend = ({
+    prefixUrl = '',
+    method = 'GET',
+    minDelay,
+}: BaseQueryBackendOptions) =>
+    withMinDelay(
         fetchBaseQuery({
             baseUrl: import.meta.env.VITE_BACKEND_URL + prefixUrl,
             method,
@@ -41,4 +46,5 @@ export const baseQueryBackend = ({ prefixUrl = '', method = 'GET' }: BaseQueryBa
                 return headers;
             },
         }),
+        { minDelay },
     );

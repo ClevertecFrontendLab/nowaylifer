@@ -1,47 +1,52 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryBackend } from '@redux/base-query-backend';
 import type { LoginResponse, UserCredentials } from 'src/types';
-
-const DELAY = 1000;
+import { sliceName } from '.';
 
 export const authApi = createApi({
-    reducerPath: 'authApi',
-    baseQuery: baseQueryBackend({ prefixUrl: '/auth', method: 'POST' }),
+    reducerPath: `${sliceName}Api`,
+    baseQuery: baseQueryBackend({ prefixUrl: '/auth', method: 'POST', minDelay: 1000 }),
     endpoints: (builder) => ({
         register: builder.mutation<void, UserCredentials>({
             query: (credentials) => ({
                 url: '/registration',
                 body: credentials,
             }),
-            extraOptions: { minDelay: DELAY },
         }),
         login: builder.mutation<LoginResponse, UserCredentials & { remember: boolean }>({
             query: ({ remember: _, ...credentials }) => ({
                 url: '/login',
                 body: credentials,
             }),
-            extraOptions: { minDelay: DELAY },
         }),
         checkEmail: builder.mutation<{ email: string; message: string }, UserCredentials['email']>({
             query: (email) => ({
                 url: '/check-email',
                 body: { email },
             }),
-            extraOptions: { minDelay: DELAY },
         }),
-        confirmEmail: builder.mutation<void, { email: string; code: string }>({
+        confirmEmail: builder.mutation<void, { email: UserCredentials['email']; code: string }>({
             query: (arg) => ({
                 url: '/confirm-email',
                 body: arg,
             }),
-            extraOptions: { minDelay: DELAY },
+        }),
+        changePassword: builder.mutation<
+            { message: string },
+            { password: UserCredentials['password']; confirmPassword: UserCredentials['password'] }
+        >({
+            query: (arg) => ({
+                url: '/change-password',
+                body: arg,
+            }),
         }),
     }),
 });
 
 export const {
-    useRegisterMutation,
     useLoginMutation,
+    useRegisterMutation,
     useCheckEmailMutation,
     useConfirmEmailMutation,
+    useChangePasswordMutation,
 } = authApi;

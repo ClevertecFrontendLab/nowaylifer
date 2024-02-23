@@ -2,11 +2,12 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import styles from './login-form.module.less';
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { email, password, required } from '../validation-rules';
-import { useCheckEmailMutation, useLoginMutation } from '@redux/auth';
+import { useCheckEmailMutation, useLoginMutation, useRetryMutation } from '@redux/auth';
 import type { UserCredentials } from 'src/types';
-import { useState, memo, useEffect } from 'react';
+import { useState, memo } from 'react';
 import cn from 'classnames';
 import { useXs } from '@hooks/use-breakpoint';
+import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 
 type FormValues = UserCredentials & {
     remember: boolean;
@@ -17,7 +18,10 @@ export const LoginForm = memo(function LoginForm() {
     const [checkEmail] = useCheckEmailMutation();
     const [form] = Form.useForm<FormValues>();
     const [login] = useLoginMutation();
+    const retry = useAppSelector((state) => state.auth.retryCheckEmail);
     const xs = useXs();
+
+    useRetryMutation(checkEmail, retry);
 
     const handleFinish = ({ email, password, remember }: FormValues) => {
         login({ email, password, remember });
@@ -38,7 +42,11 @@ export const LoginForm = memo(function LoginForm() {
                 )
             }
         >
-            <Form.Item name='email' rules={[required, email]}>
+            <Form.Item
+                name='email'
+                rules={[required, email]}
+                initialValue={retry.shouldRetry ? retry.data : undefined}
+            >
                 <Input addonBefore='e-mail:' size='large' />
             </Form.Item>
 

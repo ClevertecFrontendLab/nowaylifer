@@ -1,15 +1,20 @@
-import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Location } from 'react-router-dom';
 import { REHYDRATE } from 'redux-persist';
-import type { ResultStatus, UserCredentials } from 'src/types';
+import type { UserCredentials } from 'src/types';
+import { _untypedMutationRetried, cleanMutationRetry } from './actions';
+import { sliceName } from './config';
+
+export type RetryField<T = unknown> = { shouldRetry: false } | { shouldRetry: true; data: T };
 
 export type AuthSliceState = {
-    token: string | null;
     _persistedToken: string | null;
+    token: string | null;
     authLoading: boolean;
     authFrom: Location | null;
-    retryRegister: UserCredentials | null;
-    retryCheckEmail: UserCredentials['email'] | null;
+    retryRegister: RetryField<UserCredentials>;
+    retryCheckEmail: RetryField<UserCredentials['email']>;
+    retryChangePassword: RetryField<UserCredentials['password']>;
     emailToConfirm: string | null;
 };
 
@@ -18,78 +23,51 @@ const initialState: AuthSliceState = {
     token: null,
     authLoading: false,
     authFrom: null,
-    retryRegister: null,
-    retryCheckEmail: null,
     emailToConfirm: null,
+    retryRegister: { shouldRetry: false },
+    retryCheckEmail: { shouldRetry: false },
+    retryChangePassword: { shouldRetry: false },
 };
-
-const sliceName = 'auth';
 
 export const authSlice = createSlice({
     name: sliceName,
     initialState,
     reducers: {
-        setToken(store, action: PayloadAction<{ token: string; remember: boolean }>) {
-            store.token = action.payload.token;
+        setToken(state, action: PayloadAction<{ token: string; remember: boolean }>) {
+            state.token = action.payload.token;
             if (action.payload.remember) {
-                store._persistedToken = action.payload.token;
+                state._persistedToken = action.payload.token;
             }
         },
-        setAuthFrom(store, action: PayloadAction<Location | null>) {
-            store.authFrom = action.payload;
+        setAuthFrom(state, action: PayloadAction<Location | null>) {
+            state.authFrom = action.payload;
         },
-        setAuthLoading(store, action: PayloadAction<boolean>) {
-            store.authLoading = action.payload;
+        setAuthLoading(state, action: PayloadAction<boolean>) {
+            state.authLoading = action.payload;
         },
-        setEmailToConfirm(store, action: PayloadAction<string | null>) {
-            store.emailToConfirm = action.payload;
-        },
-        registerRetried(store, action: PayloadAction<UserCredentials>) {
-            store.retryRegister = action.payload;
-        },
-        cleanRegisterRetry(store) {
-            store.retryRegister = null;
-        },
-        checkEmailRetried(store, action: PayloadAction<UserCredentials['email']>) {
-            store.retryCheckEmail = action.payload;
-        },
-        cleanCheckEmailRetry(store) {
-            store.retryCheckEmail = null;
+        setEmailToConfirm(state, action: PayloadAction<string | null>) {
+            state.emailToConfirm = action.payload;
         },
     },
     extraReducers(builder) {
-        builder.addCase(REHYDRATE, (state, action) => {
-            const { key, payload } = action as PayloadAction<AuthSliceState | undefined> & {
-                key: string;
-            };
+        builder
+            .addCase(REHYDRATE, (state, action) => {
+                const { key, payload } = action as PayloadAction<AuthSliceState | undefined> & {
+                    key: string;
+                };
 
-            if (key === sliceName && payload?._persistedToken) {
-                state.token = state._persistedToken = payload._persistedToken;
-            }
-        });
-    },
-    selectors: {
-        selectEmailToConfirm: (state) => {
-            const email = state.emailToConfirm;
-            if (email === null) throw new Error('Illegal emailToConfirm selecting, it is null');
-            return email;
-        },
+                if (key === sliceName && payload?._persistedToken) {
+                    state.token = state._persistedToken = payload._persistedToken;
+                }
+            })
+            .addCase(_untypedMutationRetried, (state, { payload }) => ({
+                ...state,
+                [payload.retryField]: { shouldRetry: true, data: payload.data },
+            }))
+            .addCase(cleanMutationRetry, (state, action) => {
+                state[action.payload] = { shouldRetry: false };
+            });
     },
 });
 
-export const redirectFromAuthResult = createAction<ResultStatus>(
-    `${sliceName}/redirectFromAuthResult`,
-);
-
-export const {
-    setToken,
-    setAuthFrom,
-    setAuthLoading,
-    setEmailToConfirm,
-    registerRetried,
-    checkEmailRetried,
-    cleanRegisterRetry,
-    cleanCheckEmailRetry,
-} = authSlice.actions;
-
-export const { selectEmailToConfirm } = authSlice.selectors;
+export const { setToken, setAuthFrom, setAuthLoading, setEmailToConfirm } = authSlice.actions;
