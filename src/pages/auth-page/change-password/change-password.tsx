@@ -22,16 +22,29 @@ export const ChangePassword = () => {
                 onFinish={changePassword}
                 initialValues={retry.shouldRetry ? retry.data : undefined}
             >
-                <PasswordFormItem name='password' />
+                <PasswordFormItem
+                    name='password'
+                    inputProps={{ 'data-test-id': 'change-password' }}
+                />
                 <Form.Item
                     className={styles.ConfirmPwd}
                     name='confirmPassword'
                     dependencies={['password']}
                     rules={[required, confirmPassword()]}
                 >
-                    <Input.Password placeholder='Повторите пароль' size='large' />
+                    <Input.Password
+                        placeholder='Повторите пароль'
+                        size='large'
+                        data-test-id='change-confirm-password'
+                    />
                 </Form.Item>
-                <Button type='primary' htmlType='submit' block size='large'>
+                <Button
+                    type='primary'
+                    htmlType='submit'
+                    block
+                    size='large'
+                    data-test-id='change-submit-button'
+                >
                     Сохранить
                 </Button>
             </Form>

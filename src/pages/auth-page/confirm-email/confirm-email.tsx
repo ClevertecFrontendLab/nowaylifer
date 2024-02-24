@@ -6,6 +6,7 @@ import OtpInput from 'react-otp-input';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
+import invariant from 'invariant';
 
 const OTP_LENGTH = 6;
 
@@ -15,13 +16,15 @@ export const ConfirmEmail = () => {
     const [otp, setOtp] = useState('');
     const errorRef = useRef(isError);
 
+    invariant(email, 'Email is undefined');
+
     useEffect(() => {
         if (isError) setOtp('');
         errorRef.current = isError;
     }, [isError]);
 
     useEffect(() => {
-        if (email && otp.length === OTP_LENGTH) {
+        if (otp.length === OTP_LENGTH) {
             confirmEmail({ email, code: otp });
         }
     }, [otp, confirmEmail, email]);
@@ -57,7 +60,11 @@ export const ConfirmEmail = () => {
                     styles.InputOTP,
                 )}
                 renderInput={(props) => (
-                    <input {...props} style={{ ...props.style, width: 40, height: 40 }} />
+                    <input
+                        {...props}
+                        style={{ ...props.style, width: 40, height: 40 }}
+                        data-test-id='verification-input'
+                    />
                 )}
             />
             <p className={styles.Para}>Не пришло письмо? Проверьте папку Спам.</p>

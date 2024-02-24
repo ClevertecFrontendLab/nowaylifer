@@ -32,10 +32,13 @@ export const RegisterForm = memo(function RegisterForm() {
             initialValues={retry.shouldRetry ? retry.data : undefined}
         >
             <Form.Item name='email' rules={[required, email]}>
-                <Input addonBefore='e-mail:' size='large' />
+                <Input addonBefore='e-mail:' size='large' data-test-id='registration-email' />
             </Form.Item>
 
-            <PasswordFormItem name='password' />
+            <PasswordFormItem
+                name='password'
+                inputProps={{ 'data-test-id': 'registration-password' }}
+            />
 
             <Form.Item
                 className={styles.ConfirmPwd}
@@ -43,7 +46,11 @@ export const RegisterForm = memo(function RegisterForm() {
                 dependencies={['password']}
                 rules={[required, confirmPassword()]}
             >
-                <Input.Password size='large' placeholder='Повторите пароль' />
+                <Input.Password
+                    size='large'
+                    placeholder='Повторите пароль'
+                    data-test-id='registration-confirm-password'
+                />
             </Form.Item>
 
             <Button
@@ -52,6 +59,7 @@ export const RegisterForm = memo(function RegisterForm() {
                 htmlType='submit'
                 size='large'
                 block
+                data-test-id='registration-submit-button'
             >
                 Войти
             </Button>

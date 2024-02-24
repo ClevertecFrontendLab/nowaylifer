@@ -8,11 +8,7 @@ export type ResultConfig = {
     buttonText: string;
 };
 
-type ResultConfigMap = {
-    [K in ResultStatus]: ResultConfig;
-};
-
-export const resultConfigs: ResultConfigMap = {
+export const resultConfigs: Record<ResultStatus, ResultConfig> = {
     'error-login': {
         status: 'warning',
         title: 'Вход не выполнен',
@@ -63,4 +59,15 @@ export const resultConfigs: ResultConfigMap = {
         subTitle: 'Теперь можно войти в аккаунт, используя свой логин и новый пароль',
         buttonText: 'Вход',
     },
+};
+
+export const buttonTestIdMap: Record<ResultStatus, string> = {
+    success: 'registration-enter-button',
+    error: 'registration-retry-button',
+    'error-user-exist': 'registration-back-button',
+    'error-login': 'login-retry-button',
+    'error-check-email-no-exist': 'check-retry-button',
+    'error-check-email': 'check-back-button',
+    'error-change-password': 'change-retry-button',
+    'success-change-password': 'change-entry-button',
 };

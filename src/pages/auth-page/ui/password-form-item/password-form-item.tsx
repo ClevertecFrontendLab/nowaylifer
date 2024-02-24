@@ -17,15 +17,16 @@ const PasswordInput = ({ onValidate, ...props }: PasswordInputProps) => {
         onValidate?.(status);
     }, [onValidate, status]);
 
-    return <Input.Password size='large' placeholder='Пароль' {...props} />;
+    return <Input.Password size='large' placeholder='Пароль' {...props}  />;
 };
 
 export type PasswordFormItemProps = {
     className?: string;
     name?: string;
+    inputProps?: InputProps;
 };
 
-export const PasswordFormItem = ({ className, name }: PasswordFormItemProps) => {
+export const PasswordFormItem = ({ className, name, inputProps }: PasswordFormItemProps) => {
     const [validateStatus, setValidateStatus] = useState<ValidateStatus>();
 
     return (
@@ -39,7 +40,7 @@ export const PasswordFormItem = ({ className, name }: PasswordFormItemProps) => 
             rules={[required, password]}
             extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
         >
-            <PasswordInput onValidate={setValidateStatus} />
+            <PasswordInput onValidate={setValidateStatus} {...inputProps} />
         </Form.Item>
     );
 };

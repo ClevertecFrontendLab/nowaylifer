@@ -11,5 +11,7 @@ export const Loader = ({ options, ...rest }: LoaderProps) => {
         rendererSettings: { preserveAspectRatio: 'xMidYMid slice' },
         ...options,
     };
-    return <Lottie options={defaultOptions} width={150} height={150} {...rest} />;
+    return (
+        <Lottie options={defaultOptions} width={150} height={150} {...rest} data-test-id='loader' />
+    );
 };

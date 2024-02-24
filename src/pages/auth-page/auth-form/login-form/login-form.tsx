@@ -49,22 +49,23 @@ export const LoginForm = memo(function LoginForm() {
                 validateStatus={emailValid ? 'success' : 'error'}
                 initialValue={retry.shouldRetry ? retry.data : undefined}
             >
-                <Input addonBefore='e-mail:' size='large' />
+                <Input addonBefore='e-mail:' size='large' data-test-id='login-email' />
             </Form.Item>
 
             <Form.Item name='password' rules={[required, password]}>
-                <Input.Password size='large' placeholder='Пароль' />
+                <Input.Password size='large' placeholder='Пароль' data-test-id='login-password' />
             </Form.Item>
 
             <div className={styles.RememberWrap}>
                 <Form.Item name='remember' valuePropName='checked'>
-                    <Checkbox>Запомнить меня</Checkbox>
+                    <Checkbox data-test-id='login-remember'>Запомнить меня</Checkbox>
                 </Form.Item>
                 <Button
                     className={styles.RestorePasswordBtn}
                     type='link'
                     disabled={!emailValid}
                     onClick={handleResetPassword}
+                    data-test-id='login-remember'
                 >
                     Забыли пароль?
                 </Button>
@@ -76,6 +77,7 @@ export const LoginForm = memo(function LoginForm() {
                 htmlType='submit'
                 size='large'
                 block
+                data-test-id='login-submit-button'
             >
                 Войти
             </Button>
