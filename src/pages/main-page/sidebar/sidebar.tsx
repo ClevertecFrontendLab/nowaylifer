@@ -6,6 +6,8 @@ import { useXs } from '@hooks/use-breakpoint';
 import { Logo } from '@components/logo';
 import { Switch } from './switch';
 import styles from './sidebar.module.less';
+import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
+import { logout } from '@redux/auth/actions';
 
 const { Sider } = Layout;
 
@@ -31,6 +33,11 @@ const menuItems = [
 export const Sidebar = () => {
     const xs = useXs();
     const [collapsed, setCollapsed] = useState(xs);
+    const dispatch = useAppDispatch();
+
+    const handleLogout = () => {
+        dispatch(logout());
+    };
 
     return (
         <Sider
@@ -68,6 +75,7 @@ export const Sidebar = () => {
                     mode='inline'
                     inlineIndent={xs ? 8 : 16}
                     selectable={false}
+                    onClick={handleLogout}
                     items={[
                         {
                             key: 1,

@@ -33,11 +33,10 @@ export const authSlice = createSlice({
     name: sliceName,
     initialState,
     reducers: {
-        setToken(state, action: PayloadAction<{ token: string; remember: boolean }>) {
-            state.token = action.payload.token;
-            if (action.payload.remember) {
-                state._persistedToken = action.payload.token;
-            }
+        setToken(state, { payload }: PayloadAction<{ token: string; remember: boolean } | null>) {
+            if (!payload) return { ...state, token: null, _persistedToken: null };
+            state.token = payload.token;
+            if (payload.remember) state._persistedToken = payload.token;
         },
         setAuthFrom(state, action: PayloadAction<Location | null>) {
             state.authFrom = action.payload;

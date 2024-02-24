@@ -1,9 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
 import { capitalize } from '@utils/capitalize';
-import type { AuthSliceState } from '.';
+import { setToken, type AuthSliceState } from '.';
 import type { ResultStatus } from 'src/types';
 import { concat } from '@utils/concat';
 import { sliceName } from './config';
+import { createThunk } from '@redux/create-thunk';
+import { Path } from '@router/paths';
+import { replace } from 'redux-first-history';
 
 type RetryFieldUnion = {
     [K in keyof AuthSliceState]: K extends `retry${string}` ? K : never;
@@ -38,3 +41,8 @@ export const cleanMutationRetry = createAction(
 export const redirectFromAuthResult = createAction<ResultStatus>(
     `${sliceName}/redirectFromAuthResult`,
 );
+
+export const logout = createThunk(({ dispatch }) => {
+    dispatch(setToken(null));
+    dispatch(replace(Path.Login));
+});

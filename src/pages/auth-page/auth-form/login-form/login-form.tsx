@@ -14,7 +14,7 @@ type FormValues = UserCredentials & {
 };
 
 export const LoginForm = memo(function LoginForm() {
-    const [emailValid, setEmailValid] = useState(false);
+    const [emailValid, setEmailValid] = useState(true);
     const [checkEmail] = useCheckEmailMutation();
     const [form] = Form.useForm<FormValues>();
     const [login] = useLoginMutation();
@@ -23,8 +23,14 @@ export const LoginForm = memo(function LoginForm() {
 
     useRetryMutation(checkEmail, retry);
 
+    const validateEmail = () => {
+        const isValid = form.isFieldTouched('email') && form.getFieldError('email').length === 0;
+        setEmailValid(isValid);
+        return isValid;
+    };
+
     const handleResetPassword = () => {
-        checkEmail(form.getFieldValue('email'));
+        if (validateEmail()) checkEmail(form.getFieldValue('email'));
     };
 
     return (
@@ -32,15 +38,15 @@ export const LoginForm = memo(function LoginForm() {
             className={styles.Form}
             form={form}
             onFinish={login}
-            onFieldsChange={() =>
-                setEmailValid(
-                    form.isFieldTouched('email') && form.getFieldError('email').length === 0,
-                )
-            }
+            onFieldsChange={(changedFields) => {
+                const emailField = changedFields.find((field) => field.name.includes('email'));
+                if (emailField) validateEmail();
+            }}
         >
             <Form.Item
                 name='email'
                 rules={[required, email]}
+                validateStatus={emailValid ? 'success' : 'error'}
                 initialValue={retry.shouldRetry ? retry.data : undefined}
             >
                 <Input addonBefore='e-mail:' size='large' />
