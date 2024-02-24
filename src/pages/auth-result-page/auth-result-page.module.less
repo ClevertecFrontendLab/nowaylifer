@@ -1,0 +1,28 @@
+.Card:global.ant-card {
+    position: relative;
+    z-index: 1;
+    width: 539px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+
+    @media (max-width: 575px) {
+        width: 328px;
+    }
+
+    .ant-card-body {
+        padding: 64px 85.5px;
+
+        @media (max-width: 575px) {
+            padding: 32px 16px;
+        }
+    }
+}
+
+.Result:global.ant-result {
+    padding: 0;
+
+    .ant-result-title {
+        font-weight: 500;
+        line-height: 130%;
+        color: var(--character-light-title-85);
+    }
+}

@@ -1,14 +1,23 @@
-import React from 'react';
+import { HistoryRouter as Router } from 'redux-first-history/rr6';
+import { history, persistor, store } from '@redux/configure-store';
+import { PersistGate } from 'redux-persist/integration/react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { ConfigProvider } from 'antd';
+import React from 'react';
 
-import { store } from '@redux/configure-store';
-import { MainPage } from './pages';
+import { routes } from './router/routes';
 
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.variable.min.css';
 import 'normalize.css';
 import './index.less';
+
+ConfigProvider.config({
+    theme: {
+        primaryColor: '#2f54eb',
+        infoColor: '#2f54eb',
+    },
+});
 
 const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
@@ -16,11 +25,9 @@ const root = createRoot(domNode);
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <HashRouter>
-                <Routes>
-                    <Route path='/' element={<MainPage />} />
-                </Routes>
-            </HashRouter>
+            <PersistGate persistor={persistor}>
+                <Router history={history}>{routes}</Router>
+            </PersistGate>
         </Provider>
     </React.StrictMode>,
 );

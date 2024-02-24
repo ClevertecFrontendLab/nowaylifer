@@ -1,0 +1,47 @@
+.AuthCard:global.ant-card {
+    position: relative;
+    z-index: 1;
+    max-width: 539px;
+    width: 100%;
+    display: flex;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    margin-inline: 32px;
+
+    &:after {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        background-color: var(--auth-backdrop-color);
+        pointer-events: none;
+        content: '';
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+    &:local(.Blur) {
+        --filter-transition-duration: 0.15s;
+        filter: var(--auth-backdrop-filter);
+        transition: filter var(--filter-transition-duration);
+
+        &:after {
+            opacity: 1;
+            transition: opacity var(--filter-transition-duration);
+        }
+    }
+
+    @media (max-width: 500px) {
+        margin-inline: 16px;
+    }
+
+    .ant-card-body {
+        flex: 1;
+        padding: 64px 85.5px;
+
+        @media (max-width: 575px) {
+            padding: 32px 64px;
+        }
+
+        @media (max-width: 500px) {
+            padding-inline: 16px;
+        }
+    }
+}

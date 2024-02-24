@@ -1,0 +1,60 @@
+.Card:global.ant-card {
+    .ant-card-body {
+        @media (min-width: 576px) {
+            padding-bottom: 56px !important;
+        }
+
+        @media (max-width: 576px) {
+            padding-inline: 16px !important;
+        }
+    }
+}
+
+.Result:global.ant-result {
+    padding: 0;
+    margin-bottom: 24px;
+
+    .ant-result-title {
+        font-weight: 500;
+        color: var(--character-light-title-85);
+        line-height: 130%;
+    }
+}
+
+.InputOTP:global.ant-input {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--character-light-title-85);
+
+    &.vi__character--selected {
+        border-color: var(--ant-primary-5);
+        box-shadow: 0 0 0 2px var(--ant-primary-color-outline);
+        outline: 0;
+
+        &.ant-input-status-error {
+            border-color: var(--ant-error-color-hover);
+            box-shadow: 0 0 0 2px var(--ant-error-color-outline);
+        }
+    }
+}
+
+.WrapperOTP {
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 24px;
+    margin-inline: auto;
+}
+
+.Para {
+    color: rgba(0, 0, 0, 0.45);
+    text-align: center;
+}
+
+.Email {
+    font-weight: 700;
+}
