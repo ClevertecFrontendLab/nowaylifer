@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Location } from 'react-router-dom';
 import { REHYDRATE } from 'redux-persist';
-import type { UserCredentials } from 'src/types';
+import type { ChangePasswordPayload, UserCredentials } from 'src/types';
 import { _untypedMutationRetried, cleanMutationRetry } from './actions';
 import { sliceName } from './config';
 
@@ -14,7 +14,7 @@ export type AuthSliceState = {
     authFrom: Location | null;
     retryRegister: RetryField<UserCredentials>;
     retryCheckEmail: RetryField<UserCredentials['email']>;
-    retryChangePassword: RetryField<UserCredentials['password']>;
+    retryChangePassword: RetryField<ChangePasswordPayload>;
     emailToConfirm: string | null;
 };
 

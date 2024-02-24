@@ -5,7 +5,7 @@
         margin-top: 24px;
     }
 
-    .ant-form-item {
+    .ant-form-item:not(:nth-child(2)) {
         margin-bottom: 32px;
     }
 
@@ -21,16 +21,6 @@
 .Btn:global.ant-btn {
     @media (max-width: 575px) {
         font-size: 14px;
-    }
-}
-
-.Pwd:global.ant-form-item {
-    .Form & {
-        margin-bottom: 16px;
-    }
-
-    .ant-form-item-extra {
-        font-size: 12px;
     }
 }
 

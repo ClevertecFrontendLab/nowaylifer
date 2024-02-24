@@ -2,9 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import { Tabs } from 'antd';
 import { Logo } from '@components/logo';
 import { Path } from '@router/paths';
-import { RegisterForm } from '../register-form';
-import { LoginForm } from '../login-form';
-import { AuthCard } from '../auth-card';
+import { RegisterForm } from './register-form';
+import { LoginForm } from './login-form';
+import { AuthCard } from '../ui/auth-card';
 import styles from './auth-form.module.less';
 
 export type AuthTab = (typeof AuthTab)[keyof typeof AuthTab];

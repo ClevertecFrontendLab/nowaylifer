@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryBackend } from '@redux/base-query-backend';
-import type { LoginResponse, UserCredentials } from 'src/types';
+import type { ChangePasswordPayload, LoginResponse, UserCredentials } from 'src/types';
 import { sliceName } from '.';
 
 export const authApi = createApi({
@@ -31,10 +31,7 @@ export const authApi = createApi({
                 body: arg,
             }),
         }),
-        changePassword: builder.mutation<
-            { message: string },
-            { password: UserCredentials['password']; confirmPassword: UserCredentials['password'] }
-        >({
+        changePassword: builder.mutation<{ message: string }, ChangePasswordPayload>({
             query: (arg) => ({
                 url: '/change-password',
                 body: arg,

@@ -26,7 +26,7 @@ const isRedirectFromAuthResult = (resultStatus: ResultStatus) => (action: Unknow
     return false;
 };
 
-const redirectAndWaitForComeback = createThunk(({ dispatch }, to: ResultStatus) => {
+const redirectAndWaitForReturn = createThunk(({ dispatch }, to: ResultStatus) => {
     dispatch(redirectToAuthResult(to));
     return isRedirectFromAuthResult(to);
 });
@@ -63,7 +63,7 @@ startAppListening({
 startAppListening({
     matcher: authApi.endpoints.login.matchRejected,
     effect: async (_, { dispatch, condition }) => {
-        await condition(dispatch(redirectAndWaitForComeback('error-login')));
+        await condition(dispatch(redirectAndWaitForReturn('error-login')));
         dispatch(replace(Path.Login));
     },
 });
@@ -75,7 +75,7 @@ startAppListening({
 startAppListening({
     matcher: authApi.endpoints.register.matchFulfilled,
     effect: async (_, { dispatch, condition }) => {
-        await condition(dispatch(redirectAndWaitForComeback('success')));
+        await condition(dispatch(redirectAndWaitForReturn('success')));
         dispatch(replace(Path.Login));
         dispatch(cleanMutationRetry('register'));
     },
@@ -87,12 +87,12 @@ startAppListening({
         dispatch(cleanMutationRetry('register'));
 
         if (isUserNotExistError(payload)) {
-            await condition(dispatch(redirectAndWaitForComeback('error-user-exist')));
+            await condition(dispatch(redirectAndWaitForReturn('error-user-exist')));
             dispatch(dispatch(replace(Path.Register)));
             return;
         }
 
-        await condition(dispatch(redirectAndWaitForComeback('error')));
+        await condition(dispatch(redirectAndWaitForReturn('error')));
 
         const credentials = meta.arg.originalArgs;
         dispatch(mutationRetried('register', credentials));
@@ -120,12 +120,12 @@ startAppListening({
         dispatch(cleanMutationRetry('checkEmail'));
 
         if (isEmailNotExistError(payload)) {
-            await condition(dispatch(redirectAndWaitForComeback('error-check-email-no-exist')));
+            await condition(dispatch(redirectAndWaitForReturn('error-check-email-no-exist')));
             dispatch(replace(Path.Login));
             return;
         }
 
-        await condition(dispatch(redirectAndWaitForComeback('error-check-email')));
+        await condition(dispatch(redirectAndWaitForReturn('error-check-email')));
 
         const email = meta.arg.originalArgs;
         dispatch(mutationRetried('checkEmail', email));
@@ -136,6 +136,25 @@ startAppListening({
 startAppListening({
     matcher: authApi.endpoints.confirmEmail.matchFulfilled,
     effect: (_, { dispatch, getState }) => {
-        dispatch(push(Path.ChangePassword, { from: getState().router.location }));
+        dispatch(replace(Path.ChangePassword, { from: getState().router.location }));
+    },
+});
+
+startAppListening({
+    matcher: authApi.endpoints.changePassword.matchFulfilled,
+    effect: async (_, { dispatch, condition }) => {
+        await condition(dispatch(redirectAndWaitForReturn('success-change-password')));
+        dispatch(replace(Path.Login));
+        dispatch(cleanMutationRetry('changePassword'));
+    },
+});
+
+startAppListening({
+    matcher: authApi.endpoints.changePassword.matchRejected,
+    effect: async ({ meta }, { dispatch, condition, getState }) => {
+        await condition(dispatch(redirectAndWaitForReturn('error-change-password')));
+        const changePasswordPayload = meta.arg.originalArgs;
+        dispatch(mutationRetried('changePassword', changePasswordPayload));
+        dispatch(replace(Path.ChangePassword, { from: getState().router.location }));
     },
 });

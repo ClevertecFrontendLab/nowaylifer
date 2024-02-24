@@ -6,12 +6,11 @@ import styles from './password-form-item.module.less';
 
 type ValidateStatus = ReturnType<typeof Form.Item.useStatus>['status'];
 
-const PasswordInput = ({
-    onValidate,
-    ...props
-}: {
+type PasswordInputProps = InputProps & {
     onValidate?: (status?: ValidateStatus) => void;
-} & InputProps) => {
+};
+
+const PasswordInput = ({ onValidate, ...props }: PasswordInputProps) => {
     const { status } = Form.Item.useStatus();
 
     useEffect(() => {

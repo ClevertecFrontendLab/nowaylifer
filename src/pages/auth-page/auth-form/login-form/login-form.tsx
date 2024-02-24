@@ -1,7 +1,7 @@
 import { Form, Input, Button, Checkbox } from 'antd';
 import styles from './login-form.module.less';
 import { GooglePlusOutlined } from '@ant-design/icons';
-import { email, password, required } from '../validation-rules';
+import { email, password, required } from '../../validation-rules';
 import { useCheckEmailMutation, useLoginMutation, useRetryMutation } from '@redux/auth';
 import type { UserCredentials } from 'src/types';
 import { useState, memo } from 'react';
@@ -23,10 +23,6 @@ export const LoginForm = memo(function LoginForm() {
 
     useRetryMutation(checkEmail, retry);
 
-    const handleFinish = ({ email, password, remember }: FormValues) => {
-        login({ email, password, remember });
-    };
-
     const handleResetPassword = () => {
         checkEmail(form.getFieldValue('email'));
     };
@@ -35,7 +31,7 @@ export const LoginForm = memo(function LoginForm() {
         <Form
             className={styles.Form}
             form={form}
-            onFinish={handleFinish}
+            onFinish={login}
             onFieldsChange={() =>
                 setEmailValid(
                     form.isFieldTouched('email') && form.getFieldError('email').length === 0,

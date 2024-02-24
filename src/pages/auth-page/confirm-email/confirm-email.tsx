@@ -1,7 +1,7 @@
 import styles from './confirm-email.module.less';
 import { Result } from 'antd';
 import { useConfirmEmailMutation } from '@redux/auth';
-import { AuthCard } from '../auth-card';
+import { AuthCard } from '../ui/auth-card';
 import OtpInput from 'react-otp-input';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { useEffect, useRef, useState } from 'react';

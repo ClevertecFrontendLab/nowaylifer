@@ -2,4 +2,4 @@ type Concat<T extends string[]> = T extends [infer F extends string, ...infer R 
     ? `${F}${Concat<R>}`
     : '';
 
-export const concat = <T extends string[]>(...strings: T) => strings.join() as Concat<T>;
+export const concat = <T extends string[]>(...strings: T) => strings.join('') as Concat<T>;

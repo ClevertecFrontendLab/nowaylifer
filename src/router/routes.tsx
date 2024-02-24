@@ -6,6 +6,9 @@ import { RequireAuth, RequireNoAuth, RequireRedirect } from './route-guards';
 import { AuthResultPage } from '@pages/auth-result-page/auth-result-page';
 import { AuthForm } from '@pages/auth-page';
 import { ConfirmEmail } from '@pages/auth-page/confirm-email';
+import { ChangePassword } from '@pages/auth-page/change-password';
+
+const loginOrResult = new RegExp(`(${Path.Login})|(${Path.Result})`);
 
 export const routes = (
     <Routes>
@@ -17,12 +20,10 @@ export const routes = (
                 <Route path={Path.Register} element={<AuthForm type='register' />} />
             </Route>
 
-            <Route
-                element={<RequireRedirect from={new RegExp(Path.Login)} redirectTo={Path.Login} />}
-            >
+            <Route element={<RequireRedirect from={loginOrResult} redirectTo={Path.Login} />}>
                 <Route path={Path.Result + '/:status'} element={<AuthResultPage />} />
                 <Route path={Path.ConfirmEmail} element={<ConfirmEmail />} />
-                <Route path={Path.ChangePassword} />
+                <Route path={Path.ChangePassword} element={<ChangePassword />} />
             </Route>
         </Route>
 

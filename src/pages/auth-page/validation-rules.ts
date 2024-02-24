@@ -7,8 +7,8 @@ export const password: Rule = {
     message: '',
 };
 
-export const confirmPassword: (name: string) => RuleRender =
-    (name) =>
+export const confirmPassword: (name?: string) => RuleRender =
+    (name = 'password') =>
     ({ getFieldValue }) => ({
         validator(_, value) {
             if (!value || getFieldValue(name) === value) {

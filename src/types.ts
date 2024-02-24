@@ -3,6 +3,11 @@ export type UserCredentials = {
     password: string;
 };
 
+export type ChangePasswordPayload = {
+    password: UserCredentials['password'];
+    confirmPassword: UserCredentials['password'];
+};
+
 export type LoginResponse = {
     accessToken: string;
 };

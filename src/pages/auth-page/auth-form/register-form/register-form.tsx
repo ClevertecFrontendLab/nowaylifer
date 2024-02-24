@@ -1,8 +1,8 @@
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { Form, Input, Button } from 'antd';
 import { memo } from 'react';
-import { confirmPassword, email, required } from '../validation-rules';
-import { PasswordFormItem } from './password-form-item';
+import { confirmPassword, email, required } from '../../validation-rules';
+import { PasswordFormItem } from '@pages/auth-page/ui/password-form-item';
 import { useRegisterMutation, useRetryMutation } from '@redux/auth';
 import type { UserCredentials } from 'src/types';
 import styles from './register-form.module.less';
@@ -29,25 +29,19 @@ export const RegisterForm = memo(function RegisterForm() {
             className={styles.Form}
             form={form}
             onFinish={handleFinish}
-            {...(retry.shouldRetry && {
-                initialValues: {
-                    email: retry.data.email,
-                    password: retry.data.password,
-                    confirmPassword: retry.data.password,
-                },
-            })}
+            initialValues={retry.shouldRetry ? retry.data : undefined}
         >
             <Form.Item name='email' rules={[required, email]}>
                 <Input addonBefore='e-mail:' size='large' />
             </Form.Item>
 
-            <PasswordFormItem name='password' className={styles.Pwd} />
+            <PasswordFormItem name='password' />
 
             <Form.Item
                 className={styles.ConfirmPwd}
                 name='confirmPassword'
                 dependencies={['password']}
-                rules={[required, confirmPassword('password')]}
+                rules={[required, confirmPassword()]}
             >
                 <Input.Password size='large' placeholder='Повторите пароль' />
             </Form.Item>
