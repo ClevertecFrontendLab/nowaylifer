@@ -22,15 +22,24 @@
 }
 
 .InputOTP:global.ant-input {
+    width: 40px;
+    height: 40px;
     font-size: 14px;
     font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--character-light-title-85);
 
-    -moz-appearance: textfield;
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
+    &.vi__character--selected {
+        border-color: var(--ant-primary-5);
+        box-shadow: 0 0 0 2px var(--ant-primary-color-outline);
+        outline: 0;
+
+        &.ant-input-status-error {
+            border-color: var(--ant-error-color-hover);
+            box-shadow: 0 0 0 2px var(--ant-error-color-outline);
+        }
     }
 }
 
@@ -38,6 +47,7 @@
     gap: 12px;
     justify-content: center;
     margin-bottom: 24px;
+    margin-inline: auto;
 }
 
 .Para {

@@ -12,6 +12,8 @@ export const Loader = ({ options, ...rest }: LoaderProps) => {
         ...options,
     };
     return (
-        <Lottie options={defaultOptions} width={150} height={150} {...rest} data-test-id='loader' />
+        <div data-test-id='loader'>
+            <Lottie options={defaultOptions} width={150} height={150} {...rest} />
+        </div>
     );
 };

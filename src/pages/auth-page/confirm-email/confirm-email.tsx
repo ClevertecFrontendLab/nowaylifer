@@ -2,32 +2,28 @@ import styles from './confirm-email.module.less';
 import { Result } from 'antd';
 import { useConfirmEmailMutation } from '@redux/auth';
 import { AuthCard } from '../ui/auth-card';
-import OtpInput from 'react-otp-input';
+import VerificationInput from 'react-verification-input';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import invariant from 'invariant';
 
-const OTP_LENGTH = 6;
-
 export const ConfirmEmail = () => {
-    const [confirmEmail, { isError }] = useConfirmEmailMutation();
     const email = useAppSelector((state) => state.auth.emailToConfirm);
+    const [confirmEmail, { isError }] = useConfirmEmailMutation();
     const [otp, setOtp] = useState('');
     const errorRef = useRef(isError);
 
     invariant(email, 'Email is undefined');
 
-    useEffect(() => {
-        if (isError) setOtp('');
-        errorRef.current = isError;
-    }, [isError]);
+    const handleComplete = (otp: string) => {
+        setOtp('');
+        confirmEmail({ email, code: otp });
+    };
 
     useEffect(() => {
-        if (otp.length === OTP_LENGTH) {
-            confirmEmail({ email, code: otp });
-        }
-    }, [otp, confirmEmail, email]);
+        errorRef.current = isError;
+    }, [isError]);
 
     return (
         <AuthCard className={styles.Card}>
@@ -47,25 +43,21 @@ export const ConfirmEmail = () => {
                     </div>
                 }
             />
-            <OtpInput
+            <VerificationInput
+                placeholder=''
+                validChars='0-9'
                 value={otp}
                 onChange={setOtp}
-                onPaste={(event) => setOtp(event.clipboardData.getData('text'))}
-                numInputs={OTP_LENGTH}
-                inputType='number'
-                containerStyle={styles.WrapperOTP}
-                inputStyle={cn(
-                    'ant-input',
-                    errorRef.current && 'ant-input-status-error',
-                    styles.InputOTP,
-                )}
-                renderInput={(props) => (
-                    <input
-                        {...props}
-                        style={{ ...props.style, width: 40, height: 40 }}
-                        data-test-id='verification-input'
-                    />
-                )}
+                onComplete={handleComplete}
+                inputProps={{ 'data-test-id': 'verification-input' }}
+                classNames={{
+                    container: styles.WrapperOTP,
+                    character: cn(
+                        'ant-input',
+                        errorRef.current && 'ant-input-status-error',
+                        styles.InputOTP,
+                    ),
+                }}
             />
             <p className={styles.Para}>Не пришло письмо? Проверьте папку Спам.</p>
         </AuthCard>

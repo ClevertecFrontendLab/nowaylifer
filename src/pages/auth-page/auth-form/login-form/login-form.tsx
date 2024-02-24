@@ -65,7 +65,7 @@ export const LoginForm = memo(function LoginForm() {
                     type='link'
                     disabled={!emailValid}
                     onClick={handleResetPassword}
-                    data-test-id='login-remember'
+                    data-test-id='login-forgot-button'
                 >
                     Забыли пароль?
                 </Button>
