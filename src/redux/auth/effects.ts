@@ -3,7 +3,7 @@ import { startAppListening } from '@redux/listener-middleware';
 import { Path } from '@router/paths';
 import { setAuthFrom, setToken, setAuthLoading, setEmailToConfirm } from './slice';
 import { authApi } from './api';
-import type { ResultStatus } from 'src/types';
+import type { ResultStatus } from './types';
 import { isEmailNotExistError, isUserNotExistError } from './type-guards';
 import { isFulfilled, isPending, isRejected, type UnknownAction } from '@reduxjs/toolkit';
 import { createThunk } from '@redux/create-thunk';

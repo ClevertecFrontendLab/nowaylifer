@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Location } from 'react-router-dom';
 import { REHYDRATE } from 'redux-persist';
-import type { ChangePasswordPayload, UserCredentials } from 'src/types';
+import type { ChangePasswordPayload, UserCredentials } from './types';
 import { _untypedMutationRetried, cleanMutationRetry } from './actions';
 import { sliceName } from './config';
 

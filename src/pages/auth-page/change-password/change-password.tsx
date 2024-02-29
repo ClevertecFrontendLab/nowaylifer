@@ -1,11 +1,10 @@
+import { useAppSelector } from '@hooks/typed-react-redux-hooks';
+import { ChangePasswordPayload, useChangePasswordMutation, useRetryMutation } from '@redux/auth';
 import { Button, Form, Input } from 'antd';
 import { AuthCard } from '../ui/auth-card';
-import type { ChangePasswordPayload } from 'src/types';
-import { confirmPassword, required } from '../validation-rules';
 import { PasswordFormItem } from '../ui/password-form-item';
+import { confirmPassword, required } from '../validation-rules';
 import styles from './change-password.module.less';
-import { useChangePasswordMutation, useRetryMutation } from '@redux/auth';
-import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 
 export const ChangePassword = () => {
     const [form] = Form.useForm<ChangePasswordPayload>();

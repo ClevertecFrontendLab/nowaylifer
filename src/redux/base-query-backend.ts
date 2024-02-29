@@ -32,7 +32,7 @@ export const baseQueryBackend = ({
     prefixUrl = '',
     method = 'GET',
     minDelay,
-}: BaseQueryBackendOptions) =>
+}: BaseQueryBackendOptions = {}) =>
     withMinDelay(
         fetchBaseQuery({
             baseUrl: import.meta.env.VITE_BACKEND_URL + prefixUrl,

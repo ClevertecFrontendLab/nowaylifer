@@ -1,14 +1,13 @@
 import { GooglePlusOutlined } from '@ant-design/icons';
-import { Form, Input, Button } from 'antd';
+import { useAppSelector } from '@hooks/typed-react-redux-hooks';
+import { useXs } from '@hooks/use-breakpoint';
+import { PasswordFormItem } from '@pages/auth-page/ui/password-form-item';
+import { UserCredentials, useRegisterMutation, useRetryMutation } from '@redux/auth';
+import { Button, Form, Input } from 'antd';
+import cn from 'classnames';
 import { memo } from 'react';
 import { confirmPassword, email, required } from '../../validation-rules';
-import { PasswordFormItem } from '@pages/auth-page/ui/password-form-item';
-import { useRegisterMutation, useRetryMutation } from '@redux/auth';
-import type { UserCredentials } from 'src/types';
 import styles from './register-form.module.less';
-import { useAppSelector } from '@hooks/typed-react-redux-hooks';
-import cn from 'classnames';
-import { useXs } from '@hooks/use-breakpoint';
 
 type FormValues = UserCredentials & { confirmPassword: string };
 

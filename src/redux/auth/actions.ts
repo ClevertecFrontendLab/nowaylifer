@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { capitalize } from '@utils/capitalize';
 import { setToken, type AuthSliceState } from '.';
-import type { ResultStatus } from 'src/types';
+import type { ResultStatus } from './types';
 import { concat } from '@utils/concat';
 import { sliceName } from './config';
 import { createThunk } from '@redux/create-thunk';
