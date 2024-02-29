@@ -7,6 +7,7 @@ import { AuthResultPage } from '@pages/auth-result-page/auth-result-page';
 import { AuthForm } from '@pages/auth-page';
 import { ConfirmEmail } from '@pages/auth-page/confirm-email';
 import { ChangePassword } from '@pages/auth-page/change-password';
+import { MainLayout } from '@components/main-layout';
 
 const loginOrResult = new RegExp(`(${Path.Login})|(${Path.Result})`);
 
@@ -28,7 +29,9 @@ export const routes = (
         </Route>
 
         <Route element={<RequireAuth redirectTo={Path.Login} />}>
-            <Route path={Path.Main} element={<MainPage />} />
+            <Route element={<MainLayout />}>
+                <Route path={Path.Main} element={<MainPage />} />
+            </Route>
         </Route>
     </Routes>
 );
