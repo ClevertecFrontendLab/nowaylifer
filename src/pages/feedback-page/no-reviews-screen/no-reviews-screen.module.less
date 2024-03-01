@@ -10,10 +10,12 @@
     max-width: 521px;
     text-align: center;
     margin: 0 auto;
+    color: var(--character-light-secondary-45);
 }
 
 .NoReviewsCard:global.ant-card {
     margin-bottom: 48px;
+    align-self: stretch;
 
     .ant-card-body {
         padding-block: 56px;
@@ -30,6 +32,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    @media (max-width: 448px) {
+        justify-content: start;
+    }
 }
 
 .Button:global.ant-btn {
