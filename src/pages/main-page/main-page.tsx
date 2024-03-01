@@ -1,13 +1,12 @@
-import { Layout } from 'antd';
+import { PageLayout } from '@components/page-layout';
 import { Footer } from './footer';
 import { Header } from './header';
 import { Main } from './main';
-import styles from './main-page.module.less';
 
 export const MainPage = () => (
-    <Layout className={styles.MainLayout}>
+    <PageLayout>
         <Header />
         <Main />
         <Footer />
-    </Layout>
+    </PageLayout>
 );

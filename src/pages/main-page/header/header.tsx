@@ -1,12 +1,12 @@
-import { Layout, Typography, Breadcrumb } from 'antd';
-import { SettingsButton } from './settings-button';
+import { Breadcrumbs } from '@components/breadcrumbs';
+import { PageHeader } from '@components/page-header';
+import { Typography } from 'antd';
 import styles from './header.module.less';
+import { SettingsButton } from './settings-button';
 
 export const Header = () => (
-    <Layout.Header className={styles.Header}>
-        <Breadcrumb className={styles.Breadcrumb}>
-            <Breadcrumb.Item>Главная</Breadcrumb.Item>
-        </Breadcrumb>
+    <PageHeader>
+        <Breadcrumbs className={styles.Breadcrumb} />
         <div className={styles.TitleWrap}>
             <Typography.Title className={styles.Title}>
                 Приветствуем тебя в CleverFit — приложении,
@@ -14,5 +14,5 @@ export const Header = () => (
             </Typography.Title>
             <SettingsButton />
         </div>
-    </Layout.Header>
+    </PageHeader>
 );

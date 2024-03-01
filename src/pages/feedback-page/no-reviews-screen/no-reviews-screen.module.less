@@ -1,0 +1,39 @@
+.Heading {
+    margin-bottom: 48px;
+    font-weight: 500;
+    font-size: 24px;
+    text-align: center;
+    color: var(--theme-primary-light-9);
+}
+
+.Para:global.ant-typography {
+    max-width: 521px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.NoReviewsCard:global.ant-card {
+    margin-bottom: 48px;
+
+    .ant-card-body {
+        padding-block: 56px;
+
+        @media (max-width: 575px) {
+            padding-block: 48px;
+        }
+    }
+}
+
+.Wrap {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Button:global.ant-btn {
+    @media (max-width: 448px) {
+        width: 100%;
+    }
+}
