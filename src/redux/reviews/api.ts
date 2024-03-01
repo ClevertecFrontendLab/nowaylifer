@@ -7,9 +7,7 @@ export const reviewsApi = createApi({
     baseQuery: baseQueryBackend({ minDelay: 1000 }),
     endpoints: (builder) => ({
         fetchAllReviews: builder.query<Review[], void>({
-            query: () => ({
-                url: '/feedback',
-            }),
+            query: () => '/feedback',
         }),
         createReview: builder.mutation({
             query: () => ({
