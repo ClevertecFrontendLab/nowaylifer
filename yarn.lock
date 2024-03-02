@@ -1162,6 +1162,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-window@^1.8.8":
+  version "1.8.8"
+  resolved "https://registry.yarnpkg.com/@types/react-window/-/react-window-1.8.8.tgz#c20645414d142364fbe735818e1c1e0a145696e3"
+  integrity sha512-8Ls660bHR1AUA2kuRvVG9D/4XpRC6wjAaPT9dil7Ckc76eP9TKWZwwmgfq8Q1LANX3QNDnoU4Zp48A3w+zK69Q==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^18.2.42":
   version "18.2.43"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.43.tgz#c58e5abe241e6f71f60ce30e2a9aceb9d3a2a374"
@@ -5837,6 +5844,11 @@ react-verification-input@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/react-verification-input/-/react-verification-input-4.1.0.tgz#241f954d0ef376020844fe5c3b679061048a220c"
   integrity sha512-RUYJjy2ZM9eMbWATIPNzrCfrxbp8vWNiTOFajxHx/DEK5AWMLAVpaQbhBMb68e13T91uGGragvL9LMAUOh2GrA==
+
+react-virtuoso@^4.7.1:
+  version "4.7.1"
+  resolved "https://registry.yarnpkg.com/react-virtuoso/-/react-virtuoso-4.7.1.tgz#a86dc0336e85f63ebcfc960bec1a83bca1bc75a4"
+  integrity sha512-V1JIZLEwgX7R+YNkbY8dq6NcnIGKGWXe4mnMJJPsA2L4qeFKst0LY3mDk6sBCJyKRbMzYFxTZWyTT4QsA1JvVQ==
 
 react@^18.2.0:
   version "18.2.0"
