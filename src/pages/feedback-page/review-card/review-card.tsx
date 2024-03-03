@@ -2,7 +2,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { Card } from '@components/card';
 import { Review } from '@redux/reviews';
 import { Avatar, Typography } from 'antd';
-import { Rating } from './rating';
+import { Rate } from '../rate';
 import styles from './review-card.module.less';
 
 type ReviewCardProps = {
@@ -25,7 +25,7 @@ export const ReviewCard = ({ review }: ReviewCardProps) => (
         </div>
         <div className={styles.Content}>
             <div className={styles.RateWrap}>
-                <Rating disabled value={review.rating} />
+                <Rate disabled value={review.rating} />
                 <Typography.Text type='secondary' style={{ fontSize: 12 }}>
                     {formatISODate(review.createdAt)}
                 </Typography.Text>

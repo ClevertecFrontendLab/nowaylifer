@@ -1,22 +1,20 @@
 import { Review } from '@redux/reviews';
 import { Button } from 'antd';
 import cn from 'classnames';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import { ReviewCard } from '../review-card';
 import styles from './reviews-screen.module.less';
-
-const MAX_REVIEWS = 4;
 
 type PropsWithReviews = {
     reviews: Review[];
 };
 
-const ListRow = ({ review }: { review: Review }) => (
+const ListRow = memo(({ review }: { review: Review }) => (
     <div className={styles.Row}>
         <ReviewCard review={review} />
     </div>
-);
+));
 
 const SimpleList = ({ reviews }: PropsWithReviews) => (
     <div className={styles.ListContainer}>
@@ -27,12 +25,22 @@ const SimpleList = ({ reviews }: PropsWithReviews) => (
 );
 
 const VirtualList = ({ reviews }: PropsWithReviews) => (
-    <Virtuoso data={reviews} itemContent={(_, review) => <ListRow review={review} />} />
+    <Virtuoso
+        totalCount={reviews.length}
+        itemContent={(idx) => <ListRow review={reviews[reviews.length - 1 - idx]} />}
+    />
 );
 
-export const ReviewsScreen = ({ reviews }: PropsWithReviews) => {
+type ReviewsScreenProps = PropsWithReviews & {
+    onAddReview: () => void;
+};
+
+export const ReviewsScreen = memo(function ReviewsScreen({
+    reviews,
+    onAddReview,
+}: ReviewsScreenProps) {
     const [showAll, setShowAll] = useState(false);
-    const visibleReviews = showAll ? reviews : reviews.slice(0, MAX_REVIEWS);
+    const visibleReviews = showAll ? reviews : reviews.slice(-4).reverse();
     const List = showAll ? VirtualList : SimpleList;
 
     return (
@@ -41,7 +49,7 @@ export const ReviewsScreen = ({ reviews }: PropsWithReviews) => {
                 <List reviews={visibleReviews} />
             </div>
             <div className={styles.ButtonsWrap}>
-                <Button type='primary' size='large'>
+                <Button type='primary' size='large' onClick={onAddReview}>
                     Написать отзыв
                 </Button>
                 <Button
@@ -55,4 +63,4 @@ export const ReviewsScreen = ({ reviews }: PropsWithReviews) => {
             </div>
         </div>
     );
-};
+});

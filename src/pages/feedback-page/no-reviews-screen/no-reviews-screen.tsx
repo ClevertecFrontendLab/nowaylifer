@@ -2,7 +2,7 @@ import { Card } from '@components/card';
 import { Button, Typography } from 'antd';
 import styles from './no-reviews-screen.module.less';
 
-export const NoReviewsScreen = () => (
+export const NoReviewsScreen = ({ onAddReview }: { onAddReview: () => void }) => (
     <div className={styles.Wrap}>
         <Card className={styles.NoReviewsCard}>
             <h3 className={styles.Heading}>Оставтье свой отзыв первым</h3>
@@ -12,7 +12,7 @@ export const NoReviewsScreen = () => (
                 выбор.
             </Typography.Paragraph>
         </Card>
-        <Button type='primary' size='large' className={styles.Button}>
+        <Button type='primary' size='large' className={styles.Button} onClick={onAddReview}>
             Написать отзыв
         </Button>
     </div>

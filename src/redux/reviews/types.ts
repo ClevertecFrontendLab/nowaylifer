@@ -6,3 +6,8 @@ export type Review = {
     rating: number;
     createdAt: string;
 };
+
+export type CreateReviewDTO = {
+    rating: number;
+    message?: string;
+};

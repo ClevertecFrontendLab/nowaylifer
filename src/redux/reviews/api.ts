@@ -1,21 +1,25 @@
 import { baseQueryBackend } from '@redux/base-query-backend';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { Review } from './types';
+import { CreateReviewDTO, Review } from './types';
 
 export const reviewsApi = createApi({
     reducerPath: 'reviewsApi',
     baseQuery: baseQueryBackend({ minDelay: 1000 }),
+    tagTypes: ['Review'],
     endpoints: (builder) => ({
         fetchAllReviews: builder.query<Review[], void>({
             query: () => '/feedback',
+            providesTags: ['Review'],
         }),
-        createReview: builder.mutation({
-            query: () => ({
+        addReview: builder.mutation<void, CreateReviewDTO>({
+            query: (dto) => ({
                 url: '/feedback',
                 method: 'POST',
+                body: dto,
             }),
+            invalidatesTags: ['Review'],
         }),
     }),
 });
 
-export const { useFetchAllReviewsQuery, useCreateReviewMutation } = reviewsApi;
+export const { useFetchAllReviewsQuery, useAddReviewMutation } = reviewsApi;
