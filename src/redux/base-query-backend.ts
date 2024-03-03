@@ -1,10 +1,11 @@
-import type { QueryReturnValue } from 'node_modules/@reduxjs/toolkit/dist/query/baseQueryTypes';
+import { BACKEND_URL } from '@constants/config';
 import { fetchBaseQuery, type BaseQueryEnhancer } from '@reduxjs/toolkit/query';
-import type { RootState } from './configure-store';
-import { waitFor } from '@utils/waitFor';
-import { setToken } from './auth';
 import { Path } from '@router/paths';
+import { waitFor } from '@utils/waitFor';
+import type { QueryReturnValue } from 'node_modules/@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { replace } from 'redux-first-history';
+import { setToken } from './auth';
+import type { RootState } from './configure-store';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyQueryReturn = QueryReturnValue<any, any, any>;
@@ -53,7 +54,7 @@ export const baseQueryBackend = ({
     withHandleAuthError(
         withMinDelay(
             fetchBaseQuery({
-                baseUrl: import.meta.env.VITE_BACKEND_URL + prefixUrl,
+                baseUrl: BACKEND_URL + prefixUrl,
                 method,
                 credentials: 'include',
                 prepareHeaders: (headers, { getState }) => {

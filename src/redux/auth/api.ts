@@ -1,7 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryBackend } from '@redux/base-query-backend';
-import type { ChangePasswordPayload, LoginResponse, UserCredentials } from './types';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { sliceName } from '.';
+import type { ChangePasswordPayload, LoginResponse, UserCredentials } from './types';
 
 export const authApi = createApi({
     reducerPath: `${sliceName}Api`,

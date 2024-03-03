@@ -1,12 +1,13 @@
-import { createAction } from '@reduxjs/toolkit';
-import { capitalize } from '@utils/capitalize';
-import { setToken, type AuthSliceState } from '.';
-import type { ResultStatus } from './types';
-import { concat } from '@utils/concat';
-import { sliceName } from './config';
+import { BACKEND_URL } from '@constants/config';
 import { createThunk } from '@redux/create-thunk';
+import { createAction } from '@reduxjs/toolkit';
 import { Path } from '@router/paths';
+import { capitalize } from '@utils/capitalize';
+import { concat } from '@utils/concat';
 import { replace } from 'redux-first-history';
+import { setRememberGoogleAuth, setToken, type AuthSliceState } from '.';
+import { sliceName } from './config';
+import type { ResultStatus } from './types';
 
 type RetryFieldUnion = {
     [K in keyof AuthSliceState]: K extends `retry${string}` ? K : never;
@@ -45,4 +46,9 @@ export const redirectFromAuthResult = createAction<ResultStatus>(
 export const logout = createThunk(({ dispatch }) => {
     dispatch(setToken(null));
     dispatch(replace(Path.Login));
+});
+
+export const loginViaGoogle = createThunk(({ dispatch }, remember: boolean) => {
+    dispatch(setRememberGoogleAuth(remember));
+    window.location.href = BACKEND_URL + '/auth/google';
 });

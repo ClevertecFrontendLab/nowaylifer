@@ -9,12 +9,15 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { Path } from './paths';
 import { RequireAuth, RequireNoAuth, RequireRedirect } from './route-guards';
 import { FeedbackPage } from '@pages/feedback-page';
+import { GetGoogleToken } from '@redux/auth';
 
 const loginOrResult = new RegExp(`(${Path.Login})|(${Path.Result})`);
 
 export const routes = (
     <Routes>
-        <Route path={Path.Root} element={<Navigate to={Path.Main} />} />
+        <Route path={Path.Root} element={<GetGoogleToken />}>
+            <Route index element={<Navigate to={Path.Main} />} />
+        </Route>
 
         <Route element={<AuthLayout />}>
             <Route element={<RequireNoAuth redirectTo={Path.Main} />}>
