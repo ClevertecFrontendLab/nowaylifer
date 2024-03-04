@@ -1,5 +1,6 @@
+import { Modal } from '@components/modal';
 import { CreateReviewDTO } from '@redux/reviews';
-import { Form, Input, Modal, ModalProps } from 'antd';
+import { Form, Input, ModalProps } from 'antd';
 import { useState } from 'react';
 import { Rate } from '../rate';
 import styles from './add-review-modal.module.less';
@@ -37,17 +38,17 @@ export const AddReviewModal = ({ open, onCancel, onSubmit }: AddReviewModalProps
             onOk={handleSubmit}
             cancelButtonProps={{ hidden: true }}
             okButtonProps={{ size: 'large', disabled: !formValid, className: styles.OkBtn }}
-            maskStyle={{
-                backdropFilter: 'var(--modal-backdrop-filter)',
-                background: 'var(--modal-backdrop-color)',
-            }}
         >
             <Form form={form}>
                 <Form.Item name='rating' required style={{ marginBottom: 16 }}>
                     <Rate size={24} onChange={handleRateChagne} />
                 </Form.Item>
                 <Form.Item name='message' style={{ marginBottom: 0 }}>
-                    <TextArea autoSize={{ minRows: 2, maxRows: 10 }} />
+                    <TextArea
+                        placeholder='Расскажите, почему Вам понравилось наше приложение'
+                        autoSize={{ minRows: 2, maxRows: 10 }}
+                        className={styles.TextArea}
+                    />
                 </Form.Item>
             </Form>
         </Modal>

@@ -17,7 +17,7 @@ export const reviewsApi = createApi({
                 method: 'POST',
                 body: dto,
             }),
-            invalidatesTags: ['Review'],
+            invalidatesTags: (_arg, error) => (error ? [] : ['Review']),
         }),
     }),
 });
