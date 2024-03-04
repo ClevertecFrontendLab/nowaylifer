@@ -12,7 +12,13 @@ export const NoReviewsScreen = ({ onAddReview }: { onAddReview: () => void }) =>
                 выбор.
             </Typography.Paragraph>
         </Card>
-        <Button type='primary' size='large' className={styles.Button} onClick={onAddReview}>
+        <Button
+            type='primary'
+            size='large'
+            className={styles.Button}
+            onClick={onAddReview}
+            data-test-id='write-review'
+        >
             Написать отзыв
         </Button>
     </div>

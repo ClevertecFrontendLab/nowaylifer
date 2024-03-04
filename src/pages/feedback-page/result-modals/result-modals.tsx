@@ -46,7 +46,13 @@ export const AddReviewErrorModal = ({
             subTitle: 'Что-то пошло не так. Попробуйте ещё раз.',
             extra: (
                 <div style={{ display: 'flex', gap: 8 }}>
-                    <Button block type='primary' size='large' onClick={onRetry}>
+                    <Button
+                        block
+                        type='primary'
+                        size='large'
+                        onClick={onRetry}
+                        data-test-id='write-review-not-saved-modal'
+                    >
                         Написать отзыв
                     </Button>
                     <Button block size='large' onClick={onCancel}>

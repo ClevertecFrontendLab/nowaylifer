@@ -1,6 +1,6 @@
 import { Modal } from '@components/modal';
 import { CreateReviewDTO } from '@redux/reviews';
-import { Form, Input, ModalProps } from 'antd';
+import { Button, Form, Input, ModalProps } from 'antd';
 import { useState } from 'react';
 import { Rate } from '../rate';
 import styles from './add-review-modal.module.less';
@@ -33,11 +33,19 @@ export const AddReviewModal = ({ open, onCancel, onSubmit }: AddReviewModalProps
             centered
             open={open}
             title='Ваш отзыв'
-            okText='Опубликовать'
             onCancel={onCancel}
-            onOk={handleSubmit}
-            cancelButtonProps={{ hidden: true }}
-            okButtonProps={{ size: 'large', disabled: !formValid, className: styles.OkBtn }}
+            footer={
+                <Button
+                    size='large'
+                    type='primary'
+                    disabled={!formValid}
+                    onClick={handleSubmit}
+                    className={styles.OkBtn}
+                    data-test-id='new-review-submit-button'
+                >
+                    Опубликовать
+                </Button>
+            }
         >
             <Form form={form}>
                 <Form.Item name='rating' required style={{ marginBottom: 16 }}>

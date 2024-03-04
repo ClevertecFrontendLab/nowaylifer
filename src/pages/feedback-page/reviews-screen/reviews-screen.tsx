@@ -49,7 +49,12 @@ export const ReviewsScreen = memo(function ReviewsScreen({
                 <List reviews={visibleReviews} />
             </div>
             <div className={styles.ButtonsWrap}>
-                <Button type='primary' size='large' onClick={onAddReview}>
+                <Button
+                    type='primary'
+                    size='large'
+                    onClick={onAddReview}
+                    data-test-id='write-review'
+                >
                     Написать отзыв
                 </Button>
                 <Button
@@ -57,6 +62,7 @@ export const ReviewsScreen = memo(function ReviewsScreen({
                     size='large'
                     className={styles.ShowAllBtn}
                     onClick={() => setShowAll(!showAll)}
+                    data-test-id='all-reviews-button'
                 >
                     {showAll ? 'Свернуть все отзывы' : 'Развернуть все отзывы'}
                 </Button>
