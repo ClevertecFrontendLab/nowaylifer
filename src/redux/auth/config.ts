@@ -1,5 +1,5 @@
-import storage from 'redux-persist/lib/storage';
 import { PersistConfig as _PersistConfig } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import type { AuthSliceState } from '.';
 
 type PersistConfig<S> = _PersistConfig<S> & {
@@ -12,5 +12,5 @@ export const sliceName = 'auth';
 export const authSlicePersistConfig: PersistConfig<AuthSliceState> = {
     key: sliceName,
     storage,
-    whitelist: ['_persistedToken', 'emailToConfirm'],
+    whitelist: ['_persistedToken', 'emailToConfirm', 'rememberGoogleAuth'],
 };

@@ -1,5 +1,5 @@
+import { ResultStatus } from '@redux/auth';
 import type { ResultStatusType } from 'antd/lib/result';
-import type { ResultStatus } from 'src/types';
 
 export type ResultConfig = {
     status: ResultStatusType;

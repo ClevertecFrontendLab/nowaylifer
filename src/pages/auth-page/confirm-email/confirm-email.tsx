@@ -1,12 +1,12 @@
-import styles from './confirm-email.module.less';
-import { Result } from 'antd';
-import { useConfirmEmailMutation } from '@redux/auth';
-import { AuthCard } from '../ui/auth-card';
-import VerificationInput from 'react-verification-input';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { useEffect, useRef, useState } from 'react';
+import { useConfirmEmailMutation } from '@redux/auth';
+import { Result } from 'antd';
 import cn from 'classnames';
 import invariant from 'invariant';
+import { useEffect, useRef, useState } from 'react';
+import VerificationInput from 'react-verification-input';
+import { AuthCard } from '../ui/auth-card';
+import styles from './confirm-email.module.less';
 
 export const ConfirmEmail = () => {
     const email = useAppSelector((state) => state.auth.emailToConfirm);

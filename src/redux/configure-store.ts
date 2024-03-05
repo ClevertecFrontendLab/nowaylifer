@@ -14,6 +14,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 import { listenerMiddleware } from './listener-middleware';
 import { authSlice, authApi, authSlicePersistConfig } from './auth';
+import { reviewsApi } from './reviews';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
     history: createBrowserHistory(),
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
     router: routerReducer,
     [authSlice.name]: persistReducer(authSlicePersistConfig, authSlice.reducer),
     [authApi.reducerPath]: authApi.reducer,
+    [reviewsApi.reducerPath]: reviewsApi.reducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
@@ -42,7 +44,7 @@ export const store = configureStore({
             },
         })
             .prepend(listenerMiddleware.middleware)
-            .concat(routerMiddleware, authApi.middleware),
+            .concat(routerMiddleware, authApi.middleware, reviewsApi.middleware),
 });
 
 export const persistor = persistStore(store);

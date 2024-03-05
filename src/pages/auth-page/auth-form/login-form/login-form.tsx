@@ -1,13 +1,18 @@
-import { Form, Input, Button, Checkbox } from 'antd';
-import styles from './login-form.module.less';
 import { GooglePlusOutlined } from '@ant-design/icons';
-import { email, password, required } from '../../validation-rules';
-import { useCheckEmailMutation, useLoginMutation, useRetryMutation } from '@redux/auth';
-import type { UserCredentials } from 'src/types';
-import { useState, memo } from 'react';
-import cn from 'classnames';
+import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { useXs } from '@hooks/use-breakpoint';
-import { useAppSelector } from '@hooks/typed-react-redux-hooks';
+import {
+    UserCredentials,
+    useCheckEmailMutation,
+    useLoginMutation,
+    useRetryMutation,
+} from '@redux/auth';
+import { Button, Checkbox, Form, Input } from 'antd';
+import cn from 'classnames';
+import { memo, useState } from 'react';
+import { email, password, required } from '../../validation-rules';
+import styles from './login-form.module.less';
+import { loginViaGoogle } from '@redux/auth/actions';
 
 type FormValues = UserCredentials & {
     remember: boolean;
@@ -20,6 +25,11 @@ export const LoginForm = memo(function LoginForm() {
     const [login] = useLoginMutation();
     const retry = useAppSelector((state) => state.auth.retryCheckEmail);
     const xs = useXs();
+    const dispatch = useAppDispatch();
+
+    const authGoogle = () => {
+        dispatch(loginViaGoogle(form.getFieldValue('remember')));
+    };
 
     useRetryMutation(checkEmail, retry);
 
@@ -87,6 +97,7 @@ export const LoginForm = memo(function LoginForm() {
                 block
                 htmlType='button'
                 size='large'
+                onClick={authGoogle}
             >
                 Войти через Google
             </Button>

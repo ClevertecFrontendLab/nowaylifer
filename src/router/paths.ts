@@ -7,4 +7,5 @@ export const Path = {
     ConfirmEmail: '/auth/confirm-email',
     ChangePassword: '/auth/change-password',
     Result: '/result',
+    Feedback: '/feedbacks',
 } as const;

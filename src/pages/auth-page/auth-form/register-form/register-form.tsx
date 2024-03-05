@@ -1,14 +1,14 @@
 import { GooglePlusOutlined } from '@ant-design/icons';
-import { Form, Input, Button } from 'antd';
+import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
+import { useXs } from '@hooks/use-breakpoint';
+import { PasswordFormItem } from '@pages/auth-page/ui/password-form-item';
+import { UserCredentials, useRegisterMutation, useRetryMutation } from '@redux/auth';
+import { Button, Form, Input } from 'antd';
+import cn from 'classnames';
 import { memo } from 'react';
 import { confirmPassword, email, required } from '../../validation-rules';
-import { PasswordFormItem } from '@pages/auth-page/ui/password-form-item';
-import { useRegisterMutation, useRetryMutation } from '@redux/auth';
-import type { UserCredentials } from 'src/types';
 import styles from './register-form.module.less';
-import { useAppSelector } from '@hooks/typed-react-redux-hooks';
-import cn from 'classnames';
-import { useXs } from '@hooks/use-breakpoint';
+import { loginViaGoogle } from '@redux/auth/actions';
 
 type FormValues = UserCredentials & { confirmPassword: string };
 
@@ -17,6 +17,11 @@ export const RegisterForm = memo(function RegisterForm() {
     const [register] = useRegisterMutation();
     const retry = useAppSelector((state) => state.auth.retryRegister);
     const xs = useXs();
+    const dispatch = useAppDispatch();
+
+    const authGoogle = () => {
+        dispatch(loginViaGoogle(form.getFieldValue('remember')));
+    };
 
     const handleFinish = ({ email, password }: FormValues) => {
         register({ email, password });
@@ -69,6 +74,7 @@ export const RegisterForm = memo(function RegisterForm() {
                 htmlType='button'
                 size='large'
                 icon={xs ? undefined : <GooglePlusOutlined />}
+                onClick={authGoogle}
             >
                 Регистрация через Google
             </Button>

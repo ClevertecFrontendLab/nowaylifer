@@ -1,18 +1,23 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
 import { AuthLayout } from '@components/auth-layout';
+import { AppLayout } from '@components/app-layout';
+import { AuthForm } from '@pages/auth-page';
+import { ChangePassword } from '@pages/auth-page/change-password';
+import { ConfirmEmail } from '@pages/auth-page/confirm-email';
+import { AuthResultPage } from '@pages/auth-result-page';
 import { MainPage } from '@pages/main-page';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { Path } from './paths';
 import { RequireAuth, RequireNoAuth, RequireRedirect } from './route-guards';
-import { AuthResultPage } from '@pages/auth-result-page/auth-result-page';
-import { AuthForm } from '@pages/auth-page';
-import { ConfirmEmail } from '@pages/auth-page/confirm-email';
-import { ChangePassword } from '@pages/auth-page/change-password';
+import { FeedbackPage } from '@pages/feedback-page';
+import { GetGoogleToken } from '@redux/auth';
 
 const loginOrResult = new RegExp(`(${Path.Login})|(${Path.Result})`);
 
 export const routes = (
     <Routes>
-        <Route path={Path.Root} element={<Navigate to={Path.Main} />} />
+        <Route path={Path.Root} element={<GetGoogleToken />}>
+            <Route index element={<Navigate to={Path.Main} />} />
+        </Route>
 
         <Route element={<AuthLayout />}>
             <Route element={<RequireNoAuth redirectTo={Path.Main} />}>
@@ -28,7 +33,10 @@ export const routes = (
         </Route>
 
         <Route element={<RequireAuth redirectTo={Path.Login} />}>
-            <Route path={Path.Main} element={<MainPage />} />
+            <Route element={<AppLayout />}>
+                <Route path={Path.Main} element={<MainPage />} />
+                <Route path={Path.Feedback} element={<FeedbackPage />} />
+            </Route>
         </Route>
     </Routes>
 );

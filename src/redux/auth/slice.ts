@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Location } from 'react-router-dom';
 import { REHYDRATE } from 'redux-persist';
-import type { ChangePasswordPayload, UserCredentials } from 'src/types';
 import { _untypedMutationRetried, cleanMutationRetry } from './actions';
 import { sliceName } from './config';
+import type { ChangePasswordPayload, UserCredentials } from './types';
 
 export type RetryField<T = unknown> = { shouldRetry: false } | { shouldRetry: true; data: T };
 
@@ -12,6 +12,7 @@ export type AuthSliceState = {
     token: string | null;
     authLoading: boolean;
     authFrom: Location | null;
+    rememberGoogleAuth: boolean;
     retryRegister: RetryField<UserCredentials>;
     retryCheckEmail: RetryField<UserCredentials['email']>;
     retryChangePassword: RetryField<ChangePasswordPayload>;
@@ -23,6 +24,7 @@ const initialState: AuthSliceState = {
     token: null,
     authLoading: false,
     authFrom: null,
+    rememberGoogleAuth: false,
     emailToConfirm: null,
     retryRegister: { shouldRetry: false },
     retryCheckEmail: { shouldRetry: false },
@@ -37,6 +39,9 @@ export const authSlice = createSlice({
             if (!payload) return { ...state, token: null, _persistedToken: null };
             state.token = payload.token;
             if (payload.remember) state._persistedToken = payload.token;
+        },
+        setRememberGoogleAuth(state, action: PayloadAction<boolean>) {
+            state.rememberGoogleAuth = action.payload;
         },
         setAuthFrom(state, action: PayloadAction<Location | null>) {
             state.authFrom = action.payload;
@@ -69,4 +74,5 @@ export const authSlice = createSlice({
     },
 });
 
-export const { setToken, setAuthFrom, setAuthLoading, setEmailToConfirm } = authSlice.actions;
+export const { setToken, setAuthFrom, setAuthLoading, setEmailToConfirm, setRememberGoogleAuth } =
+    authSlice.actions;

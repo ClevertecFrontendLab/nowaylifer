@@ -1,15 +1,13 @@
-import { Layout } from 'antd';
 import { Card } from '@components/card';
+import { PageContent } from '@components/page-content';
 import { Color } from '@constants/color';
 import { ActionCardList } from './action-card-list';
 import styles from './main.module.less';
 
-const { Content } = Layout;
-
 export const Main = () => (
-    <Content className={styles.Main}>
+    <PageContent>
         <div className={styles.Wrap}>
-            <Card style={{ marginBottom: 24, color: Color.PrimaryLight9 }}>
+            <Card style={{ marginBottom: 24, color: Color.PrimaryLight9, fontSize: '1rem' }}>
                 <h3>С CleverFit ты сможешь:</h3>
                 <ul style={{ listStylePosition: 'inside', listStyleType: '"— "' }}>
                     <li>
@@ -37,5 +35,5 @@ export const Main = () => (
             </Card>
             <ActionCardList />
         </div>
-    </Content>
+    </PageContent>
 );

@@ -11,15 +11,15 @@
         position: absolute;
         inset: 0;
         opacity: 0;
-        background-color: var(--auth-backdrop-color);
+        background-color: var(--loader-backdrop-color);
         pointer-events: none;
         content: '';
     }
 
     /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
     &:local(.Blur) {
-        --filter-transition-duration: 0.15s;
-        filter: var(--auth-backdrop-filter);
+        --filter-transition-duration: 0.2s;
+        filter: var(--loader-backdrop-filter);
         transition: filter var(--filter-transition-duration);
 
         &:after {

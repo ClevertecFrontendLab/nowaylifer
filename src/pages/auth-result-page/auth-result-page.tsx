@@ -1,12 +1,11 @@
-import { useParams } from 'react-router-dom';
-import { Button, Result } from 'antd';
-import { ResultConfig, buttonTestIdMap, resultConfigs } from './result-config';
 import { Card } from '@components/card';
-import styles from './auth-result-page.module.less';
 import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
-import { redirectFromAuthResult } from '@redux/auth';
-import type { ResultStatus } from 'src/types';
+import { ResultStatus, redirectFromAuthResult } from '@redux/auth';
+import { Button, Result } from 'antd';
 import invariant from 'invariant';
+import { useParams } from 'react-router-dom';
+import styles from './auth-result-page.module.less';
+import { ResultConfig, buttonTestIdMap, resultConfigs } from './result-config';
 
 type ResultTemplateProps = {
     config: ResultConfig;
