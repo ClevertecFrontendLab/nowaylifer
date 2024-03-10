@@ -11,6 +11,7 @@ type BreadcrumbsProps = {
 const routes: BreadcrumbsRoute[] = [
     { path: Path.Root, breadcrumb: 'Главная' },
     { path: Path.Feedback, breadcrumb: 'Отзывы пользователей' },
+    { path: Path.Calendar, breadcrumb: 'Календарь' },
 ];
 
 export const Breadcrumbs = ({ className }: BreadcrumbsProps) => {

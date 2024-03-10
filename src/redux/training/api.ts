@@ -6,12 +6,12 @@ export const trainingApi = createApi({
     reducerPath: 'trainingApi',
     baseQuery: baseQueryBackend({ minDelay: 1000, prefixUrl: 'training' }),
     endpoints: (builder) => ({
-        fetchTraining: builder.query<Training[], void>({
-            query: () => '/',
+        fetchTrainingList: builder.query<Training[], void>({
+            query: () => '',
         }),
         createTraining: builder.mutation<Training, CreateTrainingDTO>({
             query: (dto) => ({
-                url: '/',
+                url: '',
                 method: 'POST',
                 body: dto,
             }),
@@ -21,14 +21,14 @@ export const trainingApi = createApi({
             { id: Training['_id']; training: ChangeTrainingDTO }
         >({
             query: ({ id, training: dto }) => ({
-                url: `/${id}`,
+                url: id,
                 method: 'PUT',
                 body: dto,
             }),
         }),
         deleteTraining: builder.mutation<void, Training['_id']>({
             query: (id) => ({
-                url: `/${id}`,
+                url: id,
                 method: 'DELETE',
             }),
         }),
@@ -36,8 +36,11 @@ export const trainingApi = createApi({
 });
 
 export const {
-    useFetchTrainingQuery,
+    useFetchTrainingListQuery,
+    useLazyFetchTrainingListQuery,
     useCreateTrainingMutation,
     useChangeTrainingMutation,
     useDeleteTrainingMutation,
 } = trainingApi;
+
+export const { useQueryState: useFetchTrainingListState } = trainingApi.endpoints.fetchTrainingList;

@@ -1,19 +1,22 @@
-import { CalendarTwoTone, HeartFilled, TrophyFilled, IdcardOutlined } from '@ant-design/icons';
+import { CalendarTwoTone, HeartFilled, IdcardOutlined, TrophyFilled } from '@ant-design/icons';
+import ExitSvg from '@assets/icons/exit.svg?react';
+import { Logo } from '@components/logo';
+import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
+import { useXs } from '@hooks/use-breakpoint';
+import { logout } from '@redux/auth/actions';
+import { Path } from '@router/paths';
 import { Layout, Menu } from 'antd';
 import { useState } from 'react';
-import ExitSvg from '@assets/icons/exit.svg?react';
-import { useXs } from '@hooks/use-breakpoint';
-import { Logo } from '@components/logo';
-import { Switch } from './switch';
+import { Link } from 'react-router-dom';
 import styles from './sidebar.module.less';
-import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
-import { logout } from '@redux/auth/actions';
+import { Switch } from './switch';
+import { LoadCalendarPage } from '@pages/calendar-page';
 
 const { Sider } = Layout;
 
 const menuItems = [
     {
-        label: 'Календарь',
+        label: <LoadCalendarPage render={(load) => <div onClick={load}>Календарь</div>} />,
         icon: <CalendarTwoTone twoToneColor={['currentColor', 'currentColor']} />,
     },
     {
@@ -55,11 +58,13 @@ export const Sidebar = () => {
                 data-test-id={xs ? 'sider-switch-mobile' : 'sider-switch'}
             />
             <div className={styles.Wrapper}>
-                <Logo
-                    className={styles.Logo}
-                    type={xs ? 'normal' : collapsed ? 'short' : 'normal'}
-                    style={{ width: xs ? 72 : collapsed ? 28.55 : 133 }}
-                />
+                <Link to={Path.Main}>
+                    <Logo
+                        className={styles.Logo}
+                        type={xs ? 'normal' : collapsed ? 'short' : 'normal'}
+                        style={{ width: xs ? 72 : collapsed ? 28.55 : 133 }}
+                    />
+                </Link>
                 <Menu
                     className={styles.Menu}
                     mode='inline'

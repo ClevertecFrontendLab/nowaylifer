@@ -1,5 +1,4 @@
 import { Breadcrumbs } from '@components/breadcrumbs';
-import { LoaderModal } from '@components/loader-modal';
 import { PageContent } from '@components/page-content';
 import { PageHeader } from '@components/page-header';
 import { PageLayout } from '@components/page-layout';
@@ -17,12 +16,10 @@ import { push } from 'redux-first-history';
 import { AddReviewModal } from './add-review-modal';
 import styles from './feedback-page.module.less';
 import { NoReviewsScreen } from './no-reviews-screen/no-reviews-screen';
-import {
-    AddReviewErrorModal,
-    AddReviewSuccessModal,
-    FetchReviewsErrorModal,
-} from './result-modals';
+import { AddReviewErrorModal, AddReviewSuccessModal } from './result-modals';
 import { ReviewsScreen } from './reviews-screen';
+import { AppLoader } from '@components/app-loader';
+import { ServerErrorModal } from '@components/server-error-modal';
 
 export const FeedbackPage = () => {
     const {
@@ -89,8 +86,8 @@ export const FeedbackPage = () => {
 
     return (
         <PageLayout>
-            <LoaderModal open={isFetching || isAddReviewLoading} />
-            <FetchReviewsErrorModal open={showFetchErrorModal} onCancel={goToMain} />
+            <AppLoader open={isFetching || isAddReviewLoading} />
+            <ServerErrorModal open={showFetchErrorModal} onCancel={goToMain} />
             <AddReviewSuccessModal
                 open={showAddReviewSuccessModal}
                 onOk={() => setShowAddReviewSuccessModal(false)}

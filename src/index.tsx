@@ -11,6 +11,8 @@ import { routes } from './router/routes';
 import 'antd/dist/antd.variable.min.css';
 import 'normalize.css';
 import './index.less';
+import { AppLoaderProvider } from '@components/app-loader';
+import { AppModalProvider } from '@components/app-modal';
 
 ConfigProvider.config({
     theme: {
@@ -26,7 +28,11 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
             <PersistGate persistor={persistor}>
-                <Router history={history}>{routes}</Router>
+                <AppLoaderProvider>
+                    <AppModalProvider>
+                        <Router history={history}>{routes}</Router>
+                    </AppModalProvider>
+                </AppLoaderProvider>
             </PersistGate>
         </Provider>
     </React.StrictMode>,

@@ -1,23 +1,6 @@
-import { Modal, ModalProps } from '@components/modal';
-import { Button, Result, ResultProps } from 'antd';
-import cn from 'classnames';
-import styles from './result-modals.module.less';
-
-export const ResultModal = ({
-    resultProps,
-    className,
-    ...props
-}: ModalProps & { resultProps?: ResultProps }) => (
-    <Modal
-        centered
-        footer={null}
-        closable={false}
-        className={cn(styles.ModalResult, className)}
-        {...props}
-    >
-        <Result {...resultProps} />
-    </Modal>
-);
+import { ModalProps } from '@components/modal';
+import { ResultModal } from '@components/result-modal';
+import { Button } from 'antd';
 
 export const AddReviewSuccessModal = ({ onOk, ...props }: ModalProps) => (
     <ResultModal
@@ -59,22 +42,6 @@ export const AddReviewErrorModal = ({
                         Закрыть
                     </Button>
                 </div>
-            ),
-        }}
-        {...props}
-    />
-);
-
-export const FetchReviewsErrorModal = ({ onCancel, ...props }: ModalProps) => (
-    <ResultModal
-        resultProps={{
-            status: 500,
-            title: 'Что-то пошло не так',
-            subTitle: 'Произошла ошибка, попробуйте ещё раз.',
-            extra: (
-                <Button type='primary' size='large' onClick={onCancel}>
-                    Назад
-                </Button>
             ),
         }}
         {...props}

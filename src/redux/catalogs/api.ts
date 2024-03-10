@@ -1,15 +1,15 @@
 import { baseQueryBackend } from '@redux/base-query-backend';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { TrainingListItem } from './types';
+import { TrainingCatalogItem } from './types';
 
 export const catalogsApi = createApi({
     reducerPath: 'catalogsApi',
-    baseQuery: baseQueryBackend({ prefixUrl: 'catalogs' }),
+    baseQuery: baseQueryBackend({ prefixUrl: 'catalogs', minDelay: 1000 }),
     endpoints: (builder) => ({
-        fetchTrainingList: builder.query<TrainingListItem[], void>({
+        fetchTrainingCatalog: builder.query<TrainingCatalogItem[], void>({
             query: () => '/training-list',
         }),
     }),
 });
 
-export const { useFetchTrainingListQuery } = catalogsApi;
+export const { useFetchTrainingCatalogQuery, useLazyFetchTrainingCatalogQuery } = catalogsApi;
