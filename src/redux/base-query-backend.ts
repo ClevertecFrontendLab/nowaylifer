@@ -54,7 +54,7 @@ export const baseQueryBackend = ({
     withHandleAuthError(
         withMinDelay(
             fetchBaseQuery({
-                baseUrl: BACKEND_URL + prefixUrl,
+                baseUrl: new URL(prefixUrl, BACKEND_URL).href,
                 method,
                 credentials: 'include',
                 prepareHeaders: (headers, { getState }) => {
