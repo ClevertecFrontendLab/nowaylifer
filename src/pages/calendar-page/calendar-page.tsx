@@ -61,7 +61,7 @@ const CalendarPage = () => {
         <>
             <AppLoader open={isTrainingListFetching || isTrainingCatalogFetching} />
             <ServerErrorModal open={isTrainingListError} onCancel={() => navigate(Path.Main)} />
-            <PageLayout>
+            <PageLayout className={styles.Layout}>
                 <PageHeader>
                     <Breadcrumbs />
                 </PageHeader>
