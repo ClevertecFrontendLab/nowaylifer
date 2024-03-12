@@ -4,7 +4,7 @@ import { ChangeTrainingDTO, CreateTrainingDTO, Training } from './types';
 
 export const trainingApi = createApi({
     reducerPath: 'trainingApi',
-    baseQuery: baseQueryBackend({ minDelay: 1000, prefixUrl: 'training' }),
+    baseQuery: baseQueryBackend({ minDelay: 0, prefixUrl: 'training' }),
     endpoints: (builder) => ({
         fetchTrainingList: builder.query<Training[], void>({
             query: () => '',
