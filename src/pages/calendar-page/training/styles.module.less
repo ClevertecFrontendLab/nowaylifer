@@ -1,0 +1,30 @@
+.TrainingCard:global.ant-card {
+    width: 264px;
+
+    @media (max-width: 480px) {
+        width: 312px;
+    }
+}
+
+@card-navigation-btn: {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.45);
+    transition: color 0.3s;
+
+    &:hover {
+        color: rgba(0, 0, 0, 0.75);
+    }
+
+    &[ant-click-animating-without-extra-node='true']:after {
+        display: none;
+    }
+};

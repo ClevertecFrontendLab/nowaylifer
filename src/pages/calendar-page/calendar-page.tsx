@@ -67,7 +67,7 @@ const CalendarPage = () => {
                 </PageHeader>
                 <PageContent className={styles.Content}>
                     {isTrainingListSuccess && (
-                        <Calendar trainingList={trainingList} trainingCatalog={trainingCatalog} />
+                        <Calendar trainingList={trainingList} trainingTypes={trainingCatalog} />
                     )}
                 </PageContent>
             </PageLayout>

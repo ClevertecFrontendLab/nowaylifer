@@ -1,11 +1,11 @@
 import { useXs } from '@hooks/use-breakpoint';
-import { TrainingCatalogItem } from '@redux/catalogs';
+import { TrainingType } from '@redux/catalogs';
 import { Training } from '@redux/training';
 import { Calendar as CalendarAntd } from 'antd';
 import moment from 'moment';
 import 'moment/locale/ru';
 import { useState } from 'react';
-import { CalendarPopover } from './calendar-popover';
+import { TrainingPopover } from '../training/training-popover';
 import styles from './calendar.module.less';
 import ruRu from './ru-Ru';
 
@@ -17,14 +17,14 @@ moment.locale('ru', {
 
 type CalendarProps = {
     trainingList: Training[];
-    trainingCatalog: TrainingCatalogItem[];
+    trainingTypes: TrainingType[];
 };
 
-export const Calendar = ({ trainingCatalog, trainingList }: CalendarProps) => {
+export const Calendar = ({ trainingTypes, trainingList }: CalendarProps) => {
     const [selectedDate, setSelectedDate] = useState(moment);
     const xs = useXs();
     const isCalendarFullScreen = !xs;
-    console.log(trainingCatalog, trainingList);
+    console.log(trainingTypes, trainingList);
 
     return (
         <CalendarAntd
@@ -36,7 +36,7 @@ export const Calendar = ({ trainingCatalog, trainingList }: CalendarProps) => {
             dateCellRender={(date) =>
                 (isCalendarFullScreen || date.isSame(selectedDate, 'month')) && (
                     <div onClick={(e) => isCalendarFullScreen && e.stopPropagation()}>
-                        <CalendarPopover title={date.format('DD.MM.YYYY')} />
+                        <TrainingPopover trainingTypes={trainingTypes} date={date} />
                     </div>
                 )
             }

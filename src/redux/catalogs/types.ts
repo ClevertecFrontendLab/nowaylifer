@@ -1,4 +1,4 @@
-export type TrainingCatalogItem = {
+export type TrainingType = {
     name: string;
     key: string;
 };
