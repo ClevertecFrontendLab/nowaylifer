@@ -2,9 +2,9 @@ export type Exercise = {
     _id: string;
     name: string;
     replays: number;
-    wight: number;
+    weight: number;
     approaches: number;
-    isImplementation: boolean;
+    isImplementation?: boolean;
 };
 
 export type Training = {
@@ -22,8 +22,10 @@ export type Training = {
     exercises: Exercise[];
 };
 
+export type CreateExerciseDTO = Omit<Exercise, '_id'>;
+
 export type CreateTrainingDTO = Omit<Training, '_id' | 'userId' | 'exercises'> & {
-    exercises: Omit<Exercise, '_id'>[];
+    exercises: CreateExerciseDTO[];
 };
 
 export type ChangeTrainingDTO = CreateTrainingDTO;

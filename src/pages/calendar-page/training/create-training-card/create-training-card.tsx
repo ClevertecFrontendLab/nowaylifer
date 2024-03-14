@@ -9,33 +9,45 @@ import { useState } from 'react';
 export type CreateTrainingCardProps = {
     trainingTypes: TrainingType[];
     onCancel?(): void;
+    onAddExercise?(trainingType: TrainingType): void;
 };
 
-export const CreateTrainingCard = ({ trainingTypes, onCancel }: CreateTrainingCardProps) => {
+export const CreateTrainingCard = ({
+    trainingTypes,
+    onCancel,
+    onAddExercise,
+}: CreateTrainingCardProps) => {
     const [selectedTrainingType, setSelectedTrainingType] = useState<TrainingType | null>(null);
+    console.log(trainingTypes);
 
     return (
         <Card className={styles.TrainingCard}>
             <Card.Header className={styles.CreateTrainingCardHeader}>
                 <Button
-                    className={styles.CancelButton}
-                    icon={<ArrowLeftOutlined />}
                     onClick={onCancel}
+                    icon={<ArrowLeftOutlined />}
+                    className={styles.CancelButton}
                 />
                 <Select
-                    onSelect={setSelectedTrainingType}
                     size='small'
-                    fieldNames={{ label: 'name', value: 'key' }}
-                    className={styles.TrainingTypeSelect}
-                    placeholder='Выбор типа тренировки'
+                    labelInValue
                     options={trainingTypes}
+                    placeholder='Выбор типа тренировки'
+                    className={styles.TrainingTypeSelect}
+                    fieldNames={{ label: 'name', value: 'key' }}
+                    onSelect={(_, option) => setSelectedTrainingType(option)}
                 />
             </Card.Header>
             <Card.Body style={{ paddingBlock: 14 }}>
                 <EmptyPlaceholder />
             </Card.Body>
             <Card.Footer>
-                <Button block style={{ marginBottom: 8 }} disabled={!selectedTrainingType}>
+                <Button
+                    block
+                    style={{ marginBottom: 8 }}
+                    disabled={!selectedTrainingType}
+                    onClick={() => selectedTrainingType && onAddExercise?.(selectedTrainingType)}
+                >
                     Добавить упражнения
                 </Button>
                 <Button type='link' block>

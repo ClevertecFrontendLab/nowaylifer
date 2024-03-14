@@ -1,0 +1,61 @@
+.Drawer:global.ant-drawer {
+    .ant-drawer-body,
+    .ant-drawer-header {
+        padding-inline: 32px;
+    }
+
+    .ant-drawer-body {
+        padding-top: 0;
+    }
+
+    .ant-drawer-header {
+        padding-top: 24px;
+        border: 0;
+    }
+
+    .ant-drawer-header-title {
+        flex-direction: row-reverse;
+    }
+
+    .ant-drawer-content,
+    .ant-drawer-content-wrapper {
+        border-radius: 8px 0 0 8px;
+    }
+
+    .ant-drawer-close {
+        position: relative;
+        margin: 0;
+        left: 6px;
+    }
+}
+
+.DrawerTitle:global.ant-typography {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--character-light-title-85);
+}
+
+.Extra {
+    display: flex;
+    justify-content: space-between;
+    color: var(--character-light-secondary-45);
+    margin-bottom: 32px;
+}
+
+.AddButton:global.ant-btn {
+    background: var(--theme-gray-4);
+    border-radius: 0 0 8px 8px;
+    font-size: 14px;
+    color: var(--theme-primary-light-6);
+
+    &:not(:focus) {
+        border-color: transparent;
+    }
+}
+
+.FormsWrap {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
