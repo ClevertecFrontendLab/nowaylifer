@@ -1,13 +1,16 @@
 import { baseQueryBackend } from '@redux/base-query-backend';
+import { EntityState } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
+import { transformTrainingResponse } from './adapter';
 import { ChangeTrainingDTO, CreateTrainingDTO, Training } from './types';
 
 export const trainingApi = createApi({
     reducerPath: 'trainingApi',
     baseQuery: baseQueryBackend({ minDelay: 0, prefixUrl: 'training' }),
     endpoints: (builder) => ({
-        fetchTrainingList: builder.query<Training[], void>({
+        fetchTrainingList: builder.query<EntityState<Training, Training['_id']>, void>({
             query: () => '',
+            transformResponse: transformTrainingResponse,
         }),
         createTraining: builder.mutation<Training, CreateTrainingDTO>({
             query: (dto) => ({

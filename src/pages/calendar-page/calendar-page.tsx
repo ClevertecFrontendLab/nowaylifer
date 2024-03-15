@@ -17,14 +17,12 @@ const CalendarPage = () => {
     const navigate = useNavigate();
 
     const {
-        data: trainingList = [],
         isFetching: isTrainingListFetching,
         isSuccess: isTrainingListSuccess,
         isError: isTrainingListError,
     } = useFetchTrainingListQuery();
 
     const {
-        data: trainingCatalog = [],
         isFetching: isTrainingCatalogFetching,
         isError: isTrainingCatalogError,
         refetch: refetchTrainingCatalog,
@@ -66,9 +64,7 @@ const CalendarPage = () => {
                     <Breadcrumbs />
                 </PageHeader>
                 <PageContent className={styles.Content}>
-                    {isTrainingListSuccess && (
-                        <Calendar trainingList={trainingList} trainingTypes={trainingCatalog} />
-                    )}
+                    {isTrainingListSuccess && <Calendar />}
                 </PageContent>
             </PageLayout>
         </>

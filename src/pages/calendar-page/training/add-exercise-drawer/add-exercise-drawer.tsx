@@ -32,10 +32,11 @@ export const AddExercisesDrawer = ({
 
     return (
         <Drawer
-            width={xss ? '100%' : 408}
             mask={false}
-            placement={xss ? 'bottom' : 'right'}
             className={styles.Drawer}
+            width={xss ? '100%' : 408}
+            height={xss ? '90%' : undefined}
+            placement={xss ? 'bottom' : 'right'}
             onClose={() => onClose?.(getValidExercises(formInstances))}
             title={
                 <Typography.Text className={styles.DrawerTitle}>

@@ -4,4 +4,5 @@ export type TrainingType = {
     color: string;
 };
 
+export type TrainingTypeMap = Record<TrainingType['name'], TrainingType>;
 export type TrainingTypeDto = Pick<TrainingType, 'name' | 'key'>;

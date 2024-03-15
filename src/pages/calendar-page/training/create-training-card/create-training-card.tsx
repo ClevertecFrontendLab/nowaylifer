@@ -1,24 +1,20 @@
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Card } from '@components/card';
-import { TrainingType } from '@redux/catalogs';
+import { TrainingType, selectTrainingTypes } from '@redux/catalogs';
 import { Button, Select } from 'antd';
 import { EmptyPlaceholder } from '../empty-placeholder';
 import styles from './create-training-card.module.less';
 import { useState } from 'react';
+import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 
 export type CreateTrainingCardProps = {
-    trainingTypes: TrainingType[];
     onCancel?(): void;
     onAddExercise?(trainingType: TrainingType): void;
 };
 
-export const CreateTrainingCard = ({
-    trainingTypes,
-    onCancel,
-    onAddExercise,
-}: CreateTrainingCardProps) => {
+export const CreateTrainingCard = ({ onCancel, onAddExercise }: CreateTrainingCardProps) => {
     const [selectedTrainingType, setSelectedTrainingType] = useState<TrainingType | null>(null);
-    console.log(trainingTypes);
+    const trainingTypes = useAppSelector(selectTrainingTypes);
 
     return (
         <Card className={styles.TrainingCard}>

@@ -1,68 +1,25 @@
+import { useAppSelector } from '@hooks/typed-react-redux-hooks';
+import { useXss } from '@hooks/use-breakpoint';
+import { selectTrainingTypeMap } from '@redux/catalogs';
+import { selectTrainingsByDate } from '@redux/training';
 import { Carousel } from 'antd';
 import { CarouselRef } from 'antd/lib/carousel';
+import { Moment } from 'moment';
 import { useReducer, useRef } from 'react';
 import { CalendarCellPopover } from '../../calendar-cell-popover';
-import { CreateTrainingCard, CreateTrainingCardProps } from '../create-training-card';
-import { TrainingCard, TrainingCardProps } from '../training-card';
-import styles from './training-popover.module.less';
 import { AddExercisesDrawer } from '../add-exercise-drawer';
-import { TrainingType } from '@redux/catalogs';
-import { CreateExerciseDTO } from '@redux/training';
-import { useXss } from '@hooks/use-breakpoint';
+import { CreateTrainingCard } from '../create-training-card';
+import { TrainingCard } from '../training-card';
+import { addExercise, drawerClosed, initialState, popoverOpenChange, reducer } from './reducer';
+import styles from './training-popover.module.less';
 
-type TrainingPopoverProps = TrainingCardProps & CreateTrainingCardProps;
-
-type State = {
-    drawerOpen: boolean;
-    popoverOpen: boolean;
-    addExerciseFlow: { trainingType: TrainingType; createdExercises: CreateExerciseDTO[] };
+type TrainingPopoverProps = {
+    date: Moment;
 };
 
-const initialState: State = {
-    popoverOpen: false,
-    drawerOpen: false,
-    addExerciseFlow: { trainingType: { key: 'back', name: '', color: '' }, createdExercises: [] },
-};
-
-type Action =
-    | { type: 'POPOVER_OPEN_CHANGE'; payload: boolean }
-    | { type: 'ADD_EXERCISE'; payload: TrainingType }
-    | { type: 'DRAWER_CLOSED'; payload: CreateExerciseDTO[] };
-
-const reducer = (state: State, action: Action): State => {
-    switch (action.type) {
-        case 'POPOVER_OPEN_CHANGE':
-            return action.payload ? { ...state, popoverOpen: true } : initialState;
-
-        case 'ADD_EXERCISE':
-            return {
-                ...state,
-                drawerOpen: true,
-                addExerciseFlow: { ...state.addExerciseFlow, trainingType: action.payload },
-            };
-
-        case 'DRAWER_CLOSED':
-            return {
-                ...state,
-                drawerOpen: false,
-                addExerciseFlow: { ...state.addExerciseFlow, createdExercises: action.payload },
-            };
-
-        default:
-            throw new Error('Unknown action');
-    }
-};
-
-const popoverOpenChange = (open: boolean) =>
-    ({ type: 'POPOVER_OPEN_CHANGE', payload: open } as const);
-
-const drawerClosed = (exercises: CreateExerciseDTO[]) =>
-    ({ type: 'DRAWER_CLOSED', payload: exercises } as const);
-
-const addExercise = (trainingType: TrainingType) =>
-    ({ type: 'ADD_EXERCISE', payload: trainingType } as const);
-
-export const TrainingPopover = ({ date, trainingTypes }: TrainingPopoverProps) => {
+export const TrainingPopover = ({ date }: TrainingPopoverProps) => {
+    const trainings = useAppSelector(selectTrainingsByDate(date));
+    const trainingTypeMap = useAppSelector(selectTrainingTypeMap);
     const [state, dispatch] = useReducer(reducer, initialState);
     const carouselRef = useRef<CarouselRef | null>(null);
     const xss = useXss();
@@ -90,17 +47,18 @@ export const TrainingPopover = ({ date, trainingTypes }: TrainingPopoverProps) =
                         easing='ease-in'
                         adaptiveHeight
                         swipe={false}
+                        effect='fade'
                         dots={false}
                         speed={200}
-                        effect='fade'
                     >
                         <TrainingCard
                             date={date}
+                            trainings={trainings}
+                            trainingTypeMap={trainingTypeMap}
                             onClose={() => dispatch(popoverOpenChange(false))}
                             onCreateTraining={() => carouselRef.current?.next()}
                         />
                         <CreateTrainingCard
-                            trainingTypes={trainingTypes}
                             onCancel={() => carouselRef.current?.prev()}
                             onAddExercise={(trainingType) => dispatch(addExercise(trainingType))}
                         />
