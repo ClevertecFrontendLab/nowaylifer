@@ -1,15 +1,15 @@
-import { EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { useXss } from '@hooks/use-breakpoint';
 import { TrainingType } from '@redux/catalogs';
 import { CreateExerciseDTO, Exercise } from '@redux/training';
-import { Button, Drawer, DrawerProps, FormInstance, Typography } from 'antd';
-import { Moment } from 'moment';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { Button, Drawer, DrawerProps, FormInstance, Row, Typography } from 'antd';
+import cn from 'classnames';
+import { ReactNode, useEffect, useRef, useState } from 'react';
+import { useTraining } from '../training-provider';
 import { defaultExercise } from '../training-provider/reducer';
 import { TrainingTypeLabel } from '../training-type-lable';
 import styles from './exercise-drawer.module.less';
 import { ExerciseForm } from './exercise-form';
-import { useTraining } from '../training-provider';
 
 const getValidExercises = (formInstances: FormInstance<CreateExerciseDTO>[]) =>
     formInstances.map((form) => form.getFieldsValue()).filter((exercise) => !!exercise.name);
@@ -48,17 +48,18 @@ export const ExerciseDrawer = ({
     ...props
 }: ExerciseDrawerProps) => {
     const [exercises, setExercises] = useState<(CreateExerciseDTO | Exercise)[]>(initialExercises);
-    const formInstances: FormInstance<CreateExerciseDTO>[] = useMemo(() => [], []);
+    const formInstances = useRef<FormInstance<CreateExerciseDTO>[]>([]);
     const { date } = useTraining();
     const xss = useXss();
+
+    console.log(formInstances.current);
 
     useEffect(() => {
         setExercises(initialExercises);
     }, [initialExercises]);
 
     const handleClose = () => {
-        const hasChange = formInstances.some((form) => form.isFieldsTouched());
-        onClose?.(mode === 'read' || !hasChange ? [] : getValidExercises(formInstances));
+        onClose?.(mode === 'read' ? [] : getValidExercises(formInstances.current));
     };
 
     return (
@@ -85,23 +86,41 @@ export const ExerciseDrawer = ({
                 {exercises.map((exercise, idx) => (
                     <ExerciseForm
                         key={exercise.name + idx}
-                        disabled={mode === 'read'}
+                        readOnly={mode === 'read'}
                         initialValues={exercise}
                         ref={(cur) =>
-                            cur?.form ? formInstances.push(cur.form) : formInstances.splice(idx, 1)
+                            cur?.form
+                                ? (formInstances.current[idx] = cur.form)
+                                : formInstances.current.splice(idx, 1)
                         }
                     />
                 ))}
             </div>
-            <Button
-                block
-                size='large'
-                icon={<PlusOutlined />}
-                className={styles.AddButton}
-                onClick={() => setExercises((prev) => [...prev, { ...defaultExercise }])}
-            >
-                Добавить ещё
-            </Button>
+            {mode !== 'read' && (
+                <Row>
+                    <Button
+                        block
+                        size='large'
+                        icon={<PlusOutlined />}
+                        className={cn(styles.Button, styles.AddButton)}
+                        onClick={() => setExercises((prev) => [...prev, { ...defaultExercise }])}
+                    >
+                        Добавить ещё
+                    </Button>
+                    {mode === 'edit' && (
+                        <Button
+                            block
+                            size='large'
+                            icon={<MinusOutlined />}
+                            className={styles.Button}
+                            disabled={exercises.length < 2}
+                            onClick={() => setExercises((prev) => prev.slice(0, -1))}
+                        >
+                            Удалить
+                        </Button>
+                    )}
+                </Row>
+            )}
         </Drawer>
     );
 };

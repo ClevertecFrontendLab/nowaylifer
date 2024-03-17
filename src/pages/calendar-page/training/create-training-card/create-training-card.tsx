@@ -11,7 +11,7 @@ import { Button, Select } from 'antd';
 import invariant from 'invariant';
 import { EmptyPlaceholder } from '../empty-placeholder';
 import { useTraining, useTrainingActions } from '../training-provider';
-import { CreateFlow, EditFlow } from '../training-provider/reducer';
+import { CreateFlow, EditFlow, ReadFlow } from '../training-provider/reducer';
 import styles from './create-training-card.module.less';
 
 const NoExercise = () => (
@@ -23,17 +23,24 @@ const NoExercise = () => (
 type ExerciseListProps = {
     exercises: (Exercise | CreateExerciseDTO)[];
     onEditExercise?(exercise: Exercise | CreateExerciseDTO): void;
+    flow: (CreateFlow | EditFlow | ReadFlow)['flow'];
 };
 
-const ExerciseList = ({ exercises, onEditExercise }: ExerciseListProps) => (
+const ExerciseList = ({ flow, exercises, onEditExercise }: ExerciseListProps) => (
     <Card.Body style={{ paddingTop: 16, paddingInline: 0 }}>
         <ul className={styles.ExerciseList}>
             {exercises.map((exercise, idx) => (
                 <li key={idx} className={styles.ExerciseListItem}>
-                    {exercise.name}
+                    <span style={{ color: 'var(--character-light-secondary-45)' }}>
+                        {exercise.name}
+                    </span>
                     <Button
                         type='link'
-                        style={{ height: 22 }}
+                        style={{
+                            height: 22,
+                            color:
+                                flow === 'read' ? 'var(--character-light-secondary-45)' : undefined,
+                        }}
                         onClick={() => onEditExercise?.(exercise)}
                         icon={<EditOutlined style={{ width: 18, height: 18 }} />}
                     />
@@ -48,20 +55,20 @@ export type CreateEditTrainingCardProps = {
     selectedTrainingType: TrainingType | null;
     availableTrainingTypes: TrainingType[];
     onCancel?(): void;
-    onEditSaved?(): void;
+    onTrainingEdited?(): void;
     onTrainingCreated?(): void;
     onAddExercise?(trainingType: TrainingType): void;
     onEditExercise?(trainingType: TrainingType, exercise: Exercise | CreateExerciseDTO): void;
-} & (CreateFlow | EditFlow);
+} & (CreateFlow | EditFlow | ReadFlow);
 
 export const CreateEditTrainingCard = ({
     flow,
     training,
     onCancel,
     exercises,
-    onEditSaved,
     onAddExercise,
     onEditExercise,
+    onTrainingEdited,
     onTrainingCreated,
     selectedTrainingType,
     availableTrainingTypes,
@@ -69,7 +76,7 @@ export const CreateEditTrainingCard = ({
     const [createTraining, { isLoading: isCreateTrainingLoading }] = useCreateTrainingMutation();
     const [editTraining, { isLoading: isEditTrainingLoading }] = useEditTrainingMutation();
     const { selectTrainingType } = useTrainingActions();
-    const { date } = useTraining();
+    const { date, isPast } = useTraining();
 
     const handleEditExercise = (exercise: Exercise | CreateExerciseDTO) => {
         if (selectedTrainingType) {
@@ -103,7 +110,7 @@ export const CreateEditTrainingCard = ({
                 training: {
                     ...training,
                     exercises,
-                    isImplementation: true,
+                    isImplementation: isPast,
                     name: selectedTrainingType.name,
                 },
             });
@@ -111,13 +118,13 @@ export const CreateEditTrainingCard = ({
             return;
         }
 
-        onEditSaved?.();
+        onTrainingEdited?.();
     };
 
     const handleSave = () => {
         if (flow === 'create') {
             handleCreateTraining();
-        } else {
+        } else if (flow === 'edit') {
             handleEditTraining();
         }
     };
@@ -142,7 +149,11 @@ export const CreateEditTrainingCard = ({
                 />
             </Card.Header>
             {exercises.length ? (
-                <ExerciseList exercises={exercises} onEditExercise={handleEditExercise} />
+                <ExerciseList
+                    flow={flow}
+                    exercises={exercises}
+                    onEditExercise={handleEditExercise}
+                />
             ) : (
                 <NoExercise />
             )}
@@ -150,7 +161,7 @@ export const CreateEditTrainingCard = ({
                 <Button
                     block
                     style={{ marginBottom: 8 }}
-                    disabled={!selectedTrainingType}
+                    disabled={!selectedTrainingType || flow === 'read'}
                     onClick={() => selectedTrainingType && onAddExercise?.(selectedTrainingType)}
                 >
                     Добавить упражнения
@@ -159,6 +170,7 @@ export const CreateEditTrainingCard = ({
                     block
                     type='link'
                     onClick={handleSave}
+                    disabled={!exercises.length || flow === 'read'}
                     loading={isCreateTrainingLoading || isEditTrainingLoading}
                 >
                     Сохранить

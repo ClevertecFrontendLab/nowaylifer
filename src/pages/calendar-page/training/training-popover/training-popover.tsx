@@ -9,24 +9,25 @@ import { ExerciseDrawer } from '../exercise-drawer';
 import { TrainingCard } from '../training-card';
 import { useTrainingActions, useTrainingState } from '../training-provider';
 import styles from './training-popover.module.less';
+import { waitFor } from '@utils/waitFor';
 
 const CAROUSEL_SPEED = 200;
 
-const waitForCarouselAnimationEnd = () => new Promise((res) => setTimeout(res, CAROUSEL_SPEED + 5));
+const waitForCarouselAnimationEnd = () => waitFor(CAROUSEL_SPEED + 5);
 
 export const TrainingPopover = () => {
     const carouselRef = useRef<CarouselRef | null>(null);
     const state = useTrainingState();
     const xss = useXss();
     const {
-        cancelCreateEditTraining,
-        popoverOpenChange,
-        trainingCreated,
-        createTraining,
-        editTraining,
-        drawerClosed,
-        editExercise,
+        closeDrawer,
         addExercise,
+        editTraining,
+        editExercise,
+        createTraining,
+        popoverOpenChange,
+        exercisesEditedOrCreated,
+        resetCreateEditTrainingCard,
     } = useTrainingActions();
 
     const handleEditTraining = (training: Training) => {
@@ -41,14 +42,15 @@ export const TrainingPopover = () => {
 
     const handleCancelCreateEditTraining = async () => {
         carouselRef.current?.prev();
+        closeDrawer();
         await waitForCarouselAnimationEnd();
-        cancelCreateEditTraining();
+        resetCreateEditTrainingCard();
     };
 
-    const handleTrainingCreated = async () => {
+    const handleTrainingCreatedOrEdited = async () => {
         carouselRef.current?.prev();
         await waitForCarouselAnimationEnd();
-        trainingCreated();
+        resetCreateEditTrainingCard();
     };
 
     return (
@@ -60,7 +62,7 @@ export const TrainingPopover = () => {
             onOpenChange={popoverOpenChange}
             content={
                 <>
-                    <ExerciseDrawer {...state.exerciseDrawer} onClose={drawerClosed} />
+                    <ExerciseDrawer {...state.exerciseDrawer} onClose={exercisesEditedOrCreated} />
                     <Carousel
                         className={styles.Carousel}
                         speed={CAROUSEL_SPEED}
@@ -81,10 +83,11 @@ export const TrainingPopover = () => {
                         />
                         <CreateEditTrainingCard
                             {...state.createEditTrainingCard}
-                            onCancel={handleCancelCreateEditTraining}
                             onAddExercise={addExercise}
                             onEditExercise={editExercise}
-                            onTrainingCreated={handleTrainingCreated}
+                            onCancel={handleCancelCreateEditTraining}
+                            onTrainingEdited={handleTrainingCreatedOrEdited}
+                            onTrainingCreated={handleTrainingCreatedOrEdited}
                         />
                     </Carousel>
                 </>

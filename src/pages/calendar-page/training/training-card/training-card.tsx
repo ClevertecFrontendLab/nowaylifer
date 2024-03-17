@@ -46,17 +46,24 @@ type TrainingListProps = {
 const TrainingList = ({ trainings, trainingTypeMap, onEditTraining }: TrainingListProps) => (
     <Card.Body style={{ paddingTop: 16, paddingInline: 0 }}>
         <ul className={styles.TrainingList}>
-            {trainings.map((training) => (
-                <li key={training._id} className={styles.TrainingListItem}>
-                    <TrainingTypeLabel trainingType={trainingTypeMap[training.name]} />
-                    <Button
-                        type='link'
-                        style={{ height: 22 }}
-                        onClick={() => onEditTraining?.(training)}
-                        icon={<EditOutlined style={{ width: 18, height: 18 }} />}
-                    />
-                </li>
-            ))}
+            {trainings.map((training) => {
+                const style =
+                    'isImplementation' in training && training.isImplementation
+                        ? { color: 'var(--character-light-secondary-45)' }
+                        : undefined;
+
+                return (
+                    <li key={training._id} className={styles.TrainingListItem} style={style}>
+                        <TrainingTypeLabel trainingType={trainingTypeMap[training.name]} />
+                        <Button
+                            type='link'
+                            style={{ height: 22, ...style }}
+                            onClick={() => onEditTraining?.(training)}
+                            icon={<EditOutlined style={{ width: 18, height: 18 }} />}
+                        />
+                    </li>
+                );
+            })}
         </ul>
     </Card.Body>
 );
@@ -97,7 +104,7 @@ export const TrainingCard = ({
                     disabled={createDisabled}
                     onClick={onCreateTraining}
                 >
-                    Создать тренировку
+                    {trainings.length ? 'Добавить тренировку' : 'Создать тренировку'}
                 </Button>
             </Card.Footer>
         </Card>

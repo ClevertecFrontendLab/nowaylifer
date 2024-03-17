@@ -8,7 +8,8 @@ import {
 import { CreateExerciseDTO, Exercise, Training, selectTrainingsByDate } from '@redux/training';
 import { Dispatch, PayloadAction, bindActionCreators, createSlice } from '@reduxjs/toolkit';
 import moment, { Moment } from 'moment';
-import { useMemo, useReducer } from 'react';
+import { useMemo } from 'react';
+import useThunkReducer from 'react-hook-thunk-reducer';
 import { ExerciseDrawerMode } from '../exercise-drawer/exercise-drawer';
 
 export type CreateFlow = {
@@ -19,6 +20,11 @@ export type CreateFlow = {
 export type EditFlow = {
     flow: 'edit';
     training: Training;
+};
+
+export type ReadFlow = {
+    flow: 'read';
+    training?: Training | null;
 };
 
 export type TrainingState = {
@@ -34,7 +40,7 @@ export type TrainingState = {
         trainingType: TrainingType;
         initialExercises: (Exercise | CreateExerciseDTO)[];
     };
-    createEditTrainingCard: (CreateFlow | EditFlow) & {
+    createEditTrainingCard: (CreateFlow | EditFlow | ReadFlow) & {
         exercises: (Exercise | CreateExerciseDTO)[];
         selectedTrainingType: TrainingType | null;
         availableTrainingTypes: TrainingType[];
@@ -91,8 +97,14 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
             popoverOpenChange(state, { payload: open }: PayloadAction<boolean>) {
                 return open ? { ...state, popoverOpen: true } : initialState;
             },
-            drawerClosed(state, action: PayloadAction<(CreateExerciseDTO | Exercise)[]>) {
-                state.exerciseDrawer = initialState.exerciseDrawer;
+            closeDrawer(state) {
+                state.exerciseDrawer.open = false;
+            },
+            exercisesEditedOrCreated(
+                state,
+                action: PayloadAction<(CreateExerciseDTO | Exercise)[]>,
+            ) {
+                state.exerciseDrawer.open = false;
 
                 if (action.payload.length) {
                     state.createEditTrainingCard.exercises = action.payload;
@@ -108,11 +120,11 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
                 };
             },
             editExercise(state, { payload: trainingType }: PayloadAction<TrainingType>) {
-                const { exercises } = state.createEditTrainingCard;
+                const { exercises, flow } = state.createEditTrainingCard;
                 state.exerciseDrawer = {
                     trainingType,
                     open: true,
-                    mode: 'edit',
+                    mode: flow,
                     initialExercises: exercises.length ? exercises : [defaultExercise],
                 };
             },
@@ -123,16 +135,13 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
             editTraining(state, { payload: training }: PayloadAction<Training>) {
                 state.createEditTrainingCard = {
                     training,
-                    flow: 'edit',
+                    flow: training.isImplementation ? 'read' : 'edit',
                     exercises: training.exercises,
                     selectedTrainingType: state.trainingTypeMap[training.name],
                     availableTrainingTypes: getAvailableTrainingTypes(training),
                 };
             },
-            cancelCreateEditTraining(state) {
-                state.createEditTrainingCard = initialState.createEditTrainingCard;
-            },
-            trainingCreated(state) {
+            resetCreateEditTrainingCard(state) {
                 state.createEditTrainingCard = initialState.createEditTrainingCard;
             },
             selectTrainingType(state, { payload }: PayloadAction<TrainingType>) {
@@ -154,11 +163,11 @@ export const useTrainingSlice = (date: Moment) => {
         [trainingTypes, trainingTypeMap, trainings, isPast],
     );
 
-    const [state, dispatch] = useReducer(slice.reducer, slice.getInitialState());
+    const [state, dispatch] = useThunkReducer(slice.reducer, slice.getInitialState());
 
     const actions = useMemo(
         () => bindActionCreators(slice.actions, dispatch as Dispatch),
-        [slice.actions],
+        [slice.actions, dispatch],
     );
 
     return [state, actions, { trainingTypes, trainingTypeMap, trainings }] as const;

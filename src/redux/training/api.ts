@@ -7,13 +7,13 @@ import { trainingAdapter } from './adapter';
 
 export const trainingApi = createApi({
     reducerPath: 'trainingApi',
-    baseQuery: baseQueryBackend({ prefixUrl: 'training' }),
+    baseQuery: baseQueryBackend({ minDelay: 1000, prefixUrl: 'training' }),
     tagTypes: ['TRAININGS'],
     endpoints: (builder) => ({
         fetchTrainingList: builder.query<EntityState<Training, Training['_id']>, void>({
             query: () => '',
             transformResponse: transformTrainingResponse,
-            // extraOptions: { minDelay: 1000 },
+            extraOptions: { minDelay: 0 },
         }),
         createTraining: builder.mutation<Training, CreateTrainingDTO>({
             query: (dto) => ({
@@ -47,6 +47,25 @@ export const trainingApi = createApi({
                 method: 'PUT',
                 body: dto,
             }),
+            onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
+                try {
+                    const { data: training } = await queryFulfilled;
+                    dispatch(
+                        trainingApi.util.updateQueryData(
+                            'fetchTrainingList',
+                            undefined,
+                            (entityState) => {
+                                trainingAdapter.updateOne(entityState, {
+                                    id: training._id,
+                                    changes: training,
+                                });
+                            },
+                        ),
+                    );
+                } catch {
+                    // ignore
+                }
+            },
         }),
         deleteTraining: builder.mutation<void, Training['_id']>({
             query: (id) => ({
