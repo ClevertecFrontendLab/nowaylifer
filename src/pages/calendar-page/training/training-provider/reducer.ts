@@ -95,7 +95,11 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
         initialState: initialState,
         reducers: {
             popoverOpenChange(state, { payload: open }: PayloadAction<boolean>) {
-                return open ? { ...state, popoverOpen: true } : initialState;
+                state.popoverOpen = open;
+                if (!open) state.exerciseDrawer.open = false;
+            },
+            resetState() {
+                return initialState;
             },
             closeDrawer(state) {
                 state.exerciseDrawer.open = false;
@@ -105,7 +109,6 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
                 action: PayloadAction<(CreateExerciseDTO | Exercise)[]>,
             ) {
                 state.exerciseDrawer.open = false;
-
                 if (action.payload.length) {
                     state.createEditTrainingCard.exercises = action.payload;
                 }

@@ -1,5 +1,6 @@
 import { AppLoader } from '@components/app-loader';
 import { Breadcrumbs } from '@components/breadcrumbs';
+import { Modal } from '@components/modal';
 import { PageContent } from '@components/page-content';
 import { PageHeader } from '@components/page-header';
 import { PageLayout } from '@components/page-layout';
@@ -7,7 +8,7 @@ import { ServerErrorModal } from '@components/server-error-modal';
 import { useFetchTrainingCatalogQuery } from '@redux/catalogs';
 import { useFetchTrainingListQuery } from '@redux/training';
 import { Path } from '@router/paths';
-import { Modal, Typography } from 'antd';
+import { Typography } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from './calendar';
@@ -38,12 +39,6 @@ const CalendarPage = () => {
                         Попробуйте ещё раз.
                     </Typography.Paragraph>
                 ),
-                closable: true,
-                centered: true,
-                maskStyle: {
-                    backdropFilter: 'var(--modal-backdrop-filter)',
-                    background: 'var(--modal-backdrop-color)',
-                },
                 onCancel: () => modal.destroy(),
                 onOk: () => {
                     modal.destroy();

@@ -1,6 +1,8 @@
+import { Modal } from '@components/modal';
 import { useXss } from '@hooks/use-breakpoint';
 import { Training } from '@redux/training';
-import { Carousel } from 'antd';
+import { waitFor } from '@utils/waitFor';
+import { Carousel, Typography } from 'antd';
 import { CarouselRef } from 'antd/lib/carousel';
 import { useRef } from 'react';
 import { CalendarCellPopover } from '../../calendar-cell-popover';
@@ -9,11 +11,12 @@ import { ExerciseDrawer } from '../exercise-drawer';
 import { TrainingCard } from '../training-card';
 import { useTrainingActions, useTrainingState } from '../training-provider';
 import styles from './training-popover.module.less';
-import { waitFor } from '@utils/waitFor';
 
 const CAROUSEL_SPEED = 200;
+const POPOVER_ANIMATION_DURATION = 200;
 
 const waitForCarouselAnimationEnd = () => waitFor(CAROUSEL_SPEED + 5);
+const waitForPopoverAnimationEnd = () => waitFor(POPOVER_ANIMATION_DURATION + 5);
 
 export const TrainingPopover = () => {
     const carouselRef = useRef<CarouselRef | null>(null);
@@ -21,6 +24,7 @@ export const TrainingPopover = () => {
     const xss = useXss();
     const {
         closeDrawer,
+        resetState,
         addExercise,
         editTraining,
         editExercise,
@@ -53,13 +57,34 @@ export const TrainingPopover = () => {
         resetCreateEditTrainingCard();
     };
 
+    const closePopover = async () => {
+        popoverOpenChange(false);
+        await waitForPopoverAnimationEnd();
+        resetState();
+    };
+
+    const handlePopoverOpenChange = (open: boolean) => {
+        if (!open) return closePopover();
+        popoverOpenChange(true);
+    };
+
+    const handleSaveTrainingError = () => {
+        closePopover();
+        const modal = Modal.error({
+            title: 'При сохранении данных произошла ошибка',
+            content: <Typography.Paragraph>Придётся попробовать ещё раз</Typography.Paragraph>,
+            okText: 'Закрыть',
+            onOk: () => modal.destroy(),
+        });
+    };
+
     return (
         <CalendarCellPopover
             modal={xss}
             open={state.popoverOpen}
             overlayClassName={styles.TrainingPopover}
             overlayStyle={{ width: xss ? 312 : 264 }}
-            onOpenChange={popoverOpenChange}
+            onOpenChange={handlePopoverOpenChange}
             content={
                 <>
                     <ExerciseDrawer {...state.exerciseDrawer} onClose={exercisesEditedOrCreated} />
@@ -79,13 +104,14 @@ export const TrainingPopover = () => {
                             onEditTraining={handleEditTraining}
                             createDisabled={state.createDisabled}
                             onCreateTraining={handleCreateTraining}
-                            onClose={() => popoverOpenChange(false)}
+                            onClose={closePopover}
                         />
                         <CreateEditTrainingCard
                             {...state.createEditTrainingCard}
                             onAddExercise={addExercise}
                             onEditExercise={editExercise}
                             onCancel={handleCancelCreateEditTraining}
+                            onSaveTrainingError={handleSaveTrainingError}
                             onTrainingEdited={handleTrainingCreatedOrEdited}
                             onTrainingCreated={handleTrainingCreatedOrEdited}
                         />

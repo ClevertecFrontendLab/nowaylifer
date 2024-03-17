@@ -57,6 +57,7 @@ export type CreateEditTrainingCardProps = {
     onCancel?(): void;
     onTrainingEdited?(): void;
     onTrainingCreated?(): void;
+    onSaveTrainingError?(error: unknown): void;
     onAddExercise?(trainingType: TrainingType): void;
     onEditExercise?(trainingType: TrainingType, exercise: Exercise | CreateExerciseDTO): void;
 } & (CreateFlow | EditFlow | ReadFlow);
@@ -70,6 +71,7 @@ export const CreateEditTrainingCard = ({
     onEditExercise,
     onTrainingEdited,
     onTrainingCreated,
+    onSaveTrainingError,
     selectedTrainingType,
     availableTrainingTypes,
 }: CreateEditTrainingCardProps) => {
@@ -84,48 +86,43 @@ export const CreateEditTrainingCard = ({
         }
     };
 
-    const handleCreateTraining = async () => {
+    const handleCreateTraining = () => {
         invariant(selectedTrainingType, 'Training type is not selected');
-
-        try {
-            await createTraining({
-                exercises,
-                name: selectedTrainingType.name,
-                date: date.toISOString(),
-            }).unwrap();
-        } catch {
-            return;
-        }
-
-        onTrainingCreated?.();
+        return createTraining({
+            exercises,
+            name: selectedTrainingType.name,
+            date: date.toISOString(),
+        }).unwrap();
     };
 
-    const handleEditTraining = async () => {
+    const handleEditTraining = () => {
         invariant(selectedTrainingType, 'Training type is not selected');
         invariant(training, 'Training is undefined');
-
-        try {
-            await editTraining({
-                id: training._id,
-                training: {
-                    ...training,
-                    exercises,
-                    isImplementation: isPast,
-                    name: selectedTrainingType.name,
-                },
-            });
-        } catch {
-            return;
-        }
-
-        onTrainingEdited?.();
+        return editTraining({
+            id: training._id,
+            training: {
+                ...training,
+                exercises,
+                isImplementation: isPast,
+                name: selectedTrainingType.name,
+            },
+        }).unwrap();
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
+        invariant(flow !== 'read', 'Cannot save changes in "read" flow');
+        const saveFunc = flow === 'create' ? handleCreateTraining : handleEditTraining;
+
+        try {
+            await saveFunc();
+        } catch (error) {
+            onSaveTrainingError?.(error);
+        }
+
         if (flow === 'create') {
-            handleCreateTraining();
-        } else if (flow === 'edit') {
-            handleEditTraining();
+            onTrainingCreated?.();
+        } else {
+            onTrainingEdited?.();
         }
     };
 
