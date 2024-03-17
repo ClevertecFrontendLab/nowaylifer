@@ -8,10 +8,11 @@ import { Moment } from 'moment';
 import { EmptyPlaceholder } from '../empty-placeholder';
 import { TrainingTypeLabel } from '../training-type-lable';
 import styles from './training-card.module.less';
+import { useTraining } from '../training-provider';
 
 type TrainingCardHeaderProps = {
-    onClose?(): void;
     date: Moment;
+    onClose?(): void;
 };
 
 const TrainingCardHeader = ({ date, onClose }: TrainingCardHeaderProps) => (
@@ -39,50 +40,66 @@ const NoTraining = () => (
 type TrainingListProps = {
     trainings: Training[];
     trainingTypeMap: TrainingTypeMap;
+    onEditTraining?(training: Training): void;
 };
 
-const TrainingList = ({ trainings, trainingTypeMap }: TrainingListProps) => (
-    <Card.Body>
-        <ul style={{ display: 'flex', flexDirection: 'column' }}>
-            {trainings.map((tr) => (
-                <li key={tr._id} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <TrainingTypeLabel trainingType={trainingTypeMap[tr.name]} />
-                    <Button icon={<EditOutlined style={{ width: 14 }} />} />
+const TrainingList = ({ trainings, trainingTypeMap, onEditTraining }: TrainingListProps) => (
+    <Card.Body style={{ paddingTop: 16, paddingInline: 0 }}>
+        <ul className={styles.TrainingList}>
+            {trainings.map((training) => (
+                <li key={training._id} className={styles.TrainingListItem}>
+                    <TrainingTypeLabel trainingType={trainingTypeMap[training.name]} />
+                    <Button
+                        type='link'
+                        style={{ height: 22 }}
+                        onClick={() => onEditTraining?.(training)}
+                        icon={<EditOutlined style={{ width: 18, height: 18 }} />}
+                    />
                 </li>
             ))}
         </ul>
     </Card.Body>
 );
 
-export type TrainingCardProps = TrainingCardHeaderProps &
-    TrainingListProps & {
-        onCreateTraining?(): void;
-    };
+export type TrainingCardProps = {
+    onClose?(): void;
+    onCreateTraining?(): void;
+    onEditTraining?(training: Training): void;
+    createDisabled?: boolean;
+};
 
 export const TrainingCard = ({
-    date,
     onClose,
-    trainings,
-    trainingTypeMap,
+    onEditTraining,
     onCreateTraining,
-}: TrainingCardProps) => (
-    <Card className={styles.TrainingCard}>
-        <TrainingCardHeader date={date} onClose={onClose} />
-        {trainings.length ? (
-            <TrainingList trainings={trainings} trainingTypeMap={trainingTypeMap} />
-        ) : (
-            <NoTraining />
-        )}
-        <Card.Footer>
-            <Button
-                type='primary'
-                size='large'
-                block
-                style={{ fontSize: 14 }}
-                onClick={onCreateTraining}
-            >
-                Создать тренировку
-            </Button>
-        </Card.Footer>
-    </Card>
-);
+    createDisabled,
+}: TrainingCardProps) => {
+    const { trainings, date, trainingTypeMap } = useTraining();
+
+    return (
+        <Card className={styles.TrainingCard}>
+            <TrainingCardHeader date={date} onClose={onClose} />
+            {trainings.length ? (
+                <TrainingList
+                    trainings={trainings}
+                    onEditTraining={onEditTraining}
+                    trainingTypeMap={trainingTypeMap}
+                />
+            ) : (
+                <NoTraining />
+            )}
+            <Card.Footer>
+                <Button
+                    block
+                    size='large'
+                    type='primary'
+                    style={{ fontSize: 14 }}
+                    disabled={createDisabled}
+                    onClick={onCreateTraining}
+                >
+                    Создать тренировку
+                </Button>
+            </Card.Footer>
+        </Card>
+    );
+};

@@ -25,3 +25,22 @@
         }
     }
 }
+
+.ExerciseList {
+    min-height: 84px;
+    padding-block: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ExerciseListItem {
+    display: flex;
+    justify-content: space-between;
+    transition: background 0.2s;
+    padding-left: 12px;
+
+    &:hover {
+        background: var(--theme-gray-3);
+    }
+}

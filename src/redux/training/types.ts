@@ -11,7 +11,7 @@ export type Training = {
     _id: string;
     name: string;
     date: string; // ISO Date string
-    isImplementation?: false;
+    isImplementation?: boolean;
     userId: string;
     parameters?: {
         repeat: boolean;
@@ -28,4 +28,4 @@ export type CreateTrainingDTO = Omit<Training, '_id' | 'userId' | 'exercises'> &
     exercises: CreateExerciseDTO[];
 };
 
-export type ChangeTrainingDTO = CreateTrainingDTO;
+export type EditTrainingDTO = CreateTrainingDTO;

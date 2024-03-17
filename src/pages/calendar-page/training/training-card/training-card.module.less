@@ -5,6 +5,7 @@
     justify-content: space-between;
     border-bottom: none;
     padding-bottom: 0;
+    padding-top: 16px;
 }
 
 .TrainingCardTitle {
@@ -15,4 +16,23 @@
 
 .CloseButton:global.ant-btn {
     @card-navigation-btn();
+}
+
+.TrainingList {
+    min-height: 84px;
+    padding-block: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.TrainingListItem {
+    display: flex;
+    justify-content: space-between;
+    transition: background 0.2s;
+    padding-left: 12px;
+
+    &:hover {
+        background: var(--theme-gray-3);
+    }
 }
