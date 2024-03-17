@@ -52,8 +52,6 @@ export const ExerciseDrawer = ({
     const { date } = useTraining();
     const xss = useXss();
 
-    console.log(formInstances.current);
-
     useEffect(() => {
         setExercises(initialExercises);
     }, [initialExercises]);

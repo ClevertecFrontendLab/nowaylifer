@@ -10,10 +10,70 @@
 
         .ant-picker-panel {
             background: none;
+
+            .ant-picker-cell-selected {
+                .ant-picker-calendar-date,
+                .ant-picker-calendar-date-today {
+                    background: white;
+                }
+            }
         }
 
         .ant-picker-cell-inner {
             background: white;
+            min-height: 143px;
+        }
+    }
+
+    &.ant-picker-calendar-mini {
+        .ant-picker-cell .ant-picker-cell-inner {
+            min-width: 37px;
+        }
+
+        .ant-picker-calendar-date-value {
+            pointer-events: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ant-picker-cell-in-view.ant-picker-cell-today {
+            .ant-picker-cell-inner:before {
+                pointer-events: none;
+            }
+        }
+
+        .ant-picker-cell-in-view.ant-picker-cell-selected {
+            .ant-picker-cell-inner {
+                color: revert;
+                background: var(--theme-gray-3);
+            }
+        }
+
+        /* revert default media quires */
+
+        @media only screen and (max-width: 480px) {
+            .ant-picker-calendar-header {
+                display: flex;
+
+                .ant-picker-calendar-year-select {
+                    width: revert;
+                }
+
+                .ant-picker-calendar-month-select {
+                    width: revert;
+                }
+
+                .ant-picker-calendar-mode-switch {
+                    width: revert;
+                    margin-top: revert;
+                    margin-left: revert;
+
+                    & > label {
+                        width: revert;
+                        text-align: revert;
+                    }
+                }
+            }
         }
     }
 }

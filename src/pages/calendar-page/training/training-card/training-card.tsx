@@ -104,7 +104,7 @@ export const TrainingCard = ({
                     disabled={createDisabled}
                     onClick={onCreateTraining}
                 >
-                    {trainings.length ? 'Добавить тренировку' : 'Создать тренировку'}
+                    Создать тренировку
                 </Button>
             </Card.Footer>
         </Card>

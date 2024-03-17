@@ -1,0 +1,14 @@
+.TrainingList {
+    display: flex;
+    flex-direction: column;
+}
+
+.HasTraining {
+    inset: 0;
+    position: absolute;
+    background: var(--theme-primary-light-1);
+
+    :global(.ant-picker-cell-selected) & {
+        background: none;
+    }
+}

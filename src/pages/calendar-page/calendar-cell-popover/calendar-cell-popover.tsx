@@ -21,6 +21,6 @@ export const CalendarCellPopover = ({
         overlayClassName={cn(overlayClassName, modal && styles.ModalMode)}
         {...props}
     >
-        <div style={{ position: 'absolute', inset: 0 }} />
+        <div className={styles.PopoverTrigger} />
     </Popover>
 );

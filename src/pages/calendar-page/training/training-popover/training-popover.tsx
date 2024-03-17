@@ -18,7 +18,11 @@ const POPOVER_ANIMATION_DURATION = 200;
 const waitForCarouselAnimationEnd = () => waitFor(CAROUSEL_SPEED + 5);
 const waitForPopoverAnimationEnd = () => waitFor(POPOVER_ANIMATION_DURATION + 5);
 
-export const TrainingPopover = () => {
+type TrainingPopoverProps = {
+    onPopoverClose?(): void;
+};
+
+export const TrainingPopover = ({ onPopoverClose }: TrainingPopoverProps) => {
     const carouselRef = useRef<CarouselRef | null>(null);
     const state = useTrainingState();
     const xss = useXss();
@@ -59,6 +63,7 @@ export const TrainingPopover = () => {
 
     const closePopover = async () => {
         popoverOpenChange(false);
+        onPopoverClose?.();
         await waitForPopoverAnimationEnd();
         resetState();
     };
