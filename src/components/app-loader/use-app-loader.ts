@@ -1,9 +1,4 @@
-import { useContext } from 'react';
 import { AppLoaderContext } from './app-loader-provider';
-import invariant from 'invariant';
+import { useInvariantContext } from '@hooks/use-invariant-context';
 
-export const useAppLoader = () => {
-    const context = useContext(AppLoaderContext);
-    invariant(context, 'Out of AppLoader context');
-    return context;
-};
+export const useAppLoader = () => useInvariantContext(AppLoaderContext);

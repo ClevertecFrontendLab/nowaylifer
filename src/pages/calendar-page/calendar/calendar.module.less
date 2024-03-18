@@ -11,10 +11,23 @@
         .ant-picker-panel {
             background: none;
 
-            .ant-picker-cell-selected {
+            .ant-picker-cell-in-view.ant-picker-cell-selected {
+                .ant-picker-cell-inner {
+                    color: revert;
+                }
+            }
+
+            .ant-picker-cell {
                 .ant-picker-calendar-date,
                 .ant-picker-calendar-date-today {
                     background: white;
+                }
+
+                &:hover {
+                    .ant-picker-calendar-date,
+                    .ant-picker-calendar-date-today {
+                        background: var(--theme-gray-3);
+                    }
                 }
             }
         }

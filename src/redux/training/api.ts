@@ -2,24 +2,27 @@ import { baseQueryBackend } from '@redux/base-query-backend';
 import { EntityState } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { transformTrainingResponse } from './adapter';
-import { EditTrainingDTO, CreateTrainingDTO, Training } from './types';
+import { EditTrainingDTO, CreateTrainingDTO, Training, Exercise } from './types';
 import { trainingAdapter } from './adapter';
+
+const prepareDTO = (dto: CreateTrainingDTO) => {
+    dto.exercises = dto.exercises.map(({ _id, ...exercise }) => exercise) as Exercise[];
+    return dto;
+};
 
 export const trainingApi = createApi({
     reducerPath: 'trainingApi',
     baseQuery: baseQueryBackend({ minDelay: 1000, prefixUrl: 'training' }),
-    tagTypes: ['TRAININGS'],
     endpoints: (builder) => ({
         fetchTrainingList: builder.query<EntityState<Training, Training['_id']>, void>({
             query: () => '',
             transformResponse: transformTrainingResponse,
-            extraOptions: { minDelay: 0 },
         }),
         createTraining: builder.mutation<Training, CreateTrainingDTO>({
             query: (dto) => ({
                 url: '',
                 method: 'POST',
-                body: dto,
+                body: prepareDTO(dto),
             }),
             onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
                 try {
@@ -67,21 +70,14 @@ export const trainingApi = createApi({
                 }
             },
         }),
-        deleteTraining: builder.mutation<void, Training['_id']>({
-            query: (id) => ({
-                url: id,
-                method: 'DELETE',
-            }),
-        }),
     }),
 });
 
 export const {
-    useFetchTrainingListQuery,
     useLazyFetchTrainingListQuery,
+    useFetchTrainingListQuery,
     useCreateTrainingMutation,
     useEditTrainingMutation,
-    useDeleteTrainingMutation,
 } = trainingApi;
 
 export const { useQueryState: useFetchTrainingListState } = trainingApi.endpoints.fetchTrainingList;

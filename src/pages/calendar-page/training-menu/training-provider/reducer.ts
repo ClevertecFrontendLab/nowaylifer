@@ -1,15 +1,15 @@
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
+import { createDefaultExercise } from '@pages/calendar-page/utils';
 import {
     TrainingType,
     TrainingTypeMap,
     selectTrainingTypeMap,
     selectTrainingTypes,
 } from '@redux/catalogs';
-import { CreateExerciseDTO, Exercise, Training, selectTrainingsByDate } from '@redux/training';
+import { Exercise, Training, selectTrainingsByDate } from '@redux/training';
 import { Dispatch, PayloadAction, bindActionCreators, createSlice } from '@reduxjs/toolkit';
 import moment, { Moment } from 'moment';
-import { useMemo } from 'react';
-import useThunkReducer from 'react-hook-thunk-reducer';
+import { useMemo, useReducer } from 'react';
 import { ExerciseDrawerMode } from '../exercise-drawer/exercise-drawer';
 
 export type CreateFlow = {
@@ -34,14 +34,15 @@ export type TrainingState = {
     readonly createDisabled: boolean;
     readonly isPast: boolean;
     popoverOpen: boolean;
+    currentScreen: 'trainings' | 'exercises';
     exerciseDrawer: {
         open: boolean;
         mode: ExerciseDrawerMode;
         trainingType: TrainingType;
-        initialExercises: (Exercise | CreateExerciseDTO)[];
+        initialExercises: Exercise[];
     };
     createEditTrainingCard: (CreateFlow | EditFlow | ReadFlow) & {
-        exercises: (Exercise | CreateExerciseDTO)[];
+        exercises: Exercise[];
         selectedTrainingType: TrainingType | null;
         availableTrainingTypes: TrainingType[];
     };
@@ -52,20 +53,14 @@ type LazyState = Pick<
     'trainingTypeMap' | 'trainingTypes' | 'trainings' | 'createDisabled' | 'isPast'
 >;
 
-export const defaultExercise: CreateExerciseDTO = {
-    name: '',
-    replays: 1,
-    weight: 0,
-    approaches: 3,
-};
-
 const initState = (lazyState: LazyState): TrainingState => ({
     ...lazyState,
+    currentScreen: 'trainings',
     popoverOpen: false,
     exerciseDrawer: {
         open: false,
         mode: 'create',
-        initialExercises: [defaultExercise],
+        initialExercises: [createDefaultExercise()],
         trainingType: lazyState.trainingTypes[0],
     },
     createEditTrainingCard: {
@@ -98,17 +93,19 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
                 state.popoverOpen = open;
                 if (!open) state.exerciseDrawer.open = false;
             },
+            switchScreen(state, { payload }: PayloadAction<'trainings' | 'exercises'>) {
+                state.currentScreen = payload;
+            },
             resetState() {
                 return initialState;
+            },
+            resetDrawerState(state) {
+                state.exerciseDrawer = initialState.exerciseDrawer;
             },
             closeDrawer(state) {
                 state.exerciseDrawer.open = false;
             },
-            exercisesEditedOrCreated(
-                state,
-                action: PayloadAction<(CreateExerciseDTO | Exercise)[]>,
-            ) {
-                state.exerciseDrawer.open = false;
+            exercisesEditedOrCreated(state, action: PayloadAction<Exercise[]>) {
                 if (action.payload.length) {
                     state.createEditTrainingCard.exercises = action.payload;
                 }
@@ -119,7 +116,7 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
                     trainingType,
                     open: true,
                     mode: 'create',
-                    initialExercises: exercises.length ? exercises : [defaultExercise],
+                    initialExercises: exercises.length ? exercises : [createDefaultExercise()],
                 };
             },
             editExercise(state, { payload: trainingType }: PayloadAction<TrainingType>) {
@@ -128,7 +125,7 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
                     trainingType,
                     open: true,
                     mode: flow,
-                    initialExercises: exercises.length ? exercises : [defaultExercise],
+                    initialExercises: exercises.length ? exercises : [createDefaultExercise()],
                 };
             },
             createTraining(state) {
@@ -166,7 +163,7 @@ export const useTrainingSlice = (date: Moment) => {
         [trainingTypes, trainingTypeMap, trainings, isPast],
     );
 
-    const [state, dispatch] = useThunkReducer(slice.reducer, slice.getInitialState());
+    const [state, dispatch] = useReducer(slice.reducer, slice.getInitialState());
 
     const actions = useMemo(
         () => bindActionCreators(slice.actions, dispatch as Dispatch),

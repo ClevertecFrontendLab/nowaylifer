@@ -2,8 +2,9 @@ import { Modal as ModalAntd, ModalFuncProps, ModalProps } from 'antd';
 
 export type { ModalProps } from 'antd';
 
-const defaultModalProps = {
+const defaultModalProps: ModalProps = {
     centered: true,
+    okButtonProps: { size: 'large' },
     maskStyle: {
         backdropFilter: 'var(--modal-backdrop-filter)',
         background: 'var(--modal-backdrop-color)',

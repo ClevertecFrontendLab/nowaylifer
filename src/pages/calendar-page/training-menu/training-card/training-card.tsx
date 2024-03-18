@@ -3,12 +3,11 @@ import { Card } from '@components/card';
 import { TrainingTypeMap } from '@redux/catalogs';
 import { Training } from '@redux/training';
 import { Button, Typography } from 'antd';
-import cn from 'classnames';
 import { Moment } from 'moment';
 import { EmptyPlaceholder } from '../empty-placeholder';
-import { TrainingTypeLabel } from '../training-type-lable';
-import styles from './training-card.module.less';
 import { useTraining } from '../training-provider';
+import { TrainingTypeBadge } from '../training-type-badge';
+import styles from './training-card.module.less';
 
 type TrainingCardHeaderProps = {
     date: Moment;
@@ -18,12 +17,13 @@ type TrainingCardHeaderProps = {
 const TrainingCardHeader = ({ date, onClose }: TrainingCardHeaderProps) => (
     <Card.Header className={styles.TrainingCardHeader}>
         <Typography.Text className={styles.TrainingCardTitle}>
-            Тренировки на {date.format('DD.MM.YYYY')}
+            Тренировки на {date.local().format('DD.MM.YYYY')}
         </Typography.Text>
         <Button
             onClick={onClose}
-            className={cn(styles.CloseButton)}
+            className={styles.CloseButton}
             icon={<CloseOutlined style={{ width: 12, margin: '0 auto' }} />}
+            data-test-id='modal-create-training-button-close'
         />
     </Card.Header>
 );
@@ -41,12 +41,18 @@ type TrainingListProps = {
     trainings: Training[];
     trainingTypeMap: TrainingTypeMap;
     onEditTraining?(training: Training): void;
+    visible: boolean;
 };
 
-const TrainingList = ({ trainings, trainingTypeMap, onEditTraining }: TrainingListProps) => (
+const TrainingList = ({
+    visible,
+    trainings,
+    trainingTypeMap,
+    onEditTraining,
+}: TrainingListProps) => (
     <Card.Body style={{ paddingTop: 16, paddingInline: 0 }}>
         <ul className={styles.TrainingList}>
-            {trainings.map((training) => {
+            {trainings.map((training, idx) => {
                 const style =
                     'isImplementation' in training && training.isImplementation
                         ? { color: 'var(--character-light-secondary-45)' }
@@ -54,12 +60,15 @@ const TrainingList = ({ trainings, trainingTypeMap, onEditTraining }: TrainingLi
 
                 return (
                     <li key={training._id} className={styles.TrainingListItem} style={style}>
-                        <TrainingTypeLabel trainingType={trainingTypeMap[training.name]} />
+                        <TrainingTypeBadge trainingType={trainingTypeMap[training.name]} />
                         <Button
                             type='link'
                             style={{ height: 22, ...style }}
                             onClick={() => onEditTraining?.(training)}
                             icon={<EditOutlined style={{ width: 18, height: 18 }} />}
+                            data-test-id={
+                                visible ? `modal-update-training-edit-button${idx}` : undefined
+                            }
                         />
                     </li>
                 );
@@ -69,6 +78,7 @@ const TrainingList = ({ trainings, trainingTypeMap, onEditTraining }: TrainingLi
 );
 
 export type TrainingCardProps = {
+    visible: boolean;
     onClose?(): void;
     onCreateTraining?(): void;
     onEditTraining?(training: Training): void;
@@ -77,17 +87,19 @@ export type TrainingCardProps = {
 
 export const TrainingCard = ({
     onClose,
+    visible,
+    createDisabled,
     onEditTraining,
     onCreateTraining,
-    createDisabled,
 }: TrainingCardProps) => {
     const { trainings, date, trainingTypeMap } = useTraining();
 
     return (
-        <Card className={styles.TrainingCard}>
+        <Card className={styles.TrainingCard} data-test-id='modal-create-training'>
             <TrainingCardHeader date={date} onClose={onClose} />
             {trainings.length ? (
                 <TrainingList
+                    visible={visible}
                     trainings={trainings}
                     onEditTraining={onEditTraining}
                     trainingTypeMap={trainingTypeMap}

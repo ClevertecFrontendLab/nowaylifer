@@ -6,7 +6,7 @@ import { TrainingType } from './types';
 
 export const catalogsApi = createApi({
     reducerPath: 'catalogsApi',
-    baseQuery: baseQueryBackend({ prefixUrl: 'catalogs', minDelay: 0 }),
+    baseQuery: baseQueryBackend({ prefixUrl: 'catalogs', minDelay: 500 }),
     endpoints: (builder) => ({
         fetchTrainingCatalog: builder.query<EntityState<TrainingType, TrainingType['name']>, void>({
             query: () => '/training-list',

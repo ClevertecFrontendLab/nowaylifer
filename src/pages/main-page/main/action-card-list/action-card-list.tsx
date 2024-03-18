@@ -19,8 +19,9 @@ const cards = [
             <LoadCalendarPage
                 render={(load) => (
                     <CardButton
-                        icon={<CalendarTwoTone twoToneColor={['currentColor', 'currentColor']} />}
                         onClick={load}
+                        icon={<CalendarTwoTone twoToneColor={['currentColor', 'currentColor']} />}
+                        data-test-id='menu-button-calendar'
                     >
                         Календарь
                     </CardButton>

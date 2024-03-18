@@ -4,6 +4,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ConfigProvider } from 'antd';
+import React from 'react';
 
 import { routes } from './router/routes';
 
@@ -23,15 +24,25 @@ ConfigProvider.config({
 const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
-// React.StrictMode is disabled because it's breaks Antd Carousel in TrainingPopover
+if ('Cypress' in window) {
+    const style = document.createElement('style');
+    style.innerHTML = `*, *::after, *::before {
+        animation-duration: 0s !important;
+        transition-duration: 0s !important;
+      }`;
+    document.head.appendChild(style);
+}
+
 root.render(
-    <Provider store={store}>
-        <PersistGate persistor={persistor}>
-            <AppLoaderProvider>
-                <AppModalProvider>
-                    <Router history={history}>{routes}</Router>
-                </AppModalProvider>
-            </AppLoaderProvider>
-        </PersistGate>
-    </Provider>,
+    <React.StrictMode>
+        <Provider store={store}>
+            <PersistGate persistor={persistor}>
+                <AppLoaderProvider>
+                    <AppModalProvider>
+                        <Router history={history}>{routes}</Router>
+                    </AppModalProvider>
+                </AppLoaderProvider>
+            </PersistGate>
+        </Provider>
+    </React.StrictMode>,
 );

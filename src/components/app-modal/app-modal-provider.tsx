@@ -10,7 +10,7 @@ import {
 } from 'react';
 
 type AppModalContext = {
-    serverError(props?: Omit<ModalProps, 'open'>): void;
+    serverError(props?: ModalProps): void;
     close(): void;
 };
 
@@ -31,9 +31,16 @@ export const AppModalProvider = (props: PropsWithChildren) => {
         () => ({
             close: () => setShowModal(false),
             serverError: (additionalProps) =>
-                createModal((props) => (
-                    <ServerErrorModal onCancel={closeModal} {...props} {...additionalProps} />
-                )),
+                createModal(
+                    (props) =>
+                        console.log(additionalProps) || (
+                            <ServerErrorModal
+                                onCancel={closeModal}
+                                {...props}
+                                {...additionalProps}
+                            />
+                        ),
+                ),
         }),
         [closeModal],
     );

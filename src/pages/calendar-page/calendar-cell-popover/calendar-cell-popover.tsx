@@ -8,6 +8,7 @@ type CalendarCellPopoverProps = PopoverProps & {
 
 export const CalendarCellPopover = ({
     modal,
+    content,
     overlayClassName,
     ...props
 }: CalendarCellPopoverProps) => (
@@ -19,6 +20,7 @@ export const CalendarCellPopover = ({
         getPopupContainer={(triggerNode) => triggerNode}
         align={modal ? undefined : { points: ['tl', 'tl'] }}
         overlayClassName={cn(overlayClassName, modal && styles.ModalMode)}
+        content={<div title=''>{typeof content === 'function' ? content() : content}</div>}
         {...props}
     >
         <div className={styles.PopoverTrigger} />

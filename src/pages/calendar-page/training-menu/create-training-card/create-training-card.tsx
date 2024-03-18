@@ -2,10 +2,10 @@ import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons';
 import { Card } from '@components/card';
 import { TrainingType } from '@redux/catalogs';
 import {
-    CreateExerciseDTO,
     Exercise,
     useCreateTrainingMutation,
     useEditTrainingMutation,
+    useLazyFetchTrainingListQuery,
 } from '@redux/training';
 import { Button, Select } from 'antd';
 import invariant from 'invariant';
@@ -21,12 +21,13 @@ const NoExercise = () => (
 );
 
 type ExerciseListProps = {
-    exercises: (Exercise | CreateExerciseDTO)[];
-    onEditExercise?(exercise: Exercise | CreateExerciseDTO): void;
+    visible: boolean;
+    exercises: Exercise[];
+    onEditExercise?(exercise: Exercise): void;
     flow: (CreateFlow | EditFlow | ReadFlow)['flow'];
 };
 
-const ExerciseList = ({ flow, exercises, onEditExercise }: ExerciseListProps) => (
+const ExerciseList = ({ visible, flow, exercises, onEditExercise }: ExerciseListProps) => (
     <Card.Body style={{ paddingTop: 16, paddingInline: 0 }}>
         <ul className={styles.ExerciseList}>
             {exercises.map((exercise, idx) => (
@@ -43,6 +44,9 @@ const ExerciseList = ({ flow, exercises, onEditExercise }: ExerciseListProps) =>
                         }}
                         onClick={() => onEditExercise?.(exercise)}
                         icon={<EditOutlined style={{ width: 18, height: 18 }} />}
+                        data-test-id={
+                            visible ? `modal-update-training-edit-button${idx}` : undefined
+                        }
                     />
                 </li>
             ))}
@@ -51,19 +55,21 @@ const ExerciseList = ({ flow, exercises, onEditExercise }: ExerciseListProps) =>
 );
 
 export type CreateEditTrainingCardProps = {
-    exercises: (Exercise | CreateExerciseDTO)[];
     selectedTrainingType: TrainingType | null;
     availableTrainingTypes: TrainingType[];
+    exercises: Exercise[];
+    visible: boolean;
     onCancel?(): void;
     onTrainingEdited?(): void;
     onTrainingCreated?(): void;
     onSaveTrainingError?(error: unknown): void;
     onAddExercise?(trainingType: TrainingType): void;
-    onEditExercise?(trainingType: TrainingType, exercise: Exercise | CreateExerciseDTO): void;
+    onEditExercise?(trainingType: TrainingType, exercise: Exercise): void;
 } & (CreateFlow | EditFlow | ReadFlow);
 
 export const CreateEditTrainingCard = ({
     flow,
+    visible,
     training,
     onCancel,
     exercises,
@@ -77,10 +83,11 @@ export const CreateEditTrainingCard = ({
 }: CreateEditTrainingCardProps) => {
     const [createTraining, { isLoading: isCreateTrainingLoading }] = useCreateTrainingMutation();
     const [editTraining, { isLoading: isEditTrainingLoading }] = useEditTrainingMutation();
+    const [fetchTrainings] = useLazyFetchTrainingListQuery();
     const { selectTrainingType } = useTrainingActions();
     const { date, isPast } = useTraining();
 
-    const handleEditExercise = (exercise: Exercise | CreateExerciseDTO) => {
+    const handleEditExercise = (exercise: Exercise) => {
         if (selectedTrainingType) {
             onEditExercise?.(selectedTrainingType, exercise);
         }
@@ -122,17 +129,19 @@ export const CreateEditTrainingCard = ({
         if (flow === 'create') {
             onTrainingCreated?.();
         } else {
+            await fetchTrainings().unwrap();
             onTrainingEdited?.();
         }
     };
 
     return (
-        <Card className={styles.TrainingCard}>
+        <Card className={styles.TrainingCard} data-test-id='modal-create-exercise'>
             <Card.Header className={styles.CreateTrainingCardHeader}>
                 <Button
                     onClick={onCancel}
                     icon={<ArrowLeftOutlined />}
                     className={styles.CancelButton}
+                    data-test-id='modal-exercise-training-button-close'
                 />
                 <Select
                     size='small'
@@ -143,10 +152,12 @@ export const CreateEditTrainingCard = ({
                     className={styles.TrainingTypeSelect}
                     fieldNames={{ label: 'name', value: 'key' }}
                     onSelect={(_, option) => selectTrainingType(option)}
+                    data-test-id='modal-create-exercise-select'
                 />
             </Card.Header>
             {exercises.length ? (
                 <ExerciseList
+                    visible={visible}
                     flow={flow}
                     exercises={exercises}
                     onEditExercise={handleEditExercise}

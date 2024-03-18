@@ -14,10 +14,10 @@ export const { selectAll: selectTrainingList, selectById: selectTrainingById } =
 
 const selectTrainingsGroupedByDate = createSelector(
     (state: RootState) => selectTrainingList(state),
-    (list) => groupBy(list, (item) => moment(item.date).format('DD-MM-YYYY')),
+    (list) => groupBy(list, (item) => moment(item.date).utc().format('DD-MM-YYYY')),
 );
 
 const defaultTrainingList: Training[] = [];
 
 export const selectTrainingsByDate = (date: Moment) => (state: RootState) =>
-    selectTrainingsGroupedByDate(state)[date.format('DD-MM-YYYY')] ?? defaultTrainingList;
+    selectTrainingsGroupedByDate(state)[date.utc().format('DD-MM-YYYY')] ?? defaultTrainingList;
