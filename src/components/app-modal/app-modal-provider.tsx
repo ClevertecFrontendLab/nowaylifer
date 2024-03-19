@@ -31,16 +31,9 @@ export const AppModalProvider = (props: PropsWithChildren) => {
         () => ({
             close: () => setShowModal(false),
             serverError: (additionalProps) =>
-                createModal(
-                    (props) =>
-                        console.log(additionalProps) || (
-                            <ServerErrorModal
-                                onCancel={closeModal}
-                                {...props}
-                                {...additionalProps}
-                            />
-                        ),
-                ),
+                createModal((props) => (
+                    <ServerErrorModal onCancel={closeModal} {...props} {...additionalProps} />
+                )),
         }),
         [closeModal],
     );

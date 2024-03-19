@@ -61,9 +61,8 @@ export const ExerciseDrawer = ({
         setExercises(initialExercises);
     }, [initialExercises]);
 
-    const handleClose = () => {
+    const handleClose = () =>
         onClose?.(mode === 'read' ? [] : getValidExercises(exerciseFormMap.current));
-    };
 
     const handleSelectFormChange = (index: number, selected: boolean) => {
         setSelectedFormIndexes((prev) =>

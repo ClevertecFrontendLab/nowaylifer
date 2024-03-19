@@ -16,7 +16,12 @@ export const TrainingTypeBadge = ({ trainingType, style, ...props }: TrainingTyp
     return (
         <div style={{ ...wrapperStyle, ...style }} {...props}>
             <span
-                style={{ borderRadius: '50%', width: 6, height: 6, background: trainingType.color }}
+                style={{
+                    borderRadius: '50%',
+                    width: 6,
+                    height: 6,
+                    background: trainingType.color,
+                }}
             ></span>
             {trainingType.name}
         </div>

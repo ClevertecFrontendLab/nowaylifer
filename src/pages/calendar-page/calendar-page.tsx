@@ -12,7 +12,6 @@ import { useNavigate } from 'react-router-dom';
 import { TrainingCalendar } from './calendar';
 import styles from './calendar-page.module.less';
 import { showFetchCatalogErrorModal } from './fetch-catalog-error-modal';
-import { Calendar } from 'antd';
 
 const CalendarPage = () => {
     const navigate = useNavigate();
@@ -57,11 +56,9 @@ const CalendarPage = () => {
                     <Breadcrumbs />
                 </PageHeader>
                 <PageContent className={styles.Content}>
-                    {isTrainingListSuccess && isTrainingCatalogSuccess ? (
-                        <TrainingCalendar />
-                    ) : (
-                        <Calendar />
-                    )}
+                    <TrainingCalendar
+                        disabled={!isTrainingListSuccess || !isTrainingCatalogSuccess}
+                    />
                 </PageContent>
             </PageLayout>
         </>

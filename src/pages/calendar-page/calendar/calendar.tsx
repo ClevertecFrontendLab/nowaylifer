@@ -16,7 +16,11 @@ moment.locale('ru', {
     },
 });
 
-export const TrainingCalendar = () => {
+type TrainingCalendarProps = {
+    disabled?: boolean;
+};
+
+export const TrainingCalendar = ({ disabled }: TrainingCalendarProps) => {
     const [selectedDate, setSelectedDate] = useState<Moment | undefined>(moment);
     const xs = useXs();
     const isCalendarFullScreen = !xs;
@@ -51,7 +55,7 @@ export const TrainingCalendar = () => {
                             ? date.local().format('DD')
                             : date.local().format('D')}
                     </div>
-                    {renderCellContent(date)}
+                    {!disabled && renderCellContent(date)}
                 </div>
             )}
         />

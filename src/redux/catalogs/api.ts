@@ -16,3 +16,5 @@ export const catalogsApi = createApi({
 });
 
 export const { useFetchTrainingCatalogQuery, useLazyFetchTrainingCatalogQuery } = catalogsApi;
+export const { useQueryState: useFetchTrainingCatalogState } =
+    catalogsApi.endpoints.fetchTrainingCatalog;

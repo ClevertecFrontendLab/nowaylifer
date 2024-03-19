@@ -15,8 +15,6 @@ import { loadable } from './loadable';
 const loginOrResult = new RegExp(`(${Path.Login})|(${Path.Result})`);
 
 const CalendarPage = loadable(() => import('@pages/calendar-page/calendar-page'));
-/* const FeedbackPage = loadable(() => import('@pages/feedback-page'));
-const MainPage = loadable(() => import('@pages/main-page')); */
 
 export const routes = (
     <Routes>
