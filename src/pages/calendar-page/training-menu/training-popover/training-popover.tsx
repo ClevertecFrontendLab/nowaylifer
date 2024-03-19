@@ -1,9 +1,8 @@
+import { Carousel, CarouselRef } from '@components/carousel';
 import { Modal } from '@components/modal';
 import { useXss } from '@hooks/use-breakpoint';
-import { Exercise, Training } from '@redux/training';
-import { waitFor } from '@utils/waitFor';
-import { ButtonProps, Carousel, Typography } from 'antd';
-import { CarouselRef } from 'antd/lib/carousel';
+import { Training } from '@redux/training';
+import { ButtonProps, Typography } from 'antd';
 import { useRef } from 'react';
 import { CalendarCellPopover } from '../../calendar-cell-popover';
 import { CreateEditTrainingCard } from '../create-training-card';
@@ -12,24 +11,12 @@ import { TrainingCard } from '../training-card';
 import { useTrainingActions, useTrainingState } from '../training-provider';
 import styles from './training-popover.module.less';
 
-const CAROUSEL_SPEED = 200;
-const POPOVER_ANIMATION_DURATION = 200;
-const DRAWER_ANIMATION_DURATION = 300;
-
-const waitForCarouselAnimationEnd = () => waitFor(CAROUSEL_SPEED + 5);
-const waitForPopoverAnimationEnd = () => waitFor(POPOVER_ANIMATION_DURATION + 5);
-const waitForDrawerAnimationEnd = () => waitFor(DRAWER_ANIMATION_DURATION + 5);
-
-type TrainingPopoverProps = {
-    onPopoverClose?(): void;
-};
-
-export const TrainingPopover = ({ onPopoverClose }: TrainingPopoverProps) => {
+export const TrainingPopover = () => {
     const carouselRef = useRef<CarouselRef | null>(null);
     const state = useTrainingState();
     const xss = useXss();
     const {
-        closeDrawer: closeDrawerAction,
+        closeDrawer,
         resetDrawerState,
         resetState,
         addExercise,
@@ -45,13 +32,11 @@ export const TrainingPopover = ({ onPopoverClose }: TrainingPopoverProps) => {
     const switchToTrainingCard = () => {
         carouselRef.current?.goTo(0);
         switchScreen('trainings');
-        return waitForCarouselAnimationEnd();
     };
 
     const switchToCreateEditCard = () => {
         carouselRef.current?.goTo(1);
         switchScreen('exercises');
-        return waitForCarouselAnimationEnd();
     };
 
     const handleEditTraining = (training: Training) => {
@@ -64,42 +49,13 @@ export const TrainingPopover = ({ onPopoverClose }: TrainingPopoverProps) => {
         switchToCreateEditCard();
     };
 
-    const closeDrawer = async () => {
-        closeDrawerAction();
-        await waitForDrawerAnimationEnd();
-        resetDrawerState();
-    };
-
     const handleCancelCreateEditTraining = async () => {
         closeDrawer();
-        await switchToTrainingCard();
-        resetCreateEditTrainingCard();
-    };
-
-    const handleTrainingCreatedOrEdited = async () => {
-        await switchToTrainingCard();
-        resetCreateEditTrainingCard();
-    };
-
-    const closePopover = async () => {
-        popoverOpenChange(false);
-        onPopoverClose?.();
-        await waitForPopoverAnimationEnd();
-        resetState();
-    };
-
-    const handlePopoverOpenChange = (open: boolean) => {
-        if (!open) return closePopover();
-        popoverOpenChange(true);
-    };
-
-    const handleExerciseEditedOrCreated = async (exercises: Exercise[]) => {
-        exercisesEditedOrCreated(exercises);
-        closeDrawer();
+        switchToTrainingCard();
     };
 
     const handleSaveTrainingError = () => {
-        closePopover();
+        popoverOpenChange(false);
         const modal = Modal.error({
             title: (
                 <Typography.Text data-test-id='modal-error-user-training-title'>
@@ -120,19 +76,22 @@ export const TrainingPopover = ({ onPopoverClose }: TrainingPopoverProps) => {
     return (
         <CalendarCellPopover
             modal={xss}
+            onDestroy={resetState}
             open={state.popoverOpen}
             overlayClassName={styles.TrainingPopover}
             overlayStyle={{ width: xss ? 312 : 264 }}
-            onOpenChange={handlePopoverOpenChange}
+            onOpenChange={popoverOpenChange}
             content={
                 <>
                     <ExerciseDrawer
                         {...state.exerciseDrawer}
-                        onClose={handleExerciseEditedOrCreated}
+                        onDestroy={resetDrawerState}
+                        onClose={exercisesEditedOrCreated}
                     />
                     <Carousel
+                        onTransitionEnd={(slide) => slide === 0 && resetCreateEditTrainingCard()}
                         className={styles.Carousel}
-                        speed={CAROUSEL_SPEED}
+                        speed={200}
                         accessibility={false}
                         ref={carouselRef}
                         infinite={false}
@@ -147,7 +106,7 @@ export const TrainingPopover = ({ onPopoverClose }: TrainingPopoverProps) => {
                             onEditTraining={handleEditTraining}
                             createDisabled={state.createDisabled}
                             onCreateTraining={handleCreateTraining}
-                            onClose={closePopover}
+                            onClose={() => popoverOpenChange(false)}
                         />
                         <CreateEditTrainingCard
                             onAddExercise={addExercise}
@@ -156,8 +115,8 @@ export const TrainingPopover = ({ onPopoverClose }: TrainingPopoverProps) => {
                             onCancel={handleCancelCreateEditTraining}
                             visible={state.currentScreen === 'exercises'}
                             onSaveTrainingError={handleSaveTrainingError}
-                            onTrainingEdited={handleTrainingCreatedOrEdited}
-                            onTrainingCreated={handleTrainingCreatedOrEdited}
+                            onTrainingEdited={switchToTrainingCard}
+                            onTrainingCreated={switchToTrainingCard}
                         />
                     </Carousel>
                 </>

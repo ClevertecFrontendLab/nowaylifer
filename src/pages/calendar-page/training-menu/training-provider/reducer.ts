@@ -106,6 +106,7 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
                 state.exerciseDrawer.open = false;
             },
             exercisesEditedOrCreated(state, action: PayloadAction<Exercise[]>) {
+                state.exerciseDrawer.open = false;
                 if (action.payload.length) {
                     state.createEditTrainingCard.exercises = action.payload;
                 }

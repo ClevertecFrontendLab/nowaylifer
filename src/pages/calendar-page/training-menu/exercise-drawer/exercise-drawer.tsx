@@ -5,11 +5,12 @@ import { TrainingType } from '@redux/catalogs';
 import { Exercise } from '@redux/training';
 import { Button, Drawer, DrawerProps, FormInstance, Row, Typography } from 'antd';
 import cn from 'classnames';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTraining } from '../training-provider';
 import { TrainingTypeBadge } from '../training-type-badge';
 import styles from './exercise-drawer.module.less';
 import { ExerciseForm } from './exercise-form';
+import { createDestroyObserver } from '@utils/destroy-observer';
 
 type ExerciseFormRecord = Record<Exercise['_id'], FormInstance<Exercise>>;
 
@@ -42,13 +43,18 @@ export type ExerciseDrawerProps = Omit<DrawerProps, 'onClose'> & {
     trainingType: TrainingType;
     initialExercises?: Exercise[];
     onClose?(exercises: Exercise[]): void;
+    onDestroy?(): void;
 };
+
+const isWrapperNode = (node: Node) =>
+    node instanceof HTMLDivElement && node.className.includes('ant-drawer');
 
 export const ExerciseDrawer = ({
     mode,
     initialExercises = [],
     trainingType,
     onClose,
+    onDestroy,
     ...props
 }: ExerciseDrawerProps) => {
     const [exercises, setExercises] = useState<Exercise[]>(initialExercises);
@@ -56,6 +62,22 @@ export const ExerciseDrawer = ({
     const exerciseFormMap = useRef<ExerciseFormRecord>({});
     const { date } = useTraining();
     const xss = useXss();
+
+    const [observer, setObserver] = useState(() =>
+        onDestroy ? createDestroyObserver(isWrapperNode, onDestroy) : null,
+    );
+
+    if (onDestroy && !observer) {
+        setObserver(createDestroyObserver(isWrapperNode, onDestroy));
+    } else if (!onDestroy && observer) {
+        setObserver(null);
+    }
+
+    useLayoutEffect(() => {
+        if (props.open) {
+            observer?.observe(document.body, { childList: true, subtree: true });
+        }
+    }, [props.open, observer]);
 
     useEffect(() => {
         setExercises(initialExercises);
