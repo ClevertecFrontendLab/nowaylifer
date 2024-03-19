@@ -564,7 +564,7 @@ describe('Sprint 4', () => {
             cy.contains('Ноги').should('be.exist');
         });
 
-        it.only('create new training', () => {
+        it('create new training', () => {
             goToCalendar();
             cy.viewport(1440, 900);
             // TODO Проверка на закрытие модалки
@@ -679,7 +679,7 @@ describe('Sprint 4', () => {
                 cy.contains('Прыжки с нагрузкой').should('exist');
             });
         });
-        it('update past trainings', () => {
+        it.only('update past trainings', () => {
             goToCalendar();
             cy.wait(1000);
             cy.viewport(360, 740);

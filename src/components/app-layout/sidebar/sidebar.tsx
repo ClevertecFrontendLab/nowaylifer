@@ -6,7 +6,7 @@ import { useXs } from '@hooks/use-breakpoint';
 import { logout } from '@redux/auth/actions';
 import { Path } from '@router/paths';
 import { Layout, Menu } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './sidebar.module.less';
 import { Switch } from './switch';
@@ -41,6 +41,10 @@ export const Sidebar = () => {
     const handleLogout = () => {
         dispatch(logout());
     };
+
+    useEffect(() => {
+        if (xs) setCollapsed(true);
+    }, [xs]);
 
     return (
         <Sider
