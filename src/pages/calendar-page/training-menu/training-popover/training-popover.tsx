@@ -1,8 +1,8 @@
-import { Carousel, CarouselRef } from '@components/carousel';
 import { Modal } from '@components/modal';
 import { useXss } from '@hooks/use-breakpoint';
 import { Training } from '@redux/training';
-import { ButtonProps, Typography } from 'antd';
+import { ButtonProps, Carousel, Typography } from 'antd';
+import { CarouselRef } from 'antd/lib/carousel';
 import { useRef } from 'react';
 import { CalendarCellPopover } from '../../calendar-cell-popover';
 import { CreateEditTrainingCard } from '../create-training-card';
@@ -76,22 +76,21 @@ export const TrainingPopover = () => {
     return (
         <CalendarCellPopover
             modal={xss}
-            onDestroy={resetState}
             open={state.popoverOpen}
+            onOpenChange={popoverOpenChange}
+            onDestroy={resetState}
             overlayClassName={styles.TrainingPopover}
             overlayStyle={{ width: xss ? 312 : 264 }}
-            onOpenChange={popoverOpenChange}
             content={
                 <>
                     <ExerciseDrawer
                         {...state.exerciseDrawer}
-                        onDestroy={resetDrawerState}
                         onClose={exercisesEditedOrCreated}
+                        afterOpenChange={(open) => !open && resetDrawerState()}
                     />
                     <Carousel
-                        onTransitionEnd={(slide) => slide === 0 && resetCreateEditTrainingCard()}
+                        afterChange={(slide) => slide === 0 && resetCreateEditTrainingCard()}
                         className={styles.Carousel}
-                        speed={200}
                         accessibility={false}
                         ref={carouselRef}
                         infinite={false}
@@ -100,6 +99,7 @@ export const TrainingPopover = () => {
                         swipe={false}
                         effect='fade'
                         dots={false}
+                        speed={200}
                     >
                         <TrainingCard
                             visible={state.currentScreen === 'trainings'}

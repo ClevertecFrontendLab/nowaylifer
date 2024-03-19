@@ -679,7 +679,7 @@ describe('Sprint 4', () => {
                 cy.contains('Прыжки с нагрузкой').should('exist');
             });
         });
-        it.only('update past trainings', () => {
+        it('update past trainings', () => {
             goToCalendar();
             cy.wait(1000);
             cy.viewport(360, 740);

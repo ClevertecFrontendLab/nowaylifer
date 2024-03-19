@@ -63,7 +63,8 @@ const TrainingList = ({
                         <TrainingTypeBadge trainingType={trainingTypeMap[training.name]} />
                         <Button
                             type='link'
-                            style={{ height: 22, ...style }}
+                            style={{ height: 22 }}
+                            disabled={training.isImplementation}
                             onClick={() => onEditTraining?.(training)}
                             icon={<EditOutlined style={{ width: 18, height: 18 }} />}
                             data-test-id={

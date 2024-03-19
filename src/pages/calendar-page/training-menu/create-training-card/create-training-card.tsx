@@ -181,7 +181,7 @@ export const CreateEditTrainingCard = ({
                     disabled={!exercises.length || flow === 'read'}
                     loading={isCreateTrainingLoading || isEditTrainingLoading}
                 >
-                    Сохранить
+                    {flow === 'edit' ? 'Сохранить изменения' : 'Сохранить'}
                 </Button>
             </Card.Footer>
         </Card>
