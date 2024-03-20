@@ -17,13 +17,13 @@ export const TrainingPopover = () => {
     const xss = useXss();
     const {
         closeDrawer,
-        resetDrawerState,
         resetState,
         addExercise,
         editTraining,
         editExercise,
         switchScreen,
         createTraining,
+        resetDrawerState,
         popoverOpenChange,
         exercisesEditedOrCreated,
         resetCreateEditTrainingCard,
@@ -76,9 +76,9 @@ export const TrainingPopover = () => {
     return (
         <CalendarCellPopover
             modal={xss}
+            onDestroy={resetState}
             open={state.popoverOpen}
             onOpenChange={popoverOpenChange}
-            onDestroy={resetState}
             overlayClassName={styles.TrainingPopover}
             overlayStyle={{ width: xss ? 312 : 264 }}
             content={
