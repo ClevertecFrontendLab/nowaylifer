@@ -1,26 +1,46 @@
-import { HeartFilled, CalendarTwoTone, IdcardOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { CalendarTwoTone, HeartFilled, IdcardOutlined } from '@ant-design/icons';
 import { Card } from '@components/card';
+import { LoadCalendarPage } from '@pages/calendar-page';
+import { Button, ButtonProps } from 'antd';
 import styles from './action-card-list.module.less';
 
-const actions = [
-    { title: 'Расписать тренировки', buttonText: 'Тренировки', buttonIcon: <HeartFilled /> },
+const CardButton = (props?: ButtonProps) => (
+    <Button className={styles.CardButton} block {...props} />
+);
+
+const cards = [
+    {
+        title: 'Расписать тренировки',
+        content: <CardButton icon={<HeartFilled />}>Тренировки</CardButton>,
+    },
     {
         title: 'Назначить календарь',
-        buttonText: 'Календарь',
-        buttonIcon: <CalendarTwoTone twoToneColor={['currentColor', 'currentColor']} />,
+        content: (
+            <LoadCalendarPage
+                render={(load) => (
+                    <CardButton
+                        onClick={load}
+                        icon={<CalendarTwoTone twoToneColor={['currentColor', 'currentColor']} />}
+                        data-test-id='menu-button-calendar'
+                    >
+                        Календарь
+                    </CardButton>
+                )}
+            />
+        ),
     },
-    { title: 'Заполнить профиль', buttonText: 'Профиль', buttonIcon: <IdcardOutlined /> },
+    {
+        title: 'Заполнить профиль',
+        content: <CardButton icon={<IdcardOutlined />}>Профиль</CardButton>,
+    },
 ];
 
 export const ActionCardList = () => (
     <ul className={styles.List}>
-        {actions.map(({ title, buttonIcon, buttonText }, idx) => (
+        {cards.map(({ title, content }, idx) => (
             <li key={idx} className={styles.Item}>
                 <Card className={styles.CardItem} title={title}>
-                    <Button className={styles.CardButton} icon={buttonIcon} block>
-                        {buttonText}
-                    </Button>
+                    {content}
                 </Card>
             </li>
         ))}

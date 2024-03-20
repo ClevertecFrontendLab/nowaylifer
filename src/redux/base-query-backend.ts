@@ -40,6 +40,10 @@ const withHandleAuthError: BaseQueryEnhancer = (baseQuery) => async (args, api, 
     return result as AnyQueryReturn;
 };
 
+const getBaseURL = (url: string, base?: string) => {
+    return new URL(url, base).href;
+};
+
 type BaseQueryBackendOptions = {
     prefixUrl?: string;
     method?: string;
@@ -54,7 +58,7 @@ export const baseQueryBackend = ({
     withHandleAuthError(
         withMinDelay(
             fetchBaseQuery({
-                baseUrl: BACKEND_URL + prefixUrl,
+                baseUrl: getBaseURL(prefixUrl, BACKEND_URL),
                 method,
                 credentials: 'include',
                 prepareHeaders: (headers, { getState }) => {

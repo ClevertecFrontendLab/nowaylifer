@@ -1,0 +1,38 @@
+@import '../styles.module.less';
+
+.TrainingCardHeader {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: none;
+    padding-bottom: 0;
+    padding-top: 16px;
+}
+
+.TrainingCardTitle {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--character-light-title-85);
+}
+
+.CloseButton:global.ant-btn {
+    @card-navigation-btn();
+}
+
+.TrainingList {
+    min-height: 84px;
+    padding-block: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.TrainingListItem {
+    display: flex;
+    justify-content: space-between;
+    transition: background 0.2s;
+    padding-left: 12px;
+
+    &:hover {
+        background: var(--theme-gray-3);
+    }
+}

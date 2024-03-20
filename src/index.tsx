@@ -11,6 +11,8 @@ import { routes } from './router/routes';
 import 'antd/dist/antd.variable.min.css';
 import 'normalize.css';
 import './index.less';
+import { AppLoaderProvider } from '@components/app-loader';
+import { AppModalProvider } from '@components/app-modal';
 
 ConfigProvider.config({
     theme: {
@@ -22,11 +24,24 @@ ConfigProvider.config({
 const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
+if ('Cypress' in window) {
+    const style = document.createElement('style');
+    style.innerHTML = `*, *::after, *::before {
+        animation-duration: 0s !important;
+        transition-duration: 0s !important;
+      }`;
+    document.head.appendChild(style);
+}
+
 root.render(
     <React.StrictMode>
         <Provider store={store}>
             <PersistGate persistor={persistor}>
-                <Router history={history}>{routes}</Router>
+                <AppLoaderProvider>
+                    <AppModalProvider>
+                        <Router history={history}>{routes}</Router>
+                    </AppModalProvider>
+                </AppLoaderProvider>
             </PersistGate>
         </Provider>
     </React.StrictMode>,

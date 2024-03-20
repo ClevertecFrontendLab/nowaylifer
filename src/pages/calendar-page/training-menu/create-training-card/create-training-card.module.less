@@ -1,0 +1,46 @@
+@import '../styles.module.less';
+
+.CancelButton:global.ant-btn {
+    @card-navigation-btn();
+}
+
+.CreateTrainingCardHeader {
+    padding-block: 12.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+}
+
+.TrainingTypeSelect:global.ant-select {
+    width: 100%;
+
+    .ant-select-selection-placeholder {
+        color: var(--character-light-title-85);
+    }
+
+    &:not(.ant-select-focused) {
+        .ant-select-selector {
+            border-color: transparent;
+        }
+    }
+}
+
+.ExerciseList {
+    min-height: 84px;
+    padding-block: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ExerciseListItem {
+    display: flex;
+    justify-content: space-between;
+    transition: background 0.2s;
+    padding-left: 12px;
+
+    &:hover {
+        background: var(--theme-gray-3);
+    }
+}

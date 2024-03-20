@@ -1,17 +1,20 @@
-import { AuthLayout } from '@components/auth-layout';
 import { AppLayout } from '@components/app-layout';
+import { AuthLayout } from '@components/auth-layout';
 import { AuthForm } from '@pages/auth-page';
 import { ChangePassword } from '@pages/auth-page/change-password';
 import { ConfirmEmail } from '@pages/auth-page/confirm-email';
 import { AuthResultPage } from '@pages/auth-result-page';
-import { MainPage } from '@pages/main-page';
+import { GetGoogleToken } from '@redux/auth';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Path } from './paths';
 import { RequireAuth, RequireNoAuth, RequireRedirect } from './route-guards';
-import { FeedbackPage } from '@pages/feedback-page';
-import { GetGoogleToken } from '@redux/auth';
+import FeedbackPage from '@pages/feedback-page';
+import MainPage from '@pages/main-page';
+import { loadable } from './loadable';
 
 const loginOrResult = new RegExp(`(${Path.Login})|(${Path.Result})`);
+
+const CalendarPage = loadable(() => import('@pages/calendar-page/calendar-page'));
 
 export const routes = (
     <Routes>
@@ -36,6 +39,7 @@ export const routes = (
             <Route element={<AppLayout />}>
                 <Route path={Path.Main} element={<MainPage />} />
                 <Route path={Path.Feedback} element={<FeedbackPage />} />
+                <Route path={Path.Calendar} element={<CalendarPage />} />
             </Route>
         </Route>
     </Routes>

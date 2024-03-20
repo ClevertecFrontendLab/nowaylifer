@@ -8,4 +8,5 @@ export const Path = {
     ChangePassword: '/auth/change-password',
     Result: '/result',
     Feedback: '/feedbacks',
+    Calendar: '/calendar',
 } as const;
