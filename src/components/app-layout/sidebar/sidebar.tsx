@@ -1,23 +1,33 @@
+import { useEffect, useState } from 'react';
 import { CalendarTwoTone, HeartFilled, IdcardOutlined, TrophyFilled } from '@ant-design/icons';
 import ExitSvg from '@assets/icons/exit.svg?react';
-import { Logo } from '@components/logo';
 import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
 import { useXs } from '@hooks/use-breakpoint';
-import { logout } from '@redux/auth/actions';
-import { Path } from '@router/paths';
-import { Layout, Menu } from 'antd';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import styles from './sidebar.module.less';
-import { Switch } from './switch';
 import { LoadCalendarPage } from '@pages/calendar-page';
+import { logout } from '@redux/auth/actions';
+import { Layout, Menu } from 'antd';
+
+import styles from './sidebar.module.less';
+import { SidebarLogo } from './sidebar-logo';
+import { Switch } from './switch';
 
 const { Sider } = Layout;
 
+let loadCalendarpage: () => void;
+
 const menuItems = [
     {
-        label: <LoadCalendarPage render={(load) => <div onClick={load}>Календарь</div>} />,
+        label: (
+            <LoadCalendarPage
+                render={(load) => {
+                    loadCalendarpage = load;
+
+                    return 'Календарь';
+                }}
+            />
+        ),
         icon: <CalendarTwoTone twoToneColor={['currentColor', 'currentColor']} />,
+        onClick: () => loadCalendarpage?.(),
     },
     {
         label: 'Тренировки',
@@ -48,43 +58,34 @@ export const Sidebar = () => {
 
     return (
         <Sider
-            width={xs ? 106 : 208}
-            collapsible
-            collapsedWidth={xs ? 0 : 64}
-            collapsed={collapsed}
-            onCollapse={setCollapsed}
             className={styles.Sidebar}
+            collapsed={collapsed}
+            collapsedWidth={xs ? 0 : 64}
+            collapsible={true}
+            onCollapse={setCollapsed}
             trigger={null}
+            width={xs ? 106 : 208}
         >
             <Switch
                 collapsed={collapsed}
-                onCollapse={setCollapsed}
                 data-test-id={xs ? 'sider-switch-mobile' : 'sider-switch'}
+                onCollapse={setCollapsed}
             />
             <div className={styles.Wrapper}>
-                <Link to={Path.Main}>
-                    <Logo
-                        className={styles.Logo}
-                        type={xs ? 'normal' : collapsed ? 'short' : 'normal'}
-                        style={{ width: xs ? 72 : collapsed ? 28.55 : 133 }}
-                    />
-                </Link>
+                <SidebarLogo collapsed={collapsed} />
                 <Menu
                     className={styles.Menu}
-                    mode='inline'
                     inlineIndent={xs ? 8 : 16}
                     items={menuItems.map((item, idx) => ({
                         ...item,
                         key: idx,
                         icon: xs ? undefined : item.icon,
                     }))}
+                    mode='inline'
                 />
                 <Menu
                     className={styles.Exit}
-                    mode='inline'
                     inlineIndent={xs ? 8 : 16}
-                    selectable={false}
-                    onClick={handleLogout}
                     items={[
                         {
                             key: 1,
@@ -98,6 +99,9 @@ export const Sidebar = () => {
                             ),
                         },
                     ]}
+                    mode='inline'
+                    onClick={handleLogout}
+                    selectable={false}
                 />
             </div>
         </Sider>

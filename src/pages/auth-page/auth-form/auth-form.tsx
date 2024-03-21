@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { Tabs } from 'antd';
 import { Logo } from '@components/logo';
-import { Path } from '@router/paths';
-import { RegisterForm } from './register-form';
-import { LoginForm } from './login-form';
+import { RoutePath } from '@router/paths';
+import { Tabs } from 'antd';
+
 import { AuthCard } from '../ui/auth-card';
+
 import styles from './auth-form.module.less';
+import { LoginForm } from './login-form';
+import { RegisterForm } from './register-form';
 
 export type AuthTab = (typeof AuthTab)[keyof typeof AuthTab];
 export const AuthTab = {
@@ -22,15 +24,17 @@ export const AuthForm = ({ type = 'login' }: { type?: AuthTab }) => {
     const navigate = useNavigate();
 
     const handleTabChange = (key: string) =>
-        navigate(key === AuthTab.Register ? Path.Register : Path.Login, { replace: true });
+        navigate(key === AuthTab.Register ? RoutePath.Register : RoutePath.Login, {
+            replace: true,
+        });
 
     return (
         <AuthCard>
             <Logo className={styles.Logo} />
             <Tabs
+                activeKey={type}
                 className={styles.Tabs}
                 items={tabItems}
-                activeKey={type}
                 onChange={handleTabChange}
             />
         </AuthCard>

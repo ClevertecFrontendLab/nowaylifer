@@ -1,5 +1,4 @@
-import { useLocation } from 'react-router';
-import { Location } from 'react-router-dom';
+import { Location, useLocation } from 'react-router-dom';
 
 export type LocationWithState = {
     state?: {

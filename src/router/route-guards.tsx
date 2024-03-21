@@ -1,19 +1,22 @@
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { useAppLocation } from '@hooks/use-app-location';
 import { setAuthFrom } from '@redux/auth';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 export const RequireNoAuth = ({ redirectTo }: { redirectTo: string }) => {
     const token = useAppSelector((state) => state.auth.token);
-    return token ? <Navigate to={redirectTo} replace /> : <Outlet />;
+
+    return token ? <Navigate replace={true} to={redirectTo} /> : <Outlet />;
 };
 
 export const RequireAuth = ({ redirectTo }: { redirectTo: string }) => {
     const token = useAppSelector((state) => state.auth.token);
     const location = useLocation();
     const dispatch = useAppDispatch();
+
     dispatch(setAuthFrom(location));
-    return token ? <Outlet /> : <Navigate to={redirectTo} replace />;
+
+    return token ? <Outlet /> : <Navigate replace={true} to={redirectTo} />;
 };
 
 export const RequireRedirect = ({
@@ -33,5 +36,5 @@ export const RequireRedirect = ({
         return <Outlet />;
     }
 
-    return <Navigate to={redirectTo} replace />;
+    return <Navigate replace={true} to={redirectTo} />;
 };

@@ -1,13 +1,14 @@
-import { ServerErrorModal } from '@components/server-error-modal';
-import { ModalProps } from 'antd';
 import {
     ComponentType,
     createContext,
+    Fragment,
     PropsWithChildren,
     useCallback,
     useMemo,
     useState,
 } from 'react';
+import { ServerErrorModal } from '@components/server-error-modal';
+import { ModalProps } from 'antd';
 
 type AppModalContext = {
     serverError(props?: ModalProps): void;
@@ -31,17 +32,17 @@ export const AppModalProvider = (props: PropsWithChildren) => {
         () => ({
             close: () => setShowModal(false),
             serverError: (additionalProps) =>
-                createModal((props) => (
-                    <ServerErrorModal onCancel={closeModal} {...props} {...additionalProps} />
+                createModal((modalProps) => (
+                    <ServerErrorModal onCancel={closeModal} {...modalProps} {...additionalProps} />
                 )),
         }),
         [closeModal],
     );
 
     return (
-        <>
+        <Fragment>
             {ModalComponent && <ModalComponent open={showModal} />}
             <AppModalContext.Provider value={context} {...props} />
-        </>
+        </Fragment>
     );
 };

@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
-import LogoShortSvg from '@assets/icons/logo-short.svg?react';
 import LogoSvg from '@assets/icons/logo.svg?react';
+import LogoShortSvg from '@assets/icons/logo-short.svg?react';
 
 export type LogoProps = {
     type?: 'normal' | 'short';

@@ -1,17 +1,17 @@
+import { Link } from 'react-router-dom';
+import { RoutePath } from '@router/paths';
 import { Breadcrumb } from 'antd';
 import cn from 'classnames';
-import { Link } from 'react-router-dom';
 import useBreadcrumbs, { BreadcrumbsRoute } from 'use-react-router-breadcrumbs';
-import { Path } from '@router/paths';
 
 type BreadcrumbsProps = {
     className?: string;
 };
 
 const routes: BreadcrumbsRoute[] = [
-    { path: Path.Root, breadcrumb: 'Главная' },
-    { path: Path.Feedback, breadcrumb: 'Отзывы пользователей' },
-    { path: Path.Calendar, breadcrumb: 'Календарь' },
+    { path: RoutePath.Root, breadcrumb: 'Главная' },
+    { path: RoutePath.Feedback, breadcrumb: 'Отзывы пользователей' },
+    { path: RoutePath.Calendar, breadcrumb: 'Календарь' },
 ];
 
 export const Breadcrumbs = ({ className }: BreadcrumbsProps) => {

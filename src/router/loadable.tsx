@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react-refresh/only-export-components */
-import { AppLoader } from '@components/app-loader';
 import { ComponentProps, ComponentType, ReactNode } from 'react';
-import { Suspense as SuspenseNoFlicker, lazy as lazyNoFlicker } from 'react-lazy-no-flicker';
+import { lazy as lazyNoFlicker, Suspense as SuspenseNoFlicker } from 'react-lazy-no-flicker';
+import { AppLoader } from '@components/app-loader';
 
 const delay = 50;
 

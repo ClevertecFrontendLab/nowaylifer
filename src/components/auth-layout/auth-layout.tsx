@@ -1,8 +1,10 @@
 import { Outlet } from 'react-router-dom';
-import { Layout } from 'antd';
-import { LoaderModal } from '../loader-modal';
-import styles from './auth-layout.module.less';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
+import { Layout } from 'antd';
+
+import { LoaderModal } from '../loader-modal';
+
+import styles from './auth-layout.module.less';
 
 const Backdrop = () => <div className={styles.Backdrop} />;
 
@@ -12,7 +14,7 @@ export const AuthLayout = () => {
     return (
         <Layout className={styles.Layout}>
             <Layout.Content className={styles.Content}>
-                <LoaderModal open={authLoading} mask={false} />
+                <LoaderModal mask={false} open={authLoading} />
                 <Outlet />
                 <Backdrop />
             </Layout.Content>

@@ -8,7 +8,7 @@ export const AddReviewSuccessModal = ({ onOk, ...props }: ModalProps) => (
             status: 'success',
             title: 'Отзыв успешно опубликован',
             extra: (
-                <Button block type='primary' size='large' onClick={onOk}>
+                <Button block={true} onClick={onOk} size='large' type='primary'>
                     Отлично
                 </Button>
             ),
@@ -30,15 +30,15 @@ export const AddReviewErrorModal = ({
             extra: (
                 <div style={{ display: 'flex', gap: 8 }}>
                     <Button
-                        block
-                        type='primary'
-                        size='large'
-                        onClick={onRetry}
+                        block={true}
                         data-test-id='write-review-not-saved-modal'
+                        onClick={onRetry}
+                        size='large'
+                        type='primary'
                     >
                         Написать отзыв
                     </Button>
-                    <Button block size='large' onClick={onCancel}>
+                    <Button block={true} onClick={onCancel} size='large'>
                         Закрыть
                     </Button>
                 </div>

@@ -1,5 +1,6 @@
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import type { ComponentProps } from 'react';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+
 import styles from './switch.module.less';
 
 type SwitcherProps = {
@@ -11,6 +12,7 @@ export const Switch = ({ collapsed, onCollapse, className = '', ...props }: Swit
     <button
         className={`${styles.Switch} ${className}`}
         onClick={() => onCollapse(!collapsed)}
+        type='button'
         {...props}
     >
         <div className={styles.SwitchPolygon}>

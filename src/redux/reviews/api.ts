@@ -1,5 +1,6 @@
 import { baseQueryBackend } from '@redux/base-query-backend';
 import { createApi } from '@reduxjs/toolkit/query/react';
+
 import { CreateReviewDTO, Review } from './types';
 
 export const reviewsApi = createApi({

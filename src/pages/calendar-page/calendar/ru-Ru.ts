@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/filename-case */
 import ruRu from 'antd/es/calendar/locale/ru_RU';
 import { PickerLocale } from 'antd/lib/date-picker/generatePicker';
 

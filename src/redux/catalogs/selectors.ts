@@ -1,6 +1,7 @@
 import { RootState } from '@redux/configure-store';
-import { catalogsApi } from '.';
+
 import { trainingTypeAdapter, trainingTypesInitialState } from './training-type.adapter';
+import { catalogsApi } from '.';
 
 const selectTrainingCatalogCacheEntry = catalogsApi.endpoints.fetchTrainingCatalog.select();
 

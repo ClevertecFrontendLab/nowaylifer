@@ -1,7 +1,7 @@
-import { Breakpoint } from 'antd/lib/_util/responsiveObserve';
-import { Button, ButtonProps } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
 import { useBreakpoint } from '@hooks/use-breakpoint';
+import { Button, ButtonProps } from 'antd';
+import { Breakpoint } from 'antd/lib/_util/responsiveObserve';
 
 const getVariant = (breakpoint: ReturnType<typeof useBreakpoint>) => {
     const lg = {
@@ -19,14 +19,17 @@ const getVariant = (breakpoint: ReturnType<typeof useBreakpoint>) => {
 
     if (breakpoint.lg) {
         return variant.lg;
-    } else if (breakpoint.md) {
-        return variant.md;
-    } else {
-        return variant.sm;
     }
+
+    if (breakpoint.md) {
+        return variant.md;
+    }
+
+    return variant.sm;
 };
 
 export const SettingsButton = () => {
     const breakpoint = useBreakpoint();
+
     return <Button {...getVariant(breakpoint)} />;
 };

@@ -1,18 +1,19 @@
-import { HistoryRouter as Router } from 'redux-first-history/rr6';
-import { history, persistor, store } from '@redux/configure-store';
-import { PersistGate } from 'redux-persist/integration/react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
+import { HistoryRouter as Router } from 'redux-first-history/rr6';
+import { PersistGate } from 'redux-persist/integration/react';
+import { AppLoaderProvider } from '@components/app-loader';
+import { AppModalProvider } from '@components/app-modal';
+import { history, persistor, store } from '@redux/configure-store';
 import { ConfigProvider } from 'antd';
-import React from 'react';
 
 import { routes } from './router/routes';
 
 import 'antd/dist/antd.variable.min.css';
 import 'normalize.css';
+
 import './index.less';
-import { AppLoaderProvider } from '@components/app-loader';
-import { AppModalProvider } from '@components/app-modal';
 
 ConfigProvider.config({
     theme: {
@@ -26,6 +27,7 @@ const root = createRoot(domNode);
 
 if ('Cypress' in window) {
     const style = document.createElement('style');
+
     style.innerHTML = `*, *::after, *::before {
         animation-duration: 0s !important;
         transition-duration: 0s !important;

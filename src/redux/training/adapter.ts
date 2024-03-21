@@ -1,4 +1,5 @@
 import { createEntityAdapter } from '@reduxjs/toolkit';
+
 import { Training } from '.';
 
 export const trainingAdapter = createEntityAdapter({

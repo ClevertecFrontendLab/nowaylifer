@@ -1,5 +1,5 @@
 import { ResultModal } from '@components/result-modal';
-import { ModalProps, Button } from 'antd';
+import { Button,ModalProps } from 'antd';
 
 export const ServerErrorModal = ({ onCancel, ...props }: ModalProps) => (
     <ResultModal
@@ -8,7 +8,7 @@ export const ServerErrorModal = ({ onCancel, ...props }: ModalProps) => (
             title: 'Что-то пошло не так',
             subTitle: 'Произошла ошибка, попробуйте ещё раз.',
             extra: (
-                <Button type='primary' size='large' onClick={onCancel}>
+                <Button onClick={onCancel} size='large' type='primary'>
                     Назад
                 </Button>
             ),

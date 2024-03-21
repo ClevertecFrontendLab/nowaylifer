@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { Modal } from '@components/modal';
 import { CreateReviewDTO } from '@redux/reviews';
 import { Button, Form, Input, ModalProps } from 'antd';
-import { useState } from 'react';
+
 import { Rate } from '../rate';
+
 import styles from './add-review-modal.module.less';
 
 const { TextArea } = Input;
@@ -30,32 +32,32 @@ export const AddReviewModal = ({ open, onCancel, onSubmit }: AddReviewModalProps
 
     return (
         <Modal
-            centered
-            open={open}
-            title='Ваш отзыв'
-            onCancel={onCancel}
+            centered={true}
             footer={
                 <Button
-                    size='large'
-                    type='primary'
-                    disabled={!formValid}
-                    onClick={handleSubmit}
                     className={styles.OkBtn}
                     data-test-id='new-review-submit-button'
+                    disabled={!formValid}
+                    onClick={handleSubmit}
+                    size='large'
+                    type='primary'
                 >
                     Опубликовать
                 </Button>
             }
+            onCancel={onCancel}
+            open={open}
+            title='Ваш отзыв'
         >
             <Form form={form}>
-                <Form.Item name='rating' required style={{ marginBottom: 16 }}>
-                    <Rate size={24} onChange={handleRateChagne} />
+                <Form.Item name='rating' required={true} style={{ marginBottom: 16 }}>
+                    <Rate onChange={handleRateChagne} size={24} />
                 </Form.Item>
                 <Form.Item name='message' style={{ marginBottom: 0 }}>
                     <TextArea
-                        placeholder='Расскажите, почему Вам понравилось наше приложение'
                         autoSize={{ minRows: 2, maxRows: 10 }}
                         className={styles.TextArea}
+                        placeholder='Расскажите, почему Вам понравилось наше приложение'
                     />
                 </Form.Item>
             </Form>

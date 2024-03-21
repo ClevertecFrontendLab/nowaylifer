@@ -1,5 +1,5 @@
-import { Grid } from 'antd';
 import { useMediaQuery } from 'react-responsive';
+import { Grid } from 'antd';
 
 export const { useBreakpoint } = Grid;
 
