@@ -607,6 +607,11 @@
   resolved "https://registry.npmjs.org/@eslint-community/regexpp/-/regexpp-4.10.0.tgz"
   integrity sha512-Cu96Sd2By9mCNTx2iyKOmq10v22jUVQv0lQnlGNy16oE9589yE+QADPbrMGCkA51cKZSg3Pu/aTJVTGfL/qjUA==
 
+"@eslint-types/typescript-eslint@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@eslint-types/typescript-eslint/-/typescript-eslint-7.2.0.tgz#e15093d268c6f1ce72773df18a76449ea7cad100"
+  integrity sha512-QeCnZEHdeehkcZSy5q41aVHXD78FElfTjQ8AG5HnEREtyBG3PEz7NTuLD13Xbh6p0YR7q4GkV4EswVxz8IiMxA==
+
 "@eslint/eslintrc@^2.1.4":
   version "2.1.4"
   resolved "https://registry.npmjs.org/@eslint/eslintrc/-/eslintrc-2.1.4.tgz"

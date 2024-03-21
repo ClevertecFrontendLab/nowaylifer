@@ -3,13 +3,7 @@ import { EntityState } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { trainingAdapter, transformTrainingResponse } from './adapter';
-import { CreateTrainingDTO, EditTrainingDTO, Exercise, Training } from './types';
-
-const prepareDTO = (dto: CreateTrainingDTO) => {
-    dto.exercises = dto.exercises.map(({ _id, ...exercise }) => exercise) as Exercise[];
-
-    return dto;
-};
+import { CreateTrainingDTO, EditTrainingDTO, Training } from './types';
 
 export const trainingApi = createApi({
     reducerPath: 'trainingApi',
@@ -23,7 +17,7 @@ export const trainingApi = createApi({
             query: (dto) => ({
                 url: '',
                 method: 'POST',
-                body: prepareDTO(dto),
+                body: dto,
             }),
             onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
                 try {
