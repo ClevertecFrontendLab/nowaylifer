@@ -1,9 +1,8 @@
 import { Fragment, ReactNode, useEffect, useRef, useState } from 'react';
 import { CloseOutlined, EditOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { useXss } from '@hooks/use-breakpoint';
-import { createDefaultExercise } from '@pages/calendar-page/utils';
 import { TrainingType } from '@redux/catalogs';
-import { Exercise } from '@redux/training';
+import { createExerciseDraft, Exercise } from '@redux/training';
 import { Button, Drawer, DrawerProps, FormInstance, Row, Typography } from 'antd';
 import cn from 'classnames';
 
@@ -124,7 +123,7 @@ export const ExerciseDrawer = ({
                         block={true}
                         className={cn(styles.Button, styles.AddButton)}
                         icon={<PlusOutlined />}
-                        onClick={() => setExercises((prev) => [...prev, createDefaultExercise()])}
+                        onClick={() => setExercises((prev) => [...prev, createExerciseDraft()])}
                         size='large'
                     >
                         Добавить ещё

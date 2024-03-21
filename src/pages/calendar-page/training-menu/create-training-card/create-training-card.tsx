@@ -133,7 +133,7 @@ export const CreateEditTrainingCard = ({
         if (flow === 'create') {
             onTrainingCreated?.();
         } else {
-            await fetchTrainings().unwrap();
+            fetchTrainings();
             onTrainingEdited?.();
         }
     };

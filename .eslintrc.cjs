@@ -1,6 +1,8 @@
 // @ts-check
 const { defineConfig } = require('eslint-define-config');
 
+/// <reference types="@eslint-types/typescript-eslint" />
+
 module.exports = defineConfig({
     root: true,
     env: { browser: true, es2020: true },
@@ -47,5 +49,9 @@ module.exports = defineConfig({
         'no-underscore-dangle': 'off',
         'no-restricted-exports': ['error', { restrictDefaultExports: { defaultFrom: false } }],
         '@typescript-eslint/no-redeclare': 'off',
+        '@typescript-eslint/naming-convention': [
+            'error',
+            { selector: 'variable', modifiers: ['destructured'], format: null },
+        ],
     },
 });
