@@ -1,5 +1,5 @@
-import type { RetryField } from '@redux/auth';
 import { useEffect } from 'react';
+import type { RetryField } from '@redux/auth';
 
 export const useRetryMutation = <Arg>(
     trigger: (arg: Arg) => { abort: () => void },
@@ -20,6 +20,5 @@ export const useRetryMutation = <Arg>(
             window.clearTimeout(timeoutId);
             request?.abort();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [retry.shouldRetry, trigger, delay]);
+    }, [retry, trigger, delay]);
 };

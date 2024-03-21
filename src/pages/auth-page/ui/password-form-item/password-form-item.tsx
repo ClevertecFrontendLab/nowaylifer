@@ -1,7 +1,9 @@
-import { Form, Input, InputProps } from 'antd';
 import { useEffect, useState } from 'react';
+import { Form, Input, InputProps } from 'antd';
 import cn from 'classnames';
+
 import { password, required } from '../../validation-rules';
+
 import styles from './password-form-item.module.less';
 
 type ValidateStatus = ReturnType<typeof Form.Item.useStatus>['status'];
@@ -17,7 +19,7 @@ const PasswordInput = ({ onValidate, ...props }: PasswordInputProps) => {
         onValidate?.(status);
     }, [onValidate, status]);
 
-    return <Input.Password size='large' placeholder='Пароль' {...props}  />;
+    return <Input.Password placeholder='Пароль' size='large' {...props} />;
 };
 
 export type PasswordFormItemProps = {
@@ -36,9 +38,9 @@ export const PasswordFormItem = ({ className, name, inputProps }: PasswordFormIt
                 styles.FormItem,
                 className,
             )}
+            extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
             name={name}
             rules={[required, password]}
-            extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
         >
             <PasswordInput onValidate={setValidateStatus} {...inputProps} />
         </Form.Item>

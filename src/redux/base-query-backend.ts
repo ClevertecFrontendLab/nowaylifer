@@ -1,13 +1,13 @@
-import { BACKEND_URL } from '@constants/config';
-import { fetchBaseQuery, type BaseQueryEnhancer } from '@reduxjs/toolkit/query';
-import { Path } from '@router/paths';
-import { waitFor } from '@utils/waitFor';
-import type { QueryReturnValue } from 'node_modules/@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { replace } from 'redux-first-history';
+import { BACKEND_URL } from '@constants/config';
+import { type BaseQueryEnhancer, fetchBaseQuery } from '@reduxjs/toolkit/query';
+import { RoutePath } from '@router/paths';
+import { waitFor } from '@utils/wait-for';
+import type { QueryReturnValue } from 'node_modules/@reduxjs/toolkit/dist/query/baseQueryTypes';
+
 import { setToken } from './auth';
 import type { RootState } from './configure-store';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyQueryReturn = QueryReturnValue<any, any, any>;
 
 type MinDelayOptions = {
@@ -33,16 +33,16 @@ const isAuthError = (error: unknown) =>
 
 const withHandleAuthError: BaseQueryEnhancer = (baseQuery) => async (args, api, extraOptions) => {
     const result = await baseQuery(args, api, extraOptions);
+
     if (result.error && isAuthError(result.error)) {
         api.dispatch(setToken(null));
-        api.dispatch(replace(Path.Login));
+        api.dispatch(replace(RoutePath.Login));
     }
+
     return result as AnyQueryReturn;
 };
 
-const getBaseURL = (url: string, base?: string) => {
-    return new URL(url, base).href;
-};
+const getBaseURL = (url: string, base?: string) => new URL(url, base).href;
 
 type BaseQueryBackendOptions = {
     prefixUrl?: string;
@@ -62,10 +62,12 @@ export const baseQueryBackend = ({
                 method,
                 credentials: 'include',
                 prepareHeaders: (headers, { getState }) => {
-                    const token = (getState() as RootState).auth.token;
+                    const { token } = (getState() as RootState).auth;
+
                     if (token) {
                         headers.set('authorization', `Bearer ${token}`);
                     }
+
                     return headers;
                 },
             }),

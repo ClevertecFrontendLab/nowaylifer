@@ -1,7 +1,11 @@
+import { ReactNode, useCallback, useEffect, useState } from 'react';
+import { push } from 'redux-first-history';
+import { AppLoader } from '@components/app-loader';
 import { Breadcrumbs } from '@components/breadcrumbs';
 import { PageContent } from '@components/page-content';
 import { PageHeader } from '@components/page-header';
 import { PageLayout } from '@components/page-layout';
+import { ServerErrorModal } from '@components/server-error-modal';
 import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
 import { addAppListener } from '@redux/listener-middleware';
 import {
@@ -10,16 +14,13 @@ import {
     useAddReviewMutation,
     useFetchAllReviewsQuery,
 } from '@redux/reviews';
-import { Path } from '@router/paths';
-import { useCallback, useEffect, useState } from 'react';
-import { push } from 'redux-first-history';
+import { RoutePath } from '@router/paths';
+
+import { NoReviewsScreen } from './no-reviews-screen/no-reviews-screen';
 import { AddReviewModal } from './add-review-modal';
 import styles from './feedback-page.module.less';
-import { NoReviewsScreen } from './no-reviews-screen/no-reviews-screen';
 import { AddReviewErrorModal, AddReviewSuccessModal } from './result-modals';
 import { ReviewsScreen } from './reviews-screen';
-import { AppLoader } from '@components/app-loader';
-import { ServerErrorModal } from '@components/server-error-modal';
 
 export const FeedbackPage = () => {
     const {
@@ -49,7 +50,7 @@ export const FeedbackPage = () => {
     };
 
     const goToMain = () => {
-        dispatch(push(Path.Main));
+        dispatch(push(RoutePath.Main));
     };
 
     const handleSubmitReveiw = async (dto: CreateReviewDTO) => {
@@ -66,6 +67,7 @@ export const FeedbackPage = () => {
             closeAddReviewModal();
             setShowFetchErrorModal(true);
         }
+
         return () => setShowFetchErrorModal(false);
     }, [isError]);
 
@@ -84,36 +86,38 @@ export const FeedbackPage = () => {
         [dispatch],
     );
 
+    let content: ReactNode = null;
+
+    if (isSuccess) {
+        content = reviews.length ? (
+            <ReviewsScreen onAddReview={openAddReviewModal} reviews={reviews} />
+        ) : (
+            <NoReviewsScreen onAddReview={openAddReviewModal} />
+        );
+    }
+
     return (
         <PageLayout>
             <AppLoader open={isFetching || isAddReviewLoading} />
-            <ServerErrorModal open={showFetchErrorModal} onCancel={goToMain} />
+            <ServerErrorModal onCancel={goToMain} open={showFetchErrorModal} />
             <AddReviewSuccessModal
-                open={showAddReviewSuccessModal}
                 onOk={() => setShowAddReviewSuccessModal(false)}
+                open={showAddReviewSuccessModal}
             />
             <AddReviewErrorModal
-                open={showAddReviewErrorModal}
-                onRetry={retryAddReview}
                 onCancel={() => setShowAddReviewErrorModal(false)}
+                onRetry={retryAddReview}
+                open={showAddReviewErrorModal}
             />
             <AddReviewModal
-                open={showAddReviewModal}
                 onCancel={closeAddReviewModal}
                 onSubmit={handleSubmitReveiw}
+                open={showAddReviewModal}
             />
             <PageHeader>
                 <Breadcrumbs />
             </PageHeader>
-            <PageContent className={styles.Content}>
-                {isSuccess ? (
-                    reviews.length ? (
-                        <ReviewsScreen reviews={reviews} onAddReview={openAddReviewModal} />
-                    ) : (
-                        <NoReviewsScreen onAddReview={openAddReviewModal} />
-                    )
-                ) : null}
-            </PageContent>
+            <PageContent className={styles.Content}>{content}</PageContent>
         </PageLayout>
     );
 };

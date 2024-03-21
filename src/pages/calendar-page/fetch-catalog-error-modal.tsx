@@ -18,8 +18,8 @@ export const showFetchCatalogErrorModal = (props?: ModalFuncProps) =>
         ),
         content: (
             <Typography.Paragraph
-                type='secondary'
                 data-test-id='modal-error-user-training-subtitle'
+                type='secondary'
             >
                 Попробуйте ещё раз.
             </Typography.Paragraph>

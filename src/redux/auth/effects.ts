@@ -1,33 +1,37 @@
-import { replace, push } from 'redux-first-history';
-import { startAppListening } from '@redux/listener-middleware';
-import { Path } from '@router/paths';
-import { setAuthFrom, setToken, setAuthLoading, setEmailToConfirm } from './slice';
-import { authApi } from './api';
-import type { ResultStatus } from './types';
-import { isEmailNotExistError, isUserNotExistError } from './type-guards';
-import { isFulfilled, isPending, isRejected, type UnknownAction } from '@reduxjs/toolkit';
+import { push, replace } from 'redux-first-history';
 import { createThunk } from '@redux/create-thunk';
+import { startAppListening } from '@redux/listener-middleware';
+import { type UnknownAction, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
+import { RoutePath } from '@router/paths';
+
 import { cleanMutationRetry, mutationRetried, redirectFromAuthResult } from './actions';
+import { authApi } from './api';
+import { setAuthFrom, setAuthLoading, setEmailToConfirm, setToken } from './slice';
+import { isEmailNotExistError, isUserNotExistError } from './type-guards';
+import type { ResultStatus } from './types';
 
 const redirectAfterLogin = createThunk((api) => {
-    const location = api.getState().auth.authFrom ?? Path.Main;
+    const location = api.getState().auth.authFrom ?? RoutePath.Main;
+
     api.dispatch(replace(location));
     api.dispatch(setAuthFrom(null));
 });
 
 const redirectToAuthResult = createThunk((api, status: ResultStatus) => {
-    api.dispatch(push(Path.Result + `/${status}`, { from: api.getState().router.location }));
+    api.dispatch(push(`${RoutePath.Result}/${status}`, { from: api.getState().router.location }));
 });
 
 const isRedirectFromAuthResult = (resultStatus: ResultStatus) => (action: UnknownAction) => {
     if (redirectFromAuthResult.match(action)) {
         return action.payload === resultStatus;
     }
+
     return false;
 };
 
 const redirectAndWaitForReturn = createThunk(({ dispatch }, to: ResultStatus) => {
     dispatch(redirectToAuthResult(to));
+
     return isRedirectFromAuthResult(to);
 });
 
@@ -54,7 +58,8 @@ startAppListening({
     matcher: authApi.endpoints.login.matchFulfilled,
     effect: ({ payload, meta }, { dispatch }) => {
         const token = payload.accessToken;
-        const remember = meta.arg.originalArgs.remember;
+        const { remember } = meta.arg.originalArgs;
+
         dispatch(setToken({ token, remember }));
         dispatch(redirectAfterLogin());
     },
@@ -64,7 +69,7 @@ startAppListening({
     matcher: authApi.endpoints.login.matchRejected,
     effect: async (_, { dispatch, condition }) => {
         await condition(dispatch(redirectAndWaitForReturn('error-login')));
-        dispatch(replace(Path.Login));
+        dispatch(replace(RoutePath.Login));
     },
 });
 
@@ -76,7 +81,7 @@ startAppListening({
     matcher: authApi.endpoints.register.matchFulfilled,
     effect: async (_, { dispatch, condition }) => {
         await condition(dispatch(redirectAndWaitForReturn('success')));
-        dispatch(replace(Path.Login));
+        dispatch(replace(RoutePath.Login));
         dispatch(cleanMutationRetry('register'));
     },
 });
@@ -88,15 +93,17 @@ startAppListening({
 
         if (isUserNotExistError(payload)) {
             await condition(dispatch(redirectAndWaitForReturn('error-user-exist')));
-            dispatch(dispatch(replace(Path.Register)));
+            dispatch(dispatch(replace(RoutePath.Register)));
+
             return;
         }
 
         await condition(dispatch(redirectAndWaitForReturn('error')));
 
         const credentials = meta.arg.originalArgs;
+
         dispatch(mutationRetried('register', credentials));
-        dispatch(replace(Path.Register));
+        dispatch(replace(RoutePath.Register));
     },
 });
 
@@ -108,8 +115,9 @@ startAppListening({
     matcher: authApi.endpoints.checkEmail.matchFulfilled,
     effect: (action, { dispatch, getState }) => {
         const email = action.meta.arg.originalArgs;
+
         dispatch(setEmailToConfirm(email));
-        dispatch(push(Path.ConfirmEmail, { from: getState().router.location }));
+        dispatch(push(RoutePath.ConfirmEmail, { from: getState().router.location }));
         dispatch(cleanMutationRetry('checkEmail'));
     },
 });
@@ -121,22 +129,24 @@ startAppListening({
 
         if (isEmailNotExistError(payload)) {
             await condition(dispatch(redirectAndWaitForReturn('error-check-email-no-exist')));
-            dispatch(replace(Path.Login));
+            dispatch(replace(RoutePath.Login));
+
             return;
         }
 
         await condition(dispatch(redirectAndWaitForReturn('error-check-email')));
 
         const email = meta.arg.originalArgs;
+
         dispatch(mutationRetried('checkEmail', email));
-        dispatch(replace(Path.Login));
+        dispatch(replace(RoutePath.Login));
     },
 });
 
 startAppListening({
     matcher: authApi.endpoints.confirmEmail.matchFulfilled,
     effect: (_, { dispatch, getState }) => {
-        dispatch(replace(Path.ChangePassword, { from: getState().router.location }));
+        dispatch(replace(RoutePath.ChangePassword, { from: getState().router.location }));
     },
 });
 
@@ -144,7 +154,7 @@ startAppListening({
     matcher: authApi.endpoints.changePassword.matchFulfilled,
     effect: async (_, { dispatch, condition }) => {
         await condition(dispatch(redirectAndWaitForReturn('success-change-password')));
-        dispatch(replace(Path.Login));
+        dispatch(replace(RoutePath.Login));
         dispatch(cleanMutationRetry('changePassword'));
     },
 });
@@ -154,7 +164,8 @@ startAppListening({
     effect: async ({ meta }, { dispatch, condition, getState }) => {
         await condition(dispatch(redirectAndWaitForReturn('error-change-password')));
         const changePasswordPayload = meta.arg.originalArgs;
+
         dispatch(mutationRetried('changePassword', changePasswordPayload));
-        dispatch(replace(Path.ChangePassword, { from: getState().router.location }));
+        dispatch(replace(RoutePath.ChangePassword, { from: getState().router.location }));
     },
 });

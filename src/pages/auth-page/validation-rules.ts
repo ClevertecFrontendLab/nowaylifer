@@ -14,6 +14,7 @@ export const confirmPassword: (name?: string) => RuleRender =
             if (!value || getFieldValue(name) === value) {
                 return Promise.resolve();
             }
+
             return Promise.reject(new Error('Пароли не совпадают'));
         },
     });

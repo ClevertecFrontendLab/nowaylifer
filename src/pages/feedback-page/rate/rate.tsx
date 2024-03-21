@@ -1,6 +1,6 @@
+import { createElement } from 'react';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
 import { Rate as RateAntd, RateProps } from 'antd';
-import { createElement } from 'react';
 
 export const Rate = ({ size = 14, ...props }: RateProps & { size?: number }) => (
     <RateAntd

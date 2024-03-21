@@ -1,15 +1,16 @@
+import { useMemo, useReducer } from 'react';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { createDefaultExercise } from '@pages/calendar-page/utils';
 import {
-    TrainingType,
-    TrainingTypeMap,
     selectTrainingTypeMap,
     selectTrainingTypes,
+    TrainingType,
+    TrainingTypeMap,
 } from '@redux/catalogs';
-import { Exercise, Training, selectTrainingsByDate } from '@redux/training';
-import { Dispatch, PayloadAction, bindActionCreators, createSlice } from '@reduxjs/toolkit';
+import { Exercise, selectTrainingsByDate,Training } from '@redux/training';
+import { bindActionCreators, createSlice,Dispatch, PayloadAction } from '@reduxjs/toolkit';
 import moment, { Moment } from 'moment';
-import { useMemo, useReducer } from 'react';
+
 import { ExerciseDrawerMode } from '../exercise-drawer/exercise-drawer';
 
 export type CreateFlow = {
@@ -87,7 +88,7 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
 
     return createSlice({
         name: 'training',
-        initialState: initialState,
+        initialState,
         reducers: {
             popoverOpenChange(state, { payload: open }: PayloadAction<boolean>) {
                 state.popoverOpen = open;
@@ -113,6 +114,7 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
             },
             addExercise(state, { payload: trainingType }: PayloadAction<TrainingType>) {
                 const { exercises } = state.createEditTrainingCard;
+
                 state.exerciseDrawer = {
                     trainingType,
                     open: true,
@@ -122,6 +124,7 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
             },
             editExercise(state, { payload: trainingType }: PayloadAction<TrainingType>) {
                 const { exercises, flow } = state.createEditTrainingCard;
+
                 state.exerciseDrawer = {
                     trainingType,
                     open: true,

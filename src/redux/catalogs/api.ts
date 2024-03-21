@@ -1,6 +1,7 @@
 import { baseQueryBackend } from '@redux/base-query-backend';
 import { EntityState } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
+
 import { transformTrainingCatalogResponse } from './training-type.adapter';
 import { TrainingType } from './types';
 

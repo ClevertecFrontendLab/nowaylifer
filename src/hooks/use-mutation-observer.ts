@@ -1,6 +1,6 @@
 import { MutableRefObject, useCallback, useLayoutEffect, useRef } from 'react';
 
-export const skipToken: unique symbol = Symbol();
+export const skipToken: unique symbol = Symbol('Skip useMutationObserver');
 
 export const useMutationObserver = (
     target: MutableRefObject<Element | null>,
@@ -19,10 +19,10 @@ export const useMutationObserver = (
         const el = target.current;
         const { skip, ...observerOptions } = options;
 
-        if (skip || !el) return;
-
-        observer.current = new MutationObserver(callback);
-        observer.current.observe(el, observerOptions);
+        if (!skip && el) {
+            observer.current = new MutationObserver(callback);
+            observer.current.observe(el, observerOptions);
+        }
 
         return stop;
     }, [stop, target, options, callback]);

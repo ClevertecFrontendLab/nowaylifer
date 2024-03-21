@@ -9,9 +9,11 @@ import {
 } from '@redux/training';
 import { Button, Select } from 'antd';
 import invariant from 'invariant';
+
 import { EmptyPlaceholder } from '../empty-placeholder';
 import { useTraining, useTrainingActions } from '../training-provider';
-import { CreateFlow, EditFlow, ReadFlow } from '../training-provider/reducer';
+import { CreateFlow, EditFlow, ReadFlow } from '../training-provider/training-provider.reducer';
+
 import styles from './create-training-card.module.less';
 
 const NoExercise = () => (
@@ -31,22 +33,22 @@ const ExerciseList = ({ visible, flow, exercises, onEditExercise }: ExerciseList
     <Card.Body style={{ paddingTop: 16, paddingInline: 0 }}>
         <ul className={styles.ExerciseList}>
             {exercises.map((exercise, idx) => (
-                <li key={idx} className={styles.ExerciseListItem}>
+                <li key={exercise._id} className={styles.ExerciseListItem}>
                     <span style={{ color: 'var(--character-light-secondary-45)' }}>
                         {exercise.name}
                     </span>
                     <Button
-                        type='link'
+                        data-test-id={
+                            visible ? `modal-update-training-edit-button${idx}` : undefined
+                        }
+                        icon={<EditOutlined style={{ width: 18, height: 18 }} />}
+                        onClick={() => onEditExercise?.(exercise)}
                         style={{
                             height: 22,
                             color:
                                 flow === 'read' ? 'var(--character-light-secondary-45)' : undefined,
                         }}
-                        onClick={() => onEditExercise?.(exercise)}
-                        icon={<EditOutlined style={{ width: 18, height: 18 }} />}
-                        data-test-id={
-                            visible ? `modal-update-training-edit-button${idx}` : undefined
-                        }
+                        type='link'
                     />
                 </li>
             ))}
@@ -95,6 +97,7 @@ export const CreateEditTrainingCard = ({
 
     const handleCreateTraining = () => {
         invariant(selectedTrainingType, 'Training type is not selected');
+
         return createTraining({
             exercises,
             name: selectedTrainingType.name,
@@ -105,6 +108,7 @@ export const CreateEditTrainingCard = ({
     const handleEditTraining = () => {
         invariant(selectedTrainingType, 'Training type is not selected');
         invariant(training, 'Training is undefined');
+
         return editTraining({
             id: training._id,
             training: {
@@ -138,48 +142,48 @@ export const CreateEditTrainingCard = ({
         <Card className={styles.TrainingCard} data-test-id='modal-create-exercise'>
             <Card.Header className={styles.CreateTrainingCardHeader}>
                 <Button
-                    onClick={onCancel}
-                    icon={<ArrowLeftOutlined />}
                     className={styles.CancelButton}
                     data-test-id='modal-exercise-training-button-close'
+                    icon={<ArrowLeftOutlined />}
+                    onClick={onCancel}
                 />
                 <Select
-                    size='small'
-                    labelInValue
-                    value={selectedTrainingType}
+                    className={styles.TrainingTypeSelect}
+                    data-test-id='modal-create-exercise-select'
+                    fieldNames={{ label: 'name', value: 'key' }}
+                    labelInValue={true}
+                    onSelect={(_, option) => selectTrainingType(option)}
                     options={availableTrainingTypes}
                     placeholder='Выбор типа тренировки'
-                    className={styles.TrainingTypeSelect}
-                    fieldNames={{ label: 'name', value: 'key' }}
-                    onSelect={(_, option) => selectTrainingType(option)}
-                    data-test-id='modal-create-exercise-select'
+                    size='small'
+                    value={selectedTrainingType}
                 />
             </Card.Header>
             {exercises.length ? (
                 <ExerciseList
-                    visible={visible}
-                    flow={flow}
                     exercises={exercises}
+                    flow={flow}
                     onEditExercise={handleEditExercise}
+                    visible={visible}
                 />
             ) : (
                 <NoExercise />
             )}
             <Card.Footer>
                 <Button
-                    block
-                    style={{ marginBottom: 8 }}
+                    block={true}
                     disabled={!selectedTrainingType || flow === 'read'}
                     onClick={() => selectedTrainingType && onAddExercise?.(selectedTrainingType)}
+                    style={{ marginBottom: 8 }}
                 >
                     Добавить упражнения
                 </Button>
                 <Button
-                    block
-                    type='link'
-                    onClick={handleSave}
+                    block={true}
                     disabled={!exercises.length || flow === 'read'}
                     loading={isCreateTrainingLoading || isEditTrainingLoading}
+                    onClick={handleSave}
+                    type='link'
                 >
                     {flow === 'edit' ? 'Сохранить изменения' : 'Сохранить'}
                 </Button>

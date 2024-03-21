@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { useAppLoader } from './use-app-loader';
 
 export const AppLoader = ({ open }: { open: boolean }) => {

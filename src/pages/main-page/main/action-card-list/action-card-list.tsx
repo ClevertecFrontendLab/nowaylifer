@@ -2,10 +2,11 @@ import { CalendarTwoTone, HeartFilled, IdcardOutlined } from '@ant-design/icons'
 import { Card } from '@components/card';
 import { LoadCalendarPage } from '@pages/calendar-page';
 import { Button, ButtonProps } from 'antd';
+
 import styles from './action-card-list.module.less';
 
 const CardButton = (props?: ButtonProps) => (
-    <Button className={styles.CardButton} block {...props} />
+    <Button block={true} className={styles.CardButton} {...props} />
 );
 
 const cards = [
@@ -19,9 +20,9 @@ const cards = [
             <LoadCalendarPage
                 render={(load) => (
                     <CardButton
-                        onClick={load}
-                        icon={<CalendarTwoTone twoToneColor={['currentColor', 'currentColor']} />}
                         data-test-id='menu-button-calendar'
+                        icon={<CalendarTwoTone twoToneColor={['currentColor', 'currentColor']} />}
+                        onClick={load}
                     >
                         Календарь
                     </CardButton>
@@ -37,8 +38,8 @@ const cards = [
 
 export const ActionCardList = () => (
     <ul className={styles.List}>
-        {cards.map(({ title, content }, idx) => (
-            <li key={idx} className={styles.Item}>
+        {cards.map(({ title, content }) => (
+            <li key={title} className={styles.Item}>
                 <Card className={styles.CardItem} title={title}>
                     {content}
                 </Card>

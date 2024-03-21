@@ -1,9 +1,11 @@
+import { memo, useState } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 import { Review } from '@redux/reviews';
 import { Button } from 'antd';
 import cn from 'classnames';
-import { memo, useState } from 'react';
-import { Virtuoso } from 'react-virtuoso';
+
 import { ReviewCard } from '../review-card';
+
 import styles from './reviews-screen.module.less';
 
 type PropsWithReviews = {
@@ -26,8 +28,8 @@ const SimpleList = ({ reviews }: PropsWithReviews) => (
 
 const VirtualList = ({ reviews }: PropsWithReviews) => (
     <Virtuoso
-        totalCount={reviews.length}
         itemContent={(idx) => <ListRow review={reviews[reviews.length - 1 - idx]} />}
+        totalCount={reviews.length}
     />
 );
 
@@ -35,10 +37,10 @@ type ReviewsScreenProps = PropsWithReviews & {
     onAddReview: () => void;
 };
 
-export const ReviewsScreen = memo(function ReviewsScreen({
+export const ReviewsScreen = memo(({
     reviews,
     onAddReview,
-}: ReviewsScreenProps) {
+}: ReviewsScreenProps) => {
     const [showAll, setShowAll] = useState(false);
     const visibleReviews = showAll ? reviews : reviews.slice(-4).reverse();
     const List = showAll ? VirtualList : SimpleList;
@@ -50,19 +52,19 @@ export const ReviewsScreen = memo(function ReviewsScreen({
             </div>
             <div className={styles.ButtonsWrap}>
                 <Button
-                    type='primary'
-                    size='large'
-                    onClick={onAddReview}
                     data-test-id='write-review'
+                    onClick={onAddReview}
+                    size='large'
+                    type='primary'
                 >
                     Написать отзыв
                 </Button>
                 <Button
-                    type='text'
-                    size='large'
                     className={styles.ShowAllBtn}
-                    onClick={() => setShowAll(!showAll)}
                     data-test-id='all-reviews-button'
+                    onClick={() => setShowAll(!showAll)}
+                    size='large'
+                    type='text'
                 >
                     {showAll ? 'Свернуть все отзывы' : 'Развернуть все отзывы'}
                 </Button>

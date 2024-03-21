@@ -1,8 +1,9 @@
 import { AndroidFilled, AppleFilled } from '@ant-design/icons';
-import { Button } from 'antd';
 import { Card } from '@components/card';
-import styles from './download-app-card.module.less';
+import { Button } from 'antd';
 import cn from 'classnames';
+
+import styles from './download-app-card.module.less';
 
 export type DownloadAppCardProps = {
     className?: string;

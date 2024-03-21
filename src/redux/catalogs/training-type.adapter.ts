@@ -1,4 +1,5 @@
 import { createEntityAdapter } from '@reduxjs/toolkit';
+
 import { TrainingType, TrainingTypeDto } from '.';
 
 const trainingTypeColorMap: Record<TrainingType['key'], string> = {

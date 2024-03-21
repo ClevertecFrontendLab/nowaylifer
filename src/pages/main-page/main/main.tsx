@@ -1,6 +1,7 @@
 import { Card } from '@components/card';
 import { PageContent } from '@components/page-content';
 import { Color } from '@constants/color';
+
 import { ActionCardList } from './action-card-list';
 import styles from './main.module.less';
 

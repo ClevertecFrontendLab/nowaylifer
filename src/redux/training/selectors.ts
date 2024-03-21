@@ -1,9 +1,10 @@
 import { RootState } from '@redux/configure-store';
 import { createSelector } from '@reduxjs/toolkit';
-import { groupBy } from '@utils/groupBy';
+import { groupBy } from '@utils/group-by';
 import moment, { Moment } from 'moment';
-import { Training, trainingApi } from '.';
+
 import { trainingAdapter, trainingInitialState } from './adapter';
+import { Training, trainingApi } from '.';
 
 const selectTrainingListCacheEntry = trainingApi.endpoints.fetchTrainingList.select();
 

@@ -1,7 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Location } from 'react-router-dom';
 import { REHYDRATE } from 'redux-persist';
-import { _untypedMutationRetried, cleanMutationRetry } from './actions';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { cleanMutationRetry, untypedMutationRetried } from './actions';
 import { sliceName } from './config';
 import type { ChangePasswordPayload, UserCredentials } from './types';
 
@@ -36,9 +37,18 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         setToken(state, { payload }: PayloadAction<{ token: string; remember: boolean } | null>) {
-            if (!payload) return { ...state, token: null, _persistedToken: null };
+            if (!payload) {
+                state.token = null;
+                state._persistedToken = null;
+
+                return;
+            }
+
             state.token = payload.token;
-            if (payload.remember) state._persistedToken = payload.token;
+
+            if (payload.remember) {
+                state._persistedToken = payload.token;
+            }
         },
         setRememberGoogleAuth(state, action: PayloadAction<boolean>) {
             state.rememberGoogleAuth = action.payload;
@@ -61,10 +71,11 @@ export const authSlice = createSlice({
                 };
 
                 if (key === sliceName && payload?._persistedToken) {
-                    state.token = state._persistedToken = payload._persistedToken;
+                    state.token = payload._persistedToken;
+                    state._persistedToken = payload._persistedToken;
                 }
             })
-            .addCase(_untypedMutationRetried, (state, { payload }) => ({
+            .addCase(untypedMutationRetried, (state, { payload }) => ({
                 ...state,
                 [payload.retryField]: { shouldRetry: true, data: payload.data },
             }))

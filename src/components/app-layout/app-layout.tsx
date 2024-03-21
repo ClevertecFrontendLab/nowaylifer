@@ -1,5 +1,6 @@
-import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
+import { Layout } from 'antd';
+
 import styles from './app-layout.module.less';
 import { Sidebar } from './sidebar';
 

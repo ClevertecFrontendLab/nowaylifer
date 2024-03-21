@@ -1,11 +1,13 @@
+import { useEffect, useRef, useState } from 'react';
+import VerificationInput from 'react-verification-input';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { useConfirmEmailMutation } from '@redux/auth';
 import { Result } from 'antd';
 import cn from 'classnames';
 import invariant from 'invariant';
-import { useEffect, useRef, useState } from 'react';
-import VerificationInput from 'react-verification-input';
+
 import { AuthCard } from '../ui/auth-card';
+
 import styles from './confirm-email.module.less';
 
 export const ConfirmEmail = () => {
@@ -16,9 +18,9 @@ export const ConfirmEmail = () => {
 
     invariant(email, 'Email is undefined');
 
-    const handleComplete = (otp: string) => {
+    const handleComplete = (code: string) => {
         setOtp('');
-        confirmEmail({ email, code: otp });
+        confirmEmail({ email, code });
     };
 
     useEffect(() => {
@@ -30,26 +32,20 @@ export const ConfirmEmail = () => {
             <Result
                 className={styles.Result}
                 status={errorRef.current ? 'error' : 'info'}
-                title={
-                    <div>
-                        {errorRef.current ? 'Неверный код. ' : ''}Введите код <br /> для
-                        восстановления аккаунта
-                    </div>
-                }
                 subTitle={
                     <div>
                         Мы отправили вам на e-mail <span className={styles.Email}>{email}</span>{' '}
                         шестизначный код. Введите его в поле ниже.
                     </div>
                 }
+                title={
+                    <div>
+                        {errorRef.current ? 'Неверный код. ' : ''}Введите код <br /> для
+                        восстановления аккаунта
+                    </div>
+                }
             />
             <VerificationInput
-                placeholder=''
-                validChars='0-9'
-                value={otp}
-                onChange={setOtp}
-                onComplete={handleComplete}
-                inputProps={{ 'data-test-id': 'verification-input' }}
                 classNames={{
                     container: styles.WrapperOTP,
                     character: cn(
@@ -58,6 +54,12 @@ export const ConfirmEmail = () => {
                         styles.InputOTP,
                     ),
                 }}
+                inputProps={{ 'data-test-id': 'verification-input' }}
+                onChange={setOtp}
+                onComplete={handleComplete}
+                placeholder=''
+                validChars='0-9'
+                value={otp}
             />
             <p className={styles.Para}>Не пришло письмо? Проверьте папку Спам.</p>
         </AuthCard>

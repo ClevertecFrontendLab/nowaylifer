@@ -1,3 +1,5 @@
+import { Fragment, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppLoader } from '@components/app-loader';
 import { Breadcrumbs } from '@components/breadcrumbs';
 import { PageContent } from '@components/page-content';
@@ -6,9 +8,8 @@ import { PageLayout } from '@components/page-layout';
 import { ServerErrorModal } from '@components/server-error-modal';
 import { useFetchTrainingCatalogQuery } from '@redux/catalogs';
 import { useFetchTrainingListQuery } from '@redux/training';
-import { Path } from '@router/paths';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { RoutePath } from '@router/paths';
+
 import { TrainingCalendar } from './calendar';
 import styles from './calendar-page.module.less';
 import { showFetchCatalogErrorModal } from './fetch-catalog-error-modal';
@@ -30,26 +31,28 @@ const CalendarPage = () => {
     } = useFetchTrainingCatalogQuery();
 
     useEffect(() => {
+        let modal: { destroy: () => void };
+
         if (isTrainingListSuccess && isTrainingCatalogError) {
-            const modal = showFetchCatalogErrorModal({
+            modal = showFetchCatalogErrorModal({
                 onCancel: () => modal.destroy(),
                 onOk: () => {
                     modal.destroy();
                     refetchTrainingCatalog();
                 },
             });
-
-            return () => modal.destroy();
         }
+
+        return () => modal?.destroy();
     }, [isTrainingCatalogError, isTrainingListSuccess, refetchTrainingCatalog]);
 
     return (
-        <>
+        <Fragment>
             <AppLoader open={isTrainingListLoading || isTrainingCatalogLoading} />
             <ServerErrorModal
-                open={isTrainingListError}
-                onCancel={() => navigate(Path.Main)}
                 data-test-id='modal-no-review'
+                onCancel={() => navigate(RoutePath.Main)}
+                open={isTrainingListError}
             />
             <PageLayout className={styles.Layout}>
                 <PageHeader>
@@ -61,7 +64,7 @@ const CalendarPage = () => {
                     />
                 </PageContent>
             </PageLayout>
-        </>
+        </Fragment>
     );
 };
 

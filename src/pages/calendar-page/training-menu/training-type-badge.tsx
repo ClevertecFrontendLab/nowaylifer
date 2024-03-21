@@ -1,5 +1,5 @@
-import { TrainingType } from '@redux/catalogs';
 import { ComponentProps } from 'react';
+import { TrainingType } from '@redux/catalogs';
 
 const wrapperStyle = {
     gap: 8,
@@ -12,8 +12,7 @@ type TrainingTypeBadgeProps = ComponentProps<'div'> & {
     trainingType: TrainingType;
 };
 
-export const TrainingTypeBadge = ({ trainingType, style, ...props }: TrainingTypeBadgeProps) => {
-    return (
+export const TrainingTypeBadge = ({ trainingType, style, ...props }: TrainingTypeBadgeProps) => (
         <div style={{ ...wrapperStyle, ...style }} {...props}>
             <span
                 style={{
@@ -22,8 +21,7 @@ export const TrainingTypeBadge = ({ trainingType, style, ...props }: TrainingTyp
                     height: 6,
                     background: trainingType.color,
                 }}
-            ></span>
+             />
             {trainingType.name}
         </div>
     );
-};

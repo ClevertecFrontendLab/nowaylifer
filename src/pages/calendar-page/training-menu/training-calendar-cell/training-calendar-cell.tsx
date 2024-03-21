@@ -1,5 +1,6 @@
 import { useTraining } from '../training-provider';
 import { TrainingTypeBadge } from '../training-type-badge';
+
 import styles from './training-calendar-cell.module.less';
 
 export const TrainingCalendarCell = ({ compact = false }: { compact?: boolean }) => {

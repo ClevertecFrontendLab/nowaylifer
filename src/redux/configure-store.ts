@@ -1,22 +1,23 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { createReduxHistoryContext } from 'redux-first-history';
-import { createBrowserHistory } from 'history';
 import {
-    persistStore,
-    persistReducer,
     FLUSH,
-    REHYDRATE,
     PAUSE,
     PERSIST,
+    persistReducer,
+    persistStore,
     PURGE,
     REGISTER,
+    REHYDRATE,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { createBrowserHistory } from 'history';
+
+import { authApi, authSlice, authSlicePersistConfig } from './auth';
+import { catalogsApi } from './catalogs';
 import { listenerMiddleware } from './listener-middleware';
-import { authSlice, authApi, authSlicePersistConfig } from './auth';
 import { reviewsApi } from './reviews';
 import { trainingApi } from './training';
-import { catalogsApi } from './catalogs';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
     history: createBrowserHistory(),

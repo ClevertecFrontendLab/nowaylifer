@@ -1,12 +1,13 @@
 import { baseQueryBackend } from '@redux/base-query-backend';
 import { EntityState } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { transformTrainingResponse } from './adapter';
-import { EditTrainingDTO, CreateTrainingDTO, Training, Exercise } from './types';
-import { trainingAdapter } from './adapter';
+
+import { trainingAdapter, transformTrainingResponse } from './adapter';
+import { CreateTrainingDTO, EditTrainingDTO, Exercise, Training } from './types';
 
 const prepareDTO = (dto: CreateTrainingDTO) => {
     dto.exercises = dto.exercises.map(({ _id, ...exercise }) => exercise) as Exercise[];
+
     return dto;
 };
 
@@ -27,6 +28,7 @@ export const trainingApi = createApi({
             onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
                 try {
                     const { data: training } = await queryFulfilled;
+
                     dispatch(
                         trainingApi.util.updateQueryData(
                             'fetchTrainingList',
@@ -53,6 +55,7 @@ export const trainingApi = createApi({
             onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
                 try {
                     const { data: training } = await queryFulfilled;
+
                     dispatch(
                         trainingApi.util.updateQueryData(
                             'fetchTrainingList',

@@ -1,10 +1,11 @@
-import { Card as CardAntd, CardProps } from 'antd';
-import styles from './card.module.less';
-import cn from 'classnames';
 import { ComponentProps, FC } from 'react';
+import { Card as CardAntd, CardProps } from 'antd';
+import cn from 'classnames';
+
+import styles from './card.module.less';
 
 const CardInner: FC<CardProps> = ({ className, ...props }) => (
-    <CardAntd className={cn(styles.Card, className)} bordered={false} {...props} />
+    <CardAntd bordered={false} className={cn(styles.Card, className)} {...props} />
 );
 
 const CardBody = ({ className, ...props }: ComponentProps<'div'>) => (

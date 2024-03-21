@@ -1,5 +1,5 @@
+import { createContext, Fragment, PropsWithChildren, useMemo, useState } from 'react';
 import { LoaderModal } from '@components/loader-modal';
-import { createContext, PropsWithChildren, useMemo, useState } from 'react';
 
 type AppLoaderContext = { open: () => void; close: () => void };
 
@@ -17,9 +17,9 @@ export const AppLoaderProvider = (props: PropsWithChildren) => {
     );
 
     return (
-        <>
+        <Fragment>
             <LoaderModal open={showLoader} />
             <AppLoaderContext.Provider value={context} {...props} />
-        </>
+        </Fragment>
     );
 };
