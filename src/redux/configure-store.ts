@@ -18,6 +18,7 @@ import { catalogsApi } from './catalogs';
 import { listenerMiddleware } from './listener-middleware';
 import { reviewsApi } from './reviews';
 import { trainingApi } from './training';
+import { userApi } from './user';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
     history: createBrowserHistory(),
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
     [reviewsApi.reducerPath]: reviewsApi.reducer,
     [catalogsApi.reducerPath]: catalogsApi.reducer,
     [trainingApi.reducerPath]: trainingApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
@@ -55,6 +57,7 @@ export const store = configureStore({
                 reviewsApi.middleware,
                 catalogsApi.middleware,
                 trainingApi.middleware,
+                userApi.middleware,
             ),
 });
 
