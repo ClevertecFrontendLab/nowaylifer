@@ -58,7 +58,7 @@ export const TrainingPopover = () => {
 
     const handleSaveTrainingError = () => {
         popoverOpenChange(false);
-        const modal = Modal.error({
+        Modal.error({
             title: (
                 <Typography.Text data-test-id='modal-error-user-training-title'>
                     При сохранении данных произошла ошибка
@@ -69,9 +69,7 @@ export const TrainingPopover = () => {
                     Придётся попробовать ещё раз
                 </Typography.Paragraph>
             ),
-            okText: 'Закрыть',
             okButtonProps: { 'data-test-id': 'modal-error-user-training-button' } as ButtonProps,
-            onOk: () => modal.destroy(),
         });
     };
 

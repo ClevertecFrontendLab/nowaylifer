@@ -7,18 +7,31 @@ import { AppLoaderProvider } from '@components/app-loader';
 import { AppModalProvider } from '@components/app-modal';
 import { history, persistor, store } from '@redux/configure-store';
 import { ConfigProvider } from 'antd';
+import locale from 'antd/es/locale/ru_RU';
+import { Locale } from 'antd/lib/locale-provider';
+import moment from 'moment';
 
+import datePickerLocale from './locale/date-picker.ru-RU';
 import { routes } from './router/routes';
 
 import 'antd/dist/antd.variable.min.css';
 import 'normalize.css';
 
 import './index.less';
+import 'moment/locale/ru';
 
 ConfigProvider.config({
     theme: {
         primaryColor: '#2f54eb',
         infoColor: '#2f54eb',
+    },
+});
+
+const ruRu: Locale = { ...locale, DatePicker: datePickerLocale, Calendar: datePickerLocale };
+
+moment.locale('ru', {
+    week: {
+        dow: 1,
     },
 });
 
@@ -39,11 +52,13 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
             <PersistGate persistor={persistor}>
-                <AppLoaderProvider>
-                    <AppModalProvider>
-                        <Router history={history}>{routes}</Router>
-                    </AppModalProvider>
-                </AppLoaderProvider>
+                <ConfigProvider locale={ruRu}>
+                    <AppLoaderProvider>
+                        <AppModalProvider>
+                            <Router history={history}>{routes}</Router>
+                        </AppModalProvider>
+                    </AppLoaderProvider>
+                </ConfigProvider>
             </PersistGate>
         </Provider>
     </React.StrictMode>,

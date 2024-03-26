@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Form, Input, InputProps } from 'antd';
 import cn from 'classnames';
 
-import { password, required } from '../../validation-rules';
+import { password, required as requiredRule } from '../../utils/validation-rules';
 
 import styles from './password-form-item.module.less';
 
@@ -23,12 +23,18 @@ const PasswordInput = ({ onValidate, ...props }: PasswordInputProps) => {
 };
 
 export type PasswordFormItemProps = {
-    className?: string;
     name?: string;
+    required?: boolean;
+    className?: string;
     inputProps?: InputProps;
 };
 
-export const PasswordFormItem = ({ className, name, inputProps }: PasswordFormItemProps) => {
+export const PasswordFormItem = ({
+    name,
+    className,
+    inputProps,
+    required = false,
+}: PasswordFormItemProps) => {
     const [validateStatus, setValidateStatus] = useState<ValidateStatus>();
 
     return (
@@ -40,7 +46,7 @@ export const PasswordFormItem = ({ className, name, inputProps }: PasswordFormIt
             )}
             extra='Пароль не менее 8 символов, с заглавной буквой и цифрой'
             name={name}
-            rules={[required, password]}
+            rules={required ? [requiredRule, password] : [password]}
         >
             <PasswordInput onValidate={setValidateStatus} {...inputProps} />
         </Form.Item>

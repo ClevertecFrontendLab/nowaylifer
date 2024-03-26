@@ -1,13 +1,24 @@
+import { useNavigate } from 'react-router-dom';
 import { CalendarTwoTone, HeartFilled, IdcardOutlined } from '@ant-design/icons';
 import { Card } from '@components/card';
 import { LoadCalendarPage } from '@pages/calendar-page';
+import { RoutePath } from '@router/paths';
 import { Button, ButtonProps } from 'antd';
 
 import styles from './action-card-list.module.less';
 
-const CardButton = (props?: ButtonProps) => (
-    <Button block={true} className={styles.CardButton} {...props} />
-);
+const CardButton = ({ navigateTo, ...props }: ButtonProps & { navigateTo?: string }) => {
+    const navigate = useNavigate();
+
+    return (
+        <Button
+            block={true}
+            className={styles.CardButton}
+            onClick={navigateTo ? () => navigate(navigateTo) : undefined}
+            {...props}
+        />
+    );
+};
 
 const cards = [
     {
@@ -32,7 +43,11 @@ const cards = [
     },
     {
         title: 'Заполнить профиль',
-        content: <CardButton icon={<IdcardOutlined />}>Профиль</CardButton>,
+        content: (
+            <CardButton icon={<IdcardOutlined />} navigateTo={RoutePath.Profile}>
+                Профиль
+            </CardButton>
+        ),
     },
 ];
 

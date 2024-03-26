@@ -9,4 +9,5 @@ export const RoutePath = {
     Result: '/result',
     Feedback: '/feedbacks',
     Calendar: '/calendar',
+    Profile: '/profile',
 } as const;

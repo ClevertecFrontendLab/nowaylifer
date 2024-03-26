@@ -1,0 +1,49 @@
+.ProfileCard:global.ant-card {
+    border-radius: 8px;
+    background-color: #fff;
+
+    .ant-card-body {
+        padding: 24px;
+    }
+
+    @media (max-width: 480px) {
+        border-radius: 0;
+    }
+}
+
+.FormHeading:global.ant-typography {
+    font-weight: 500;
+    line-height: 130%;
+    color: var(--character-light-title-85);
+    margin-bottom: 24px;
+}
+
+.Form:global.ant-form {
+    .ant-form-item-explain-error {
+        font-size: 12px;
+    }
+
+    .ant-input {
+        font-size: 14px;
+    }
+
+    .ant-picker-input > input {
+        font-size: 14px;
+    }
+}
+
+.PersonalInfoRow:global.ant-row {
+    max-width: 480px;
+    margin-bottom: 36px;
+    gap: 16px;
+
+    @media (max-width: 480px) {
+        flex-direction: column;
+    }
+}
+
+.AvatarCol:global.ant-col {
+    @media (max-width: 480px) {
+        order: 1;
+    }
+}

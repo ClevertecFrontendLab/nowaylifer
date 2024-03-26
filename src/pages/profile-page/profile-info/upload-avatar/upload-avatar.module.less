@@ -1,0 +1,46 @@
+.UploadButtonPara:global.ant-typography {
+    width: min-content;
+    word-break: normal;
+    margin: 0;
+}
+
+.Upload.UploadHidden :global {
+    .ant-upload {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    @media (max-width: 480px) {
+        min-height: 66px;
+        display: block;
+    }
+}
+
+.Upload :global {
+    .ant-upload-list-item {
+        margin-top: 0;
+    }
+
+    .ant-upload-select-picture {
+        width: 100%;
+    }
+
+    .ant-upload-list-picture-container {
+        top: 0;
+        right: 0;
+        left: 0;
+    }
+
+    .ant-upload-list-picture-card-container,
+    .ant-upload-list-picture-container {
+        z-index: 1;
+        position: absolute;
+        animation: none;
+    }
+
+    .ant-upload {
+        z-index: 2;
+        position: relative;
+        animation: none;
+    }
+}

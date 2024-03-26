@@ -5,7 +5,7 @@ import { EditUserDTO, User } from './types';
 
 export const userApi = createApi({
     reducerPath: 'userApi',
-    baseQuery: baseQueryBackend({ prefixUrl: 'user', minDelay: 1000 }),
+    baseQuery: baseQueryBackend({ prefixUrl: 'user', minDelay: 0 }),
     endpoints: (builder) => ({
         fetchCurrentUser: builder.query<User, void>({
             query: () => '/me',
@@ -13,9 +13,24 @@ export const userApi = createApi({
         editCurrentUser: builder.mutation<User, EditUserDTO>({
             query: (dto) => ({
                 url: '',
-                method: 'POST',
+                method: 'PUT',
                 body: dto,
             }),
+            onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
+                try {
+                    const { data: updatedUser } = await queryFulfilled;
+
+                    dispatch(
+                        userApi.util.updateQueryData(
+                            'fetchCurrentUser',
+                            undefined,
+                            () => updatedUser,
+                        ),
+                    );
+                } catch {
+                    // ignore
+                }
+            },
         }),
     }),
 });

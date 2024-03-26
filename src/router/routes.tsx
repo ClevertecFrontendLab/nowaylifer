@@ -16,6 +16,7 @@ import { RequireAuth, RequireNoAuth, RequireRedirect } from './route-guards';
 const loginOrResult = new RegExp(`(${RoutePath.Login})|(${RoutePath.Result})`);
 
 const CalendarPage = loadable(() => import('@pages/calendar-page/calendar-page'));
+const ProfilePage = loadable(() => import('@pages/profile-page/profile-page'));
 
 export const routes = (
     <Routes>
@@ -41,6 +42,7 @@ export const routes = (
                 <Route element={<MainPage />} path={RoutePath.Main} />
                 <Route element={<FeedbackPage />} path={RoutePath.Feedback} />
                 <Route element={<CalendarPage />} path={RoutePath.Calendar} />
+                <Route element={<ProfilePage />} path={RoutePath.Profile} />
             </Route>
         </Route>
     </Routes>

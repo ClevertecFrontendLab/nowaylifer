@@ -12,7 +12,7 @@ import { loginViaGoogle } from '@redux/auth/actions';
 import { Button, Checkbox, Form, Input } from 'antd';
 import cn from 'classnames';
 
-import { email, password, required } from '../../validation-rules';
+import { email, password, required } from '../../../../utils/validation-rules';
 
 import styles from './login-form.module.less';
 

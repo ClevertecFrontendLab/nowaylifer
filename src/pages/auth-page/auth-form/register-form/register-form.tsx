@@ -1,14 +1,14 @@
 import { memo } from 'react';
 import { GooglePlusOutlined } from '@ant-design/icons';
+import { PasswordFormItem } from '@components/password-form-item';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { useXs } from '@hooks/use-breakpoint';
-import { PasswordFormItem } from '@pages/auth-page/ui/password-form-item';
 import { UserCredentials, useRegisterMutation, useRetryMutation } from '@redux/auth';
 import { loginViaGoogle } from '@redux/auth/actions';
 import { Button, Form, Input } from 'antd';
 import cn from 'classnames';
 
-import * as rules from '../../validation-rules';
+import * as rules from '../../../../utils/validation-rules';
 
 import styles from './register-form.module.less';
 
@@ -45,6 +45,7 @@ export const RegisterForm = memo(() => {
             <PasswordFormItem
                 inputProps={{ 'data-test-id': 'registration-password' }}
                 name='password'
+                required={true}
             />
 
             <Form.Item

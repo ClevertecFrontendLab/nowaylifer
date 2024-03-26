@@ -9,15 +9,6 @@ import { TrainingPopover } from '../training-menu/training-popover';
 import { TrainingProvider } from '../training-menu/training-provider';
 
 import styles from './calendar.module.less';
-import ruRu from './ru-Ru';
-
-import 'moment/locale/ru';
-
-moment.locale('ru', {
-    week: {
-        dow: 1,
-    },
-});
 
 type TrainingCalendarProps = {
     disabled?: boolean;
@@ -59,7 +50,6 @@ export const TrainingCalendar = ({ disabled }: TrainingCalendarProps) => {
                 </div>
             )}
             fullscreen={isCalendarFullScreen}
-            locale={ruRu}
             onSelect={setSelectedDate}
             value={selectedDate}
         />

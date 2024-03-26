@@ -13,7 +13,9 @@ const defaultModalProps: ModalProps = {
 
 const ModalInner = (props: ModalProps) => <ModalAntd {...defaultModalProps} {...props} />;
 
-const error = (props?: ModalFuncProps) => ModalAntd.error({ ...defaultModalProps, ...props });
+const error = (props?: ModalFuncProps) =>
+    ModalAntd.error({ ...defaultModalProps, okText: 'Закрыть', ...props });
+
 const info = (props?: ModalFuncProps) => ModalAntd.info({ ...defaultModalProps, ...props });
 
 export const Modal = Object.assign(ModalInner, { error, info });

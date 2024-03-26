@@ -2,9 +2,9 @@ import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { ChangePasswordPayload, useChangePasswordMutation, useRetryMutation } from '@redux/auth';
 import { Button, Form, Input } from 'antd';
 
+import { PasswordFormItem } from '../../../components/password-form-item';
+import { confirmPassword, required } from '../../../utils/validation-rules';
 import { AuthCard } from '../ui/auth-card';
-import { PasswordFormItem } from '../ui/password-form-item';
-import { confirmPassword, required } from '../validation-rules';
 
 import styles from './change-password.module.less';
 
@@ -26,6 +26,7 @@ export const ChangePassword = () => {
                 <PasswordFormItem
                     inputProps={{ 'data-test-id': 'change-password' }}
                     name='password'
+                    required={true}
                 />
                 <Form.Item
                     className={styles.ConfirmPwd}
