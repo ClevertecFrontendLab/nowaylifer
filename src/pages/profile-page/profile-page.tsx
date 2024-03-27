@@ -1,12 +1,15 @@
 import { Fragment } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppLoader } from '@components/app-loader';
 import { Breadcrumbs } from '@components/breadcrumbs';
 import { Modal } from '@components/modal';
 import { PageContent } from '@components/page-content';
 import { PageHeader } from '@components/page-header';
 import { PageLayout } from '@components/page-layout';
+import { SettingsButton } from '@components/settings-button';
 import { EditUserDTO, useEditCurrentUserMutation, useFetchCurrentUserQuery } from '@redux/user';
-import { Alert, notification, Typography } from 'antd';
+import { RoutePath } from '@router/paths';
+import { Alert, notification, Row, Typography } from 'antd';
 
 import { ProfileInfo } from './profile-info';
 import styles from './profile-page.module.less';
@@ -14,6 +17,7 @@ import styles from './profile-page.module.less';
 const ProfilePage = () => {
     const { data: user, isFetching: isUserFetching } = useFetchCurrentUserQuery();
     const [editUser, { isLoading: isEditUserLoading }] = useEditCurrentUserMutation();
+    const navigate = useNavigate();
 
     const handleEditUser = async (dto: EditUserDTO) => {
         try {
@@ -50,7 +54,10 @@ const ProfilePage = () => {
             <AppLoader open={isUserFetching || isEditUserLoading} />
             <PageLayout>
                 <PageHeader>
-                    <Breadcrumbs />
+                    <Row justify='space-between'>
+                        <Breadcrumbs />
+                        <SettingsButton onClick={() => navigate(RoutePath.Settings)} />
+                    </Row>
                 </PageHeader>
                 <PageContent className={styles.Content}>
                     {user && <ProfileInfo onEditUser={handleEditUser} user={user} />}

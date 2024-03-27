@@ -1,9 +1,9 @@
 import { Breadcrumbs } from '@components/breadcrumbs';
 import { PageHeader } from '@components/page-header';
+import { SettingsButton } from '@components/settings-button';
 import { Typography } from 'antd';
 
 import styles from './header.module.less';
-import { SettingsButton } from './settings-button';
 
 export const Header = () => (
     <PageHeader>

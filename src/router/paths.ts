@@ -10,4 +10,5 @@ export const RoutePath = {
     Feedback: '/feedbacks',
     Calendar: '/calendar',
     Profile: '/profile',
+    Settings: '/settings',
 } as const;

@@ -17,6 +17,7 @@ const loginOrResult = new RegExp(`(${RoutePath.Login})|(${RoutePath.Result})`);
 
 const CalendarPage = loadable(() => import('@pages/calendar-page/calendar-page'));
 const ProfilePage = loadable(() => import('@pages/profile-page/profile-page'));
+const SettingsPage = loadable(() => import('@pages/settings-page/settings-page'));
 
 export const routes = (
     <Routes>
@@ -43,6 +44,7 @@ export const routes = (
                 <Route element={<FeedbackPage />} path={RoutePath.Feedback} />
                 <Route element={<CalendarPage />} path={RoutePath.Calendar} />
                 <Route element={<ProfilePage />} path={RoutePath.Profile} />
+                <Route element={<SettingsPage />} path={RoutePath.Settings} />
             </Route>
         </Route>
     </Routes>

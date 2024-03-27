@@ -4,6 +4,8 @@ import { Breadcrumb } from 'antd';
 import cn from 'classnames';
 import useBreadcrumbs, { BreadcrumbsRoute } from 'use-react-router-breadcrumbs';
 
+import styles from './breadcrumbs.module.less';
+
 type BreadcrumbsProps = {
     className?: string;
 };
@@ -19,7 +21,7 @@ export const Breadcrumbs = ({ className }: BreadcrumbsProps) => {
     const crumbs = useBreadcrumbs(routes, { disableDefaults: true });
 
     return (
-        <Breadcrumb className={cn(className)}>
+        <Breadcrumb className={cn(styles.Breadcrumb, className)}>
             {crumbs.map((crumb) => (
                 <Breadcrumb.Item key={crumb.key}>
                     <Link to={crumb.match.pathname}>{crumb.breadcrumb}</Link>

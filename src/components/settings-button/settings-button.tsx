@@ -28,8 +28,8 @@ const getVariant = (breakpoint: ReturnType<typeof useBreakpoint>) => {
     return variant.sm;
 };
 
-export const SettingsButton = () => {
+export const SettingsButton = (props: ButtonProps) => {
     const breakpoint = useBreakpoint();
 
-    return <Button {...getVariant(breakpoint)} />;
+    return <Button {...getVariant(breakpoint)} {...props} />;
 };

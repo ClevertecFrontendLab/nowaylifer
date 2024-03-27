@@ -1,0 +1,51 @@
+.TariffInfoCard:global.ant-card {
+    border-radius: 8px;
+    background-color: #fff;
+    height: 100%;
+
+    .ant-card-body {
+        padding: 24px;
+    }
+
+    @media (max-width: 480px) {
+        border-radius: 0;
+    }
+}
+
+.Title:global.ant-typography {
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+.CardList:global.ant-row {
+    row-gap: 12px;
+    column-gap: 25px;
+    margin-bottom: 40px;
+
+    @media (max-width: 665px) {
+        justify-content: center;
+    }
+}
+
+.SettingsForm:global.ant-form {
+    margin-bottom: 112px;
+
+    @media (max-width: 575px) {
+        margin-bottom: 20px;
+    }
+}
+
+.ButtonsRow:global.ant-row {
+    column-gap: 8px;
+    row-gap: 16px;
+
+    @media (max-width: 480px) {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .ant-btn {
+        font-size: 14px;
+    }
+}

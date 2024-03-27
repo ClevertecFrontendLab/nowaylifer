@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { CalendarTwoTone, HeartFilled, IdcardOutlined, TrophyFilled } from '@ant-design/icons';
 import ExitSvg from '@assets/icons/exit.svg?react';
 import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
 import { useXs } from '@hooks/use-breakpoint';
 import { LoadCalendarPage } from '@pages/calendar-page';
 import { logout } from '@redux/auth/actions';
+import { history } from '@redux/configure-store';
 import { RoutePath } from '@router/paths';
 import { Layout, Menu } from 'antd';
 
@@ -40,8 +40,9 @@ const menuItems = [
         icon: <TrophyFilled />,
     },
     {
-        label: <Link to={RoutePath.Profile}>Профиль</Link>,
+        label: 'Профиль',
         icon: <IdcardOutlined />,
+        onClick: () => history.push(RoutePath.Profile),
     },
 ];
 
