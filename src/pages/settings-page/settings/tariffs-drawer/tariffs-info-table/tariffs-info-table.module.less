@@ -1,0 +1,36 @@
+.Table:global.ant-table-wrapper {
+    .ant-table-row {
+        .ant-table-cell {
+            padding-block: 8px;
+
+            &:first-child {
+                padding-inline: 0;
+            }
+
+            &:last-child {
+                padding-inline: 0;
+            }
+        }
+    }
+
+    .ant-table-thead {
+        & > tr > th {
+            background: none;
+        }
+
+        .ant-table-cell {
+            &:last-child {
+                padding-inline: 0;
+            }
+        }
+
+        .ant-table-cell:before {
+            display: none;
+        }
+    }
+
+    .ant-table-cell {
+        border-bottom: 0;
+        pointer-events: none;
+    }
+}

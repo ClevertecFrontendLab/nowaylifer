@@ -17,6 +17,7 @@ import { authApi, authSlice, authSlicePersistConfig } from './auth';
 import { catalogsApi } from './catalogs';
 import { listenerMiddleware } from './listener-middleware';
 import { reviewsApi } from './reviews';
+import { tariffApi } from './tariff';
 import { trainingApi } from './training';
 import { userApi } from './user';
 
@@ -38,6 +39,7 @@ const rootReducer = combineReducers({
     [catalogsApi.reducerPath]: catalogsApi.reducer,
     [trainingApi.reducerPath]: trainingApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [tariffApi.reducerPath]: tariffApi.reducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
@@ -58,6 +60,7 @@ export const store = configureStore({
                 catalogsApi.middleware,
                 trainingApi.middleware,
                 userApi.middleware,
+                tariffApi.middleware,
             ),
 });
 

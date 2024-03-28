@@ -8,7 +8,12 @@ import moment from 'moment';
 
 import styles from './tariff-card.module.less';
 
-export const TariffCard = ({ tariff }: { tariff: Tariff }) => {
+type TariffCardProps = {
+    tariff: Tariff;
+    onDetailsClick?(tariff: Tariff): void;
+};
+
+export const TariffCard = ({ tariff, onDetailsClick }: TariffCardProps) => {
     const user = useAppSelector(selectUser);
 
     const isFreeTariff = tariff._id === FREE_TARIFF_ID;
@@ -43,7 +48,9 @@ export const TariffCard = ({ tariff }: { tariff: Tariff }) => {
                     <Typography.Text
                         className={styles.TariffName}
                     >{`${tariff.name} tariff`}</Typography.Text>
-                    <Button type='link'>Подробнее</Button>
+                    <Button onClick={() => onDetailsClick?.(tariff)} type='link'>
+                        Подробнее
+                    </Button>
                 </Row>
             </Card.Header>
             <Card.Body

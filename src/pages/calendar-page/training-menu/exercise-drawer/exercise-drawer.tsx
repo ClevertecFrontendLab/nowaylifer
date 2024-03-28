@@ -1,9 +1,9 @@
 import { Fragment, ReactNode, useEffect, useRef, useState } from 'react';
 import { CloseOutlined, EditOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { useXss } from '@hooks/use-breakpoint';
+import { Drawer } from '@components/drawer';
 import { TrainingType } from '@redux/catalogs';
 import { createExerciseDraft, Exercise } from '@redux/training';
-import { Button, Drawer, DrawerProps, FormInstance, Row, Typography } from 'antd';
+import { Button, DrawerProps, FormInstance, Row } from 'antd';
 import cn from 'classnames';
 
 import { useTraining } from '../training-provider';
@@ -56,7 +56,6 @@ export const ExerciseDrawer = ({
     const [selectedFormIndexes, setSelectedFormIndexes] = useState<number[]>([]);
     const exerciseFormMap = useRef<ExerciseFormRecord>({});
     const { date } = useTraining();
-    const xss = useXss();
 
     useEffect(() => {
         setExercises(initialExercises);
@@ -78,20 +77,10 @@ export const ExerciseDrawer = ({
 
     return (
         <Drawer
-            className={styles.Drawer}
             closeIcon={<CloseOutlined data-test-id='modal-drawer-right-button-close' />}
             data-test-id='modal-drawer-right'
-            destroyOnClose={true}
-            height={xss ? '90%' : undefined}
-            mask={false}
             onClose={handleClose}
-            placement={xss ? 'bottom' : 'right'}
-            title={
-                <Typography.Text className={styles.DrawerTitle}>
-                    {titleByModeMap[mode]}
-                </Typography.Text>
-            }
-            width={xss ? '100%' : 408}
+            title={titleByModeMap[mode]}
             {...props}
         >
             <div className={styles.Extra}>
