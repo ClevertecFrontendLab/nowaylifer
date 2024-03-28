@@ -29,8 +29,8 @@ export const TariffCard = ({ tariff, onDetailsClick }: TariffCardProps) => {
         );
     } else if (isActive) {
         footer = (
-            <Typography.Text>
-                активен до {moment(user.tariff?.expired).format('DD.MM')}
+            <Typography.Text className={styles.Active}>
+                активен <br /> до {moment(user.tariff?.expired).local().format('DD.MM')}
             </Typography.Text>
         );
     } else {
@@ -55,7 +55,11 @@ export const TariffCard = ({ tariff, onDetailsClick }: TariffCardProps) => {
             </Card.Header>
             <Card.Body
                 className={styles.CardBody}
-                style={{ backgroundImage: `url(${tariff.cover})` }}
+                style={{
+                    backgroundImage: `url(${isActive || isFreeTariff ? '' : 'disabled-'}${
+                        tariff.cover
+                    })`,
+                }}
             />
             <Card.Footer className={styles.CardFooter}>{footer}</Card.Footer>
         </Card>

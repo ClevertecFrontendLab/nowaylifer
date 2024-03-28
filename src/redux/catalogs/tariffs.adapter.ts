@@ -21,7 +21,7 @@ const mapTariffDtos = (dtos: TariffDto[]) =>
     dtos.map(
         (dto): Tariff => ({
             ...dto,
-            cover: `/${dto.name.toLowerCase()}-tariff-cover-disabled.png`,
+            cover: `/${dto.name.toLowerCase()}-tariff-cover.png`,
         }),
     );
 
