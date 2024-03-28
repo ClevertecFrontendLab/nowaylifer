@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Modal } from '@components/modal';
+import { Rate } from '@components/rate';
 import { CreateReviewDTO } from '@redux/reviews';
 import { Button, Form, Input, ModalProps } from 'antd';
-
-import { Rate } from '../../../components/rate';
 
 import styles from './add-review-modal.module.less';
 

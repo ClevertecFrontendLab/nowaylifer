@@ -3,7 +3,7 @@ import { Card } from '@components/card';
 import { Review } from '@redux/reviews';
 import { Avatar, Typography } from 'antd';
 
-import { Rate } from '../rate';
+import { Rate } from '../../../components/rate';
 
 import styles from './review-card.module.less';
 
