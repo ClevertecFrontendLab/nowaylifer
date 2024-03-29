@@ -49,8 +49,6 @@ export const FeedbackPage = () => {
         );
     }
 
-    console.log('fetching', isFetching);
-
     return (
         <PageLayout>
             <AppLoader open={isFetching} />

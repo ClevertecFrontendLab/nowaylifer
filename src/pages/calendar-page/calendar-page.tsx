@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppLoader } from '@components/app-loader';
+import { AppLoader, useAppLoader } from '@components/app-loader';
 import { Breadcrumbs } from '@components/breadcrumbs';
 import { PageContent } from '@components/page-content';
 import { PageHeader } from '@components/page-header';
@@ -13,9 +13,11 @@ import { RoutePath } from '@router/paths';
 import { TrainingCalendar } from './calendar';
 import styles from './calendar-page.module.less';
 import { showFetchCatalogErrorModal } from './fetch-catalog-error-modal';
+import { CALENDAR_PAGE_LOADER_ID } from './load-calendar-page';
 
 const CalendarPage = () => {
     const navigate = useNavigate();
+    const appLoader = useAppLoader();
 
     const {
         isLoading: isTrainingListLoading,
@@ -45,6 +47,10 @@ const CalendarPage = () => {
 
         return () => modal?.destroy();
     }, [isTrainingCatalogError, isTrainingListSuccess, refetchTrainingCatalog]);
+
+    useEffect(() => {
+        appLoader.close(CALENDAR_PAGE_LOADER_ID);
+    }, [appLoader]);
 
     return (
         <Fragment>

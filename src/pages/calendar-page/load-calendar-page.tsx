@@ -8,6 +8,8 @@ import { ModalProps } from 'antd';
 
 const errorModalProps = { 'data-test-id': 'modal-no-review' } as ModalProps;
 
+export const CALENDAR_PAGE_LOADER_ID = 'LOAD_CALENDAR_PAGE';
+
 export const LoadCalendarPage = ({ render }: { render: (load: () => void) => ReactNode }) => {
     const [fetchTrainingList] = useLazyFetchTrainingListQuery();
     const { isSuccess } = useFetchTrainingListState();
@@ -16,7 +18,7 @@ export const LoadCalendarPage = ({ render }: { render: (load: () => void) => Rea
     const navigate = useNavigate();
 
     const load = async () => {
-        if (!isSuccess) appLoader.open();
+        if (!isSuccess) appLoader.open(CALENDAR_PAGE_LOADER_ID);
 
         try {
             await Promise.all([
@@ -24,7 +26,7 @@ export const LoadCalendarPage = ({ render }: { render: (load: () => void) => Rea
                 fetchTrainingList(undefined, true).unwrap(),
             ]);
         } catch {
-            appLoader.close();
+            appLoader.close(CALENDAR_PAGE_LOADER_ID);
             appModal.serverError(errorModalProps);
 
             return;

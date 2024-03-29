@@ -17,7 +17,9 @@ export const AppLoader = ({ open }: { open: boolean }) => {
             appLoader.close();
         }
 
-        return () => appLoader.close();
+        return () => {
+            if (open) appLoader.close();
+        };
     }, [appLoader, open]);
 
     return null;
