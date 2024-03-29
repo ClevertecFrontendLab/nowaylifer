@@ -1,11 +1,11 @@
 .Logo {
     width: 309px;
     margin: 0 auto;
-    margin-bottom: 48px;
+    margin-bottom: var(--space-8);
 
     @media (max-width: 575px) {
         width: 203px;
-        margin-bottom: 32px;
+        margin-bottom: var(--space-6);
     }
 }
 
@@ -21,10 +21,10 @@
     .ant-tabs-tab {
         flex: 1;
         justify-content: center;
-        font-size: 1rem;
+        font-size: var(--font-size-md);
 
         @media (max-width: 575px) {
-            font-size: 14px;
+            font-size: var(--font-size-sm);
         }
     }
 }

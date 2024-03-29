@@ -30,7 +30,7 @@ export const TariffsDrawer = ({ tariff, onSelectTariff, ...props }: TariffsDrawe
                         disabled={!selectedDays}
                         onClick={() => selectedDays && onSelectTariff?.(tariff, selectedDays)}
                         size='large'
-                        style={{ fontSize: 14 }}
+                        style={{ fontSize: 'var(--font-size-sm)' }}
                         type='primary'
                     >
                         Выбрать и оплатить
@@ -48,7 +48,9 @@ export const TariffsDrawer = ({ tariff, onSelectTariff, ...props }: TariffsDrawe
             <TariffsInfoTable style={{ marginBottom: 70 }} />
             {!user?.tariff && (
                 <div data-test-id='tariff-cost'>
-                    <Typography.Paragraph style={{ fontWeight: 700, marginBottom: 24 }}>
+                    <Typography.Paragraph
+                        style={{ fontWeight: 700, marginBottom: 'var(--space-5)' }}
+                    >
                         Стоимость тарифа
                     </Typography.Paragraph>
                     <Radio.Group
@@ -65,7 +67,9 @@ export const TariffsDrawer = ({ tariff, onSelectTariff, ...props }: TariffsDrawe
                                     value={period.days}
                                 >
                                     <span style={{ marginRight: 'auto' }}>{period.text}</span>
-                                    <span style={{ fontSize: 16, fontWeight: 500 }}>
+                                    <span
+                                        style={{ fontSize: 'var(--font-size-md)', fontWeight: 500 }}
+                                    >
                                         {period.cost.toLocaleString('ru')} $
                                     </span>
                                 </Radio>

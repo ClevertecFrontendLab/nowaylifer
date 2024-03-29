@@ -1,7 +1,7 @@
 .Heading {
-    margin-bottom: 48px;
+    margin-bottom: var(--space-8);
     font-weight: 500;
-    font-size: 24px;
+    font-size: var(--font-size-xl);
     text-align: center;
     color: var(--theme-primary-light-9);
 }
@@ -14,14 +14,14 @@
 }
 
 .NoReviewsCard:global.ant-card {
-    margin-bottom: 48px;
+    margin-bottom: var(--space-8);
     align-self: stretch;
 
     .ant-card-body {
         padding-block: 56px;
 
         @media (max-width: 575px) {
-            padding-block: 48px;
+            padding-block: var(--space-8);
         }
     }
 }

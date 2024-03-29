@@ -38,7 +38,7 @@ export const TariffCard = ({ tariff, onDetailsClick }: TariffCardProps) => {
             <Button
                 data-test-id='activate-tariff-btn'
                 size='large'
-                style={{ fontSize: 14 }}
+                style={{ fontSize: 'var(--font-size-sm)' }}
                 type='primary'
             >
                 Активировать

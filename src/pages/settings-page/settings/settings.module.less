@@ -4,7 +4,7 @@
     height: 100%;
 
     & > .ant-card-body {
-        padding: 24px;
+        padding: var(--space-5);
     }
 
     @media (max-width: 480px) {
@@ -14,13 +14,13 @@
 
 .Title:global.ant-typography {
     font-weight: 500;
-    font-size: 20px;
-    margin-bottom: 16px;
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-4);
 }
 
 .CardList:global.ant-row {
-    row-gap: 12px;
-    column-gap: 25px;
+    row-gap: var(--space-3);
+    column-gap: var(--space-5);
     margin-bottom: 40px;
 
     @media (max-width: 665px) {
@@ -37,8 +37,8 @@
 }
 
 .ButtonsRow:global.ant-row {
-    column-gap: 8px;
-    row-gap: 16px;
+    column-gap: var(--space-3);
+    row-gap: var(--space-4);
 
     @media (max-width: 480px) {
         flex-direction: column;
@@ -46,6 +46,6 @@
     }
 
     .ant-btn {
-        font-size: 14px;
+        font-size: var(--font-size-sm);
     }
 }

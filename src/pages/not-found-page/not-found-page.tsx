@@ -19,7 +19,7 @@ export const NotFoundPage = () => {
                             <Button
                                 onClick={() => navigate(RoutePath.Main)}
                                 size='large'
-                                style={{ fontSize: 14 }}
+                                style={{ fontSize: 'var(--font-size-sm)' }}
                                 type='primary'
                             >
                                 На главную

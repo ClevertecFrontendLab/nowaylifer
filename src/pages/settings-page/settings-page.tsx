@@ -31,7 +31,7 @@ const SettingsPage = () => {
                         data-test-id='settings-back'
                         icon={
                             <ArrowLeftOutlined
-                                style={{ fontSize: 14, position: 'relative', top: 2 }}
+                                style={{ fontSize: 'var(--font-size-sm)', position: 'relative', top: 2 }}
                             />
                         }
                         onClick={() =>

@@ -3,7 +3,7 @@
     background-color: #fff;
 
     .ant-card-body {
-        padding: 24px;
+        padding: var(--space-5);
     }
 
     @media (max-width: 480px) {
@@ -15,27 +15,27 @@
     font-weight: 500;
     line-height: 130%;
     color: var(--character-light-title-85);
-    margin-bottom: 24px;
+    margin-bottom: var(--space-5);
 }
 
 .Form:global.ant-form {
     .ant-form-item-explain-error {
-        font-size: 12px;
+        font-size: var(--font-size-xs);
     }
 
     .ant-input {
-        font-size: 14px;
+        font-size: var(--font-size-sm);
     }
 
     .ant-picker-input > input {
-        font-size: 14px;
+        font-size: var(--font-size-sm);
     }
 }
 
 .PersonalInfoRow:global.ant-row {
     max-width: 480px;
     margin-bottom: 36px;
-    gap: 16px;
+    gap: var(--space-4);
 
     @media (max-width: 480px) {
         flex-direction: column;

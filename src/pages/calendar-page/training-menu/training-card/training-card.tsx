@@ -31,8 +31,8 @@ const TrainingCardHeader = ({ date, onClose }: TrainingCardHeaderProps) => (
 );
 
 const NoTraining = () => (
-    <Card.Body style={{ marginTop: 4 }}>
-        <Typography.Paragraph style={{ marginBottom: 16 }} type='secondary'>
+    <Card.Body style={{ marginTop: 'var(--space-1)' }}>
+        <Typography.Paragraph style={{ marginBottom: 'var(--space-4)' }} type='secondary'>
             Нет активных тренировок
         </Typography.Paragraph>
         <EmptyPlaceholder />
@@ -52,7 +52,7 @@ const TrainingList = ({
     trainingTypeMap,
     onEditTraining,
 }: TrainingListProps) => (
-    <Card.Body style={{ paddingTop: 16, paddingInline: 0 }}>
+    <Card.Body style={{ paddingTop: 'var(--space-4)', paddingInline: 0 }}>
         <ul className={styles.TrainingList}>
             {trainings.map((training, idx) => {
                 const style =
@@ -116,7 +116,7 @@ export const TrainingCard = ({
                     disabled={createDisabled}
                     onClick={onCreateTraining}
                     size='large'
-                    style={{ fontSize: 14 }}
+                    style={{ fontSize: 'var(--font-size-sm)' }}
                     type='primary'
                 >
                     Создать тренировку

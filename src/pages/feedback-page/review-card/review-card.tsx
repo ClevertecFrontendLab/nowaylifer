@@ -29,7 +29,7 @@ export const ReviewCard = ({ review }: ReviewCardProps) => (
         <div className={styles.Content}>
             <div className={styles.RateWrap}>
                 <Rate disabled={true} value={review.rating} />
-                <Typography.Text style={{ fontSize: 12 }} type='secondary'>
+                <Typography.Text style={{ fontSize: 'var(--font-size-xs)' }} type='secondary'>
                     {formatISODate(review.createdAt)}
                 </Typography.Text>
             </div>

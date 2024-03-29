@@ -104,10 +104,14 @@ export const UploadAvatar = ({
                     </div>
                 ) : (
                     <Row align='middle' justify='space-between' style={{ width: '100%' }}>
-                        <Typography.Text style={{ fontSize: 12 }}>
+                        <Typography.Text style={{ fontSize: 'var(--font-size-xs)' }}>
                             Загрузить фото профиля:
                         </Typography.Text>
-                        <Button icon={<UploadOutlined />} size='large' style={{ fontSize: 14 }}>
+                        <Button
+                            icon={<UploadOutlined />}
+                            size='large'
+                            style={{ fontSize: 'var(--font-size-sm)' }}
+                        >
                             Загрузить
                         </Button>
                     </Row>

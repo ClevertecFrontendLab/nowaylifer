@@ -36,7 +36,7 @@ export const Settings = ({ tariffs }: { tariffs: Tariff[] }) => {
         <Fragment>
             <AddReview onOpenChange={setShowAddReview} open={showAddReview} />
             <ResultModal
-                bodyStyle={{ paddingInline: 32, paddingBottom: 56 }}
+                bodyStyle={{ paddingInline: 'var(--space-6)', paddingBottom: 56 }}
                 closable={true}
                 data-test-id='tariff-modal-success'
                 onCancel={() => dispatch(logout())}

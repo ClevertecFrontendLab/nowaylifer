@@ -30,7 +30,7 @@ type ExerciseListProps = {
 };
 
 const ExerciseList = ({ visible, flow, exercises, onEditExercise }: ExerciseListProps) => (
-    <Card.Body style={{ paddingTop: 16, paddingInline: 0 }}>
+    <Card.Body style={{ paddingTop: 'var(--space-4)', paddingInline: 0 }}>
         <ul className={styles.ExerciseList}>
             {exercises.map((exercise, idx) => (
                 <li key={exercise._id} className={styles.ExerciseListItem}>
@@ -174,7 +174,7 @@ export const CreateEditTrainingCard = ({
                     block={true}
                     disabled={!selectedTrainingType || flow === 'read'}
                     onClick={() => selectedTrainingType && onAddExercise?.(selectedTrainingType)}
-                    style={{ marginBottom: 8 }}
+                    style={{ marginBottom: 'var(--space-2)' }}
                 >
                     Добавить упражнения
                 </Button>

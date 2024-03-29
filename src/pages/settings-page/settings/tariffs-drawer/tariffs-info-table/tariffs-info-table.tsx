@@ -31,7 +31,7 @@ const getColumns = (user: User | undefined) => [
             <div
                 style={{
                     textAlign: 'center',
-                    padding: '4px 8px',
+                    padding: 'var(--space-1) var(--space-2)',
                     background: 'var(--theme-gray-4)',
                     color: 'var(--character-light-title-85)',
                 }}
@@ -48,7 +48,7 @@ const getColumns = (user: User | undefined) => [
             <div
                 style={{
                     textAlign: 'center',
-                    padding: '4px 8px',
+                    padding: 'var(--space-1) var(--space-2)',
                     paddingRight: user?.tariff ? 0 : 8,
                     background: 'var(--theme-primary-light-1)',
                     color: 'var(--theme-primary-light-7)',

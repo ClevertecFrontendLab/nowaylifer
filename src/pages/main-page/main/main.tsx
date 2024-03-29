@@ -8,8 +8,14 @@ import styles from './main.module.less';
 export const Main = () => (
     <PageContent>
         <div className={styles.Wrap}>
-            <Card style={{ marginBottom: 24, color: Color.PrimaryLight9, fontSize: '1rem' }}>
-                <Card.Body style={{ padding: 24 }}>
+            <Card
+                style={{
+                    marginBottom: 'var(--space-5)',
+                    color: Color.PrimaryLight9,
+                    fontSize: 'var(--font-size-md)',
+                }}
+            >
+                <Card.Body style={{ padding: 'var(--space-5)' }}>
                     <h3>С CleverFit ты сможешь:</h3>
                     <ul style={{ listStylePosition: 'inside', listStyleType: '"— "' }}>
                         <li>
@@ -31,8 +37,8 @@ export const Main = () => (
                     </ul>
                 </Card.Body>
             </Card>
-            <Card style={{ marginBottom: 16 }}>
-                <Card.Body style={{ padding: 24 }}>
+            <Card style={{ marginBottom: 'var(--space-4)' }}>
+                <Card.Body style={{ padding: 'var(--space-5)' }}>
                     <p style={{ fontWeight: 500, fontSize: 20 }}>
                         CleverFit — это не просто приложение, а твой личный помощник в мире фитнеса.
                         Не откладывай на завтра — начни тренироваться уже сегодня!

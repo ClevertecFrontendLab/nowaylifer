@@ -4,8 +4,9 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
     plugins: [react(), svgr()],
+    base: command === 'build' ? '/nowaylifer/' : '/',
     server: {
         host: true,
         port: 3000,
@@ -24,4 +25,4 @@ export default defineConfig({
             '@router': path.resolve(__dirname, 'src/router'),
         },
     },
-});
+}));
