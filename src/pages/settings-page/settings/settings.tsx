@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircleFilled } from '@ant-design/icons';
 import { AddReview } from '@components/add-review';
-import { Card } from '@components/card';
+import { PageContentCard } from '@components/page-content-card';
 import { ResultModal } from '@components/result-modal';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { logout } from '@redux/auth/actions';
@@ -64,7 +64,7 @@ export const Settings = ({ tariffs }: { tariffs: Tariff[] }) => {
                 open={drawerOpen}
                 tariff={tariffs[1]}
             />
-            <Card className={styles.TariffInfoCard}>
+            <PageContentCard>
                 <Typography.Title className={styles.Title} level={3}>
                     Мой тариф
                 </Typography.Title>
@@ -86,7 +86,7 @@ export const Settings = ({ tariffs }: { tariffs: Tariff[] }) => {
                         Смотреть все отзывы
                     </Button>
                 </Row>
-            </Card>
+            </PageContentCard>
         </Fragment>
     );
 };

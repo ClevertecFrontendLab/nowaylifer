@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { Card } from '@components/card';
 import { Modal } from '@components/modal';
+import { PageContentCard } from '@components/page-content-card';
 import { PasswordFormItem } from '@components/password-form-item';
 import { useXss } from '@hooks/use-breakpoint';
 import { EditUserDTO, User } from '@redux/user';
@@ -46,7 +46,7 @@ export const ProfileInfo = ({ user, onEditUser }: ProfileInfoProps) => {
     };
 
     return (
-        <Card className={styles.ProfileCard}>
+        <PageContentCard>
             <Form className={styles.Form} form={form} onFinish={handleFinish}>
                 <Typography.Title className={styles.FormHeading} level={5}>
                     Личная информация
@@ -154,6 +154,6 @@ export const ProfileInfo = ({ user, onEditUser }: ProfileInfoProps) => {
                     </Form.Item>
                 </div>
             </Form>
-        </Card>
+        </PageContentCard>
     );
 };

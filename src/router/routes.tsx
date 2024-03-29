@@ -7,6 +7,7 @@ import { ConfirmEmail } from '@pages/auth-page/confirm-email';
 import { AuthResultPage } from '@pages/auth-result-page';
 import FeedbackPage from '@pages/feedback-page';
 import MainPage from '@pages/main-page';
+import { NotFoundPage } from '@pages/not-found-page';
 import { GetGoogleToken } from '@redux/auth';
 
 import { loadable } from './loadable';
@@ -40,6 +41,7 @@ export const routes = (
 
         <Route element={<RequireAuth redirectTo={RoutePath.Login} />}>
             <Route element={<AppLayout />}>
+                <Route element={<NotFoundPage />} path='*' />
                 <Route element={<MainPage />} path={RoutePath.Main} />
                 <Route element={<FeedbackPage />} path={RoutePath.Feedback} />
                 <Route element={<CalendarPage />} path={RoutePath.Calendar} />
