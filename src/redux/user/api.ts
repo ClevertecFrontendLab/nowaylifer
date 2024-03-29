@@ -6,7 +6,7 @@ import { EditUserDTO, User } from './types';
 
 export const userApi = createApi({
     reducerPath: 'userApi',
-    baseQuery: baseQueryBackend({ prefixUrl: 'user', minDelay: 0 }),
+    baseQuery: baseQueryBackend({ prefixUrl: 'user', minDelay: 1000 }),
     endpoints: (builder) => ({
         fetchCurrentUser: builder.query<User, void>({
             query: () => '/me',

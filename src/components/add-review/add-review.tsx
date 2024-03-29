@@ -6,7 +6,7 @@ import {
     CreateReviewDTO,
     reviewsApi,
     useAddReviewMutation,
-    useFetchAllReviewsQuery,
+    useLazyFetchAllReviewsQuery,
 } from '@redux/reviews';
 
 import { AddReviewModal } from './add-review-modal';
@@ -20,7 +20,7 @@ type AddReviewProps = {
 
 export const AddReview = ({ open, onOpenChange, refetchOnSuccess = false }: AddReviewProps) => {
     const [addReveiw, { isLoading }] = useAddReviewMutation();
-    const { refetch: refetchReviews, isFetching } = useFetchAllReviewsQuery();
+    const [fetchReviews, { isFetching }] = useLazyFetchAllReviewsQuery();
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [showModal, setShowModal] = useState(open ?? false);
@@ -77,7 +77,7 @@ export const AddReview = ({ open, onOpenChange, refetchOnSuccess = false }: AddR
         }
 
         if (refetchOnSuccess) {
-            await refetchReviews();
+            await fetchReviews();
         } else {
             setShowModal(false);
             setShowSuccessModal(true);

@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { AppLoader } from '@components/app-loader';
 import { PageContent } from '@components/page-content';
@@ -19,6 +19,7 @@ const SettingsPage = () => {
     const { isFetching: isUserFetching, isSuccess: isUserSuccess } = useFetchCurrentUserQuery();
     const tariffs = useAppSelector(selectTariffs);
     const navigate = useNavigate();
+    const location = useLocation();
 
     return (
         <Fragment>
@@ -27,12 +28,15 @@ const SettingsPage = () => {
                 <PageHeader>
                     <Button
                         className={styles.GoBackBtn}
+                        data-test-id='settings-back'
                         icon={
                             <ArrowLeftOutlined
                                 style={{ fontSize: 14, position: 'relative', top: 2 }}
                             />
                         }
-                        onClick={() => navigate(RoutePath.Profile)}
+                        onClick={() =>
+                            location.key === 'default' ? navigate(RoutePath.Profile) : navigate(-1)
+                        }
                         size='large'
                         type='text'
                     >

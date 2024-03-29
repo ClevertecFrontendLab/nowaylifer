@@ -1,4 +1,4 @@
-import { Modal as ModalAntd, ModalFuncProps, ModalProps } from 'antd';
+import { ButtonProps, Modal as ModalAntd, ModalFuncProps, ModalProps } from 'antd';
 
 export type { ModalProps } from 'antd';
 
@@ -13,9 +13,13 @@ const defaultModalProps: ModalProps = {
 
 const ModalInner = (props: ModalProps) => <ModalAntd {...defaultModalProps} {...props} />;
 
-const error = (props?: ModalFuncProps) =>
+type ModalFuncPropsCustom = Omit<ModalFuncProps, 'okButtonProps'> & {
+    okButtonProps?: ButtonProps & { [key: `data-${string}`]: string | undefined };
+};
+
+const error = (props?: ModalFuncPropsCustom) =>
     ModalAntd.error({ ...defaultModalProps, okText: 'Закрыть', ...props });
 
-const info = (props?: ModalFuncProps) => ModalAntd.info({ ...defaultModalProps, ...props });
+const info = (props?: ModalFuncPropsCustom) => ModalAntd.info({ ...defaultModalProps, ...props });
 
 export const Modal = Object.assign(ModalInner, { error, info });

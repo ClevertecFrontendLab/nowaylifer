@@ -23,4 +23,5 @@ export const reviewsApi = createApi({
     }),
 });
 
-export const { useFetchAllReviewsQuery, useAddReviewMutation } = reviewsApi;
+export const { useFetchAllReviewsQuery, useLazyFetchAllReviewsQuery, useAddReviewMutation } =
+    reviewsApi;

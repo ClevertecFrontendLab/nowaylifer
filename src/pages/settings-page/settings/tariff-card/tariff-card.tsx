@@ -35,19 +35,27 @@ export const TariffCard = ({ tariff, onDetailsClick }: TariffCardProps) => {
         );
     } else {
         footer = (
-            <Button size='large' style={{ fontSize: 14 }} type='primary'>
+            <Button
+                data-test-id='activate-tariff-btn'
+                size='large'
+                style={{ fontSize: 14 }}
+                type='primary'
+            >
                 Активировать
             </Button>
         );
     }
 
     return (
-        <Card className={styles.Card}>
+        <Card
+            className={styles.Card}
+            data-test-id={tariff.name === 'Pro' ? 'pro-tariff-card' : undefined}
+        >
             <Card.Header className={styles.CardHeader}>
                 <Row align='middle' justify='space-between'>
                     <Typography.Text
                         className={styles.TariffName}
-                    >{`${tariff.name} tariff`}</Typography.Text>
+                    >{`${tariff.name} tarif`}</Typography.Text>
                     <Button onClick={() => onDetailsClick?.(tariff)} type='link'>
                         Подробнее
                     </Button>

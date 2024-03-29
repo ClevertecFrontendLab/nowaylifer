@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { Drawer, DrawerProps } from '@components/drawer';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { Tariff } from '@redux/catalogs';
@@ -21,10 +21,12 @@ export const TariffsDrawer = ({ tariff, onSelectTariff, ...props }: TariffsDrawe
     return (
         <Drawer
             className={styles.TariffDrawer}
+            data-test-id='tariff-sider'
             footer={
                 user?.tariff ? null : (
                     <Button
                         block={true}
+                        data-test-id='tariff-submit'
                         disabled={!selectedDays}
                         onClick={() => selectedDays && onSelectTariff?.(tariff, selectedDays)}
                         size='large'
@@ -45,7 +47,7 @@ export const TariffsDrawer = ({ tariff, onSelectTariff, ...props }: TariffsDrawe
             )}
             <TariffsInfoTable style={{ marginBottom: 70 }} />
             {!user?.tariff && (
-                <Fragment>
+                <div data-test-id='tariff-cost'>
                     <Typography.Paragraph style={{ fontWeight: 700, marginBottom: 24 }}>
                         Стоимость тарифа
                     </Typography.Paragraph>
@@ -56,7 +58,12 @@ export const TariffsDrawer = ({ tariff, onSelectTariff, ...props }: TariffsDrawe
                     >
                         <Space direction='vertical' size={16}>
                             {tariff.periods.map((period) => (
-                                <Radio key={period.days} name='days' value={period.days}>
+                                <Radio
+                                    key={period.days}
+                                    data-test-id={period.cost === 10 ? 'tariff-10' : undefined}
+                                    name='days'
+                                    value={period.days}
+                                >
                                     <span style={{ marginRight: 'auto' }}>{period.text}</span>
                                     <span style={{ fontSize: 16, fontWeight: 500 }}>
                                         {period.cost.toLocaleString('ru')} $
@@ -65,7 +72,7 @@ export const TariffsDrawer = ({ tariff, onSelectTariff, ...props }: TariffsDrawe
                             ))}
                         </Space>
                     </Radio.Group>
-                </Fragment>
+                </div>
             )}
         </Drawer>
     );

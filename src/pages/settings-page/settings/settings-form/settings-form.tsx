@@ -14,7 +14,6 @@ type FormValues = Pick<User, 'sendNotification' | 'readyForJointTraining'> & {
 };
 
 const tooltipConfig: LabelTooltipType = {
-    icon: <ExclamationCircleOutlined />,
     align: { offset: [-16] },
     placement: 'bottomLeft',
 };
@@ -52,15 +51,16 @@ export const SettingsForm = ({ className, ...props }: FormProps) => {
                     ...tooltipConfig,
                     icon: (
                         <ExclamationCircleOutlined
+                            data-test-id='tariff-trainings-icon'
                             style={xss ? { position: 'relative', bottom: 11 } : undefined}
                         />
                     ),
-                    title: 'включенная функция позволит участвовать в совместных тренировках',
+                    title: 'включеная функция позволит участвовать в совместных тренировках',
                     overlayStyle: { maxWidth: 205 },
                 }}
                 valuePropName='checked'
             >
-                <Switch size={xss ? 'small' : 'default'} />
+                <Switch data-test-id='tariff-trainings' size={xss ? 'small' : 'default'} />
             </Form.Item>
             <Form.Item<FormValues>
                 initialValue={user?.sendNotification}
@@ -68,12 +68,13 @@ export const SettingsForm = ({ className, ...props }: FormProps) => {
                 name='sendNotification'
                 tooltip={{
                     ...tooltipConfig,
-                    title: 'включенная функция позволит получать уведомления об активностях',
+                    icon: <ExclamationCircleOutlined data-test-id='tariff-notifications-icon' />,
+                    title: 'включеная функция позволит получать уведомления об активностях',
                     overlayStyle: { maxWidth: 219 },
                 }}
                 valuePropName='checked'
             >
-                <Switch size={xss ? 'small' : 'default'} />
+                <Switch data-test-id='tariff-notifications' size={xss ? 'small' : 'default'} />
             </Form.Item>
             <Form.Item<FormValues>
                 initialValue={false}
@@ -91,12 +92,17 @@ export const SettingsForm = ({ className, ...props }: FormProps) => {
                 name='isBlackTheme'
                 tooltip={{
                     ...tooltipConfig,
-                    title: 'тёмная тема доступна для PRO tariff',
+                    icon: <ExclamationCircleOutlined data-test-id='tariff-theme-icon' />,
+                    title: 'темная тема доступна для PRO tarif',
                     overlayStyle: { maxWidth: 113 },
                 }}
                 valuePropName='checked'
             >
-                <Switch disabled={isBlackThemeDisabled} size={xss ? 'small' : 'default'} />
+                <Switch
+                    data-test-id='tariff-theme'
+                    disabled={isBlackThemeDisabled}
+                    size={xss ? 'small' : 'default'}
+                />
             </Form.Item>
         </Form>
     );

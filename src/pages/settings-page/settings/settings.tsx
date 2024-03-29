@@ -27,6 +27,7 @@ export const Settings = ({ tariffs }: { tariffs: Tariff[] }) => {
     const navigate = useNavigate();
 
     const handleSelectTariff = ({ _id }: Tariff, days: number) => {
+        setDrawerOpen(false);
         requestBuyTariff({ tariffId: _id, days });
         setShowModal(true);
     };
@@ -37,6 +38,7 @@ export const Settings = ({ tariffs }: { tariffs: Tariff[] }) => {
             <ResultModal
                 bodyStyle={{ paddingInline: 32, paddingBottom: 56 }}
                 closable={true}
+                data-test-id='tariff-modal-success'
                 onCancel={() => dispatch(logout())}
                 open={showModal}
                 resultProps={{

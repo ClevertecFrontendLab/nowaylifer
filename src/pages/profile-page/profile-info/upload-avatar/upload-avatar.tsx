@@ -50,7 +50,12 @@ export const UploadAvatar = ({
         if (info.file.status === 'error') {
             setFileList([{ name: file.name, status: 'error' } as UploadFile]);
             onChange?.({ ...file, status: 'error' });
-            onError?.(new Error('Something went wrong'));
+
+            if (info.file.error && 'status' in info.file.error && info.file.error.status === 409) {
+                onError?.(new MaxFileSizeExceededError());
+            } else {
+                onError?.(new Error('Something went wrong'));
+            }
 
             return;
         }
@@ -72,40 +77,42 @@ export const UploadAvatar = ({
     const showUploadButton = !uploadStatus || uploadStatus === 'removed';
 
     return (
-        <Upload
-            accept='image/*'
-            action={`${BACKEND_URL}/upload-image`}
-            beforeUpload={isLtMaxSize}
-            className={cn(styles.Upload, !showUploadButton && styles.UploadHidden)}
-            fileList={fileList}
-            headers={{ authorization: `Bearer ${token}` }}
-            listType={fileType}
-            locale={{ uploading: 'Загружаем' }}
-            maxCount={1}
-            name='file'
-            onChange={handleChange}
-            onRemove={() => setFileList([])}
-            type='select'
-            withCredentials={true}
-            {...props}
-        >
-            {fileType === 'picture-card' ? (
-                <div>
-                    <PlusOutlined />
-                    <Typography.Paragraph className={styles.UploadButtonPara} type='secondary'>
-                        Загрузить фото профиля
-                    </Typography.Paragraph>
-                </div>
-            ) : (
-                <Row align='middle' justify='space-between' style={{ width: '100%' }}>
-                    <Typography.Text style={{ fontSize: 12 }}>
-                        Загрузить фото профиля:
-                    </Typography.Text>
-                    <Button icon={<UploadOutlined />} size='large' style={{ fontSize: 14 }}>
-                        Загрузить
-                    </Button>
-                </Row>
-            )}
-        </Upload>
+        <div data-test-id='profile-avatar'>
+            <Upload
+                accept='image/*'
+                action={`${BACKEND_URL}/upload-image`}
+                beforeUpload={isLtMaxSize}
+                className={cn(styles.Upload, !showUploadButton && styles.UploadHidden)}
+                fileList={fileList}
+                headers={{ authorization: `Bearer ${token}` }}
+                listType={fileType}
+                locale={{ uploading: 'Загружаем' }}
+                maxCount={1}
+                name='file'
+                onChange={handleChange}
+                onRemove={() => setFileList([])}
+                type='select'
+                withCredentials={true}
+                {...props}
+            >
+                {fileType === 'picture-card' ? (
+                    <div>
+                        <PlusOutlined />
+                        <Typography.Paragraph className={styles.UploadButtonPara} type='secondary'>
+                            Загрузить фото профиля
+                        </Typography.Paragraph>
+                    </div>
+                ) : (
+                    <Row align='middle' justify='space-between' style={{ width: '100%' }}>
+                        <Typography.Text style={{ fontSize: 12 }}>
+                            Загрузить фото профиля:
+                        </Typography.Text>
+                        <Button icon={<UploadOutlined />} size='large' style={{ fontSize: 14 }}>
+                            Загрузить
+                        </Button>
+                    </Row>
+                )}
+            </Upload>
+        </div>
     );
 };

@@ -40,6 +40,7 @@ const ProfilePage = () => {
             message: (
                 <Alert
                     closable={true}
+                    data-test-id='alert'
                     message='Данные профиля успешно обновлены'
                     onClose={() => notification.close('editUserSuccessAlert')}
                     showIcon={true}
@@ -56,7 +57,10 @@ const ProfilePage = () => {
                 <PageHeader>
                     <Row justify='space-between'>
                         <Breadcrumbs />
-                        <SettingsButton onClick={() => navigate(RoutePath.Settings)} />
+                        <SettingsButton
+                            data-test-id='header-settings'
+                            onClick={() => navigate(RoutePath.Settings)}
+                        />
                     </Row>
                 </PageHeader>
                 <PageContent className={styles.Content}>

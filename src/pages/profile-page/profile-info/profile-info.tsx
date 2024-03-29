@@ -86,10 +86,11 @@ export const ProfileInfo = ({ user, onEditUser }: ProfileInfoProps) => {
                                         ),
                                         content: (
                                             <Typography.Paragraph>
-                                                Выберите файл размером меньше ${MAX_AVATAR_SIZE}МБ.
+                                                Выберите файл размером меньше {MAX_AVATAR_SIZE}МБ.
                                             </Typography.Paragraph>
                                         ),
                                         okText: 'Закрыть',
+                                        okButtonProps: { 'data-test-id': 'big-file-error-close' },
                                     })
                                 }
                             />
@@ -97,10 +98,14 @@ export const ProfileInfo = ({ user, onEditUser }: ProfileInfoProps) => {
                     </Col>
                     <Col flex={1}>
                         <Form.Item<FormValues> initialValue={user.firstName} name='firstName'>
-                            <Input placeholder='Имя' size='large' />
+                            <Input data-test-id='profile-name' placeholder='Имя' size='large' />
                         </Form.Item>
                         <Form.Item<FormValues> initialValue={user.lastName} name='lastName'>
-                            <Input placeholder='Фамилия' size='large' />
+                            <Input
+                                data-test-id='profile-surname'
+                                placeholder='Фамилия'
+                                size='large'
+                            />
                         </Form.Item>
                         <Form.Item<FormValues>
                             initialValue={user.birthday ? moment(user.birthday) : undefined}
@@ -108,6 +113,7 @@ export const ProfileInfo = ({ user, onEditUser }: ProfileInfoProps) => {
                             style={{ marginBottom: 0 }}
                         >
                             <DatePicker
+                                data-test-id='profile-birthday'
                                 format='DD.MM.YYYY'
                                 placeholder='Дата рождения'
                                 size='large'
@@ -126,20 +132,28 @@ export const ProfileInfo = ({ user, onEditUser }: ProfileInfoProps) => {
                         name='email'
                         rules={[rules.required, rules.email]}
                     >
-                        <Input addonBefore='e-mail:' size='large' />
+                        <Input addonBefore='e-mail:' data-test-id='profile-email' size='large' />
                     </Form.Item>
-                    <PasswordFormItem name='password' />
+                    <PasswordFormItem
+                        inputProps={{ 'data-test-id': 'profile-password' }}
+                        name='password'
+                    />
                     <Form.Item<FormValues>
                         dependencies={['password']}
                         name='confirmPassword'
                         rules={[{ required: !!password, message: '' }, rules.confirmPassword()]}
                         style={{ marginBottom: 54 }}
                     >
-                        <Input.Password placeholder='Повторите пароль' size='large' />
+                        <Input.Password
+                            data-test-id='profile-repeat-password'
+                            placeholder='Повторите пароль'
+                            size='large'
+                        />
                     </Form.Item>
                     <Form.Item shouldUpdate={true}>
                         {() => (
                             <Button
+                                data-test-id='profile-submit'
                                 disabled={
                                     !form.isFieldsTouched() ||
                                     form.getFieldsError().filter(({ errors }) => errors.length)
