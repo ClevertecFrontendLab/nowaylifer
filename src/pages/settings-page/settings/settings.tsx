@@ -1,5 +1,7 @@
 import { Fragment, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CheckCircleFilled } from '@ant-design/icons';
+import { AddReview } from '@components/add-review';
 import { Card } from '@components/card';
 import { ResultModal } from '@components/result-modal';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
@@ -7,6 +9,7 @@ import { logout } from '@redux/auth/actions';
 import { Tariff } from '@redux/catalogs';
 import { useRequestBuyTariffMutation } from '@redux/tariff';
 import { selectUser } from '@redux/user';
+import { RoutePath } from '@router/paths';
 import { Button, Row, Typography } from 'antd';
 
 import styles from './settings.module.less';
@@ -15,11 +18,13 @@ import { TariffCard } from './tariff-card';
 import { TariffsDrawer } from './tariffs-drawer';
 
 export const Settings = ({ tariffs }: { tariffs: Tariff[] }) => {
+    const [showAddReview, setShowAddReview] = useState(false);
+    const [requestBuyTariff] = useRequestBuyTariffMutation();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const dispatch = useAppDispatch();
-    const [requestBuyTariff] = useRequestBuyTariffMutation();
     const user = useAppSelector(selectUser);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const handleSelectTariff = ({ _id }: Tariff, days: number) => {
         requestBuyTariff({ tariffId: _id, days });
@@ -28,6 +33,7 @@ export const Settings = ({ tariffs }: { tariffs: Tariff[] }) => {
 
     return (
         <Fragment>
+            <AddReview onOpenChange={setShowAddReview} open={showAddReview} />
             <ResultModal
                 bodyStyle={{ paddingInline: 32, paddingBottom: 56 }}
                 closable={true}
@@ -73,10 +79,10 @@ export const Settings = ({ tariffs }: { tariffs: Tariff[] }) => {
                 </Row>
                 <SettingsForm className={styles.SettingsForm} />
                 <Row className={styles.ButtonsRow}>
-                    <Button size='large' type='primary'>
+                    <Button onClick={() => setShowAddReview(true)} size='large' type='primary'>
                         Написать отзыв
                     </Button>
-                    <Button size='large' type='link'>
+                    <Button onClick={() => navigate(RoutePath.Feedback)} size='large' type='link'>
                         Смотреть все отзывы
                     </Button>
                 </Row>

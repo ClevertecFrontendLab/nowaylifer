@@ -53,7 +53,11 @@ export const FeedbackPage = () => {
         <PageLayout>
             <AppLoader open={isFetching} />
             <ServerErrorModal onCancel={goToMain} open={showFetchErrorModal} />
-            <AddReview onOpenChange={setShowAddReview} open={showAddReview} />
+            <AddReview
+                onOpenChange={setShowAddReview}
+                open={showAddReview}
+                refetchOnSuccess={true}
+            />
             <PageHeader>
                 <Breadcrumbs />
             </PageHeader>

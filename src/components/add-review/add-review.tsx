@@ -2,7 +2,12 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { AppLoader } from '@components/app-loader';
 import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
 import { addAppListener } from '@redux/listener-middleware';
-import { CreateReviewDTO, reviewsApi, useAddReviewMutation } from '@redux/reviews';
+import {
+    CreateReviewDTO,
+    reviewsApi,
+    useAddReviewMutation,
+    useFetchAllReviewsQuery,
+} from '@redux/reviews';
 
 import { AddReviewModal } from './add-review-modal';
 import { AddReviewErrorModal, AddReviewSuccessModal } from './result-modals';
@@ -10,15 +15,17 @@ import { AddReviewErrorModal, AddReviewSuccessModal } from './result-modals';
 type AddReviewProps = {
     open?: boolean;
     onOpenChange?(open: boolean): void;
+    refetchOnSuccess?: boolean;
 };
 
-export const AddReview = ({ open, onOpenChange }: AddReviewProps) => {
+export const AddReview = ({ open, onOpenChange, refetchOnSuccess = false }: AddReviewProps) => {
     const [addReveiw, { isLoading }] = useAddReviewMutation();
+    const { refetch: refetchReviews, isFetching } = useFetchAllReviewsQuery();
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [showModal, setShowModal] = useState(open ?? false);
-    const dispatch = useAppDispatch();
     const prevOpenProp = useRef(open);
+    const dispatch = useAppDispatch();
 
     const isSomethingOpen = showModal || showErrorModal || showSuccessModal;
 
@@ -35,9 +42,11 @@ export const AddReview = ({ open, onOpenChange }: AddReviewProps) => {
         }
     }, [open]);
 
-    useEffect(
-        () =>
-            dispatch(
+    useEffect(() => {
+        let unsubscribe: () => void | undefined;
+
+        if (refetchOnSuccess) {
+            unsubscribe = dispatch(
                 addAppListener({
                     matcher: reviewsApi.endpoints.addReview.matchFulfilled,
                     effect: async (_, { condition }) => {
@@ -46,9 +55,11 @@ export const AddReview = ({ open, onOpenChange }: AddReviewProps) => {
                         setShowSuccessModal(true);
                     },
                 }),
-            ),
-        [dispatch],
-    );
+            );
+        }
+
+        return () => unsubscribe?.();
+    }, [dispatch, refetchOnSuccess]);
 
     const retryAddReview = () => {
         setShowErrorModal(false);
@@ -61,12 +72,21 @@ export const AddReview = ({ open, onOpenChange }: AddReviewProps) => {
         } catch {
             setShowModal(false);
             setShowErrorModal(true);
+
+            return;
+        }
+
+        if (refetchOnSuccess) {
+            await refetchReviews();
+        } else {
+            setShowModal(false);
+            setShowSuccessModal(true);
         }
     };
 
     return (
         <Fragment>
-            <AppLoader open={isLoading} />
+            <AppLoader open={isLoading || (refetchOnSuccess && isFetching)} />
             <AddReviewSuccessModal
                 onOk={() => setShowSuccessModal(false)}
                 open={showSuccessModal}
