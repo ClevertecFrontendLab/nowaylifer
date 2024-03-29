@@ -1,0 +1,38 @@
+.RadioGroup:global.ant-radio-group {
+    width: 100%;
+
+    .ant-space {
+        width: 100%;
+    }
+
+    .ant-radio-wrapper {
+        width: 100%;
+        gap: var(--space-5);
+
+        & > span:nth-child(2) {
+            display: flex;
+            padding: 7px 0;
+            flex: 1;
+        }
+
+        .ant-radio {
+            order: 2;
+        }
+    }
+}
+
+.ActiveTariff:global.ant-typography {
+    background: var(--theme-primary-light-1);
+    font-size: var(--font-size-md);
+    font-weight: 500;
+    color: var(--theme-primary-light-10);
+    text-align: center;
+    padding-block: 14px;
+    margin-bottom: var(--space-5);
+}
+
+.TariffDrawer:global.ant-drawer {
+    .ant-drawer-header {
+        margin-bottom: var(--space-5);
+    }
+}

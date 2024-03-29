@@ -1,8 +1,9 @@
+import { createContext, PropsWithChildren, useMemo } from 'react';
 import { TrainingType, TrainingTypeMap } from '@redux/catalogs';
 import { Training } from '@redux/training';
 import { Moment } from 'moment';
-import { PropsWithChildren, createContext, useMemo } from 'react';
-import { TrainingState, useTrainingSlice } from './reducer';
+
+import { TrainingState, useTrainingSlice } from './training-provider.reducer';
 
 type TrainingContext = {
     date: Moment;

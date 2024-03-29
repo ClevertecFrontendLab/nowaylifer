@@ -1,13 +1,14 @@
+import { replace } from 'redux-first-history';
 import { BACKEND_URL } from '@constants/config';
 import { createThunk } from '@redux/create-thunk';
 import { createAction } from '@reduxjs/toolkit';
-import { Path } from '@router/paths';
+import { RoutePath } from '@router/paths';
 import { capitalize } from '@utils/capitalize';
 import { concat } from '@utils/concat';
-import { replace } from 'redux-first-history';
-import { setRememberGoogleAuth, setToken, type AuthSliceState } from '.';
+
 import { sliceName } from './config';
 import type { ResultStatus } from './types';
+import { type AuthSliceState, setRememberGoogleAuth, setToken } from '.';
 
 type RetryFieldUnion = {
     [K in keyof AuthSliceState]: K extends `retry${string}` ? K : never;
@@ -27,12 +28,12 @@ type MutationRetriedPayload = {
     data: RetryData<RetryFieldUnion>;
 };
 
-export const _untypedMutationRetried = createAction<MutationRetriedPayload>(
+export const untypedMutationRetried = createAction<MutationRetriedPayload>(
     `${sliceName}/mutationRetried`,
 );
 
 export const mutationRetried = <T extends RetryMutation>(mutation: T, data: RetryData<T>) =>
-    _untypedMutationRetried({ retryField: concat('retry', capitalize(mutation)), data });
+    untypedMutationRetried({ retryField: concat('retry', capitalize(mutation)), data });
 
 export const cleanMutationRetry = createAction(
     `${sliceName}/cleanMutationRetry`,
@@ -45,10 +46,10 @@ export const redirectFromAuthResult = createAction<ResultStatus>(
 
 export const logout = createThunk(({ dispatch }) => {
     dispatch(setToken(null));
-    dispatch(replace(Path.Login));
+    dispatch(replace(RoutePath.Login));
 });
 
 export const loginViaGoogle = createThunk(({ dispatch }, remember: boolean) => {
     dispatch(setRememberGoogleAuth(remember));
-    window.location.href = BACKEND_URL + '/auth/google';
+    window.location.href = `${BACKEND_URL}/auth/google`;
 });

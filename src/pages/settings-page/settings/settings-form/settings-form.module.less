@@ -1,0 +1,42 @@
+.Form:global.ant-form {
+    max-width: 505px;
+
+    .ant-switch {
+        margin-left: auto;
+        display: block;
+    }
+
+    .ant-form-item-label {
+        font-weight: 700;
+    }
+
+    .ant-form-item {
+        margin-bottom: var(--space-4);
+
+        .ant-form-item-row {
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ant-form-item-label > label {
+            height: auto;
+        }
+
+        @media (max-width: 575px) {
+            .ant-form-item-control,
+            .ant-form-item-label {
+                max-width: 100%;
+            }
+
+            .ant-form-item-control {
+                flex: none;
+            }
+
+            .ant-form-item-label {
+                flex: initial;
+                padding: 0;
+            }
+        }
+    }
+}

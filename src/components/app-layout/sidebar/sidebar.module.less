@@ -29,12 +29,12 @@
 }
 
 .Menu:global.ant-menu > .ant-menu-item {
-    margin-block: 16px;
+    margin-block: var(--space-4);
     height: 42px;
 
     @media (max-width: 575px) {
-        padding: 0 8px;
-        margin-block: 8px;
+        padding: 0 var(--space-2);
+        margin-block: var(--space-2);
     }
 
     &:is(:first-child, :last-child) {
@@ -44,7 +44,7 @@
 
 .Menu:global.ant-menu .ant-menu-item-icon {
     color: var(--theme-primary-light-9);
-    font-size: 16px;
+    font-size: var(--font-size-md);
 }
 
 .Menu:global.ant-menu :is(.ant-menu-item-active, .ant-menu-item-selected) .ant-menu-item-icon {
@@ -60,10 +60,10 @@
 }
 
 .Exit:global.ant-menu .ant-menu-title-content {
-    margin-left: 25px;
+    margin-left: var(--space-5);
 
     @media (max-width: 575px) {
         text-align: center;
-        margin-left: 8px;
+        margin-left: var(--space-2);
     }
 }

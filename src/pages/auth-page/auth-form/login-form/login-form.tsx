@@ -1,24 +1,26 @@
+import { memo, useState } from 'react';
 import { GooglePlusOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { useXs } from '@hooks/use-breakpoint';
 import {
-    UserCredentials,
     useCheckEmailMutation,
     useLoginMutation,
+    UserCredentials,
     useRetryMutation,
 } from '@redux/auth';
+import { loginViaGoogle } from '@redux/auth/actions';
 import { Button, Checkbox, Form, Input } from 'antd';
 import cn from 'classnames';
-import { memo, useState } from 'react';
-import { email, password, required } from '../../validation-rules';
+
+import { email, password, required } from '../../../../utils/validation-rules';
+
 import styles from './login-form.module.less';
-import { loginViaGoogle } from '@redux/auth/actions';
 
 type FormValues = UserCredentials & {
     remember: boolean;
 };
 
-export const LoginForm = memo(function LoginForm() {
+export const LoginForm = memo(() => {
     const [emailValid, setEmailValid] = useState(true);
     const [checkEmail] = useCheckEmailMutation();
     const [form] = Form.useForm<FormValues>();
@@ -35,7 +37,9 @@ export const LoginForm = memo(function LoginForm() {
 
     const validateEmail = () => {
         const isValid = form.isFieldTouched('email') && form.getFieldError('email').length === 0;
+
         setEmailValid(isValid);
+
         return isValid;
     };
 
@@ -47,23 +51,24 @@ export const LoginForm = memo(function LoginForm() {
         <Form
             className={styles.Form}
             form={form}
-            onFinish={login}
             onFieldsChange={(changedFields) => {
                 const emailField = changedFields.find((field) => field.name.includes('email'));
+
                 if (emailField) validateEmail();
             }}
+            onFinish={login}
         >
             <Form.Item
+                initialValue={retry.shouldRetry ? retry.data : undefined}
                 name='email'
                 rules={[required, email]}
                 validateStatus={emailValid ? 'success' : 'error'}
-                initialValue={retry.shouldRetry ? retry.data : undefined}
             >
-                <Input addonBefore='e-mail:' size='large' data-test-id='login-email' />
+                <Input addonBefore='e-mail:' data-test-id='login-email' size='large' />
             </Form.Item>
 
             <Form.Item name='password' rules={[required, password]}>
-                <Input.Password size='large' placeholder='Пароль' data-test-id='login-password' />
+                <Input.Password data-test-id='login-password' placeholder='Пароль' size='large' />
             </Form.Item>
 
             <div className={styles.RememberWrap}>
@@ -72,32 +77,32 @@ export const LoginForm = memo(function LoginForm() {
                 </Form.Item>
                 <Button
                     className={styles.RestorePasswordBtn}
-                    type='link'
+                    data-test-id='login-forgot-button'
                     disabled={!emailValid}
                     onClick={handleResetPassword}
-                    data-test-id='login-forgot-button'
+                    type='link'
                 >
                     Забыли пароль?
                 </Button>
             </div>
 
             <Button
+                block={true}
                 className={cn(styles.Btn, styles.LoginButton)}
-                type='primary'
+                data-test-id='login-submit-button'
                 htmlType='submit'
                 size='large'
-                block
-                data-test-id='login-submit-button'
+                type='primary'
             >
                 Войти
             </Button>
             <Button
+                block={true}
                 className={styles.Btn}
-                icon={xs ? undefined : <GooglePlusOutlined />}
-                block
                 htmlType='button'
-                size='large'
+                icon={xs ? undefined : <GooglePlusOutlined />}
                 onClick={authGoogle}
+                size='large'
             >
                 Войти через Google
             </Button>

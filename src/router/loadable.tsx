@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react-refresh/only-export-components */
-import { AppLoader } from '@components/app-loader';
 import { ComponentProps, ComponentType, ReactNode } from 'react';
-import { Suspense as SuspenseNoFlicker, lazy as lazyNoFlicker } from 'react-lazy-no-flicker';
+import { lazy as lazyNoFlicker, Suspense as SuspenseNoFlicker } from 'react-lazy-no-flicker';
+import { AppLoader } from '@components/app-loader';
 
-const delay = 50;
+const delay = 150;
 
 type LazyOptions = Parameters<typeof lazyNoFlicker>[1];
 
@@ -13,7 +11,7 @@ const lazy = <T extends ComponentType<any>>(
     options?: LazyOptions,
 ) =>
     lazyNoFlicker(factory, {
-        minimum_fallback_time: 0,
+        minimum_fallback_time: 1000,
         time_before_fallback: delay,
         ...options,
     });

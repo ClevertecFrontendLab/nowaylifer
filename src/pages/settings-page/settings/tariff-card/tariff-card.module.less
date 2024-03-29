@@ -1,0 +1,53 @@
+.CardBody {
+    background-position: center;
+    background-size: cover;
+    height: 150px;
+
+    @media (max-width: 665px) {
+        height: 195px;
+    }
+}
+
+.Card:global.ant-card {
+    max-width: 240px;
+    width: 100%;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+
+    .ant-card-body {
+        padding: 0;
+    }
+
+    @media (max-width: 665px) {
+        max-width: 312px;
+    }
+}
+
+.CardHeader {
+    padding: 10px var(--space-2) 10px var(--space-5);
+
+    border-bottom: 0;
+}
+
+.CardFooter {
+    border-top: 0;
+    height: 95px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: 665px) {
+        height: 64px;
+    }
+}
+
+.TariffName {
+    font-size: var(--font-size-md);
+    font-weight: 500;
+}
+
+.Active {
+    text-align: center;
+    font-size: var(--font-size-md);
+    font-weight: 500;
+    color: var(--theme-primary-light-10);
+}

@@ -1,45 +1,52 @@
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { AppLayout } from '@components/app-layout';
 import { AuthLayout } from '@components/auth-layout';
 import { AuthForm } from '@pages/auth-page';
 import { ChangePassword } from '@pages/auth-page/change-password';
 import { ConfirmEmail } from '@pages/auth-page/confirm-email';
 import { AuthResultPage } from '@pages/auth-result-page';
-import { GetGoogleToken } from '@redux/auth';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { Path } from './paths';
-import { RequireAuth, RequireNoAuth, RequireRedirect } from './route-guards';
 import FeedbackPage from '@pages/feedback-page';
 import MainPage from '@pages/main-page';
-import { loadable } from './loadable';
+import { NotFoundPage } from '@pages/not-found-page';
+import { GetGoogleToken } from '@redux/auth';
 
-const loginOrResult = new RegExp(`(${Path.Login})|(${Path.Result})`);
+import { loadable } from './loadable';
+import { RoutePath } from './paths';
+import { RequireAuth, RequireNoAuth, RequireRedirect } from './route-guards';
+
+const loginOrResult = new RegExp(`(${RoutePath.Login})|(${RoutePath.Result})`);
 
 const CalendarPage = loadable(() => import('@pages/calendar-page/calendar-page'));
+const ProfilePage = loadable(() => import('@pages/profile-page/profile-page'));
+const SettingsPage = loadable(() => import('@pages/settings-page/settings-page'));
 
 export const routes = (
     <Routes>
-        <Route path={Path.Root} element={<GetGoogleToken />}>
-            <Route index element={<Navigate to={Path.Main} />} />
+        <Route element={<GetGoogleToken />} path={RoutePath.Root}>
+            <Route element={<Navigate to={RoutePath.Main} />} index={true} />
         </Route>
 
         <Route element={<AuthLayout />}>
-            <Route element={<RequireNoAuth redirectTo={Path.Main} />}>
-                <Route path={Path.Login} element={<AuthForm type='login' />} />
-                <Route path={Path.Register} element={<AuthForm type='register' />} />
+            <Route element={<RequireNoAuth redirectTo={RoutePath.Main} />}>
+                <Route element={<AuthForm type='login' />} path={RoutePath.Login} />
+                <Route element={<AuthForm type='register' />} path={RoutePath.Register} />
             </Route>
 
-            <Route element={<RequireRedirect from={loginOrResult} redirectTo={Path.Login} />}>
-                <Route path={Path.Result + '/:status'} element={<AuthResultPage />} />
-                <Route path={Path.ConfirmEmail} element={<ConfirmEmail />} />
-                <Route path={Path.ChangePassword} element={<ChangePassword />} />
+            <Route element={<RequireRedirect from={loginOrResult} redirectTo={RoutePath.Login} />}>
+                <Route element={<AuthResultPage />} path={`${RoutePath.Result}/:status`} />
+                <Route element={<ConfirmEmail />} path={RoutePath.ConfirmEmail} />
+                <Route element={<ChangePassword />} path={RoutePath.ChangePassword} />
             </Route>
         </Route>
 
-        <Route element={<RequireAuth redirectTo={Path.Login} />}>
+        <Route element={<RequireAuth redirectTo={RoutePath.Login} />}>
             <Route element={<AppLayout />}>
-                <Route path={Path.Main} element={<MainPage />} />
-                <Route path={Path.Feedback} element={<FeedbackPage />} />
-                <Route path={Path.Calendar} element={<CalendarPage />} />
+                <Route element={<NotFoundPage />} path='*' />
+                <Route element={<MainPage />} path={RoutePath.Main} />
+                <Route element={<FeedbackPage />} path={RoutePath.Feedback} />
+                <Route element={<CalendarPage />} path={RoutePath.Calendar} />
+                <Route element={<ProfilePage />} path={RoutePath.Profile} />
+                <Route element={<SettingsPage />} path={RoutePath.Settings} />
             </Route>
         </Route>
     </Routes>

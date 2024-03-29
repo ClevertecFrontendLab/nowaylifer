@@ -1,0 +1,12 @@
+.PageContentCard:global.ant-card {
+    border-radius: 8px;
+    background-color: #fff;
+
+    @media (max-width: 480px) {
+        border-radius: 0;
+    }
+
+    & > .ant-card-body {
+        padding: var(--space-5);
+    }
+}

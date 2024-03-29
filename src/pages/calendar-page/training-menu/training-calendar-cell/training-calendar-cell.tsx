@@ -1,5 +1,6 @@
 import { useTraining } from '../training-provider';
 import { TrainingTypeBadge } from '../training-type-badge';
+
 import styles from './training-calendar-cell.module.less';
 
 export const TrainingCalendarCell = ({ compact = false }: { compact?: boolean }) => {
@@ -15,7 +16,7 @@ export const TrainingCalendarCell = ({ compact = false }: { compact?: boolean })
                 {trainings.map((training) => (
                     <li key={training._id}>
                         <TrainingTypeBadge
-                            style={{ fontSize: 12, height: 16 }}
+                            style={{ fontSize: 'var(--font-size-xs)', height: 16 }}
                             trainingType={trainingTypeMap[training.name]}
                         />
                     </li>

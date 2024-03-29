@@ -1,0 +1,44 @@
+.Drawer:global.ant-drawer {
+    .ant-drawer-body,
+    .ant-drawer-header {
+        padding-inline: var(--space-6);
+
+        @media (max-width: 480px) {
+            padding-inline: var(--space-4);
+        }
+    }
+
+    .ant-drawer-body {
+        padding-top: 0;
+    }
+
+    .ant-drawer-header {
+        padding-top: var(--space-5);
+        border: 0;
+    }
+
+    .ant-drawer-header-title {
+        flex-direction: row-reverse;
+    }
+
+    .ant-drawer-content,
+    .ant-drawer-content-wrapper {
+        border-radius: 8px 0 0 8px;
+
+        @media (max-width: 480px) {
+            border-radius: 24px 24px 0 0;
+        }
+    }
+
+    .ant-drawer-close {
+        position: relative;
+        margin: 0;
+        left: 6px;
+    }
+
+    .ant-drawer-title {
+        font-size: var(--font-size-lg);
+        font-weight: 500;
+        color: var(--character-light-title-85);
+    }
+}

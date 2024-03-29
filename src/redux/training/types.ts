@@ -22,6 +22,10 @@ export type Training = {
     exercises: Exercise[];
 };
 
-export type CreateTrainingDTO = Omit<Training, '_id' | 'userId'>;
+export type CreateExerciseDTO = Omit<Exercise, '_id'>;
+
+export type CreateTrainingDTO = Omit<Training, '_id' | 'userId' | 'exercises'> & {
+    exercises: CreateExerciseDTO[];
+};
 
 export type EditTrainingDTO = CreateTrainingDTO;

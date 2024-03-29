@@ -1,20 +1,14 @@
+import { useState } from 'react';
 import { useXs } from '@hooks/use-breakpoint';
 import { Calendar } from 'antd';
 import cn from 'classnames';
 import moment, { Moment } from 'moment';
-import 'moment/locale/ru';
-import { useState } from 'react';
+
 import { TrainingCalendarCell } from '../training-menu/training-calendar-cell';
 import { TrainingPopover } from '../training-menu/training-popover';
 import { TrainingProvider } from '../training-menu/training-provider';
-import styles from './calendar.module.less';
-import ruRu from './ru-Ru';
 
-moment.locale('ru', {
-    week: {
-        dow: 1,
-    },
-});
+import styles from './calendar.module.less';
 
 type TrainingCalendarProps = {
     disabled?: boolean;
@@ -27,6 +21,7 @@ export const TrainingCalendar = ({ disabled }: TrainingCalendarProps) => {
 
     const renderCellContent = (date: Moment) =>
         (isCalendarFullScreen || date.isSame(selectedDate, 'month')) && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
             <div onClick={(e) => isCalendarFullScreen && e.stopPropagation()}>
                 <TrainingProvider date={date}>
                     <TrainingCalendarCell compact={!isCalendarFullScreen} />
@@ -37,11 +32,7 @@ export const TrainingCalendar = ({ disabled }: TrainingCalendarProps) => {
 
     return (
         <Calendar
-            locale={ruRu}
-            value={selectedDate}
-            onSelect={setSelectedDate}
             className={styles.Calendar}
-            fullscreen={isCalendarFullScreen}
             dateFullCellRender={(date) => (
                 <div
                     className={cn(
@@ -58,6 +49,9 @@ export const TrainingCalendar = ({ disabled }: TrainingCalendarProps) => {
                     {!disabled && renderCellContent(date)}
                 </div>
             )}
+            fullscreen={isCalendarFullScreen}
+            onSelect={setSelectedDate}
+            value={selectedDate}
         />
     );
 };

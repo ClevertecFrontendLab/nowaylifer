@@ -1,11 +1,11 @@
 import type { PropsWithChildren } from 'react';
+import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { Card } from 'antd';
 import cn from 'classnames';
+
 import styles from './auth-card.module.less';
-import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 
 export type AuthCardProps = {
-    loading?: boolean;
     className?: string;
 } & PropsWithChildren;
 

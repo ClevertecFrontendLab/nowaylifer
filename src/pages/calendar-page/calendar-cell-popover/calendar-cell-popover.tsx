@@ -1,16 +1,14 @@
-import { createDestroyObserver } from '@utils/destroy-observer';
+import { useRef } from 'react';
+import { skipToken, useMutationObserver } from '@hooks/use-mutation-observer';
 import { Popover, PopoverProps } from 'antd';
 import cn from 'classnames';
-import { useLayoutEffect, useRef, useState } from 'react';
+
 import styles from './calendar-cell-popover.module.less';
 
 type CalendarCellPopoverProps = PopoverProps & {
     modal?: boolean;
     onDestroy?(): void;
 };
-
-const isOverlayNode = (node: Node) =>
-    node instanceof HTMLElement && node.className.includes('ant-popover');
 
 export const CalendarCellPopover = ({
     modal,
@@ -19,36 +17,38 @@ export const CalendarCellPopover = ({
     onDestroy,
     ...props
 }: CalendarCellPopoverProps) => {
-    const triggerRef = useRef<HTMLDivElement | null>(null);
-    const [observer, setObserver] = useState(() =>
-        onDestroy ? createDestroyObserver(isOverlayNode, onDestroy) : null,
+    const triggerRef = useRef<HTMLDivElement>(null);
+
+    useMutationObserver(
+        triggerRef,
+        (mutations, observer) => {
+            const isDestroyed = mutations.find(({ removedNodes }) =>
+                [...removedNodes].find(
+                    (node) => node instanceof HTMLElement && node.classList.contains('ant-popover'),
+                ),
+            );
+
+            if (isDestroyed) {
+                observer.disconnect();
+                onDestroy?.();
+            }
+        },
+        { childList: true, subtree: true, skip: onDestroy ? undefined : skipToken },
     );
-
-    if (onDestroy && !observer) {
-        setObserver(createDestroyObserver(isOverlayNode, onDestroy));
-    } else if (!onDestroy && observer) {
-        setObserver(null);
-    }
-
-    useLayoutEffect(() => {
-        if (props.open && triggerRef.current) {
-            observer?.observe(triggerRef.current, { childList: true, subtree: true });
-        }
-    }, [props.open, observer]);
 
     return (
         <Popover
-            trigger='click'
-            showArrow={false}
-            destroyTooltipOnHide
-            placement={modal ? 'bottom' : undefined}
-            getPopupContainer={(triggerNode) => triggerNode}
             align={modal ? undefined : { points: ['tl', 'tl'] }}
-            overlayClassName={cn(overlayClassName, modal && styles.ModalMode)}
             content={<div title=''>{typeof content === 'function' ? content() : content}</div>}
+            destroyTooltipOnHide={true}
+            getPopupContainer={(triggerNode) => triggerNode}
+            overlayClassName={cn(overlayClassName, modal && styles.ModalMode)}
+            placement={modal ? 'bottom' : undefined}
+            showArrow={false}
+            trigger='click'
             {...props}
         >
-            <div className={styles.PopoverTrigger} ref={triggerRef} />
+            <div ref={triggerRef} className={styles.PopoverTrigger} />
         </Popover>
     );
 };

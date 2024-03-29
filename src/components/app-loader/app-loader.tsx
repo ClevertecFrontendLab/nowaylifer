@@ -1,17 +1,25 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+
 import { useAppLoader } from './use-app-loader';
 
 export const AppLoader = ({ open }: { open: boolean }) => {
     const appLoader = useAppLoader();
+    const prevOpen = useRef(open);
+
+    useEffect(() => {
+        prevOpen.current = open;
+    }, [open]);
 
     useEffect(() => {
         if (open) {
             appLoader.open();
-        } else {
+        } else if (!open && prevOpen.current) {
             appLoader.close();
         }
 
-        return () => appLoader.close();
+        return () => {
+            if (open) appLoader.close();
+        };
     }, [appLoader, open]);
 
     return null;

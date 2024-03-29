@@ -5,7 +5,7 @@
     width: 100%;
     display: flex;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
-    margin-inline: 32px;
+    margin-inline: var(--space-6);
 
     &:after {
         position: absolute;
@@ -16,7 +16,6 @@
         content: '';
     }
 
-    /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
     &:local(.Blur) {
         --filter-transition-duration: 0.2s;
         filter: var(--loader-backdrop-filter);
@@ -29,7 +28,7 @@
     }
 
     @media (max-width: 500px) {
-        margin-inline: 16px;
+        margin-inline: var(--space-4);
     }
 
     .ant-card-body {
@@ -37,11 +36,11 @@
         padding: 64px 85.5px;
 
         @media (max-width: 575px) {
-            padding: 32px 64px;
+            padding: var(--space-6) 64px;
         }
 
         @media (max-width: 500px) {
-            padding-inline: 16px;
+            padding-inline: var(--space-4);
         }
     }
 }

@@ -1,13 +1,14 @@
+import { Fragment, ReactNode, useEffect, useRef, useState } from 'react';
 import { CloseOutlined, EditOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { useXss } from '@hooks/use-breakpoint';
-import { createDefaultExercise } from '@pages/calendar-page/utils';
+import { Drawer } from '@components/drawer';
 import { TrainingType } from '@redux/catalogs';
-import { Exercise } from '@redux/training';
-import { Button, Drawer, DrawerProps, FormInstance, Row, Typography } from 'antd';
+import { createExerciseDraft, Exercise } from '@redux/training';
+import { Button, DrawerProps, FormInstance, Row } from 'antd';
 import cn from 'classnames';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+
 import { useTraining } from '../training-provider';
 import { TrainingTypeBadge } from '../training-type-badge';
+
 import styles from './exercise-drawer.module.less';
 import { ExerciseForm } from './exercise-form';
 
@@ -22,15 +23,15 @@ const titleIconStyle = { width: 14, marginRight: 6 };
 
 const titleByModeMap: Record<ExerciseDrawerMode, ReactNode> = {
     create: (
-        <>
+        <Fragment>
             <PlusOutlined style={titleIconStyle} /> Добавление упражнений
-        </>
+        </Fragment>
     ),
     edit: (
-        <>
+        <Fragment>
             <EditOutlined style={titleIconStyle} />
             Редактирование
-        </>
+        </Fragment>
     ),
     read: 'Просмотр упражнений',
 };
@@ -55,7 +56,6 @@ export const ExerciseDrawer = ({
     const [selectedFormIndexes, setSelectedFormIndexes] = useState<number[]>([]);
     const exerciseFormMap = useRef<ExerciseFormRecord>({});
     const { date } = useTraining();
-    const xss = useXss();
 
     useEffect(() => {
         setExercises(initialExercises);
@@ -77,20 +77,10 @@ export const ExerciseDrawer = ({
 
     return (
         <Drawer
-            mask={false}
-            destroyOnClose
-            className={styles.Drawer}
-            width={xss ? '100%' : 408}
-            height={xss ? '90%' : undefined}
-            placement={xss ? 'bottom' : 'right'}
-            onClose={handleClose}
             closeIcon={<CloseOutlined data-test-id='modal-drawer-right-button-close' />}
-            title={
-                <Typography.Text className={styles.DrawerTitle}>
-                    {titleByModeMap[mode]}
-                </Typography.Text>
-            }
             data-test-id='modal-drawer-right'
+            onClose={handleClose}
+            title={titleByModeMap[mode]}
             {...props}
         >
             <div className={styles.Extra}>
@@ -100,39 +90,41 @@ export const ExerciseDrawer = ({
             <div className={styles.FormsWrap}>
                 {exercises.map((exercise, idx) => (
                     <ExerciseForm
-                        mode={mode}
-                        index={idx}
                         key={exercise._id}
+                        ref={(form) => {
+                            if (form) {
+                                exerciseFormMap.current[exercise._id] = form;
+                            } else {
+                                delete exerciseFormMap.current[exercise._id];
+                            }
+                        }}
+                        index={idx}
                         initialValues={exercise}
-                        readOnly={mode === 'read'}
+                        mode={mode}
                         onSelectChange={(selected) => handleSelectFormChange(idx, selected)}
-                        ref={(form) =>
-                            form
-                                ? (exerciseFormMap.current[exercise._id] = form)
-                                : delete exerciseFormMap.current[exercise._id]
-                        }
+                        readOnly={mode === 'read'}
                     />
                 ))}
             </div>
             {mode !== 'read' && (
                 <Row>
                     <Button
-                        block
-                        size='large'
-                        icon={<PlusOutlined />}
+                        block={true}
                         className={cn(styles.Button, styles.AddButton)}
-                        onClick={() => setExercises((prev) => [...prev, createDefaultExercise()])}
+                        icon={<PlusOutlined />}
+                        onClick={() => setExercises((prev) => [...prev, createExerciseDraft()])}
+                        size='large'
                     >
                         Добавить ещё
                     </Button>
                     {mode === 'edit' && (
                         <Button
-                            block
-                            size='large'
-                            onClick={handleDelete}
-                            icon={<MinusOutlined />}
+                            block={true}
                             className={styles.Button}
                             disabled={!selectedFormIndexes.length}
+                            icon={<MinusOutlined />}
+                            onClick={handleDelete}
+                            size='large'
                         >
                             Удалить
                         </Button>

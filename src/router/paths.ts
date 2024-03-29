@@ -1,5 +1,5 @@
-export type Path = (typeof Path)[keyof typeof Path];
-export const Path = {
+export type RoutePath = (typeof RoutePath)[keyof typeof RoutePath];
+export const RoutePath = {
     Root: '/',
     Main: '/main',
     Login: '/auth',
@@ -9,4 +9,6 @@ export const Path = {
     Result: '/result',
     Feedback: '/feedbacks',
     Calendar: '/calendar',
+    Profile: '/profile',
+    Settings: '/settings',
 } as const;

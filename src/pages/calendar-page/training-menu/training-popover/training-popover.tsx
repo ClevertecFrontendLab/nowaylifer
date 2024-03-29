@@ -1,14 +1,16 @@
+import { Fragment, useRef } from 'react';
 import { Modal } from '@components/modal';
 import { useXss } from '@hooks/use-breakpoint';
 import { Training } from '@redux/training';
 import { ButtonProps, Carousel, Typography } from 'antd';
 import { CarouselRef } from 'antd/lib/carousel';
-import { useRef } from 'react';
+
 import { CalendarCellPopover } from '../../calendar-cell-popover';
 import { CreateEditTrainingCard } from '../create-training-card';
 import { ExerciseDrawer } from '../exercise-drawer';
 import { TrainingCard } from '../training-card';
 import { useTrainingActions, useTrainingState } from '../training-provider';
+
 import styles from './training-popover.module.less';
 
 export const TrainingPopover = () => {
@@ -17,13 +19,13 @@ export const TrainingPopover = () => {
     const xss = useXss();
     const {
         closeDrawer,
-        resetDrawerState,
         resetState,
         addExercise,
         editTraining,
         editExercise,
         switchScreen,
         createTraining,
+        resetDrawerState,
         popoverOpenChange,
         exercisesEditedOrCreated,
         resetCreateEditTrainingCard,
@@ -56,7 +58,7 @@ export const TrainingPopover = () => {
 
     const handleSaveTrainingError = () => {
         popoverOpenChange(false);
-        const modal = Modal.error({
+        Modal.error({
             title: (
                 <Typography.Text data-test-id='modal-error-user-training-title'>
                     При сохранении данных произошла ошибка
@@ -67,60 +69,58 @@ export const TrainingPopover = () => {
                     Придётся попробовать ещё раз
                 </Typography.Paragraph>
             ),
-            okText: 'Закрыть',
             okButtonProps: { 'data-test-id': 'modal-error-user-training-button' } as ButtonProps,
-            onOk: () => modal.destroy(),
         });
     };
 
     return (
         <CalendarCellPopover
-            modal={xss}
-            open={state.popoverOpen}
-            onOpenChange={popoverOpenChange}
-            onDestroy={resetState}
-            overlayClassName={styles.TrainingPopover}
-            overlayStyle={{ width: xss ? 312 : 264 }}
             content={
-                <>
+                <Fragment>
                     <ExerciseDrawer
                         {...state.exerciseDrawer}
-                        onClose={exercisesEditedOrCreated}
                         afterOpenChange={(open) => !open && resetDrawerState()}
+                        onClose={exercisesEditedOrCreated}
                     />
                     <Carousel
+                        ref={carouselRef}
+                        accessibility={false}
+                        adaptiveHeight={true}
                         afterChange={(slide) => slide === 0 && resetCreateEditTrainingCard()}
                         className={styles.Carousel}
-                        accessibility={false}
-                        ref={carouselRef}
-                        infinite={false}
-                        easing='ease-in'
-                        adaptiveHeight
-                        swipe={false}
-                        effect='fade'
                         dots={false}
+                        easing='ease-in'
+                        effect='fade'
+                        infinite={false}
                         speed={200}
+                        swipe={false}
                     >
                         <TrainingCard
-                            visible={state.currentScreen === 'trainings'}
-                            onEditTraining={handleEditTraining}
                             createDisabled={state.createDisabled}
-                            onCreateTraining={handleCreateTraining}
                             onClose={() => popoverOpenChange(false)}
+                            onCreateTraining={handleCreateTraining}
+                            onEditTraining={handleEditTraining}
+                            visible={state.currentScreen === 'trainings'}
                         />
                         <CreateEditTrainingCard
                             onAddExercise={addExercise}
                             onEditExercise={editExercise}
                             {...state.createEditTrainingCard}
                             onCancel={handleCancelCreateEditTraining}
-                            visible={state.currentScreen === 'exercises'}
                             onSaveTrainingError={handleSaveTrainingError}
-                            onTrainingEdited={switchToTrainingCard}
                             onTrainingCreated={switchToTrainingCard}
+                            onTrainingEdited={switchToTrainingCard}
+                            visible={state.currentScreen === 'exercises'}
                         />
                     </Carousel>
-                </>
+                </Fragment>
             }
+            modal={xss}
+            onDestroy={resetState}
+            onOpenChange={popoverOpenChange}
+            open={state.popoverOpen}
+            overlayClassName={styles.TrainingPopover}
+            overlayStyle={{ width: xss ? 312 : 264 }}
         />
     );
 };

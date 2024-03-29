@@ -1,11 +1,14 @@
 import { CalendarTwoTone, HeartFilled, IdcardOutlined } from '@ant-design/icons';
 import { Card } from '@components/card';
 import { LoadCalendarPage } from '@pages/calendar-page';
+import { history } from '@redux/configure-store';
+import { RoutePath } from '@router/paths';
 import { Button, ButtonProps } from 'antd';
+
 import styles from './action-card-list.module.less';
 
-const CardButton = (props?: ButtonProps) => (
-    <Button className={styles.CardButton} block {...props} />
+const CardButton = (props: ButtonProps) => (
+    <Button block={true} className={styles.CardButton} {...props} />
 );
 
 const cards = [
@@ -19,9 +22,9 @@ const cards = [
             <LoadCalendarPage
                 render={(load) => (
                     <CardButton
-                        onClick={load}
-                        icon={<CalendarTwoTone twoToneColor={['currentColor', 'currentColor']} />}
                         data-test-id='menu-button-calendar'
+                        icon={<CalendarTwoTone twoToneColor={['currentColor', 'currentColor']} />}
+                        onClick={load}
                     >
                         Календарь
                     </CardButton>
@@ -31,14 +34,22 @@ const cards = [
     },
     {
         title: 'Заполнить профиль',
-        content: <CardButton icon={<IdcardOutlined />}>Профиль</CardButton>,
+        content: (
+            <CardButton
+                data-test-id='menu-button-profile'
+                icon={<IdcardOutlined />}
+                onClick={() => history.push(RoutePath.Profile)}
+            >
+                Профиль
+            </CardButton>
+        ),
     },
 ];
 
 export const ActionCardList = () => (
     <ul className={styles.List}>
-        {cards.map(({ title, content }, idx) => (
-            <li key={idx} className={styles.Item}>
+        {cards.map(({ title, content }) => (
+            <li key={title} className={styles.Item}>
                 <Card className={styles.CardItem} title={title}>
                     {content}
                 </Card>

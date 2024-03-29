@@ -1,22 +1,25 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { createReduxHistoryContext } from 'redux-first-history';
-import { createBrowserHistory } from 'history';
 import {
-    persistStore,
-    persistReducer,
     FLUSH,
-    REHYDRATE,
     PAUSE,
     PERSIST,
+    persistReducer,
+    persistStore,
     PURGE,
     REGISTER,
+    REHYDRATE,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { listenerMiddleware } from './listener-middleware';
-import { authSlice, authApi, authSlicePersistConfig } from './auth';
-import { reviewsApi } from './reviews';
-import { trainingApi } from './training';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { createBrowserHistory } from 'history';
+
+import { authApi, authSlice, authSlicePersistConfig } from './auth';
 import { catalogsApi } from './catalogs';
+import { listenerMiddleware } from './listener-middleware';
+import { reviewsApi } from './reviews';
+import { tariffApi } from './tariff';
+import { trainingApi } from './training';
+import { userApi } from './user';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
     history: createBrowserHistory(),
@@ -35,6 +38,8 @@ const rootReducer = combineReducers({
     [reviewsApi.reducerPath]: reviewsApi.reducer,
     [catalogsApi.reducerPath]: catalogsApi.reducer,
     [trainingApi.reducerPath]: trainingApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
+    [tariffApi.reducerPath]: tariffApi.reducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
@@ -54,6 +59,8 @@ export const store = configureStore({
                 reviewsApi.middleware,
                 catalogsApi.middleware,
                 trainingApi.middleware,
+                userApi.middleware,
+                tariffApi.middleware,
             ),
 });
 
