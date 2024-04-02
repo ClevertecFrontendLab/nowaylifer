@@ -15,6 +15,7 @@ const routes: BreadcrumbsRoute[] = [
     { path: RoutePath.Feedback, breadcrumb: 'Отзывы пользователей' },
     { path: RoutePath.Calendar, breadcrumb: 'Календарь' },
     { path: RoutePath.Profile, breadcrumb: 'Профиль' },
+    { path: RoutePath.Workouts, breadcrumb: 'Тренировки' },
 ];
 
 export const Breadcrumbs = ({ className }: BreadcrumbsProps) => {

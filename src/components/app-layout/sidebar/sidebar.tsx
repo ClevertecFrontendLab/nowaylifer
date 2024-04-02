@@ -4,6 +4,7 @@ import ExitSvg from '@assets/icons/exit.svg?react';
 import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
 import { useXs } from '@hooks/use-breakpoint';
 import { LoadCalendarPage } from '@pages/calendar-page';
+import { LoadWorkoutsPage } from '@pages/workouts-page/load-workouts-page';
 import { logout } from '@redux/auth/actions';
 import { history } from '@redux/configure-store';
 import { RoutePath } from '@router/paths';
@@ -16,6 +17,7 @@ import { Switch } from './switch';
 const { Sider } = Layout;
 
 let loadCalendarpage: () => void;
+let loadWorkoutsPage: () => void;
 
 const menuItems = [
     {
@@ -32,8 +34,17 @@ const menuItems = [
         onClick: () => loadCalendarpage?.(),
     },
     {
-        label: 'Тренировки',
+        label: (
+            <LoadWorkoutsPage
+                render={(load) => {
+                    loadWorkoutsPage = load;
+
+                    return 'Тренировки';
+                }}
+            />
+        ),
         icon: <HeartFilled />,
+        onClick: () => loadWorkoutsPage?.(),
     },
     {
         label: 'Достижения',

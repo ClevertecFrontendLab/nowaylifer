@@ -1,6 +1,7 @@
 import { CalendarTwoTone, HeartFilled, IdcardOutlined } from '@ant-design/icons';
 import { Card } from '@components/card';
 import { LoadCalendarPage } from '@pages/calendar-page';
+import { LoadWorkoutsPage } from '@pages/workouts-page/load-workouts-page';
 import { history } from '@redux/configure-store';
 import { RoutePath } from '@router/paths';
 import { Button, ButtonProps } from 'antd';
@@ -14,7 +15,15 @@ const CardButton = (props: ButtonProps) => (
 const cards = [
     {
         title: 'Расписать тренировки',
-        content: <CardButton icon={<HeartFilled />}>Тренировки</CardButton>,
+        content: (
+            <LoadWorkoutsPage
+                render={(load) => (
+                    <CardButton icon={<HeartFilled />} onClick={load}>
+                        Тренировки
+                    </CardButton>
+                )}
+            />
+        ),
     },
     {
         title: 'Назначить календарь',
