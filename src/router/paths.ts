@@ -11,5 +11,5 @@ export const RoutePath = {
     Calendar: '/calendar',
     Profile: '/profile',
     Settings: '/settings',
-    Workouts: '/workouts',
+    Workouts: '/training',
 } as const;

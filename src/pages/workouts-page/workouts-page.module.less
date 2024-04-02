@@ -1,0 +1,32 @@
+.Tabs:global.ant-tabs {
+    .ant-tabs-tab-btn {
+        font-size: var(--font-size-xl);
+
+        @media (max-width: 1000px) {
+            font-size: var(--font-size-lg);
+        }
+
+        @media (max-width: 900px) {
+            font-size: var(--font-size-sm);
+        }
+    }
+
+    .ant-tabs-nav {
+        margin-bottom: 0;
+    }
+
+    .ant-tabs-nav-list {
+        flex: 1;
+        justify-content: space-between;
+        padding-inline: var(--space-3);
+    }
+
+    .ant-tabs-tab {
+        justify-content: center;
+        padding-bottom: 0;
+
+        @media (max-width: 900px) {
+            padding-bottom: var(--space-3);
+        }
+    }
+}
