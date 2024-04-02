@@ -122,12 +122,12 @@ const generateSlice = (lazyState: Omit<LazyState, 'createDisabled'>) => {
                 };
             },
             editExercise(state, { payload: trainingType }: PayloadAction<TrainingType>) {
-                const { exercises, flow } = state.createEditTrainingCard;
+                const { exercises } = state.createEditTrainingCard;
 
                 state.exerciseDrawer = {
                     trainingType,
                     open: true,
-                    mode: flow,
+                    mode: 'edit',
                     initialExercises: exercises.length ? exercises : [createExerciseDraft()],
                 };
             },

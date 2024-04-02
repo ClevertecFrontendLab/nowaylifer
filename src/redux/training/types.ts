@@ -14,10 +14,10 @@ export type Training = {
     isImplementation?: boolean;
     userId: string;
     parameters?: {
-        repeat: boolean;
-        period: number;
-        jointTraining: boolean;
-        participants: string[];
+        repeat?: boolean;
+        period?: number;
+        jointTraining?: boolean;
+        participants?: string[];
     };
     exercises: Exercise[];
 };

@@ -3,16 +3,16 @@ import { Exercise } from '@redux/training';
 import { Checkbox, Col, Form, FormInstance, FormProps, Input, InputNumber, Row } from 'antd';
 import cn from 'classnames';
 
-import { ExerciseDrawerMode } from '../exercise-drawer';
-
 import styles from './exercise-form.module.less';
 
 export type ExerciseFormValues = Omit<Exercise, 'isImplementation'>;
 
-export type ExerciseFormProps = Omit<FormProps, 'form'> & {
+type FormPropsTyped = FormProps<ExerciseFormValues>;
+
+export type ExerciseFormProps = Omit<FormPropsTyped, 'form'> & {
     index?: number;
     readOnly?: boolean;
-    mode: ExerciseDrawerMode;
+    mode: 'create' | 'edit' | 'read';
     onSelectChange?(selected: boolean): void;
 };
 

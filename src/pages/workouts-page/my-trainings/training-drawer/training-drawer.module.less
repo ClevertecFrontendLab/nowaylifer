@@ -1,0 +1,35 @@
+.DatePicker:global.ant-picker {
+    padding-block: 2px;
+    max-width: 156px;
+}
+
+.Select:global.ant-select {
+    .ant-select-selector {
+        height: 28px;
+
+        .ant-select-selection-search-input {
+            height: 26px;
+        }
+
+        .ant-select-selection-item,
+        .ant-select-selection-placeholder {
+            line-height: 28px;
+        }
+    }
+}
+
+.Form:global.ant-form {
+    padding-top: var(--space-5);
+
+    .ant-form-item-control-input {
+        min-height: auto;
+    }
+}
+
+.DatePickerCell {
+    width: 100%;
+
+    &.HasTraining {
+        background: var(--theme-primary-light-1);
+    }
+}

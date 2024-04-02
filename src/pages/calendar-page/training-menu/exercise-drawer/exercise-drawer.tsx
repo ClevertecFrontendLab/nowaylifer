@@ -1,42 +1,23 @@
-import { Fragment, ReactNode, useEffect, useRef, useState } from 'react';
-import { CloseOutlined, EditOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { ReactNode, useRef } from 'react';
+import { CloseOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Drawer } from '@components/drawer';
+import { ExerciseFormsMenu, ExerciseFormsMenuHandle } from '@components/exercise-forms-menu';
 import { TrainingType } from '@redux/catalogs';
-import { createExerciseDraft, Exercise } from '@redux/training';
-import { Button, DrawerProps, FormInstance, Row } from 'antd';
-import cn from 'classnames';
+import { Exercise } from '@redux/training';
+import { DrawerProps } from 'antd';
 
 import { useTraining } from '../training-provider';
 import { TrainingTypeBadge } from '../training-type-badge';
 
 import styles from './exercise-drawer.module.less';
-import { ExerciseForm } from './exercise-form';
-
-type ExerciseFormRecord = Record<Exercise['_id'], FormInstance<Exercise>>;
-
-const getValidExercises = (exerciseFormMap: ExerciseFormRecord) =>
-    Object.values(exerciseFormMap)
-        .map((form) => form.getFieldsValue())
-        .filter((exercise) => !!exercise.name);
-
-const titleIconStyle = { width: 14, marginRight: 6 };
-
-const titleByModeMap: Record<ExerciseDrawerMode, ReactNode> = {
-    create: (
-        <Fragment>
-            <PlusOutlined style={titleIconStyle} /> Добавление упражнений
-        </Fragment>
-    ),
-    edit: (
-        <Fragment>
-            <EditOutlined style={titleIconStyle} />
-            Редактирование
-        </Fragment>
-    ),
-    read: 'Просмотр упражнений',
-};
 
 export type ExerciseDrawerMode = 'create' | 'edit' | 'read';
+
+const titleByMode: Record<ExerciseDrawerMode, { title: ReactNode; titleIcon?: ReactNode }> = {
+    create: { title: 'Добавление упражнений', titleIcon: <PlusOutlined /> },
+    edit: { title: 'Редактирование', titleIcon: <EditOutlined /> },
+    read: { title: 'Просмотр упражнений' },
+};
 
 export type ExerciseDrawerProps = Omit<DrawerProps, 'onClose'> & {
     mode: ExerciseDrawerMode;
@@ -47,90 +28,35 @@ export type ExerciseDrawerProps = Omit<DrawerProps, 'onClose'> & {
 
 export const ExerciseDrawer = ({
     mode,
-    initialExercises = [],
+    initialExercises,
     trainingType,
     onClose,
     ...props
 }: ExerciseDrawerProps) => {
-    const [exercises, setExercises] = useState<Exercise[]>(initialExercises);
-    const [selectedFormIndexes, setSelectedFormIndexes] = useState<number[]>([]);
-    const exerciseFormMap = useRef<ExerciseFormRecord>({});
+    const exerciseMenuRef = useRef<ExerciseFormsMenuHandle>(null);
     const { date } = useTraining();
 
-    useEffect(() => {
-        setExercises(initialExercises);
-    }, [initialExercises]);
-
     const handleClose = () =>
-        onClose?.(mode === 'read' ? [] : getValidExercises(exerciseFormMap.current));
-
-    const handleSelectFormChange = (index: number, selected: boolean) => {
-        setSelectedFormIndexes((prev) =>
-            selected ? [...prev, index] : prev.filter((idx) => idx !== index),
-        );
-    };
-
-    const handleDelete = () => {
-        setExercises((prev) => prev.filter((_, idx) => !selectedFormIndexes.includes(idx)));
-        setSelectedFormIndexes([]);
-    };
+        exerciseMenuRef.current &&
+        onClose?.(mode === 'read' ? [] : exerciseMenuRef.current.getValidExercises());
 
     return (
         <Drawer
             closeIcon={<CloseOutlined data-test-id='modal-drawer-right-button-close' />}
             data-test-id='modal-drawer-right'
             onClose={handleClose}
-            title={titleByModeMap[mode]}
+            {...titleByMode[mode]}
             {...props}
         >
             <div className={styles.Extra}>
                 <TrainingTypeBadge trainingType={trainingType} />
                 <time dateTime={date.local().format()}>{date.local().format('DD.MM.YYYY')}</time>
             </div>
-            <div className={styles.FormsWrap}>
-                {exercises.map((exercise, idx) => (
-                    <ExerciseForm
-                        key={exercise._id}
-                        ref={(form) => {
-                            if (form) {
-                                exerciseFormMap.current[exercise._id] = form;
-                            } else {
-                                delete exerciseFormMap.current[exercise._id];
-                            }
-                        }}
-                        index={idx}
-                        initialValues={exercise}
-                        mode={mode}
-                        onSelectChange={(selected) => handleSelectFormChange(idx, selected)}
-                        readOnly={mode === 'read'}
-                    />
-                ))}
-            </div>
-            {mode !== 'read' && (
-                <Row>
-                    <Button
-                        block={true}
-                        className={cn(styles.Button, styles.AddButton)}
-                        icon={<PlusOutlined />}
-                        onClick={() => setExercises((prev) => [...prev, createExerciseDraft()])}
-                        size='large'
-                    >
-                        Добавить ещё
-                    </Button>
-                    {mode === 'edit' && (
-                        <Button
-                            block={true}
-                            className={styles.Button}
-                            disabled={!selectedFormIndexes.length}
-                            icon={<MinusOutlined />}
-                            onClick={handleDelete}
-                            size='large'
-                        >
-                            Удалить
-                        </Button>
-                    )}
-                </Row>
-            )}
+            <ExerciseFormsMenu
+                ref={exerciseMenuRef}
+                initialExercises={initialExercises}
+                mode={mode}
+            />
         </Drawer>
     );
 };

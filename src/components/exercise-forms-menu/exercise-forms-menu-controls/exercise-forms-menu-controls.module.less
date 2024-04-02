@@ -1,0 +1,29 @@
+.Button:global.ant-btn {
+    flex: 1;
+    background: var(--theme-gray-4);
+    font-size: var(--font-size-sm);
+
+    &:not(:focus) {
+        border-color: transparent;
+    }
+
+    &:only-child {
+        border-radius: 0 0 8px 8px;
+    }
+
+    &:first-child:not(:only-child) {
+        border-bottom-left-radius: 8px;
+    }
+
+    &:last-child:not(:only-child) {
+        border-bottom-right-radius: 8px;
+    }
+}
+
+.AddButton:global.ant-btn {
+    color: var(--theme-primary-light-6);
+}
+
+.Container {
+    display: flex;
+}
