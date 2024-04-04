@@ -45,16 +45,19 @@ export const ExerciseFormsMenu = forwardRef<ExerciseFormsMenuHandle, ExerciseFor
         const hasValidExercise = exercises.some((e) => !!e.name);
 
         useEffect(() => {
-            onMenuTouched?.();
+            if (isMenuTouched) onMenuTouched?.();
         }, [isMenuTouched, onMenuTouched]);
 
         useEffect(() => {
             onValidChange?.(hasValidExercise);
         }, [hasValidExercise, onValidChange]);
 
-        useEffect(() => {
+        const [prevExercises, setPrevExercises] = useState(initialExercises);
+
+        if (prevExercises !== initialExercises) {
+            setPrevExercises(initialExercises);
             setExercises(initialExercises);
-        }, [initialExercises]);
+        }
 
         useImperativeHandle(ref, () => ({
             getValidExercises: () =>

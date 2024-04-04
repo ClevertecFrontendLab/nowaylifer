@@ -7,7 +7,7 @@ import { CreateTrainingDTO, EditTrainingDTO, Training } from './types';
 
 export const trainingApi = createApi({
     reducerPath: 'trainingApi',
-    baseQuery: baseQueryBackend({ minDelay: 1000, prefixUrl: 'training' }),
+    baseQuery: baseQueryBackend({ minDelay: 500, prefixUrl: 'training' }),
     endpoints: (builder) => ({
         fetchTrainingList: builder.query<EntityState<Training, Training['_id']>, void>({
             query: () => '',

@@ -1,0 +1,40 @@
+.CardHeader {
+    padding-block: 12.5px;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.Card:global.ant-card {
+    width: 264px;
+
+    @media (max-width: 480px) {
+        width: 312px;
+    }
+}
+
+.ModalMode:global.ant-popover {
+    position: fixed;
+    left: 50% !important /* overriding inline styles */;
+    translate: -50% 0;
+}
+
+.CardBody {
+    min-height: 130px;
+    padding: var(--space-4) var(--space-3);
+    overflow: auto;
+}
+
+.ExerciseList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.TrainingPopover:global.ant-popover {
+    padding: 0;
+
+    .ant-popover-inner-content {
+        padding: 0;
+    }
+}

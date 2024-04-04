@@ -5,7 +5,7 @@ import { CreateReviewDTO, Review } from './types';
 
 export const reviewsApi = createApi({
     reducerPath: 'reviewsApi',
-    baseQuery: baseQueryBackend({ minDelay: 1000 }),
+    baseQuery: baseQueryBackend({ minDelay: 500 }),
     tagTypes: ['Review'],
     endpoints: (builder) => ({
         fetchAllReviews: builder.query<Review[], void>({

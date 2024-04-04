@@ -9,6 +9,7 @@ import { logout } from '@redux/auth/actions';
 import { history } from '@redux/configure-store';
 import { RoutePath } from '@router/paths';
 import { Layout, Menu } from 'antd';
+import { MenuItemType } from 'antd/lib/menu/hooks/useItems';
 
 import styles from './sidebar.module.less';
 import { SidebarLogo } from './sidebar-logo';
@@ -16,24 +17,29 @@ import { Switch } from './switch';
 
 const { Sider } = Layout;
 
-let loadCalendarpage: () => void;
+let loadCalendarPage: () => void;
+let preloadCalendarPage: () => void;
 let loadWorkoutsPage: () => void;
 
-const menuItems = [
+const menuItems: MenuItemType[] = [
     {
+        key: 'calendar',
         label: (
             <LoadCalendarPage
-                render={(load) => {
-                    loadCalendarpage = load;
+                render={(load, preload) => {
+                    loadCalendarPage = load;
+                    preloadCalendarPage = preload;
 
                     return 'Календарь';
                 }}
             />
         ),
         icon: <CalendarTwoTone twoToneColor={['currentColor', 'currentColor']} />,
-        onClick: () => loadCalendarpage?.(),
+        onClick: () => loadCalendarPage?.(),
+        onMouseEnter: () => preloadCalendarPage?.(),
     },
     {
+        key: 'trainings',
         label: (
             <LoadWorkoutsPage
                 render={(load) => {
@@ -47,10 +53,12 @@ const menuItems = [
         onClick: () => loadWorkoutsPage?.(),
     },
     {
+        key: 'achievements',
         label: 'Достижения',
         icon: <TrophyFilled />,
     },
     {
+        key: 'profile',
         label: 'Профиль',
         icon: <IdcardOutlined />,
         onClick: () => history.push(RoutePath.Profile),

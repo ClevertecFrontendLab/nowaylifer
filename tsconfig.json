@@ -27,7 +27,8 @@
             "@types/*": ["./src/types/*"],
             "@utils/*": ["./src/utils/*"],
             "@assets/*": ["./src/assets/*"],
-            "@router/*": ["./src/router/*"]
+            "@router/*": ["./src/router/*"],
+            "@styles/*": ["./src/styles/*"]
         },
         "plugins": [
             {

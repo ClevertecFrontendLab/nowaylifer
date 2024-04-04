@@ -11,7 +11,7 @@ const lazy = <T extends ComponentType<any>>(
     options?: LazyOptions,
 ) =>
     lazyNoFlicker(factory, {
-        minimum_fallback_time: 1000,
+        minimum_fallback_time: 500,
         time_before_fallback: delay,
         ...options,
     });

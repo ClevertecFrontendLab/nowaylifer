@@ -5,7 +5,7 @@ import { RequestBuyTariff } from './types';
 
 export const tariffApi = createApi({
     reducerPath: 'tariffApi',
-    baseQuery: baseQueryBackend({ prefixUrl: 'tariff', minDelay: 1000 }),
+    baseQuery: baseQueryBackend({ prefixUrl: 'tariff', minDelay: 500 }),
     endpoints: (builder) => ({
         requestBuyTariff: builder.mutation<void, RequestBuyTariff>({
             query: (body) => ({

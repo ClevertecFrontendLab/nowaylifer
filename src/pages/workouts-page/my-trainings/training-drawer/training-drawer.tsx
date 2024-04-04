@@ -1,13 +1,21 @@
-import { FC, Fragment, ReactNode, useCallback, useRef, useState } from 'react';
+import { Fragment, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { AppLoader } from '@components/app-loader';
 import { Button } from '@components/button';
 import { Drawer, DrawerProps } from '@components/drawer';
 import { ExerciseFormsMenu, ExerciseFormsMenuHandle } from '@components/exercise-forms-menu';
+import { Modal } from '@components/modal';
+import { notification } from '@components/notification';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { selectTrainingTypeMap, TrainingType } from '@redux/catalogs';
-import { createExerciseDraft, Training, useCreateTrainingMutation } from '@redux/training';
-import { Checkbox, DatePicker, Form, Row, Select } from 'antd';
+import { selectTrainingTypeByName, TrainingType } from '@redux/catalogs';
+import {
+    createExerciseDraft,
+    Training,
+    useCreateTrainingMutation,
+    useEditTrainingMutation,
+    useLazyFetchTrainingListQuery,
+} from '@redux/training';
+import { Checkbox, DatePicker, Form, Row, Select, Typography } from 'antd';
 import invariant from 'invariant';
 import moment, { Moment } from 'moment';
 
@@ -26,22 +34,22 @@ const titleByMode: Record<TrainingDrawerMode, { title: ReactNode; titleIcon: Rea
 type TrainingDrawerProps = Omit<DrawerProps, 'onClose'> & {
     mode: TrainingDrawerMode;
     trainingTypes: TrainingType[];
-    initialTraining?: Training;
+    initialTraining?: Training | null;
     onClose?(): void;
 };
 
 const defaultInitialExercises = [createExerciseDraft()];
 
 type FormValues = {
-    name: string;
-    date: string;
+    trainingType: TrainingType;
+    date: Moment;
     parameters?: {
         repeat: boolean;
         period: number;
     };
 };
 
-export const TrainingDrawer: FC<TrainingDrawerProps> = ({
+export const TrainingDrawer = ({
     mode,
     trainingTypes,
     initialTraining,
@@ -50,31 +58,51 @@ export const TrainingDrawer: FC<TrainingDrawerProps> = ({
     ...props
 }: TrainingDrawerProps) => {
     const [form] = Form.useForm<FormValues>();
-    const [drawerOpen, setDrawerOpen] = useState(open);
+    const selectedDate = Form.useWatch('date', form);
+    const initialTrainingType = useAppSelector(selectTrainingTypeByName(initialTraining?.name));
+    const [selectedTrainingType, setSelectedTrainingType] = useState(initialTrainingType);
+
     const [isMenuTouched, setIsMenuTouched] = useState(false);
-    const trainingTypeMap = useAppSelector(selectTrainingTypeMap);
-    const exerciseMenuRef = useRef<ExerciseFormsMenuHandle>(null);
-    const [isPeriod, setIsPeriod] = useState(Boolean(initialTraining?.parameters?.period) ?? false);
+    const [isRepeat, setIsRepeat] = useState(initialTraining?.parameters?.repeat ?? false);
+
     const [createTraining, { isLoading: isCreateTrainingLoading }] = useCreateTrainingMutation();
-    // const [editTraining, { isLoading: isEditTrainingLoading }] = useEditTrainingMutation();
-    const [selectedTrainingType, setSelectedTrainingType] = useState<TrainingType | null>(
-        initialTraining ? trainingTypeMap[initialTraining.name] : null,
-    );
+    const [editTraining, { isLoading: isEditTrainingLoading }] = useEditTrainingMutation();
+    const [fetchTrainings] = useLazyFetchTrainingListQuery();
+
+    const exerciseMenuRef = useRef<ExerciseFormsMenuHandle>(null);
     const [hasValidExercise, setHasValidExercise] = useState(
         initialTraining?.exercises.some((e) => !!e.name) ?? false,
     );
-    const [selectedDate, setSelectedDate] = useState<Moment | undefined>(() =>
-        initialTraining ? moment(initialTraining.date) : undefined,
-    );
 
-    const handleMenuTouched = useCallback(() => setIsMenuTouched(true), []);
+    const [drawerOpen, setDrawerOpen] = useState(open);
 
-    if (open !== drawerOpen) {
-        setDrawerOpen(open);
+    if (open !== drawerOpen) setDrawerOpen(open);
+
+    const [prevTraining, setPrevTraining] = useState(initialTraining);
+
+    if (prevTraining !== initialTraining) {
+        setIsMenuTouched(false);
+        setPrevTraining(initialTraining);
+        setSelectedTrainingType(initialTrainingType);
+        setIsRepeat(initialTraining?.parameters?.repeat ?? false);
     }
+
+    useEffect(() => {
+        if (initialTraining) {
+            form.setFieldsValue({
+                date: moment(initialTraining.date),
+                trainingType: initialTrainingType,
+                parameters: { period: initialTraining.parameters?.period },
+            });
+        } else {
+            form.resetFields();
+        }
+    }, [initialTraining, form, initialTrainingType]);
 
     const saveDisabled =
         !isMenuTouched || !selectedDate || !hasValidExercise || !selectedTrainingType;
+
+    const handleMenuTouched = useCallback(() => setIsMenuTouched(true), []);
 
     const handleClose = () => {
         setDrawerOpen(false);
@@ -88,23 +116,62 @@ export const TrainingDrawer: FC<TrainingDrawerProps> = ({
         invariant(selectedDate, 'Date is not selected');
 
         const period = form.getFieldValue(['parameters', 'period']);
-        const exercises = exerciseMenuRef.current?.getValidExercises();
+        const exercises = exerciseMenuRef.current.getValidExercises();
+
+        const dto = {
+            name: selectedTrainingType.name,
+            date: selectedDate.toISOString(),
+            parameters: { period: isRepeat ? period : undefined, repeat: isRepeat },
+            exercises: exercises.map(createExerciseDraft),
+        };
+
+        let runMutation: () => Promise<unknown>;
 
         if (mode === 'create') {
-            await createTraining({
-                name: selectedTrainingType.name,
-                date: selectedDate.toISOString(),
-                parameters: { period, repeat: !!period },
-                exercises: exercises.map(createExerciseDraft),
+            runMutation = () => createTraining(dto).unwrap();
+        } else {
+            invariant(initialTraining, 'Training is undefined');
+
+            runMutation = () =>
+                editTraining({
+                    id: initialTraining._id,
+                    training: { ...dto, isImplementation: selectedDate.isBefore(moment()) },
+                }).unwrap();
+        }
+
+        try {
+            await runMutation();
+        } catch {
+            Modal.error({
+                title: <Typography.Text>При сохранении данных произошла ошибка</Typography.Text>,
+                content: <Typography.Paragraph>Придётся попробовать ещё раз</Typography.Paragraph>,
             });
 
-            handleClose();
+            return;
         }
+
+        try {
+            await fetchTrainings().unwrap();
+        } catch {
+            return;
+        }
+
+        notification.alert({
+            alertProps: {
+                type: 'success',
+                message:
+                    mode === 'create'
+                        ? 'Новая тренировка успешно добавлена'
+                        : 'Тренировка успешно обновлена',
+            },
+        });
+
+        handleClose();
     };
 
     return (
         <Fragment>
-            <AppLoader open={isCreateTrainingLoading} />
+            <AppLoader open={isCreateTrainingLoading || isEditTrainingLoading} />
             <Drawer
                 footer={
                     <Button
@@ -125,7 +192,7 @@ export const TrainingDrawer: FC<TrainingDrawerProps> = ({
                 {...props}
             >
                 <Form className={styles.Form} form={form} onValuesChange={handleMenuTouched}>
-                    <Form.Item<FormValues> name='name'>
+                    <Form.Item<FormValues> initialValue={initialTrainingType} name='trainingType'>
                         <Select
                             className={styles.Select}
                             fieldNames={{ label: 'name', value: 'key' }}
@@ -133,30 +200,38 @@ export const TrainingDrawer: FC<TrainingDrawerProps> = ({
                             onSelect={(_, option) => setSelectedTrainingType(option)}
                             options={trainingTypes}
                             placeholder='Выбор типа тренировки'
-                            value={selectedTrainingType}
                         />
                     </Form.Item>
                     <Row
                         align='middle'
                         justify='space-between'
-                        style={{ marginBottom: isPeriod ? 'var(--space-2)' : 'var(--space-5)' }}
+                        style={{ marginBottom: isRepeat ? 'var(--space-2)' : 'var(--space-5)' }}
                     >
-                        <Form.Item<FormValues> name='date' noStyle={true}>
+                        <Form.Item<FormValues>
+                            initialValue={
+                                initialTraining ? moment(initialTraining.date) : undefined
+                            }
+                            name='date'
+                            noStyle={true}
+                        >
                             <DatePicker
                                 className={styles.DatePicker}
                                 dateRender={(date) => <DatePickerCell date={date} />}
                                 disabledDate={(date) => date.isBefore(moment())}
                                 format='DD.MM.YYYY'
-                                onSelect={setSelectedDate}
-                                placeholder='Выбрать дату'
-                                value={selectedDate}
                             />
                         </Form.Item>
-                        <Checkbox onChange={(e) => setIsPeriod(e.target.checked)}>
+                        <Checkbox
+                            checked={isRepeat}
+                            onChange={(e) => {
+                                setIsRepeat(e.target.checked);
+                                setIsMenuTouched(true);
+                            }}
+                        >
                             С периодичностью
                         </Checkbox>
                     </Row>
-                    {isPeriod && (
+                    {isRepeat && (
                         <Form.Item<FormValues>
                             initialValue={initialTraining?.parameters?.period}
                             name={['parameters', 'period']}

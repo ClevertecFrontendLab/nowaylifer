@@ -1,4 +1,3 @@
-import { CSSProperties } from 'react';
 import { DownOutlined, EditOutlined } from '@ant-design/icons';
 import { Button } from '@components/button';
 import { TrainingTypeBadge } from '@components/training-type-badge';
@@ -6,9 +5,9 @@ import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { selectTrainingTypeMap } from '@redux/catalogs';
 import { Training } from '@redux/training';
 import { Row, Table } from 'antd';
-import cn from 'classnames';
 
 import { trainingPeriods } from '../training-periods';
+import { TrainingPopover } from '../training-popover';
 
 import styles from './training-table.module.less';
 
@@ -19,29 +18,37 @@ type RecordType = {
 
 type TrainingTableProps = {
     trainings: Training[];
-    className?: string;
-    style?: CSSProperties;
+    onEditTraining?(training: Training): void;
+    onAddExercise?(training: Training): void;
 };
 
-export const TrainingTable = ({ trainings, className, style }: TrainingTableProps) => {
+export const TrainingTable = ({ trainings, onEditTraining, onAddExercise }: TrainingTableProps) => {
     const trainingTypeMap = useAppSelector(selectTrainingTypeMap);
     const data = trainings.map<RecordType>((training) => ({ key: training._id, training }));
 
     return (
         <Table<RecordType>
-            className={cn(styles.Table, className)}
+            className={styles.Table}
             columns={[
                 {
                     title: <div className={styles.ColTitle}>Тип тренировки</div>,
                     dataIndex: ['training', 'name'],
                     width: 260,
-                    render: (value: string) => (
+                    render: (value: string, { training }) => (
                         <Row justify='space-between'>
                             <TrainingTypeBadge
                                 style={{ gap: 'var(--space-3)' }}
                                 trainingType={trainingTypeMap[value]}
                             />
-                            <Button icon={<DownOutlined style={{ fontSize: 10 }} />} type='text' />
+                            <TrainingPopover
+                                onAddExercise={() => onAddExercise?.(training)}
+                                training={training}
+                            >
+                                <Button
+                                    icon={<DownOutlined style={{ fontSize: 10 }} />}
+                                    type='text'
+                                />
+                            </TrainingPopover>
                         </Row>
                     ),
                 },
@@ -50,7 +57,7 @@ export const TrainingTable = ({ trainings, className, style }: TrainingTableProp
                     width: 12,
                 },
                 {
-                    title: <div className={styles.ColTitle}>Сортировка по периоду</div>,
+                    title: <div className={styles.ColTitle}>Периодичность</div>,
                     dataIndex: ['training', 'parameters', 'period'],
                     width: 288,
                     sorter: (a, b) => {
@@ -63,7 +70,7 @@ export const TrainingTable = ({ trainings, className, style }: TrainingTableProp
 
                         return 0;
                     },
-                    render: (value: number | undefined) => (
+                    render: (value: number | undefined, { training }) => (
                         <Row
                             justify='space-between'
                             style={{ flexWrap: 'nowrap', gap: 'var(--space-3)' }}
@@ -79,7 +86,12 @@ export const TrainingTable = ({ trainings, className, style }: TrainingTableProp
                                     ? trainingPeriods.find((p) => p.value === value)?.label
                                     : null}
                             </Row>
-                            <Button icon={<EditOutlined style={{ fontSize: 25 }} />} type='link' />
+                            <Button
+                                disabled={training.isImplementation}
+                                icon={<EditOutlined style={{ fontSize: 25 }} />}
+                                onClick={() => onEditTraining?.(training)}
+                                type='link'
+                            />
                         </Row>
                     ),
                 },
@@ -89,9 +101,9 @@ export const TrainingTable = ({ trainings, className, style }: TrainingTableProp
                 pageSize: 14,
                 position: ['bottomLeft'],
                 className: styles.Pagination,
+                hideOnSinglePage: true,
             }}
             size='small'
-            style={style}
         />
     );
 };

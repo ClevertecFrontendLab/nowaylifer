@@ -1,9 +1,9 @@
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, ReactNode, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from '@components/button';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
-import { selectTrainingTypes } from '@redux/catalogs';
-import { selectTrainingList } from '@redux/training';
+import { selectTrainingTypes, useFetchTrainingCatalogState } from '@redux/catalogs';
+import { selectTrainingList, Training } from '@redux/training';
 import { Typography } from 'antd';
 
 import styles from './my-trainings.module.less';
@@ -21,43 +21,62 @@ const NoTrainingsScreen = ({ onCreateTraining }: { onCreateTraining: () => void 
     </div>
 );
 
-const getRandomKey = () => Math.random().toString();
-
 export const MyTrainings = () => {
-    const drawerKeyRef = useRef(getRandomKey());
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const trainingTypes = useAppSelector(selectTrainingTypes);
     const trainings = useAppSelector(selectTrainingList);
+    const [drawerKey, setDrawerKey] = useState(() => crypto.randomUUID());
+    const trainingTypes = useAppSelector(selectTrainingTypes);
+    const [trainingToEdit, setTrainingToEdit] = useState<Training | null>(null);
     const hasTrainings = !!trainings.length;
+    const { isSuccess } = useFetchTrainingCatalogState();
+
+    const handleTrainingEdit = (training: Training) => {
+        setTrainingToEdit(training);
+        setDrawerOpen(true);
+    };
+
+    let content: ReactNode = null;
+
+    if (isSuccess) {
+        content = hasTrainings ? (
+            <Fragment>
+                <TrainingTable
+                    onAddExercise={handleTrainingEdit}
+                    onEditTraining={handleTrainingEdit}
+                    trainings={trainings}
+                />
+                <Button
+                    className={styles.NewTrainingBtn}
+                    icon={<PlusOutlined />}
+                    onClick={() => setDrawerOpen(true)}
+                    size='large'
+                    type='primary'
+                >
+                    Новая тренировка
+                </Button>
+            </Fragment>
+        ) : (
+            <NoTrainingsScreen onCreateTraining={() => setDrawerOpen(true)} />
+        );
+    }
 
     return (
         <Fragment>
             <TrainingDrawer
-                key={drawerKeyRef.current}
+                key={drawerKey}
                 afterOpenChange={(open) => {
-                    if (!open) drawerKeyRef.current = getRandomKey();
+                    if (!open) {
+                        setTrainingToEdit(null);
+                        setDrawerKey(crypto.randomUUID());
+                    }
                 }}
-                mode='create'
+                initialTraining={trainingToEdit}
+                mode={trainingToEdit ? 'edit' : 'create'}
                 onClose={() => setDrawerOpen(false)}
                 open={drawerOpen}
                 trainingTypes={trainingTypes}
             />
-            {hasTrainings ? (
-                <Fragment>
-                    <TrainingTable trainings={trainings} />
-                    <Button
-                        className={styles.NewTrainingBtn}
-                        icon={<PlusOutlined />}
-                        onClick={() => setDrawerOpen(true)}
-                        size='large'
-                        type='primary'
-                    >
-                        Новая тренировка
-                    </Button>
-                </Fragment>
-            ) : (
-                <NoTrainingsScreen onCreateTraining={() => setDrawerOpen(true)} />
-            )}
+            {content}
         </Fragment>
     );
 };

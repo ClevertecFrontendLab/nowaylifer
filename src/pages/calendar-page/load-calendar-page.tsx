@@ -10,7 +10,9 @@ const errorModalProps = { 'data-test-id': 'modal-no-review' } as ModalProps;
 
 export const CALENDAR_PAGE_LOADER_ID = 'LOAD_CALENDAR_PAGE';
 
-export const LoadCalendarPage = ({ render }: { render: (load: () => void) => ReactNode }) => {
+type RenderFn = (load: () => void, preload: () => void) => ReactNode;
+
+export const LoadCalendarPage = ({ render }: { render: RenderFn }) => {
     const [fetchTrainingList] = useLazyFetchTrainingListQuery();
     const { isSuccess } = useFetchTrainingListState();
     const appLoader = useAppLoader();
@@ -35,5 +37,12 @@ export const LoadCalendarPage = ({ render }: { render: (load: () => void) => Rea
         navigate(RoutePath.Calendar);
     };
 
-    return render(load);
+    const preload = async () => {
+        await Promise.allSettled([
+            import('@pages/calendar-page/calendar-page'),
+            fetchTrainingList(undefined, true),
+        ]);
+    };
+
+    return render(load, preload);
 };
