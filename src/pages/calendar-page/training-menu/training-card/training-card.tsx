@@ -1,5 +1,6 @@
 import { CloseOutlined, EditOutlined } from '@ant-design/icons';
 import { Card } from '@components/card';
+import { TrainingTypeBadge } from '@components/training-type-badge';
 import { TrainingTypeMap } from '@redux/catalogs';
 import { Training } from '@redux/training';
 import { Button, Typography } from 'antd';
@@ -7,7 +8,6 @@ import { Moment } from 'moment';
 
 import { EmptyPlaceholder } from '../empty-placeholder';
 import { useTraining } from '../training-provider';
-import { TrainingTypeBadge } from '../training-type-badge';
 
 import styles from './training-card.module.less';
 

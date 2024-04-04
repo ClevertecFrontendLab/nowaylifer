@@ -2,12 +2,12 @@ import { ReactNode, useRef } from 'react';
 import { CloseOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Drawer } from '@components/drawer';
 import { ExerciseFormsMenu, ExerciseFormsMenuHandle } from '@components/exercise-forms-menu';
+import { TrainingTypeBadge } from '@components/training-type-badge';
 import { TrainingType } from '@redux/catalogs';
 import { Exercise } from '@redux/training';
 import { DrawerProps } from 'antd';
 
 import { useTraining } from '../training-provider';
-import { TrainingTypeBadge } from '../training-type-badge';
 
 import styles from './exercise-drawer.module.less';
 

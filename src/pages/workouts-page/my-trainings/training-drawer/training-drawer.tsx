@@ -1,4 +1,4 @@
-import { Fragment, ReactNode, useCallback, useRef, useState } from 'react';
+import { FC, Fragment, ReactNode, useCallback, useRef, useState } from 'react';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { AppLoader } from '@components/app-loader';
 import { Button } from '@components/button';
@@ -11,6 +11,8 @@ import { Checkbox, DatePicker, Form, Row, Select } from 'antd';
 import invariant from 'invariant';
 import moment, { Moment } from 'moment';
 
+import { trainingPeriods } from '../training-periods';
+
 import { DatePickerCell } from './date-picker-cell';
 import styles from './training-drawer.module.less';
 
@@ -21,23 +23,14 @@ const titleByMode: Record<TrainingDrawerMode, { title: ReactNode; titleIcon: Rea
     edit: { title: 'Редактировать тренировку', titleIcon: <EditOutlined /> },
 };
 
-type TrainingDrawerProps = DrawerProps & {
+type TrainingDrawerProps = Omit<DrawerProps, 'onClose'> & {
     mode: TrainingDrawerMode;
     trainingTypes: TrainingType[];
     initialTraining?: Training;
+    onClose?(): void;
 };
 
 const defaultInitialExercises = [createExerciseDraft()];
-
-const periods = [
-    { label: 'Через 1 день', value: 1 },
-    { label: 'Через 2 дня', value: 2 },
-    { label: 'Через 3 дня', value: 3 },
-    { label: 'Через 4 дня', value: 4 },
-    { label: 'Через 5 дней', value: 5 },
-    { label: 'Через 6 дней', value: 6 },
-    { label: '1 раз в неделю', value: 7 },
-];
 
 type FormValues = {
     name: string;
@@ -48,13 +41,16 @@ type FormValues = {
     };
 };
 
-export const TrainingDrawer = ({
+export const TrainingDrawer: FC<TrainingDrawerProps> = ({
     mode,
     trainingTypes,
     initialTraining,
+    open,
+    onClose,
     ...props
 }: TrainingDrawerProps) => {
     const [form] = Form.useForm<FormValues>();
+    const [drawerOpen, setDrawerOpen] = useState(open);
     const [isMenuTouched, setIsMenuTouched] = useState(false);
     const trainingTypeMap = useAppSelector(selectTrainingTypeMap);
     const exerciseMenuRef = useRef<ExerciseFormsMenuHandle>(null);
@@ -71,12 +67,21 @@ export const TrainingDrawer = ({
         initialTraining ? moment(initialTraining.date) : undefined,
     );
 
+    const handleMenuTouched = useCallback(() => setIsMenuTouched(true), []);
+
+    if (open !== drawerOpen) {
+        setDrawerOpen(open);
+    }
+
     const saveDisabled =
         !isMenuTouched || !selectedDate || !hasValidExercise || !selectedTrainingType;
 
-    const handleMenuTouched = useCallback(() => setIsMenuTouched(true), []);
+    const handleClose = () => {
+        setDrawerOpen(false);
+        onClose?.();
+    };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!exerciseMenuRef.current) return;
 
         invariant(selectedTrainingType, 'Training type is not selected');
@@ -86,12 +91,14 @@ export const TrainingDrawer = ({
         const exercises = exerciseMenuRef.current?.getValidExercises();
 
         if (mode === 'create') {
-            createTraining({
+            await createTraining({
                 name: selectedTrainingType.name,
                 date: selectedDate.toISOString(),
                 parameters: { period, repeat: !!period },
                 exercises: exercises.map(createExerciseDraft),
             });
+
+            handleClose();
         }
     };
 
@@ -112,6 +119,8 @@ export const TrainingDrawer = ({
                     </Button>
                 }
                 footerStyle={{ paddingInline: 'var(--space-6)' }}
+                onClose={handleClose}
+                open={drawerOpen}
                 {...titleByMode[mode]}
                 {...props}
             >
@@ -155,7 +164,7 @@ export const TrainingDrawer = ({
                         >
                             <Select
                                 className={styles.Select}
-                                options={periods}
+                                options={trainingPeriods}
                                 placeholder='Периодичность'
                                 style={{ maxWidth: 156 }}
                             />

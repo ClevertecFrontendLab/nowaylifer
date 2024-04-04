@@ -27,9 +27,7 @@ export const trainingApi = createApi({
                         trainingApi.util.updateQueryData(
                             'fetchTrainingList',
                             undefined,
-                            (entityState) => {
-                                trainingAdapter.addOne(entityState, training);
-                            },
+                            (entityState) => trainingAdapter.addOne(entityState, training),
                         ),
                     );
                 } catch {
@@ -54,12 +52,11 @@ export const trainingApi = createApi({
                         trainingApi.util.updateQueryData(
                             'fetchTrainingList',
                             undefined,
-                            (entityState) => {
+                            (entityState) =>
                                 trainingAdapter.updateOne(entityState, {
                                     id: training._id,
                                     changes: training,
-                                });
-                            },
+                                }),
                         ),
                     );
                 } catch {

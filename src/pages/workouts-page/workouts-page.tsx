@@ -35,7 +35,7 @@ const WorkoutsPage = () => {
                 <PageHeader>
                     <Breadcrumbs />
                 </PageHeader>
-                <PageContent>
+                <PageContent className={styles.Content}>
                     <PageContentCard>
                         <Tabs
                             className={styles.Tabs}

@@ -19,7 +19,7 @@
     }
 
     .ant-tabs-nav {
-        margin-bottom: 0;
+        margin-bottom: 36px;
     }
 
     .ant-tabs-nav-list {
@@ -35,5 +35,15 @@
         @media (max-width: 900px) {
             padding-bottom: var(--space-3);
         }
+    }
+}
+
+.Content:global.ant-layout-content {
+    @container page-layout (width <= 480px) {
+        padding-inline: 0;
+    }
+
+    @media (max-width: 480px) {
+        padding-inline: 0;
     }
 }
