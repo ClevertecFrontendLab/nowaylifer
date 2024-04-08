@@ -1,6 +1,4 @@
 .CardNavBtn:global.ant-btn {
-    width: 20px;
-    height: 20px;
     padding: 0;
     font-weight: 700;
     line-height: 1;
@@ -11,6 +9,11 @@
     cursor: pointer;
     color: rgba(0, 0, 0, 0.45);
     transition: color 0.3s;
+
+    &.ant-btn-icon-only {
+        width: 20px;
+        height: 20px;
+    }
 
     &:hover {
         color: rgba(0, 0, 0, 0.75);

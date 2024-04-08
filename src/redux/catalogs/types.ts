@@ -19,3 +19,13 @@ export type Tariff = {
 };
 
 export type TariffDto = Omit<Tariff, 'cover'>;
+
+export type UserJointTraining = {
+    id: string;
+    name: string;
+    trainingType: string;
+    imageSrc: string | null;
+    avgWeightInWeek: number;
+    status: string | null;
+    inviteId: string | null;
+};

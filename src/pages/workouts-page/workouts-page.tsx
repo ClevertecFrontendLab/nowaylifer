@@ -9,13 +9,14 @@ import { useFetchTrainingCatalogQuery } from '@redux/catalogs';
 import { useFetchTrainingListQuery } from '@redux/training';
 import { Tabs } from 'antd';
 
+import { JointTrainings } from './joint-trainings';
 import { WORKOUTS_PAGE_LOADER_ID } from './load-workouts-page';
 import { MyTrainings } from './my-trainings';
 import styles from './workouts-page.module.less';
 
 const tabItems = [
     { label: 'Мои тренировки', key: 'myTrainings', children: <MyTrainings /> },
-    { label: 'Совместные тренировки', key: 'joinTrainings' },
+    { label: 'Совместные тренировки', key: 'joinTrainings', children: <JointTrainings /> },
     { label: 'Марафоны', key: 'marathons' },
 ];
 

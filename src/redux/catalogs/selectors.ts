@@ -1,4 +1,7 @@
 import { RootState } from '@redux/configure-store';
+import { selectTrainingList } from '@redux/training';
+import { createSelector } from '@reduxjs/toolkit';
+import { getMostPopularTrainingType } from '@utils/get-most-popular-training-type';
 
 import { tariffsAdapter, tariffsInitialState } from './tariffs.adapter';
 import { trainingTypeAdapter, trainingTypesInitialState } from './training-type.adapter';
@@ -18,4 +21,10 @@ export const selectTrainingTypeByName = (name?: string) => (state: RootState) =>
 
 export const { selectAll: selectTariffs } = tariffsAdapter.getSelectors(
     (state: RootState) => selectTariffsCacheEntry(state).data ?? tariffsInitialState,
+);
+
+export const selectMostPopularTrainingType = createSelector(
+    selectTrainingList,
+    selectTrainingTypeMap,
+    getMostPopularTrainingType,
 );

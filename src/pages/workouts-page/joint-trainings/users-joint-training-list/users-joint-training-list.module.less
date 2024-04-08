@@ -1,0 +1,16 @@
+.List:global.ant-list {
+    .ant-list-pagination {
+        margin-top: var(--space-4);
+    }
+
+    @container page-layout (width < 580px) {
+        .ant-spin-container > .ant-row {
+            justify-content: center;
+
+            & > div {
+                flex: 1;
+                max-width: 312px;
+            }
+        }
+    }
+}

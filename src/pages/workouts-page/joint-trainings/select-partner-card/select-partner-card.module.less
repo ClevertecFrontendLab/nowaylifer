@@ -1,0 +1,44 @@
+.Card:global.ant-card {
+    background: var(--theme-gray-2);
+    border: 1px solid var(--theme-gray-4);
+    box-shadow: none;
+}
+
+.CardHeader {
+    padding: var(--space-5);
+    padding-top: var(--space-6);
+
+    @media (max-width: 480px) {
+        padding-inline: var(--space-2);
+    }
+}
+
+.CardBody {
+    padding-inline: 0;
+}
+
+.Title:global.ant-typography {
+    margin-bottom: var(--space-6);
+    color: var(--theme-primary-light-9);
+    font-size: var(--font-size-xl);
+    font-weight: 500;
+    line-height: 130%;
+    text-align: center;
+}
+
+.Subtitle:global.ant-typography {
+    margin: 0;
+    padding-inline: var(--space-1);
+    color: var(--character-light-secondary-45);
+    text-align: center;
+}
+
+.ButtonsContainer:global.ant-row {
+    padding-block: var(--space-4);
+    row-gap: var(--space-4);
+    flex-wrap: nowrap;
+
+    @media (max-width: 900px) {
+        flex-direction: column;
+    }
+}

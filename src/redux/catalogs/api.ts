@@ -4,7 +4,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { transformTariffsResponse } from './tariffs.adapter';
 import { transformTrainingCatalogResponse } from './training-type.adapter';
-import { Tariff, TrainingType } from './types';
+import { Tariff, TrainingType, UserJointTraining } from './types';
 
 export const catalogsApi = createApi({
     reducerPath: 'catalogsApi',
@@ -18,6 +18,12 @@ export const catalogsApi = createApi({
             query: () => '/tariff-list',
             transformResponse: transformTariffsResponse,
         }),
+        fetchUserJointTrainingList: builder.query<UserJointTraining[], TrainingType | void>({
+            query: (trainingType) => ({
+                url: '/user-joint-training-list',
+                params: trainingType ? { trainingType: trainingType.key } : undefined,
+            }),
+        }),
     }),
 });
 
@@ -25,6 +31,8 @@ export const {
     useFetchTrainingCatalogQuery,
     useLazyFetchTrainingCatalogQuery,
     useFetchTariffsQuery,
+    useFetchUserJointTrainingListQuery,
+    useLazyFetchUserJointTrainingListQuery,
 } = catalogsApi;
 
 export const { useQueryState: useFetchTrainingCatalogState } =
