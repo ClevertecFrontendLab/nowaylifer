@@ -6,7 +6,12 @@ import { UserJointTrainingCard } from '../user-joint-training-card';
 
 import styles from './users-joint-training-list.module.less';
 
-export const UsersJointTrainingList = ({ users }: { users: UserJointTraining[] }) => {
+type UsersJointTrainingListProps = {
+    users: UserJointTraining[];
+    searchWords: string[];
+};
+
+export const UsersJointTrainingList = ({ users, searchWords }: UsersJointTrainingListProps) => {
     const laptop = useMediaQuery({ maxWidth: 894 });
 
     return (
@@ -22,7 +27,7 @@ export const UsersJointTrainingList = ({ users }: { users: UserJointTraining[] }
             }}
             renderItem={(user) => (
                 <List.Item style={{ marginBottom: laptop ? 12 : 16 }}>
-                    <UserJointTrainingCard user={user} />
+                    <UserJointTrainingCard searchWords={searchWords} user={user} />
                 </List.Item>
             )}
         />

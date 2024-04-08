@@ -1,12 +1,19 @@
+import Highlighter from 'react-highlight-words';
 import { UserOutlined } from '@ant-design/icons';
 import { Button } from '@components/button';
 import { Card } from '@components/card';
 import { UserJointTraining } from '@redux/catalogs';
-import { Avatar, Row, Typography } from 'antd';
+import { Avatar, Row } from 'antd';
+import cn from 'classnames';
 
 import styles from './user-joint-training-card.module.less';
 
-export const UserJointTrainingCard = ({ user }: { user: UserJointTraining }) => (
+type UserJointTrainingCardProps = {
+    user: UserJointTraining;
+    searchWords: string[];
+};
+
+export const UserJointTrainingCard = ({ user, searchWords }: UserJointTrainingCardProps) => (
     <Card className={styles.Card}>
         <Card.Body className={styles.CardBody}>
             <Row className={styles.AvatarContainer}>
@@ -16,7 +23,11 @@ export const UserJointTrainingCard = ({ user }: { user: UserJointTraining }) => 
                     src={user.imageSrc}
                     style={{ width: 42, height: 42, background: 'var(--theme-gray-3)' }}
                 />
-                <Typography.Paragraph className={styles.UserName}>{user.name}</Typography.Paragraph>
+                <Highlighter
+                    className={cn('ant-typography', styles.UserName)}
+                    searchWords={searchWords}
+                    textToHighlight={user.name}
+                />
             </Row>
             <dl className={styles.Dl}>
                 <dt>Тип тренировки</dt>
