@@ -11,9 +11,14 @@ import styles from './user-joint-training-card.module.less';
 type UserJointTrainingCardProps = {
     user: UserJointTraining;
     searchWords: string[];
+    onCreateTraining?(user: UserJointTraining): void;
 };
 
-export const UserJointTrainingCard = ({ user, searchWords }: UserJointTrainingCardProps) => (
+export const UserJointTrainingCard = ({
+    user,
+    searchWords,
+    onCreateTraining,
+}: UserJointTrainingCardProps) => (
     <Card className={styles.Card}>
         <Card.Body className={styles.CardBody}>
             <Row className={styles.AvatarContainer}>
@@ -35,7 +40,12 @@ export const UserJointTrainingCard = ({ user, searchWords }: UserJointTrainingCa
                 <dt>Средняя нагрузка</dt>
                 <dd>{user.avgWeightInWeek} кг/нед</dd>
             </dl>
-            <Button block={true} className={styles.Button} type='primary'>
+            <Button
+                block={true}
+                className={styles.Button}
+                onClick={() => onCreateTraining?.(user)}
+                type='primary'
+            >
                 Создать тренировку
             </Button>
         </Card.Body>
