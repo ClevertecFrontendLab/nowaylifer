@@ -18,7 +18,11 @@ const cards = [
         content: (
             <LoadWorkoutsPage
                 render={(load) => (
-                    <CardButton icon={<HeartFilled />} onClick={load}>
+                    <CardButton
+                        data-test-id='menu-button-training'
+                        icon={<HeartFilled />}
+                        onClick={load}
+                    >
                         Тренировки
                     </CardButton>
                 )}

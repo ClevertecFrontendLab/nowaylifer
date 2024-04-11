@@ -4,10 +4,11 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { transformTariffsResponse } from './tariffs.adapter';
 import { transformTrainingCatalogResponse } from './training-type.adapter';
-import { Tariff, TrainingType, UserJointTraining } from './types';
+import { Tariff, TrainingPal, TrainingType } from './types';
 
 export const catalogsApi = createApi({
     reducerPath: 'catalogsApi',
+    tagTypes: ['JOINT_TRAINING_LIST', 'MY_TRAINING_PALS'],
     baseQuery: baseQueryBackend({ prefixUrl: 'catalogs', minDelay: 500 }),
     endpoints: (builder) => ({
         fetchTrainingCatalog: builder.query<EntityState<TrainingType, TrainingType['name']>, void>({
@@ -18,11 +19,16 @@ export const catalogsApi = createApi({
             query: () => '/tariff-list',
             transformResponse: transformTariffsResponse,
         }),
-        fetchUserJointTrainingList: builder.query<UserJointTraining[], TrainingType | void>({
+        fetchUserJointTrainingList: builder.query<TrainingPal[], TrainingType | void>({
             query: (trainingType) => ({
                 url: '/user-joint-training-list',
                 params: trainingType ? { trainingType: trainingType.key } : undefined,
             }),
+            providesTags: ['JOINT_TRAINING_LIST'],
+        }),
+        fetchMyTrainingPals: builder.query<TrainingPal[], void>({
+            query: () => '/training-pals',
+            providesTags: ['MY_TRAINING_PALS'],
         }),
     }),
 });
@@ -31,6 +37,7 @@ export const {
     useFetchTrainingCatalogQuery,
     useLazyFetchTrainingCatalogQuery,
     useFetchTariffsQuery,
+    useFetchMyTrainingPalsQuery,
     useFetchUserJointTrainingListQuery,
     useLazyFetchUserJointTrainingListQuery,
 } = catalogsApi;

@@ -15,6 +15,7 @@ import { createBrowserHistory } from 'history';
 
 import { authApi, authSlice, authSlicePersistConfig } from './auth';
 import { catalogsApi } from './catalogs';
+import { jointTrainingApi, jointTrainingSlice } from './joint-training';
 import { listenerMiddleware } from './listener-middleware';
 import { reviewsApi } from './reviews';
 import { tariffApi } from './tariff';
@@ -40,6 +41,8 @@ const rootReducer = combineReducers({
     [trainingApi.reducerPath]: trainingApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [tariffApi.reducerPath]: tariffApi.reducer,
+    [jointTrainingApi.reducerPath]: jointTrainingApi.reducer,
+    [jointTrainingSlice.name]: jointTrainingSlice.reducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
@@ -61,8 +64,15 @@ export const store = configureStore({
                 trainingApi.middleware,
                 userApi.middleware,
                 tariffApi.middleware,
+                jointTrainingApi.middleware,
             ),
 });
+
+store.dispatch(
+    jointTrainingApi.endpoints.fetchInvites.initiate(undefined, {
+        subscriptionOptions: { pollingInterval: 5000 },
+    }),
+);
 
 export const persistor = persistStore(store);
 export const history = createReduxHistory(store);

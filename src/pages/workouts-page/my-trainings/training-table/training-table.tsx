@@ -70,7 +70,7 @@ export const TrainingTable = ({ trainings, onEditTraining, onAddExercise }: Trai
 
                         return 0;
                     },
-                    render: (value: number | undefined, { training }) => (
+                    render: (value: number | undefined, { training }, index) => (
                         <Row
                             justify='space-between'
                             style={{ flexWrap: 'nowrap', gap: 'var(--space-3)' }}
@@ -87,6 +87,7 @@ export const TrainingTable = ({ trainings, onEditTraining, onAddExercise }: Trai
                                     : null}
                             </Row>
                             <Button
+                                data-test-id={`update-my-training-table-icon${index}`}
                                 disabled={training.isImplementation}
                                 icon={<EditOutlined style={{ fontSize: 25 }} />}
                                 onClick={() => onEditTraining?.(training)}
@@ -96,6 +97,7 @@ export const TrainingTable = ({ trainings, onEditTraining, onAddExercise }: Trai
                     ),
                 },
             ]}
+            data-test-id='my-trainings-table'
             dataSource={data}
             pagination={{
                 pageSize: 14,

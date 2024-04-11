@@ -1,24 +1,55 @@
+import { Fragment, ReactNode } from 'react';
 import Highlighter from 'react-highlight-words';
-import { UserOutlined } from '@ant-design/icons';
+import { CheckCircleFilled, ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons';
 import { Button } from '@components/button';
 import { Card } from '@components/card';
-import { UserJointTraining } from '@redux/catalogs';
+import { TrainingPal } from '@redux/catalogs';
 import { Avatar, Row } from 'antd';
 import cn from 'classnames';
 
-import styles from './user-joint-training-card.module.less';
+import styles from './search-pal-card.module.less';
 
-type UserJointTrainingCardProps = {
-    user: UserJointTraining;
-    searchWords: string[];
-    onCreateTraining?(user: UserJointTraining): void;
+const statusMap: Record<
+    NonNullable<TrainingPal['status']>,
+    { text: ReactNode; icon?: ReactNode }
+> = {
+    accepted: {
+        text: 'тренировка одобрена',
+        icon: <CheckCircleFilled style={{ color: 'var(--ant-success-color)' }} />,
+    },
+    rejected: {
+        text: 'тренировка отклонена',
+        icon: (
+            <ExclamationCircleOutlined style={{ color: 'var(--character-light-secondary-45)' }} />
+        ),
+    },
+    pending: { text: 'ожидает подтверждения' },
 };
 
-export const UserJointTrainingCard = ({
-    user,
-    searchWords,
-    onCreateTraining,
-}: UserJointTrainingCardProps) => (
+const Status = ({ status }: { status: TrainingPal['status'] }) => {
+    let content = null;
+
+    if (status) {
+        const r = statusMap[status];
+
+        content = (
+            <Fragment>
+                {r.text}
+                <span style={{ marginLeft: r.icon ? 9 : undefined }}>{r.icon}</span>
+            </Fragment>
+        );
+    }
+
+    return <div style={{ textAlign: 'center' }}>{content}</div>;
+};
+
+type SearchPalCardProps = {
+    user: TrainingPal;
+    searchWords: string[];
+    onCreateTraining?(user: TrainingPal): void;
+};
+
+export const SearchPalCard = ({ user, searchWords, onCreateTraining }: SearchPalCardProps) => (
     <Card className={styles.Card}>
         <Card.Body className={styles.CardBody}>
             <Row className={styles.AvatarContainer}>
@@ -48,6 +79,7 @@ export const UserJointTrainingCard = ({
             >
                 Создать тренировку
             </Button>
+            <Status status={user.status} />
         </Card.Body>
     </Card>
 );

@@ -1,1 +1,1 @@
-export { JointTrainings } from './joint-trainigs';
+export { JointTrainings } from './joint-trainings';

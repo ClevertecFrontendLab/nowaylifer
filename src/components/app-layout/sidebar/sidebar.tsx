@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { CalendarTwoTone, HeartFilled, IdcardOutlined, TrophyFilled } from '@ant-design/icons';
 import ExitSvg from '@assets/icons/exit.svg?react';
-import { useAppDispatch } from '@hooks/typed-react-redux-hooks';
+import { useAppDispatch, useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { useXs } from '@hooks/use-breakpoint';
 import { LoadCalendarPage } from '@pages/calendar-page';
 import { LoadWorkoutsPage } from '@pages/workouts-page/load-workouts-page';
 import { logout } from '@redux/auth/actions';
 import { history } from '@redux/configure-store';
 import { RoutePath } from '@router/paths';
-import { Layout, Menu } from 'antd';
+import { Badge, Layout, Menu } from 'antd';
 import { MenuItemType } from 'antd/lib/menu/hooks/useItems';
 
 import styles from './sidebar.module.less';
@@ -20,6 +20,23 @@ const { Sider } = Layout;
 let loadCalendarPage: () => void;
 let preloadCalendarPage: () => void;
 let loadWorkoutsPage: () => void;
+
+const TrainingsIcon = () => {
+    const unreadInvites = useAppSelector((state) => state.jointTrainingSlice.unreadInvites);
+
+    return (
+        <div style={{ position: 'relative' }}>
+            <HeartFilled />
+            <Badge
+                className={styles.Badge}
+                count={unreadInvites}
+                data-test-id='notification-about-joint-training'
+                size='small'
+                style={{ position: 'absolute', bottom: 3, right: 0, opacity: 1 }}
+            />
+        </div>
+    );
+};
 
 const menuItems: MenuItemType[] = [
     {
@@ -49,7 +66,7 @@ const menuItems: MenuItemType[] = [
                 }}
             />
         ),
-        icon: <HeartFilled />,
+        icon: <TrainingsIcon />,
         onClick: () => loadWorkoutsPage?.(),
     },
     {

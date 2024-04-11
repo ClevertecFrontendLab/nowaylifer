@@ -5,25 +5,21 @@ import { Button } from '@components/button';
 import { Drawer, DrawerProps } from '@components/drawer';
 import { ExerciseFormsMenu, ExerciseFormsMenuHandle } from '@components/exercise-forms-menu';
 import { Modal } from '@components/modal';
-import { notification } from '@components/notification';
 import { TrainingTypeBadge } from '@components/training-type-badge';
 import { useAppSelector } from '@hooks/typed-react-redux-hooks';
 import { DatePickerCell } from '@pages/workouts-page/my-trainings/training-drawer/date-picker-cell';
 import { trainingPeriods } from '@pages/workouts-page/my-trainings/training-periods';
-import { selectTrainingTypeByName, TrainingType, UserJointTraining } from '@redux/catalogs';
-import {
-    createExerciseDraft,
-    useCreateTrainingMutation,
-    useLazyFetchTrainingListQuery,
-} from '@redux/training';
+import { selectTrainingTypeByName, TrainingPal, TrainingType } from '@redux/catalogs';
+import { useSendInviteMutation } from '@redux/joint-training';
+import { createExerciseDraft, useCreateTrainingMutation } from '@redux/training';
 import { Avatar, Checkbox, DatePicker, Form, Row, Select, Typography } from 'antd';
 import invariant from 'invariant';
 import moment, { Moment } from 'moment';
 
-import styles from './joint-trainings-drawer.module.less';
+import styles from './joint-training-drawer.module.less';
 
 type JointTrainingDrawerProps = Omit<DrawerProps, 'onClose'> & {
-    partner?: UserJointTraining;
+    partner?: TrainingPal;
     onClose?(): void;
 };
 
@@ -49,7 +45,7 @@ export const JointTrainingDrawer = ({
     const [isRepeat, setIsRepeat] = useState(false);
 
     const [createTraining, { isLoading: isCreateTrainingLoading }] = useCreateTrainingMutation();
-    const [fetchTrainings] = useLazyFetchTrainingListQuery();
+    const [sendInvite, { isLoading: isSendInviteLoading }] = useSendInviteMutation();
 
     const exerciseMenuRef = useRef<ExerciseFormsMenuHandle>(null);
     const [hasValidExercise, setHasValidExercise] = useState(false);
@@ -79,11 +75,12 @@ export const JointTrainingDrawer = ({
         onClose?.();
     };
 
-    const handleSave = async () => {
+    const handleInvite = async () => {
         if (!exerciseMenuRef.current) return;
 
         invariant(selectedDate, 'Date is not selected');
         invariant(trainingType, 'TrainingType is undefined');
+        invariant(partner, 'Partner is undefined');
 
         const period = form.getFieldValue(['parameters', 'period']);
         const exercises = exerciseMenuRef.current.getValidExercises();
@@ -96,7 +93,9 @@ export const JointTrainingDrawer = ({
         };
 
         try {
-            await createTraining(dto).unwrap();
+            const training = await createTraining(dto).unwrap();
+
+            await sendInvite({ trainingId: training._id, to: partner?.id }).unwrap();
         } catch {
             Modal.error({
                 title: <Typography.Text>При сохранении данных произошла ошибка</Typography.Text>,
@@ -106,36 +105,24 @@ export const JointTrainingDrawer = ({
             return;
         }
 
-        try {
-            await fetchTrainings().unwrap();
-        } catch {
-            return;
-        }
-
-        notification.alert({
-            alertProps: {
-                type: 'success',
-                message: 'Новая тренировка успешно добавлена',
-            },
-        });
-
         handleClose();
     };
 
     return (
         <Fragment>
-            <AppLoader open={isCreateTrainingLoading} />
+            <AppLoader open={isCreateTrainingLoading || isSendInviteLoading} />
             <Drawer
+                data-test-id='modal-drawer-right'
                 footer={
                     <Button
                         block={true}
                         disabled={saveDisabled}
                         htmlType='submit'
-                        onClick={handleSave}
+                        onClick={handleInvite}
                         size='large'
                         type='primary'
                     >
-                        Сохранить
+                        Отправить приглашение
                     </Button>
                 }
                 footerStyle={{ paddingInline: 'var(--space-6)' }}
@@ -160,8 +147,11 @@ export const JointTrainingDrawer = ({
                         <Typography.Paragraph className={styles.UserName}>
                             {partner?.name}
                         </Typography.Paragraph>
-                        <TrainingTypeBadge trainingType={trainingType as TrainingType} />
                     </Row>
+                    <TrainingTypeBadge
+                        style={{ marginLeft: 'auto' }}
+                        trainingType={trainingType as TrainingType}
+                    />
                 </Row>
                 <Form className={styles.Form} form={form} onValuesChange={handleMenuTouched}>
                     <Row
@@ -172,6 +162,7 @@ export const JointTrainingDrawer = ({
                         <Form.Item<FormValues> name='date' noStyle={true}>
                             <DatePicker
                                 className={styles.DatePicker}
+                                data-test-id='modal-drawer-right-date-picker'
                                 dateRender={(date) => <DatePickerCell date={date} />}
                                 disabledDate={(date) => date.isBefore(moment())}
                                 format='DD.MM.YYYY'
@@ -179,6 +170,7 @@ export const JointTrainingDrawer = ({
                         </Form.Item>
                         <Checkbox
                             checked={isRepeat}
+                            data-test-id='modal-drawer-right-checkbox-period'
                             onChange={(e) => {
                                 setIsRepeat(e.target.checked);
                                 setIsMenuTouched(true);
@@ -195,6 +187,7 @@ export const JointTrainingDrawer = ({
                         >
                             <Select
                                 className={styles.Select}
+                                data-test-id='modal-drawer-right-select-period'
                                 options={trainingPeriods}
                                 placeholder='Периодичность'
                                 style={{ maxWidth: 156 }}
@@ -205,7 +198,6 @@ export const JointTrainingDrawer = ({
                 <ExerciseFormsMenu
                     ref={exerciseMenuRef}
                     addText='Добавить ещё упражнение'
-                    initialExercises={[createExerciseDraft()]}
                     mode='create'
                     onMenuTouched={handleMenuTouched}
                     onValidChange={setHasValidExercise}

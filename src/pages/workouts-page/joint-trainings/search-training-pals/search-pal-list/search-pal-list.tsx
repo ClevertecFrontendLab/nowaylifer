@@ -1,22 +1,18 @@
 import { useMediaQuery } from 'react-responsive';
-import { UserJointTraining } from '@redux/catalogs';
+import { TrainingPal } from '@redux/catalogs';
 import { List } from 'antd';
 
-import { UserJointTrainingCard } from '../user-joint-training-card';
+import { SearchPalCard } from '../search-pal-card';
 
-import styles from './users-joint-training-list.module.less';
+import styles from './search-pal-list.module.less';
 
-type UsersJointTrainingListProps = {
-    onCreateTraining?(user: UserJointTraining): void;
-    users: UserJointTraining[];
+type SearchPalListProps = {
+    onCreateTraining?(user: TrainingPal): void;
+    users: TrainingPal[];
     searchWords: string[];
 };
 
-export const UsersJointTrainingList = ({
-    users,
-    searchWords,
-    onCreateTraining,
-}: UsersJointTrainingListProps) => {
+export const SearchPalList = ({ users, searchWords, onCreateTraining }: SearchPalListProps) => {
     const laptop = useMediaQuery({ maxWidth: 894 });
 
     return (
@@ -27,15 +23,16 @@ export const UsersJointTrainingList = ({
             pagination={{
                 position: 'bottom',
                 size: 'small',
+                showSizeChanger: false,
                 style: { textAlign: 'left' },
                 pageSize: laptop ? 8 : 15,
             }}
             renderItem={(user) => (
                 <List.Item style={{ marginBottom: laptop ? 12 : 16 }}>
-                    <UserJointTrainingCard
+                    <SearchPalCard
+                        onCreateTraining={onCreateTraining}
                         searchWords={searchWords}
                         user={user}
-                        onCreateTraining={onCreateTraining}
                     />
                 </List.Item>
             )}

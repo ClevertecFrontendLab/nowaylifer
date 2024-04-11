@@ -1,0 +1,23 @@
+.CardHeader {
+    display: flex;
+    justify-content: space-between;
+    padding-top: var(--space-4);
+}
+
+.Card:global.ant-card {
+    width: 264px;
+
+    @media (max-width: 480px) {
+        width: 312px;
+    }
+}
+
+.CardBody {
+    padding: 24px 12px;
+}
+
+.Popover:global.ant-popover {
+    .ant-popover-inner-content {
+        padding: 0;
+    }
+}

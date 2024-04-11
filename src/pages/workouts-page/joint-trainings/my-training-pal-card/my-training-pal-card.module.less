@@ -1,0 +1,41 @@
+.AvatarContainer:global.ant-row {
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+}
+
+.UserName:global.ant-typography {
+    width: min-content;
+    word-break: normal;
+    margin: 0;
+}
+
+.Dl {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    row-gap: 4.5px;
+
+    dt {
+        font-size: var(--font-size-xs);
+        color: var(--character-light-secondary-45);
+        font-weight: 400;
+
+        &:after {
+            content: ':';
+        }
+    }
+
+    dd {
+        margin: 0;
+        color: var(--theme-primary-light-6);
+        font-weight: 500;
+    }
+}
+
+.CardBody {
+    padding: var(--space-3);
+}
+
+.Card {
+    border: 1px solid rgb(240, 240, 240);
+}

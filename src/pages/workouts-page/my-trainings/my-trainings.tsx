@@ -47,6 +47,7 @@ export const MyTrainings = () => {
                 />
                 <Button
                     className={styles.NewTrainingBtn}
+                    data-test-id='create-new-training-button'
                     icon={<PlusOutlined />}
                     onClick={() => setDrawerOpen(true)}
                     size='large'

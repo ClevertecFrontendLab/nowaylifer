@@ -20,12 +20,12 @@ export type Tariff = {
 
 export type TariffDto = Omit<Tariff, 'cover'>;
 
-export type UserJointTraining = {
+export type TrainingPal = {
     id: string;
     name: string;
     trainingType: string;
     imageSrc: string | null;
     avgWeightInWeek: number;
-    status: string | null;
+    status: 'accepted' | 'pending' | 'rejected' | null;
     inviteId: string | null;
 };

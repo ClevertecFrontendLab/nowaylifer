@@ -68,7 +68,7 @@ export const ProfileInfo = ({ user, onEditUser }: ProfileInfoProps) => {
                                 {
                                     message: '',
                                     validator: (_, file: UploadAvatarFile) =>
-                                        ['error', 'uploading'].includes(file.status as string)
+                                        ['error', 'uploading'].includes(file?.status as string)
                                             ? Promise.reject()
                                             : Promise.resolve(),
                                 },

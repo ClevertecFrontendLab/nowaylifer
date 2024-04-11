@@ -24,7 +24,7 @@ export type ExerciseFormsMenuHandle = {
     getValidExercises(): Exercise[];
 };
 
-const defaultInitialExercises: Exercise[] = [];
+const defaultInitialExercises: Exercise[] = [createExerciseDraft()];
 
 export const ExerciseFormsMenu = forwardRef<ExerciseFormsMenuHandle, ExerciseFormsMenuProps>(
     (

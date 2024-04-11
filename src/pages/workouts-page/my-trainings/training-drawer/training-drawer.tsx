@@ -15,7 +15,7 @@ import {
     useEditTrainingMutation,
     useLazyFetchTrainingListQuery,
 } from '@redux/training';
-import { Checkbox, DatePicker, Form, Row, Select, Typography } from 'antd';
+import { AlertProps, Checkbox, DatePicker, Form, Row, Select, Typography } from 'antd';
 import invariant from 'invariant';
 import moment, { Moment } from 'moment';
 
@@ -27,7 +27,7 @@ import styles from './training-drawer.module.less';
 type TrainingDrawerMode = 'create' | 'edit';
 
 const titleByMode: Record<TrainingDrawerMode, { title: ReactNode; titleIcon: ReactNode }> = {
-    create: { title: 'Новая тренировка', titleIcon: <PlusOutlined /> },
+    create: { title: 'Добавление упражнений', titleIcon: <PlusOutlined /> },
     edit: { title: 'Редактировать тренировку', titleIcon: <EditOutlined /> },
 };
 
@@ -159,11 +159,12 @@ export const TrainingDrawer = ({
         notification.alert({
             alertProps: {
                 type: 'success',
+                'data-test-id': 'create-training-success-alert',
                 message:
                     mode === 'create'
                         ? 'Новая тренировка успешно добавлена'
                         : 'Тренировка успешно обновлена',
-            },
+            } as AlertProps,
         });
 
         handleClose();
@@ -173,6 +174,7 @@ export const TrainingDrawer = ({
         <Fragment>
             <AppLoader open={isCreateTrainingLoading || isEditTrainingLoading} />
             <Drawer
+                data-test-id='modal-drawer-right'
                 footer={
                     <Button
                         block={true}
@@ -199,6 +201,7 @@ export const TrainingDrawer = ({
                             labelInValue={true}
                             onSelect={(_, option) => setSelectedTrainingType(option)}
                             options={trainingTypes}
+                            data-test-id='modal-create-exercise-select'
                             placeholder='Выбор типа тренировки'
                         />
                     </Form.Item>
@@ -223,6 +226,7 @@ export const TrainingDrawer = ({
                         </Form.Item>
                         <Checkbox
                             checked={isRepeat}
+                            data-test-id='modal-drawer-right-checkbox-period'
                             onChange={(e) => {
                                 setIsRepeat(e.target.checked);
                                 setIsMenuTouched(true);
@@ -240,6 +244,7 @@ export const TrainingDrawer = ({
                             <Select
                                 className={styles.Select}
                                 options={trainingPeriods}
+                                data-test-id='modal-drawer-right-select-period'
                                 placeholder='Периодичность'
                                 style={{ maxWidth: 156 }}
                             />

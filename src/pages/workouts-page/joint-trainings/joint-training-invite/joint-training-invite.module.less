@@ -1,0 +1,58 @@
+.AvatarContainer {
+    max-width: 174px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3) var(--space-4);
+
+    .ant-typography {
+        width: min-content;
+        font-size: var(--font-size-md);
+        text-align: center;
+        word-break: normal;
+        color: var(--character-light-title-85);
+    }
+
+    @media (max-width: 1170px) {
+        margin-bottom: 16px;
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+.Card:global.ant-card {
+    padding: 20px;
+    padding-left: 0;
+}
+
+.CardBody {
+    display: flex;
+
+    @media (max-width: 1170px) {
+        flex-direction: column;
+    }
+}
+
+.SeeDetailsBtn:global.ant-btn {
+    position: relative;
+    right: 16px;
+
+    @media (max-width: 1170px) {
+        margin-bottom: 32px;
+    }
+}
+
+.Message:global.ant-typography {
+    font-weight: 700;
+    font-size: var(--font-size-md);
+    color: var(--theme-primary-light-9);
+    margin-bottom: 6px;
+}
+
+.Date {
+    display: block;
+    font-size: var(--font-size-xs);
+    color: var(--character-light-secondary-45);
+    margin-bottom: var(--space-2);
+}

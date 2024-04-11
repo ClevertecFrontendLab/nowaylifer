@@ -2,14 +2,17 @@ import { Button } from '@components/button';
 import { Card } from '@components/card';
 import { Row, Typography } from 'antd';
 
-import styles from './select-partner-card.module.less';
+import styles from './search-training-pal-banner.module.less';
 
-type SelectPartnerCardProps = {
+type SearchTrainingPalBannerProps = {
     onRandomSelect?(): void;
     onSelect?(): void;
 };
 
-export const SelectPartnerCard = ({ onRandomSelect, onSelect }: SelectPartnerCardProps) => (
+export const SearchTrainingPalBanner = ({
+    onRandomSelect,
+    onSelect,
+}: SearchTrainingPalBannerProps) => (
     <Card className={styles.Card}>
         <Card.Header className={styles.CardHeader}>
             <Typography.Paragraph className={styles.Title}>

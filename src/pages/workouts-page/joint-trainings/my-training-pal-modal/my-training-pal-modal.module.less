@@ -1,36 +1,21 @@
-.Card:global.ant-card {
-    background: var(--theme-primary-light-1);
-    padding: 16px;
-    padding-bottom: 36px;
-    min-width: 234px;
-    box-shadow: none;
-}
-
-.CardBody {
-    padding: 0;
-}
-
 .AvatarContainer:global.ant-row {
     align-items: center;
     gap: var(--space-2);
-    margin-bottom: var(--space-3);
-}
-
-.Button {
-    height: 28px;
-    padding-block: 0;
+    margin-bottom: var(--space-2);
 }
 
 .UserName:global.ant-typography {
     width: min-content;
     word-break: normal;
+    margin: 0;
 }
 
 .Dl {
-    margin-bottom: 20px;
     display: grid;
     grid-template-columns: 1fr auto;
-    row-gap: 5px;
+    row-gap: 4.5px;
+    column-gap: 16px;
+    align-items: center;
 
     dt {
         font-size: var(--font-size-xs);
@@ -46,5 +31,19 @@
         margin: 0;
         color: var(--theme-primary-light-6);
         font-weight: 500;
+    }
+}
+
+.CardBody {
+    padding: var(--space-3);
+}
+
+.Card {
+    border: 1px solid rgb(240, 240, 240);
+}
+
+.Modal:global.ant-modal {
+    .ant-modal-body {
+        padding: 40px 32px;
     }
 }
