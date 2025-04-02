@@ -3,7 +3,7 @@ import { Avatar, Box, Flex, HStack, Text } from '@chakra-ui/react';
 import { Logo } from '~/shared/ui/Logo';
 
 export const AppHeader = () => (
-    <Flex as='header' align='center' p={4} h={20} bg='lime.50'>
+    <Flex as='header' align='center' p={4} bg='lime.50'>
         <Logo height='32px' width='135px' />
         <Text ml={16}>Главная</Text>
         <HStack ml='auto' mr={16} gap={3}>
