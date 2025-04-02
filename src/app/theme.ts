@@ -3,9 +3,11 @@ import { extendTheme, Theme as DefaultTheme, ThemeOverride } from '@chakra-ui/re
 const themeOverride = {
     colors: {
         lime: {
-            50: '#ffffd3',
-            100: '#eaffc7',
-            300: '#c4ff61',
+            50: '#FFFFD3',
+            100: '#EAFFC7',
+            300: '#C4FF61',
+            '300-rgb': '196, 255, 97',
+            800: '#2DB100',
         },
     },
     fonts: {
