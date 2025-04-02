@@ -2,6 +2,7 @@ import { Box, Button, Icon, IconProps, Text } from '@chakra-ui/react';
 import { useLayoutEffect, useRef } from 'react';
 
 import { FoodMenu } from './FoodMenu';
+import classes from './SidebarMenu.module.css';
 
 export const SidebarMenu = () => {
     const spaceRef = useRef<HTMLDivElement>(null);
@@ -14,11 +15,10 @@ export const SidebarMenu = () => {
             const scrollEl = scrollableRef.current;
             if (!scrollEl) return;
 
-            if (entry.borderBoxSize[0].blockSize <= 0 && !scrollEl.style.boxShadow) {
-                scrollEl.style.boxShadow =
-                    '0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+            if (entry.borderBoxSize[0].blockSize <= 0) {
+                scrollEl.classList.add(classes.elevated);
             } else {
-                scrollEl.style.boxShadow = '';
+                scrollEl.classList.remove(classes.elevated);
             }
         });
 
@@ -36,7 +36,7 @@ export const SidebarMenu = () => {
             display='flex'
             flexDirection='column'
             justifyContent='space-between'
-            boxShadow='0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12)'
+            className={classes.sidebar}
         >
             <Box
                 ref={scrollableRef}
