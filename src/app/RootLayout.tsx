@@ -32,19 +32,19 @@ export default function RootLayout() {
                     <VStack gap={6}>
                         <HStack gap={1} py={2} px={4} justify='start'>
                             <BookmarkIcon boxSize={4} />
-                            <Box fontWeight='semibold' color='lime.800'>
+                            <Box fontWeight='semibold' color='lime.600'>
                                 185
                             </Box>
                         </HStack>
                         <HStack gap={1} py={2} px={4} justify='start'>
                             <PeopleIcon boxSize={4} />
-                            <Box fontWeight='semibold' color='lime.800'>
+                            <Box fontWeight='semibold' color='lime.600'>
                                 589
                             </Box>
                         </HStack>
                         <HStack gap={1} py={2} px={4}>
                             <EmojiHeartEyesIcon boxSize={4} />
-                            <Box fontWeight='semibold' color='lime.800'>
+                            <Box fontWeight='semibold' color='lime.600'>
                                 587
                             </Box>
                         </HStack>
