@@ -1,7 +1,7 @@
 import { Icon, IconProps } from '@chakra-ui/react';
 
 export const BookmarkIcon = (props: IconProps) => (
-    <Icon viewBox='0 0 16 16' {...props}>
+    <Icon viewBox='0 0 16 16' boxSize='1em' {...props}>
         <path
             fillRule='evenodd'
             clipRule='evenodd'

@@ -39,16 +39,15 @@ const BaseStat = ({ icon, label, value, fontSize = 'xs', ...rest }: BaseStatProp
                 display: 'flex',
                 alignItems: 'center',
                 gap: 2,
-                lineHeight: 0,
             },
         }}
         {...rest}
     >
-        <StatLabel fontSize={fontSize}>
+        <StatLabel lineHeight={0} fontSize={fontSize}>
             {cloneElement<IconProps>(icon, { boxSize: icon.props.boxSize ?? '1em' })}
             <VisuallyHidden>{label}</VisuallyHidden>
         </StatLabel>
-        <StatNumber fontWeight='semibold' fontSize={fontSize} color='lime.600'>
+        <StatNumber lineHeight={1.33} fontWeight='semibold' fontSize={fontSize} color='lime.600'>
             {value}
         </StatNumber>
     </Stat>
