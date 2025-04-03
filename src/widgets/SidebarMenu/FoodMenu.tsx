@@ -28,6 +28,10 @@ export const FoodMenu = () => {
                     <AccordionItem key={sectionIdx} border='none'>
                         <AccordionButton
                             _hover={categoryActive ? {} : { bg: 'lime.50' }}
+                            _focusVisible={{
+                                boxShadow: 'none',
+                                bg: categoryActive ? undefined : 'lime.100',
+                            }}
                             bg={categoryActive ? 'lime.100' : undefined}
                             py={3}
                             px={2}
@@ -48,6 +52,10 @@ export const FoodMenu = () => {
                                             <Button
                                                 onClick={() => setActive([sectionIdx, entryIdx])}
                                                 _hover={entryActive ? undefined : { bg: 'lime.50' }}
+                                                _focusVisible={{
+                                                    boxShadow: 'none',
+                                                    bg: entryActive ? undefined : 'lime.50',
+                                                }}
                                                 variant='unstyled'
                                                 textAlign='left'
                                                 display='block'
@@ -59,6 +67,11 @@ export const FoodMenu = () => {
                                             >
                                                 <ListIcon
                                                     active={entryActive}
+                                                    _groupFocus={
+                                                        entryActive
+                                                            ? undefined
+                                                            : { visibility: 'hidden' }
+                                                    }
                                                     _groupHover={
                                                         entryActive
                                                             ? undefined
