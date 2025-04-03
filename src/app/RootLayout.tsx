@@ -1,11 +1,9 @@
-import { Box, Circle, Grid, GridItem, HStack, VStack } from '@chakra-ui/react';
+import { Circle, Grid, GridItem, HStack, VStack } from '@chakra-ui/react';
 import { Outlet } from 'react-router';
 
-import { BookmarkIcon } from '~/shared/ui/BookmarkIcon';
 import { Button } from '~/shared/ui/Button';
-import { EmojiHeartEyesIcon } from '~/shared/ui/EmojiHeartEyesIcon';
 import { PenIcon } from '~/shared/ui/PenIcon';
-import { PeopleIcon } from '~/shared/ui/PeopleIcon';
+import { BookmarkStat, FriendsStat, LikesStat } from '~/shared/ui/Stats';
 import { AppHeader } from '~/widgets/AppHeader';
 import { SidebarMenu } from '~/widgets/SidebarMenu';
 
@@ -30,24 +28,9 @@ export default function RootLayout() {
             <GridItem area='side-profile' hideBelow='xl'>
                 <VStack h='full' justifyContent='space-between' pt={4}>
                     <VStack gap={6}>
-                        <HStack gap={1} py={2} px={4} justify='start'>
-                            <BookmarkIcon boxSize={4} />
-                            <Box fontWeight='semibold' color='lime.600'>
-                                185
-                            </Box>
-                        </HStack>
-                        <HStack gap={1} py={2} px={4} justify='start'>
-                            <PeopleIcon boxSize={4} />
-                            <Box fontWeight='semibold' color='lime.600'>
-                                589
-                            </Box>
-                        </HStack>
-                        <HStack gap={1} py={2} px={4}>
-                            <EmojiHeartEyesIcon boxSize={4} />
-                            <Box fontWeight='semibold' color='lime.600'>
-                                587
-                            </Box>
-                        </HStack>
+                        <BookmarkStat fontSize='md' value={185} />
+                        <FriendsStat fontSize='md' value={589} />
+                        <LikesStat fontSize='md' value={587} />
                     </VStack>
                     <HStack
                         justify='center'
