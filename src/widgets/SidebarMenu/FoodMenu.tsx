@@ -23,23 +23,25 @@ export const FoodMenu = () => {
     return (
         <Accordion allowMultiple>
             {foodMenu.map((item, sectionIdx) => {
-                const sectionActive = active[0] === sectionIdx;
+                const categoryActive = active[0] === sectionIdx;
                 return (
                     <AccordionItem key={sectionIdx} border='none'>
                         <AccordionButton
-                            _hover={sectionActive ? {} : { bg: 'lime.50' }}
-                            bg={sectionActive ? 'lime.100' : undefined}
+                            _hover={categoryActive ? {} : { bg: 'lime.50' }}
+                            bg={categoryActive ? 'lime.100' : undefined}
                             py={3}
                             px={2}
                         >
                             <Image src={item.iconSrc} boxSize={6} mr={3} />
-                            <Box fontWeight={sectionActive ? 'bold' : 'medium'}>{item.name}</Box>
+                            <Box fontWeight={categoryActive ? 'bold' : 'medium'}>
+                                {item.category}
+                            </Box>
                             <AccordionIcon as={ChevronDownIcon} w={4} h={4} ml='auto' />
                         </AccordionButton>
                         <AccordionPanel py={0}>
                             <UnorderedList styleType='none'>
                                 {item.entries.map((entry, entryIdx) => {
-                                    const entryActive = sectionActive && active[1] === entryIdx;
+                                    const entryActive = categoryActive && active[1] === entryIdx;
 
                                     return (
                                         <ListItem key={entryIdx}>

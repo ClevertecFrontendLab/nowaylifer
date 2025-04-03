@@ -1,11 +1,11 @@
 export const foodMenu = [
     {
-        name: 'Салаты',
+        category: 'Салаты',
         iconSrc: '/icons/eggplant.png',
         entries: ['Мясные салаты', 'Рыбные салаты', 'Овощные салаты', 'Теплые салаты'],
     },
     {
-        name: 'Закуски',
+        category: 'Закуски',
         iconSrc: '/icons/healthy-eating.png',
         entries: [
             'Мясные закуски',
@@ -17,12 +17,12 @@ export const foodMenu = [
         ],
     },
     {
-        name: 'Первые блюда',
+        category: 'Первые блюда',
         iconSrc: '/icons/pot.png',
         entries: ['Мясные супы', 'Овощные супы', 'Бульоны', 'Холодные супы', 'Диетические супы'],
     },
     {
-        name: 'Вторые блюда',
+        category: 'Вторые блюда',
         iconSrc: '/icons/frying-pan.png',
         entries: [
             'Мясные',
@@ -40,7 +40,7 @@ export const foodMenu = [
         ],
     },
     {
-        name: 'Десерты, выпечка',
+        category: 'Десерты, выпечка',
         iconSrc: '/icons/rolling-pin.png',
         entries: [
             'Блины и оладьи',
@@ -59,12 +59,12 @@ export const foodMenu = [
         ],
     },
     {
-        name: 'Блюда на гриле',
+        category: 'Блюда на гриле',
         iconSrc: '/icons/grill.png',
         entries: ['Говядина', 'Свинина', 'Птица', 'Рыба', 'Грибы', 'Овощи'],
     },
     {
-        name: 'Веганская кухня',
+        category: 'Веганская кухня',
         iconSrc: '/icons/bay-leaf.png',
         entries: [
             'Закуски',
@@ -78,7 +78,7 @@ export const foodMenu = [
         ],
     },
     {
-        name: 'Детские блюда',
+        category: 'Детские блюда',
         iconSrc: '/icons/child-tasty.png',
         entries: [
             'Первые блюда',
@@ -92,7 +92,7 @@ export const foodMenu = [
         ],
     },
     {
-        name: 'Лечебное питание',
+        category: 'Лечебное питание',
         iconSrc: '/icons/pot-with-cross.svg',
         entries: [
             'Детская диета',
@@ -115,7 +115,7 @@ export const foodMenu = [
         ],
     },
     {
-        name: 'Национальные',
+        category: 'Национальные',
         iconSrc: '/icons/international-food.png',
         entries: [
             'Американская кухня',
@@ -136,12 +136,12 @@ export const foodMenu = [
         ],
     },
     {
-        name: 'Соусы',
+        category: 'Соусы',
         iconSrc: '/icons/mortar.png',
         entries: ['Соусы мясные', 'Соусы сырные', 'Маринады'],
     },
     {
-        name: 'Напитки',
+        category: 'Напитки',
         iconSrc: '/icons/cup.png',
         entries: [
             'Соки и фреши',
@@ -156,7 +156,7 @@ export const foodMenu = [
         ],
     },
     {
-        name: 'Заготовки',
+        category: 'Заготовки',
         iconSrc: '/icons/carrot-jar.png',
         entries: [
             'Мясные заготовки',
