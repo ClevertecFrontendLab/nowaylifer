@@ -46,6 +46,7 @@ export const SidebarMenu = () => {
                 borderRadius='xl'
                 minH={0}
                 pl={2.5}
+                pr={1}
             >
                 <FoodMenu />
             </Box>

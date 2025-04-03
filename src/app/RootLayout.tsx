@@ -15,13 +15,13 @@ export default function RootLayout() {
             templateAreas={`"header    header header"
                             "side-menu main   side-profile"`}
             gridTemplateRows='80px calc(100% - 80px)'
-            gridTemplateColumns='256px 1fr 256px'
+            gridTemplateColumns='auto 1fr auto'
             h='100dvh'
         >
             <GridItem area='header' zIndex='docked'>
                 <AppHeader />
             </GridItem>
-            <GridItem area='side-menu' hideBelow='lg'>
+            <GridItem area='side-menu' hideBelow='lg' w='2xs'>
                 <SidebarMenu />
             </GridItem>
             <GridItem area='main'>
