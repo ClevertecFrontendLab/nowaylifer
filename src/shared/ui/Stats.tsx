@@ -12,7 +12,7 @@ import { BookmarkIcon } from './BookmarkIcon';
 import { EmojiHeartEyesIcon } from './EmojiHeartEyesIcon';
 import { PeopleIcon } from './PeopleIcon';
 
-export const BookmarkStat = (props: Omit<BaseStatProps, 'label' | 'icon'>) => (
+export const BookmarksStat = (props: Omit<BaseStatProps, 'label' | 'icon'>) => (
     <BaseStat label='Количество добавленных в избранное' icon={<BookmarkIcon />} {...props} />
 );
 

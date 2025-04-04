@@ -3,7 +3,7 @@ import { Outlet } from 'react-router';
 
 import { Button } from '~/shared/ui/Button';
 import { PenIcon } from '~/shared/ui/PenIcon';
-import { BookmarkStat, FriendsStat, LikesStat } from '~/shared/ui/Stats';
+import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/Stats';
 import { AppHeader } from '~/widgets/AppHeader';
 import { SidebarMenu } from '~/widgets/SidebarMenu';
 
@@ -12,14 +12,14 @@ export default function RootLayout() {
         <Grid
             templateAreas={`"header    header header"
                             "side-menu main   side-profile"`}
-            gridTemplateRows='80px calc(100% - 80px)'
+            gridTemplateRows='auto 1fr'
             gridTemplateColumns='auto 1fr auto'
             h='100dvh'
         >
             <GridItem area='header' zIndex='docked'>
                 <AppHeader />
             </GridItem>
-            <GridItem area='side-menu' hideBelow='lg' w='2xs'>
+            <GridItem area='side-menu' minH='full' hideBelow='lg' w='2xs'>
                 <SidebarMenu />
             </GridItem>
             <GridItem area='main'>
@@ -28,7 +28,7 @@ export default function RootLayout() {
             <GridItem area='side-profile' hideBelow='xl'>
                 <VStack h='full' justifyContent='space-between' pt={4}>
                     <VStack gap={6}>
-                        <BookmarkStat fontSize='md' value={185} />
+                        <BookmarksStat fontSize='md' value={185} />
                         <FriendsStat fontSize='md' value={589} />
                         <LikesStat fontSize='md' value={587} />
                     </VStack>
