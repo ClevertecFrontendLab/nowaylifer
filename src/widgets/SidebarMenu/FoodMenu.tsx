@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import { foodMenu } from './food-menu';
+import { foodMenu } from '../../shared/constants/food-menu';
 
 export const FoodMenu = () => {
     const [active, setActive] = useState<[number, number] | []>([]);
@@ -36,9 +36,9 @@ export const FoodMenu = () => {
                             py={3}
                             px={2}
                         >
-                            <Image src={item.iconSrc} boxSize={6} mr={3} />
+                            <Image src={item.category.iconSrc} boxSize={6} mr={3} />
                             <Box fontWeight={categoryActive ? 'bold' : 'medium'}>
-                                {item.category}
+                                {item.category.label}
                             </Box>
                             <AccordionIcon as={ChevronDownIcon} w={4} h={4} ml='auto' />
                         </AccordionButton>
