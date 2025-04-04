@@ -38,7 +38,7 @@ const BaseStat = ({ icon, label, value, fontSize = 'xs', ...rest }: BaseStatProp
             '& > dl': {
                 display: 'flex',
                 alignItems: 'center',
-                gap: 2,
+                gap: 1.5,
             },
         }}
         {...rest}

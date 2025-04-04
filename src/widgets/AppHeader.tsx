@@ -1,22 +1,12 @@
 import { HamburgerIcon } from '@chakra-ui/icons';
-import {
-    Avatar,
-    Box,
-    Flex,
-    HStack,
-    IconButton,
-    Text,
-    useMediaQuery,
-    useTheme,
-} from '@chakra-ui/react';
+import { Avatar, Box, Flex, HStack, IconButton, Text, useBreakpointValue } from '@chakra-ui/react';
 
 import { Logo } from '~/shared/ui/Logo';
 import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/Stats';
 
 const AppHeaderLogo = () => {
-    const theme = useTheme<ChakraTheme>();
-    const [md] = useMediaQuery(`(min-width: ${theme.breakpoints.md})`);
-    return <Logo h={8} w='auto' variant={md ? 'normal' : 'short'} />;
+    const variant = useBreakpointValue({ base: 'short', md: 'normal' } as const);
+    return <Logo h={8} w='auto' variant={variant} />;
 };
 
 export const AppHeader = () => (

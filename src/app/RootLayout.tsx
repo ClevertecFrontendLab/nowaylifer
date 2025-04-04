@@ -1,4 +1,4 @@
-import { Circle, Grid, GridItem, HStack, VStack } from '@chakra-ui/react';
+import { Box, Circle, Grid, GridItem, HStack, VStack } from '@chakra-ui/react';
 import { Outlet } from 'react-router';
 
 import { Button } from '~/shared/ui/Button';
@@ -22,8 +22,10 @@ export default function RootLayout() {
             <GridItem area='side-menu' minH='full' hideBelow='lg' w='2xs'>
                 <SidebarMenu />
             </GridItem>
-            <GridItem area='main'>
-                <Outlet />
+            <GridItem area='main' className='custom-scrollbar' overflowY='auto'>
+                <Box maxW={{ base: 'none', lg: '920px', '2xl': '1408px' }}>
+                    <Outlet />
+                </Box>
             </GridItem>
             <GridItem area='side-profile' hideBelow='xl'>
                 <VStack h='full' justifyContent='space-between' pt={4}>

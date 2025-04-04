@@ -23,15 +23,17 @@ export const BlogCard = ({ author, content, ...rest }: BlogCardProps) => (
                     size={{ base: 'sm', lg: 'md' }}
                 />
                 <Box>
-                    <Box fontWeight='medium' fontSize={{ base: 'md', lg: 'lg' }}>
+                    <Box noOfLines={1} fontWeight='medium' fontSize={{ base: 'md', lg: 'lg' }}>
                         {author.displayName}
                     </Box>
-                    <Box fontSize='sm' color='blackAlpha.700'>
+                    <Box noOfLines={1} fontSize='sm' color='blackAlpha.700'>
                         {author.username}
                     </Box>
                 </Box>
             </HStack>
-            <Text noOfLines={3}>{content}</Text>
+            <Text fontSize='sm' noOfLines={3}>
+                {content}
+            </Text>
         </CardBody>
     </Card>
 );

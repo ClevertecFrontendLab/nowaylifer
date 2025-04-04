@@ -17,9 +17,8 @@ import {
     StackProps,
     Text,
     TextProps,
-    useMediaQuery,
+    useBreakpointValue,
     useMultiStyleConfig,
-    useTheme,
 } from '@chakra-ui/react';
 
 import { BookmarkIcon } from '../BookmarkIcon';
@@ -78,8 +77,7 @@ const DishCardBadge = ({ children, ...rest }: BadgeProps) => {
 };
 
 const DishCardButtons = (props: StackProps) => {
-    const theme = useTheme<ChakraTheme>();
-    const [lg] = useMediaQuery(`(min-width: ${theme.breakpoints.lg})`);
+    const lg = useBreakpointValue({ base: false, lg: true });
     return (
         <HStack gap={2} justifyContent='end' {...props}>
             {lg ? (
@@ -145,7 +143,13 @@ const CDishCard = ({ title, category, ...rest }: DishCardProps) => (
                 <Image boxSize={6} src={category.iconSrc} alt={category.label} />
                 <DishCardTitle>{title}</DishCardTitle>
             </HStack>
-            <Button size='sm' variant='outline' color='lime.600' borderColor='lime.600'>
+            <Button
+                size='sm'
+                flexShrink={0}
+                variant='outline'
+                color='lime.600'
+                borderColor='lime.600'
+            >
                 Готовить
             </Button>
         </DishCardBody>
@@ -169,7 +173,7 @@ const VDishCard = ({
                 <DishCardTitle>{title}</DishCardTitle>
                 <DishCardDescription>{description}</DishCardDescription>
             </Box>
-            <HStack justify='space-between'>
+            <HStack justify='space-between' gap={0}>
                 <DishCardCategory iconSrc={category.iconSrc} label={category.label} />
                 <DishCardStats bookmarks={bookmarks} likes={likes} />
             </HStack>
@@ -194,7 +198,7 @@ const HDishCard = ({
                 <DishCardTitle>{title}</DishCardTitle>
                 <DishCardDescription>{description}</DishCardDescription>
             </Box>
-            <HStack order={0} justify='space-between'>
+            <HStack order={0} justify='space-between' gap={0}>
                 <DishCardCategory iconSrc={category.iconSrc} label={category.label} />
                 <DishCardStats bookmarks={bookmarks} likes={likes} />
             </HStack>

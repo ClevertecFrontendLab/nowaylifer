@@ -33,6 +33,7 @@ const themeOverride = {
             100: '#EAFFC7',
             150: '#D7FF94',
             300: '#C4FF61',
+            400: '#b1ff2e',
             '300-rgb': '196, 255, 97',
             600: '#2DB100',
             800: '#134B00',
@@ -40,6 +41,7 @@ const themeOverride = {
     },
     fonts: {
         body: 'Inter Variable, sans-serif',
+        heading: 'Inter Variable, sans-serif',
     },
     semanticTokens: {
         colors: {

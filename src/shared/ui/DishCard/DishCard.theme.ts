@@ -60,6 +60,7 @@ export const dishCardTheme = defineMultiStyleConfig({
             alignItems: 'center',
             lineHeight: 'shorter',
             borderRadius: 'base',
+            flexShrink: 0,
         },
         title: {
             fontWeight: 'medium',
