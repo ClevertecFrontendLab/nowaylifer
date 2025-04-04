@@ -77,8 +77,8 @@ export const dishCardTheme = defineMultiStyleConfig({
         vertical: {
             root: {
                 flexDir: 'column',
-                h: { base: '220px', lg: '414px' },
-                maxW: { base: '158px', lg: '322px' },
+                h: { base: '220px', lg: '402px', '2xl': '414px' },
+                maxW: { base: '158px', lg: '277px', '2xl': '322px' },
             },
             imageContainer: {
                 h: { base: '128px', lg: '230px' },
