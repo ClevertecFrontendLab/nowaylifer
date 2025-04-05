@@ -204,6 +204,11 @@
   resolved "https://registry.yarnpkg.com/@chakra-ui/anatomy/-/anatomy-2.3.6.tgz#6913b95f1c65e234477ce924718aa191e69f4e46"
   integrity sha512-TjmjyQouIZzha/l8JxdBZN1pKZTj7sLpJ0YkFnQFyqHcbfWggW9jKWzY1E0VBnhtFz/xF3KC6UAVuZVSJx+y0g==
 
+"@chakra-ui/anatomy@^2.3.4":
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/anatomy/-/anatomy-2.3.4.tgz#f671dae1dab5fa05e7184fc44521c58ce30a4182"
+  integrity sha512-fFIYN7L276gw0Q7/ikMMlZxP7mvnjRaWJ7f3Jsf9VtDOi6eAYIBRrhQe6+SZ0PGmoOkRaBc7gSE5oeIbgFFyrw==
+
 "@chakra-ui/cli@2.5.8":
   version "2.5.8"
   resolved "https://registry.yarnpkg.com/@chakra-ui/cli/-/cli-2.5.8.tgz#1cb93dcf7ba48c1a79ccd55799a15202783e3683"

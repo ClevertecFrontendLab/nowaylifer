@@ -138,7 +138,7 @@ export const dishCardTheme = defineMultiStyleConfig({
         },
         'no-image': {
             root: {
-                h: { base: '168px', lg: '180px', '2xl': '192px' },
+                minH: '168px',
             },
             body: {
                 p: { base: 3, lg: 4, '2xl': 6 },

@@ -1,10 +1,34 @@
-import { extendTheme, Theme as DefaultTheme, ThemeOverride } from '@chakra-ui/react';
+import { tabsAnatomy } from '@chakra-ui/anatomy';
+import {
+    createMultiStyleConfigHelpers,
+    extendTheme,
+    Theme as DefaultTheme,
+    ThemeOverride,
+} from '@chakra-ui/react';
 
 import { dishCardTheme } from '~/shared/ui/DishCard/DishCard.theme';
 
 const themeOverride = {
     components: {
         DishCard: dishCardTheme,
+        Tabs: createMultiStyleConfigHelpers(tabsAnatomy.keys).defineMultiStyleConfig({
+            defaultProps: { colorScheme: 'lime' },
+            baseStyle: ({ colorScheme }) => ({
+                tab: {
+                    '--tabs-color': `colors.${colorScheme}.800`,
+                    fontWeight: 'medium',
+                    whiteSpace: 'nowrap',
+                    _first: { marginLeft: 'auto' },
+                    _last: { marginRight: 'auto' },
+                },
+                indicator: {
+                    bg: `${colorScheme}.600`,
+                    h: '2px',
+                    mt: '-1.5px',
+                },
+                tabpanel: { p: 0, pt: 6 },
+            }),
+        }),
         Button: {
             variants: {
                 outline: {
@@ -45,6 +69,7 @@ const themeOverride = {
     },
     semanticTokens: {
         colors: {
+            ['chakra-border-color']: 'blackAlpha.200',
             ['scrollbar-thumb']: 'blackAlpha.300',
             ['scrollbar-track']: 'blackAlpha.50',
         },

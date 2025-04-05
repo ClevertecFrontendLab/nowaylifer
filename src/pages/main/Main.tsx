@@ -1,11 +1,9 @@
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import {
     Box,
-    BoxProps,
     Center,
     Flex,
     Heading,
-    HeadingProps,
     HStack,
     IconButton,
     IconButtonProps,
@@ -19,6 +17,7 @@ import { foodMenu } from '~/shared/constants/food-menu';
 import { BlogCard } from '~/shared/ui/BlogCard';
 import { Button } from '~/shared/ui/Button';
 import { DishCard } from '~/shared/ui/DishCard';
+import { Section, SectionHeading } from '~/shared/ui/Section';
 import { SearchBar } from '~/widgets/SearchBar';
 
 const SliderLeftControlButton = (props: Omit<IconButtonProps, 'aria-label'>) => (
@@ -43,19 +42,6 @@ const SliderRightControlButton = (props: Omit<IconButtonProps, 'aria-label'>) =>
         transition='none'
         aria-label='Slide right'
         icon={<ArrowForwardIcon boxSize={6} />}
-        {...props}
-    />
-);
-
-const SectionHeading = (props: HeadingProps) => (
-    <Heading fontWeight='medium' fontSize={{ base: '2xl', lg: '4xl', '2xl': '5xl' }} {...props} />
-);
-
-const Section = (props: BoxProps) => (
-    <Box
-        as='section'
-        px={{ base: 4, md: 5, lg: 6 }}
-        _notLast={{ mb: { base: 8, lg: 10 } }}
         {...props}
     />
 );
