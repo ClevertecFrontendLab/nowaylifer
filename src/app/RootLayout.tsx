@@ -18,7 +18,7 @@ export default function RootLayout() {
             gridTemplateColumns='auto 1fr auto'
             minH='100vh'
         >
-            <GridItem area='header' zIndex='docked' position='sticky' top={0}>
+            <GridItem area='header' zIndex='docked' position='sticky' top={0} minW={0}>
                 <AppHeader />
             </GridItem>
             <GridItem
@@ -29,15 +29,17 @@ export default function RootLayout() {
                 alignSelf='start'
                 hideBelow='xl'
                 w='2xs'
+                minW={0}
             >
                 <SidebarMenu />
             </GridItem>
-            <GridItem area='main'>
-                <Box maxW={{ base: 'none', lg: '920px', '2xl': '1408px' }}>
+            <GridItem area='main' minW={0}>
+                <Box maxW={{ base: 'full', lg: '920px', '2xl': '1408px' }}>
                     <Outlet />
                 </Box>
             </GridItem>
             <GridItem
+                minW={0}
                 area='side-profile'
                 position='sticky'
                 top='var(--app-header-height)'
@@ -73,7 +75,7 @@ export default function RootLayout() {
                     </HStack>
                 </VStack>
             </GridItem>
-            <GridItem area='bottom-menu' hideFrom='lg' position='sticky' bottom={0}>
+            <GridItem area='bottom-menu' hideFrom='lg' position='sticky' bottom={0} minW={0}>
                 <BottomMenu />
             </GridItem>
         </Grid>

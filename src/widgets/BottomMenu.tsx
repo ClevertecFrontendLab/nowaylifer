@@ -5,7 +5,13 @@ import { PenIcon } from '~/shared/ui/PenIcon';
 import { SearchIcon } from '~/shared/ui/SearchIcon';
 
 export const BottomMenu = (props: BoxProps) => (
-    <Box bg='lime.50' height='84px' {...props} data-test-id='footer'>
+    <Box
+        bg='lime.50'
+        height='84px'
+        data-test-id='footer'
+        sx={{ position: 'static !important;' }}
+        {...props}
+    >
         <HStack h='full' justify='space-around' alignItems='center'>
             <Button
                 variant='ghost'
