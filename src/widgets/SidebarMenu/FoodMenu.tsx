@@ -12,7 +12,7 @@ import {
     ListItem,
     UnorderedList,
 } from '@chakra-ui/react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { Link } from '~/shared/ui/Link';
 
@@ -20,6 +20,7 @@ import { foodMenu } from '../../shared/constants/food-menu';
 
 export const FoodMenu = () => {
     const params = useParams<'category' | 'subcategory'>();
+    const navigate = useNavigate();
     return (
         <Accordion
             allowToggle
@@ -38,6 +39,11 @@ export const FoodMenu = () => {
                             bg={categoryActive ? 'lime.100' : undefined}
                             py={3}
                             px={2}
+                            onClick={
+                                item.category.slug === 'vegan-cuisine'
+                                    ? () => navigate('/vegan-cuisine/second-courses')
+                                    : undefined
+                            }
                             data-test-id={
                                 item.category.slug === 'vegan-cuisine' ? 'vegan-cuisine' : undefined
                             }
