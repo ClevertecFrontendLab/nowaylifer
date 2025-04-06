@@ -155,7 +155,7 @@ export default function VeganPage() {
                     </TabPanels>
                 </Tabs>
             </Section>
-            <Section pt={{ base: 2, lg: 6 }}>
+            <Section borderTop='1px' borderColor='blackAlpha.200' pt={{ base: 2, lg: 6 }}>
                 <Stack
                     gap={3}
                     align={{ base: 'start', lg: 'center' }}
