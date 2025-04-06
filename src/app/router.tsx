@@ -13,7 +13,7 @@ const subcategorySlugToBreadcrumb: Record<string, string> = {
 };
 
 const categorySlugToBreadcrumb: Record<string, string> = {
-    vegan: foodMenu[6].category.label,
+    'vegan-cuisine': foodMenu[6].category.label,
 };
 
 export const router = createBrowserRouter([

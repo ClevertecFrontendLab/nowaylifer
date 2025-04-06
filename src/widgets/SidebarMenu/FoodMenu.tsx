@@ -53,7 +53,7 @@ export const FoodMenu = () => {
                                     return (
                                         <ListItem key={entryIdx}>
                                             <Link
-                                                to='/vegan/second-courses'
+                                                to='/vegan-cuisine/second-courses'
                                                 _hover={{
                                                     ...(entryActive
                                                         ? undefined

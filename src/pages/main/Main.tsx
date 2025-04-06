@@ -110,7 +110,7 @@ export default function MainPage() {
                     <SectionHeading>Самое сочное</SectionHeading>
                     <Button
                         as={Link}
-                        to='/featured'
+                        to='/juiciest'
                         hideBelow='lg'
                         variant='solid'
                         bg='lime.400'
@@ -170,7 +170,7 @@ export default function MainPage() {
                 <Center hideFrom='lg'>
                     <Button
                         as={Link}
-                        to='/featured'
+                        to='/juicied'
                         variant='solid'
                         bg='lime.400'
                         rightIcon={<ArrowForwardIcon />}

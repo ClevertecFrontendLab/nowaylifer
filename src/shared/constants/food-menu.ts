@@ -84,7 +84,11 @@ export const foodMenu = [
         ],
     },
     {
-        category: { label: 'Веганская кухня', iconSrc: '/icons/bay-leaf.png', slug: 'vegan' },
+        category: {
+            label: 'Веганская кухня',
+            iconSrc: '/icons/bay-leaf.png',
+            slug: 'vegan-cuisine',
+        },
         subcategories: [
             { label: 'Закуски', slug: '' },
             { label: 'Первые блюда', slug: '' },
