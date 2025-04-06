@@ -18,6 +18,5 @@ export const useBreadcrumbs = () => {
 export interface RouteHandle {
     breadcrumb?:
         | string
-        | undefined
         | ((match: UIMatch<unknown, RouteHandle | undefined>) => string | undefined);
 }
