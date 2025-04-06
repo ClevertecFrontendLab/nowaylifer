@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router';
 
-import FeaturedPage from '~/pages/main/Featured';
+import JuiciestPage from '~/pages/main/Juiciest';
 import MainPage from '~/pages/main/Main';
 import VeganPage from '~/pages/main/Vegan';
 import { foodMenu } from '~/shared/constants/food-menu';
@@ -42,8 +42,8 @@ export const router = createBrowserRouter([
                 ],
             },
             {
-                path: 'featured',
-                Component: FeaturedPage,
+                path: 'juiciest',
+                Component: JuiciestPage,
                 handle: { breadcrumb: 'Самое сочное' } satisfies RouteHandle,
             },
         ],

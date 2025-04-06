@@ -6,7 +6,7 @@ import { DishCard } from '~/shared/ui/DishCard';
 import { Section, SectionHeading } from '~/shared/ui/Section';
 import { SearchBar } from '~/widgets/SearchBar';
 
-export default function FeaturedPage() {
+export default function JuiciestPage() {
     return (
         <Box as='main' py={{ base: 4, lg: 8 }}>
             <VStack justify='center' mb={8} px={{ base: 4, md: 5, lg: 6 }}>
