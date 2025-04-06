@@ -45,14 +45,14 @@ export default function VeganPage() {
                 <Tabs defaultIndex={2}>
                     <Box pos='relative' overflowX='auto' sx={{ scrollbarWidth: 'none' }}>
                         <TabList border='none'>
-                            {foodMenu[6].entries.map((entry) => (
+                            {foodMenu[6].subcategories.map((entry) => (
                                 <Tab
-                                    key={entry}
+                                    key={entry.label}
                                     marginBottom={0}
                                     borderBottom='2px solid'
                                     borderColor='chakra-border-color'
                                 >
-                                    {entry}
+                                    {entry.label}
                                 </Tab>
                             ))}
                         </TabList>

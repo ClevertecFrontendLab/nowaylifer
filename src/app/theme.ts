@@ -11,6 +11,13 @@ import { dishCardTheme } from '~/shared/ui/DishCard/DishCard.theme';
 const themeOverride = {
     components: {
         DishCard: dishCardTheme,
+        Link: {
+            baseStyle: {
+                _hover: {
+                    textDecoration: 'none',
+                },
+            },
+        },
         Tabs: createMultiStyleConfigHelpers(tabsAnatomy.keys).defineMultiStyleConfig({
             defaultProps: { colorScheme: 'lime' },
             baseStyle: ({ colorScheme }) => ({

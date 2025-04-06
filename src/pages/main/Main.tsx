@@ -17,6 +17,7 @@ import { foodMenu } from '~/shared/constants/food-menu';
 import { BlogCard } from '~/shared/ui/BlogCard';
 import { Button } from '~/shared/ui/Button';
 import { DishCard } from '~/shared/ui/DishCard';
+import { Link } from '~/shared/ui/Link';
 import { Section, SectionHeading } from '~/shared/ui/Section';
 import { SearchBar } from '~/widgets/SearchBar';
 
@@ -108,6 +109,8 @@ export default function MainPage() {
                 <HStack justify='space-between' mb={6}>
                     <SectionHeading>Самое сочное</SectionHeading>
                     <Button
+                        as={Link}
+                        to='/featured'
                         hideBelow='lg'
                         variant='solid'
                         bg='lime.400'
@@ -166,6 +169,8 @@ export default function MainPage() {
                 </SimpleGrid>
                 <Center hideFrom='lg'>
                     <Button
+                        as={Link}
+                        to='/featured'
                         variant='solid'
                         bg='lime.400'
                         rightIcon={<ArrowForwardIcon />}

@@ -1,4 +1,8 @@
-import { Button as BaseButton, ButtonProps as BaseButtonProps } from '@chakra-ui/react';
+import {
+    Button as BaseButton,
+    ButtonProps as BaseButtonProps,
+    ComponentWithAs,
+} from '@chakra-ui/react';
 import React from 'react';
 
 export type ButtonProps = Omit<BaseButtonProps, 'leftIcon' | 'rightIcon'> &
@@ -7,7 +11,7 @@ export type ButtonProps = Omit<BaseButtonProps, 'leftIcon' | 'rightIcon'> &
         | { topIcon: React.ReactElement; leftIcon?: undefined; rightIcon?: undefined }
     );
 
-export const Button = ({
+export const Button: ComponentWithAs<'button', ButtonProps> = ({
     iconSpacing = '0.5rem',
     topIcon,
     leftIcon,
@@ -16,7 +20,7 @@ export const Button = ({
     h,
     sx,
     ...rest
-}: ButtonProps) => (
+}) => (
     <BaseButton
         sx={{ ...(topIcon && { '& .chakra-button__icon': { mb: iconSpacing, me: 0 } }), ...sx }}
         flexDirection={topIcon ? 'column' : flexDirection}

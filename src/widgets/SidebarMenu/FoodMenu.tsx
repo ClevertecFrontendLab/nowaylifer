@@ -6,24 +6,27 @@ import {
     AccordionPanel,
     Box,
     BoxProps,
-    Button,
     Icon,
     IconProps,
     Image,
     ListItem,
     UnorderedList,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useParams } from 'react-router';
+
+import { Link } from '~/shared/ui/Link';
 
 import { foodMenu } from '../../shared/constants/food-menu';
 
 export const FoodMenu = () => {
-    const [active, setActive] = useState<[number, number] | []>([]);
-
+    const params = useParams<'category' | 'subcategory'>();
     return (
-        <Accordion allowMultiple>
+        <Accordion
+            allowMultiple
+            defaultIndex={foodMenu.findIndex((v) => v.category.slug === params.category)}
+        >
             {foodMenu.map((item, sectionIdx) => {
-                const categoryActive = active[0] === sectionIdx;
+                const categoryActive = item.category.slug === params.category;
                 return (
                     <AccordionItem key={sectionIdx} border='none'>
                         <AccordionButton
@@ -44,14 +47,18 @@ export const FoodMenu = () => {
                         </AccordionButton>
                         <AccordionPanel py={0}>
                             <UnorderedList styleType='none'>
-                                {item.entries.map((entry, entryIdx) => {
-                                    const entryActive = categoryActive && active[1] === entryIdx;
-
+                                {item.subcategories.map((entry, entryIdx) => {
+                                    const entryActive =
+                                        categoryActive && entry.slug === params.subcategory;
                                     return (
                                         <ListItem key={entryIdx}>
-                                            <Button
-                                                onClick={() => setActive([sectionIdx, entryIdx])}
-                                                _hover={entryActive ? undefined : { bg: 'lime.50' }}
+                                            <Link
+                                                to='/vegan/second-courses'
+                                                _hover={{
+                                                    ...(entryActive
+                                                        ? undefined
+                                                        : { bg: 'lime.50' }),
+                                                }}
                                                 _focusVisible={{
                                                     boxShadow: 'none',
                                                     bg: entryActive ? undefined : 'lime.50',
@@ -79,9 +86,9 @@ export const FoodMenu = () => {
                                                     }
                                                 />
                                                 <Box fontWeight={entryActive ? 'bold' : 'medium'}>
-                                                    {entry}
+                                                    {entry.label}
                                                 </Box>
-                                            </Button>
+                                            </Link>
                                         </ListItem>
                                     );
                                 })}
