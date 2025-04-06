@@ -47,6 +47,7 @@ export default function VeganPage() {
                         <TabList border='none'>
                             {foodMenu[6].entries.map((entry) => (
                                 <Tab
+                                    key={entry}
                                     marginBottom={0}
                                     borderBottom='2px solid'
                                     borderColor='chakra-border-color'
