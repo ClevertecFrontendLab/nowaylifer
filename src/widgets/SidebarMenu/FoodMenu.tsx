@@ -38,6 +38,9 @@ export const FoodMenu = () => {
                             bg={categoryActive ? 'lime.100' : undefined}
                             py={3}
                             px={2}
+                            data-test-id={
+                                item.category.slug === 'vegan-cuisine' ? 'vegan-cuisine' : undefined
+                            }
                         >
                             <Image src={item.category.iconSrc} boxSize={6} mr={3} />
                             <Box fontWeight={categoryActive ? 'bold' : 'medium'}>

@@ -25,7 +25,7 @@ const AppHeaderLogo = () => {
 export const AppHeader = () => {
     const breadcrumbs = useBreadcrumbs();
     return (
-        <Flex as='header' align='center' p={4} bg='lime.50'>
+        <Flex as='header' align='center' p={4} bg='lime.50' data-test-id='header'>
             <AppHeaderLogo />
             <Breadcrumb
                 ml={16}

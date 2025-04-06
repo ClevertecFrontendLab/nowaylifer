@@ -114,6 +114,7 @@ export default function MainPage() {
                         hideBelow='lg'
                         variant='solid'
                         bg='lime.400'
+                        data-test-id='juiciest-link'
                         rightIcon={<ArrowForwardIcon />}
                         size={{ base: 'md', '2xl': 'lg' }}
                     >
@@ -173,6 +174,7 @@ export default function MainPage() {
                         to='/juicied'
                         variant='solid'
                         bg='lime.400'
+                        data-test-id='juiciest-link-mobile'
                         rightIcon={<ArrowForwardIcon />}
                         size={{ base: 'md', '2xl': 'lg' }}
                     >
