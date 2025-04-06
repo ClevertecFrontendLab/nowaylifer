@@ -11,3 +11,13 @@
         background-color: var(--chakra-colors-scrollbar-track);
     }
 }
+
+:root {
+    --app-header-height: 80px;
+}
+
+@media screen and (max-width: 61.98em) {
+    :root {
+        --app-header-height: 64px;
+    }
+}

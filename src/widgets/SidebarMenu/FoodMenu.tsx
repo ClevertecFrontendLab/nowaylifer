@@ -22,7 +22,7 @@ export const FoodMenu = () => {
     const params = useParams<'category' | 'subcategory'>();
     return (
         <Accordion
-            allowMultiple
+            allowToggle
             defaultIndex={foodMenu.findIndex((v) => v.category.slug === params.category)}
         >
             {foodMenu.map((item, sectionIdx) => {

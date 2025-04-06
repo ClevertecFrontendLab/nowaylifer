@@ -1,10 +1,10 @@
-import { Box, Button, Icon, IconProps, Text } from '@chakra-ui/react';
+import { Box, BoxProps, Button, Icon, IconProps, Text } from '@chakra-ui/react';
 import { useLayoutEffect, useRef } from 'react';
 
 import { FoodMenu } from './FoodMenu';
 import classes from './SidebarMenu.module.css';
 
-export const SidebarMenu = () => {
+export const SidebarMenu = (props: BoxProps) => {
     const spaceRef = useRef<HTMLDivElement>(null);
     const scrollableRef = useRef<HTMLDivElement>(null);
 
@@ -31,12 +31,14 @@ export const SidebarMenu = () => {
 
     return (
         <Box
+            as='aside'
             h='full'
             py={6}
             display='flex'
             flexDirection='column'
             justifyContent='space-between'
             className={classes.sidebar}
+            {...props}
         >
             <Box
                 ref={scrollableRef}

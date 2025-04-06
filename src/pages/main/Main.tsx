@@ -26,7 +26,7 @@ const SliderLeftControlButton = (props: Omit<IconButtonProps, 'aria-label'>) => 
         size='lg'
         bg='black'
         color='lime.50'
-        zIndex='docked'
+        zIndex={1}
         transition='none'
         aria-label='Slide left'
         icon={<ArrowBackIcon boxSize={6} />}
@@ -39,7 +39,7 @@ const SliderRightControlButton = (props: Omit<IconButtonProps, 'aria-label'>) =>
         size='lg'
         bg='black'
         color='lime.50'
-        zIndex='docked'
+        zIndex={1}
         transition='none'
         aria-label='Slide right'
         icon={<ArrowForwardIcon boxSize={6} />}
