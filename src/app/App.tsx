@@ -1,34 +1,16 @@
-import './App.css';
+// @ts-expect-error seems like a bug https://github.com/fontsource/fontsource/issues/1038
+import '@fontsource-variable/inter';
+import './styles.css';
 
-import { useState } from 'react';
+import { RouterProvider } from 'react-router';
 
-import reactLogo from '~/assets/react.svg';
-import { useGetPostsQuery } from '~/query/services/posts.ts';
+import { Providers } from './providers';
+import { router } from './router';
 
-function App() {
-    const [count, setCount] = useState(0);
-    const { data: _data, isLoading: _isLoading } = useGetPostsQuery();
-
+export default function App() {
     return (
-        <>
-            <div>
-                <a href='https://vite.dev' target='_blank'>
-                    <img src='/vite.svg' className='logo' alt='Vite logo' />
-                </a>
-                <a href='https://react.dev' target='_blank'>
-                    <img src={reactLogo} className='logo react' alt='React logo' />
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className='card'>
-                <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
-        </>
+        <Providers>
+            <RouterProvider router={router} />
+        </Providers>
     );
 }
-
-export default App;
