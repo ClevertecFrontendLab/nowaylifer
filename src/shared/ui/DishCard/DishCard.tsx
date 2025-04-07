@@ -63,7 +63,7 @@ const DishCardStats = ({ likes = 0, bookmarks = 0 }: { likes?: number; bookmarks
     return (
         <HStack {...styles.stats}>
             {bookmarks > 0 && <BookmarksStat value={bookmarks} />}
-            {likes > 0 && <LikesStat value={bookmarks} />}
+            {likes > 0 && <LikesStat value={likes} />}
         </HStack>
     );
 };
