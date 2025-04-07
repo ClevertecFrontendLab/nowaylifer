@@ -107,17 +107,20 @@ export default function JuiciestPage() {
                     </Button>
                 </Center>
             </Section>
-            <Section borderTop='1px' borderColor='blackAlpha.200' pt={{ base: 2, lg: 6 }}>
+            <Section>
                 <Stack
                     gap={3}
                     align={{ base: 'start', lg: 'center' }}
                     justify='space-between'
                     mb={{ base: 4, lg: 6 }}
+                    pt={{ base: 2, lg: 6 }}
+                    borderTopWidth='1px'
+                    borderColor='blackAlpha.200'
                     direction={{ base: 'column', lg: 'row' }}
                 >
                     <SectionHeading flex={1}>Веганская кухня</SectionHeading>
                     <Text
-                        flex={1}
+                        flex={{ base: 2, '2xl': 1 }}
                         fontWeight='medium'
                         color='blackAlpha.700'
                         fontSize={{ base: 'sm', lg: 'md' }}
@@ -134,8 +137,14 @@ export default function JuiciestPage() {
                         description='Картошка, тушенная с болгарским перцем, фасолью, морковью и луком, -  вариант сытного блюда на каждый день. Фасоль в данном случае заменяет мясо, делая рагу сытным и питательным. Чтобы сократить время  приготовления, возьмём консервированную фасоль. Блюдо хоть и простое, но в полной мере наполнено ароматами и имеет выразительный вкус за счёт  добавления томатной пасты.'
                         bookmarks={1}
                         likes={1}
-                        flex={{ base: 'auto', md: 1 }}
-                        maxW={{ base: 'none', md: '232px', xl: '282px', '2xl': '322px' }}
+                        flexShrink={0}
+                        maxW={{
+                            base: 'full',
+                            md: '232px',
+                            lg: '248px',
+                            '1.5xl': '282px',
+                            '2xl': '322px',
+                        }}
                     />
                     <DishCard
                         variant='no-image'
@@ -144,10 +153,16 @@ export default function JuiciestPage() {
                         description='Капустные котлеты по этому рецепту получаются необычайно пышными и  невероятно вкусными. Мягкий вкус и лёгкая пряная нотка наверняка помогут сделать эти чудесные котлеты из капусты одним из ваших любимых овощных  блюд.'
                         bookmarks={2}
                         likes={1}
-                        flex={{ base: 'auto', md: 1 }}
-                        maxW={{ base: 'none', md: '232px', xl: '282px', '2xl': '322px' }}
+                        flexShrink={0}
+                        maxW={{
+                            base: 'full',
+                            md: '232px',
+                            lg: '248px',
+                            '1.5xl': '282px',
+                            '2xl': '322px',
+                        }}
                     />
-                    <Stack flex={{ base: 'auto', md: 1 }} gap={3}>
+                    <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
                         <DishCard
                             variant='compact'
                             category={foodMenu[3].category}

@@ -1,4 +1,4 @@
-import { Box, Circle, Grid, GridItem, HStack, VStack } from '@chakra-ui/react';
+import { Circle, Grid, GridItem, HStack, VStack } from '@chakra-ui/react';
 import { Outlet } from 'react-router';
 
 import { Button } from '~/shared/ui/Button';
@@ -33,10 +33,13 @@ export default function RootLayout() {
             >
                 <SidebarMenu />
             </GridItem>
-            <GridItem area='main' minW={0}>
-                <Box maxW={{ base: 'full', lg: '920px', '2xl': '1408px' }}>
-                    <Outlet />
-                </Box>
+            <GridItem
+                area='main'
+                minW={0}
+                maxW={{ base: 'full', lg: '920px', '2xl': '1408px' }}
+                marginInline={{ base: 'auto', xl: '0' }}
+            >
+                <Outlet />
             </GridItem>
             <GridItem
                 minW={0}

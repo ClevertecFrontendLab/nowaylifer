@@ -42,6 +42,7 @@ export const dishCardTheme = defineMultiStyleConfig({
         body: {
             display: 'flex',
             flexDir: 'column',
+            minW: 0,
         },
         stats: {
             gap: 2,
@@ -65,13 +66,17 @@ export const dishCardTheme = defineMultiStyleConfig({
         title: {
             fontWeight: 'medium',
             fontSize: { base: 'md', lg: 'lg', '2xl': 'xl' },
-            noOfLines: 1,
+
             mb: 2,
         },
         description: {
             hideBelow: 'lg',
             fontSize: 'sm',
             noOfLines: 3,
+        },
+        imageContainer: {
+            minW: 0,
+            flexShrink: 0,
         },
     },
     variants: {
@@ -95,6 +100,11 @@ export const dishCardTheme = defineMultiStyleConfig({
                 left: 2,
                 pos: { base: 'absolute', lg: 'static' },
             },
+            title: {
+                display: { base: '-webkit-box', lg: 'block' },
+                noOfLines: { base: 2, lg: 1 },
+                isTruncated: { lg: true },
+            },
         },
         horizontal: {
             root: {
@@ -114,6 +124,9 @@ export const dishCardTheme = defineMultiStyleConfig({
                 py: { base: 2, lg: 5 },
             },
             title: {
+                display: { base: '-webkit-box', lg: 'block' },
+                noOfLines: { base: 2, lg: 1 },
+                isTruncated: { lg: true },
                 mt: { base: 0, lg: 6 },
             },
             category: {
@@ -133,6 +146,7 @@ export const dishCardTheme = defineMultiStyleConfig({
                 justifyContent: 'space-between',
             },
             title: {
+                isTruncated: true,
                 mb: 0,
             },
         },
@@ -148,6 +162,9 @@ export const dishCardTheme = defineMultiStyleConfig({
             },
             description: {
                 hideBelow: {},
+            },
+            title: {
+                isTruncated: true,
             },
         },
     },

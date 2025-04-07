@@ -20,6 +20,7 @@ import {
     useBreakpointValue,
     useMultiStyleConfig,
 } from '@chakra-ui/react';
+import React from 'react';
 
 import { BookmarkIcon } from '../BookmarkIcon';
 import { Button } from '../Button';
@@ -28,7 +29,7 @@ import { DishCardStyles, DishCardVariant } from './DishCard.theme';
 
 const [StylesProvider, useStyles] = createStylesContext('DishCard');
 
-interface DishCardRootProps extends CardProps {
+interface DishCardRootProps extends Omit<CardProps, 'title'> {
     variant?: DishCardVariant;
 }
 
@@ -124,7 +125,7 @@ const DishCardCategory = ({
 
 export interface DishCardProps extends DishCardRootProps {
     variant?: DishCardVariant;
-    title: string;
+    title: React.ReactNode;
     category: { label: string; iconSrc: string };
     description?: string;
     imgSrc?: string;
@@ -139,12 +140,12 @@ export interface DishCardProps extends DishCardRootProps {
 const CDishCard = ({ title, category, ...rest }: DishCardProps) => (
     <DishCardRoot {...rest}>
         <DishCardBody>
-            <HStack gap={2}>
+            <HStack gap={2} minW={0}>
                 <Image boxSize={6} src={category.iconSrc} alt={category.label} />
                 <DishCardTitle>{title}</DishCardTitle>
             </HStack>
             <Button
-                size='sm'
+                size={{ base: 'xs', lg: 'sm' }}
                 flexShrink={0}
                 variant='outline'
                 color='lime.600'
@@ -167,7 +168,7 @@ const VDishCard = ({
     ...rest
 }: DishCardProps) => (
     <DishCardRoot variant={variant} {...rest}>
-        {variant !== 'no-image' && <DishCardImage src={imgSrc} alt={title} />}
+        {variant !== 'no-image' && <DishCardImage src={imgSrc} />}
         <DishCardBody>
             <Box flexGrow={1}>
                 <DishCardTitle>{title}</DishCardTitle>
@@ -192,7 +193,7 @@ const HDishCard = ({
     ...rest
 }: DishCardProps) => (
     <DishCardRoot {...rest}>
-        <DishCardImage src={imgSrc} alt={title} />
+        <DishCardImage src={imgSrc} />
         <DishCardBody>
             <Box order={1} flexGrow={1}>
                 <DishCardTitle>{title}</DishCardTitle>

@@ -35,7 +35,7 @@ export const AppHeader = () => {
         >
             <AppHeaderLogo />
             <Breadcrumb
-                ml={16}
+                ml={{ base: 16, xl: 32 }}
                 spacing={0}
                 hideBelow='lg'
                 separator={<ChevronRightIcon color='gray.800' w='22px' h={6} />}
@@ -53,7 +53,7 @@ export const AppHeader = () => {
                     </BreadcrumbItem>
                 ))}
             </Breadcrumb>
-            <HStack hideBelow='lg' ml='auto' mr={16} gap={3}>
+            <HStack hideBelow='lg' ml='auto' mr={{ base: 8, xl: 16 }} gap={3}>
                 <Avatar size='md' name='bake_and_pie' src='/images/user.png' />
                 <Box>
                     <Text fontSize='lg' fontWeight='medium'>

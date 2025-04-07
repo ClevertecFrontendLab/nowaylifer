@@ -30,7 +30,8 @@ export default function VeganPage() {
                 <Text
                     fontWeight='medium'
                     color='blackAlpha.600'
-                    maxW='696px'
+                    textAlign='center'
+                    maxW={{ base: 'full', lg: '696px' }}
                     fontSize={{ base: 'sm', lg: 'md' }}
                     mb={{ base: 4, lg: 8 }}
                 >
@@ -156,17 +157,20 @@ export default function VeganPage() {
                     </TabPanels>
                 </Tabs>
             </Section>
-            <Section borderTop='1px' borderColor='blackAlpha.200' pt={{ base: 2, lg: 6 }}>
+            <Section>
                 <Stack
                     gap={3}
                     align={{ base: 'start', lg: 'center' }}
                     justify='space-between'
                     mb={{ base: 4, lg: 6 }}
+                    pt={{ base: 2, lg: 6 }}
+                    borderTopWidth='1px'
+                    borderColor='blackAlpha.200'
                     direction={{ base: 'column', lg: 'row' }}
                 >
                     <SectionHeading flex={1}>Десерты, выпечка</SectionHeading>
                     <Text
-                        flex={1}
+                        flex={{ base: 2, '2xl': 1 }}
                         fontWeight='medium'
                         color='blackAlpha.700'
                         fontSize={{ base: 'sm', lg: 'md' }}
@@ -184,8 +188,14 @@ export default function VeganPage() {
                         description='Молочное желе – это просто, вкусно и полезно, ведь для его приготовления в качестве основы используется молоко.'
                         bookmarks={1}
                         likes={1}
-                        flex={{ base: 'auto', md: 1 }}
-                        maxW={{ base: 'none', md: '232px', xl: '282px', '2xl': '322px' }}
+                        flexShrink={0}
+                        maxW={{
+                            base: 'full',
+                            md: '232px',
+                            lg: '248px',
+                            '1.5xl': '282px',
+                            '2xl': '322px',
+                        }}
                     />
                     <DishCard
                         variant='no-image'
@@ -194,10 +204,16 @@ export default function VeganPage() {
                         description='Сливочно-сырным кремом можно украсить кексы, либо другую выпечку, а также этим кремом можно наполнить заварные пирожные.'
                         bookmarks={2}
                         likes={1}
-                        flex={{ base: 'auto', md: 1 }}
-                        maxW={{ base: 'none', md: '232px', xl: '282px', '2xl': '322px' }}
+                        flexShrink={0}
+                        maxW={{
+                            base: 'full',
+                            md: '232px',
+                            lg: '248px',
+                            '1.5xl': '282px',
+                            '2xl': '322px',
+                        }}
                     />
-                    <Stack flex={{ base: 'auto', md: 1 }} gap={3}>
+                    <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
                         <DishCard
                             variant='compact'
                             category={foodMenu[7].category}

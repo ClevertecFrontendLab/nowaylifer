@@ -52,6 +52,9 @@ const themeOverride = {
             },
         },
     },
+    breakpoints: {
+        '1.5xl': '90em',
+    },
     space: {
         '4.5': '1.125rem',
     },
@@ -77,8 +80,6 @@ const themeOverride = {
     semanticTokens: {
         colors: {
             ['chakra-border-color']: 'blackAlpha.200',
-            ['scrollbar-thumb']: 'blackAlpha.300',
-            ['scrollbar-track']: 'blackAlpha.50',
         },
         shadows: {
             'card-hover':

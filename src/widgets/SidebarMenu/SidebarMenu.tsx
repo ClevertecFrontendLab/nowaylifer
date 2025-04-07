@@ -40,17 +40,18 @@ export const SidebarMenu = (props: BoxProps) => {
             className={classes.sidebar}
             {...props}
         >
-            <Box
-                ref={scrollableRef}
-                className='custom-scrollbar'
-                overflowX='hidden'
-                overflowY='auto'
-                borderRadius='xl'
-                minH={0}
-                pl={2.5}
-                pr={1}
-            >
-                <FoodMenu />
+            <Box pr={1} minH={0} ref={scrollableRef} borderBottomRadius='xl' overflow='hidden'>
+                <Box
+                    sx={{ '&::-webkit-scrollbar-track': { marginBottom: 2 } }}
+                    className='custom-scrollbar'
+                    overflowX='hidden'
+                    overflowY='auto'
+                    maxH='full'
+                    pl={2.5}
+                    pr={1}
+                >
+                    <FoodMenu />
+                </Box>
             </Box>
             <Box ref={spaceRef} flex={1} />
             <Box px={6}>
