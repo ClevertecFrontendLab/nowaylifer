@@ -16,7 +16,7 @@ import {
 
 import { foodMenu } from '~/shared/constants/food-menu';
 import { Button } from '~/shared/ui/Button';
-import { DishCard } from '~/shared/ui/RecipeCard';
+import { RecipeCard } from '~/shared/ui/RecipeCard';
 import { Section, SectionHeading } from '~/shared/ui/Section';
 import { SearchBar } from '~/widgets/SearchBar';
 
@@ -71,7 +71,7 @@ export default function VeganPage() {
                                     lg: '668px',
                                 }}
                             >
-                                <DishCard
+                                <RecipeCard
                                     variant='horizontal'
                                     title='Картошка, тушенная с болгарским перцем и фасолью в томатном соусе'
                                     category={[foodMenu[9].category]}
@@ -80,7 +80,7 @@ export default function VeganPage() {
                                     bookmarks={85}
                                     likes={152}
                                 />
-                                <DishCard
+                                <RecipeCard
                                     variant='horizontal'
                                     category={[foodMenu[7].category]}
                                     image='/images/картофельные-рулетики.png'
@@ -89,7 +89,7 @@ export default function VeganPage() {
                                     bookmarks={85}
                                     likes={152}
                                 />
-                                <DishCard
+                                <RecipeCard
                                     variant='horizontal'
                                     category={[foodMenu[9].category]}
                                     image='/images/том-ям.png'
@@ -98,7 +98,7 @@ export default function VeganPage() {
                                     bookmarks={124}
                                     likes={324}
                                 />
-                                <DishCard
+                                <RecipeCard
                                     variant='horizontal'
                                     category={[foodMenu[5].category]}
                                     image='/images/овощная-лазанья.png'
@@ -107,7 +107,7 @@ export default function VeganPage() {
                                     bookmarks={85}
                                     likes={152}
                                 />
-                                <DishCard
+                                <RecipeCard
                                     variant='horizontal'
                                     category={[foodMenu[3].category]}
                                     image='/images/тефтели-из-булгура.png'
@@ -116,7 +116,7 @@ export default function VeganPage() {
                                     bookmarks={85}
                                     likes={152}
                                 />
-                                <DishCard
+                                <RecipeCard
                                     variant='horizontal'
                                     category={[foodMenu[3].category]}
                                     image='/images/тефтели-из-булгура.png'
@@ -125,7 +125,7 @@ export default function VeganPage() {
                                     bookmarks={85}
                                     likes={152}
                                 />
-                                <DishCard
+                                <RecipeCard
                                     variant='horizontal'
                                     category={[foodMenu[9].category]}
                                     image='/images/чесночная-картошка.png'
@@ -134,7 +134,7 @@ export default function VeganPage() {
                                     bookmarks={124}
                                     likes={324}
                                 />
-                                <DishCard
+                                <RecipeCard
                                     variant='horizontal'
                                     category={[foodMenu[9].category]}
                                     image='/images/пури.png'
@@ -181,7 +181,7 @@ export default function VeganPage() {
                     </Text>
                 </Stack>
                 <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
-                    <DishCard
+                    <RecipeCard
                         variant='no-image'
                         category={[foodMenu[7].category]}
                         title='Бананово-молочное желе'
@@ -197,7 +197,7 @@ export default function VeganPage() {
                             '2xl': '322px',
                         }}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='no-image'
                         category={[foodMenu[7].category]}
                         title='Нежный сливочно-сырный крем для кексов'
@@ -214,17 +214,17 @@ export default function VeganPage() {
                         }}
                     />
                     <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
-                        <DishCard
+                        <RecipeCard
                             variant='compact'
                             category={[foodMenu[7].category]}
                             title='Домашние сырные палочки'
                         />
-                        <DishCard
+                        <RecipeCard
                             variant='compact'
                             category={[foodMenu[9].category]}
                             title='Панкейки'
                         />
-                        <DishCard
+                        <RecipeCard
                             variant='compact'
                             category={[foodMenu[6].category]}
                             title='Воздушное банановое печенье на сковороде'

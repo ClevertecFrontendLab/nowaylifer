@@ -20,22 +20,21 @@ import {
     useBreakpointValue,
     useMultiStyleConfig,
 } from '@chakra-ui/react';
-import React from 'react';
 
 import { BookmarkIcon } from '../BookmarkIcon';
 import { Button } from '../Button';
 import { BookmarksStat, LikesStat } from '../Stats';
-import { DishCardStyles, DishCardVariant } from './DishCard.theme';
+import { RecipeCardStyles, RecipeCardVariant, themeKey } from './RecipeCard.theme';
 
-const [StylesProvider, useStyles] = createStylesContext('DishCard');
+const [StylesProvider, useStyles] = createStylesContext(themeKey);
 
-interface DishCardRootProps extends Omit<CardProps, 'title'> {
-    variant?: DishCardVariant;
+interface RecipeCardRootProps extends Omit<CardProps, 'title'> {
+    variant?: RecipeCardVariant;
 }
 
-const DishCardRoot = (props: DishCardRootProps) => {
+const RecipeCardRoot = (props: RecipeCardRootProps) => {
     const { size, variant, children, ...rest } = props;
-    const styles = useMultiStyleConfig('DishCard', { size, variant }) as DishCardStyles;
+    const styles = useMultiStyleConfig(themeKey, { size, variant }) as RecipeCardStyles;
     return (
         <Card {...styles.root} {...rest}>
             <StylesProvider value={styles}>{children}</StylesProvider>
@@ -43,23 +42,23 @@ const DishCardRoot = (props: DishCardRootProps) => {
     );
 };
 
-const DishCardBody = (props: CardBodyProps) => {
-    const styles = useStyles() as DishCardStyles;
+const RecipeCardBody = (props: CardBodyProps) => {
+    const styles = useStyles() as RecipeCardStyles;
     return <CardBody {...styles.body} {...props} />;
 };
 
-const DishCardTitle = (props: HeadingProps) => {
-    const styles = useStyles() as DishCardStyles;
+const RecipeCardTitle = (props: HeadingProps) => {
+    const styles = useStyles() as RecipeCardStyles;
     return <Heading {...styles.title} {...props} />;
 };
 
-const DishCardDescription = (props: TextProps) => {
-    const styles = useStyles() as DishCardStyles;
+const RecipeCardDescription = (props: TextProps) => {
+    const styles = useStyles() as RecipeCardStyles;
     return <Text {...styles.description} {...props} />;
 };
 
-const DishCardStats = ({ likes = 0, bookmarks = 0 }: { likes?: number; bookmarks?: number }) => {
-    const styles = useStyles() as DishCardStyles;
+const RecipeCardStats = ({ likes = 0, bookmarks = 0 }: { likes?: number; bookmarks?: number }) => {
+    const styles = useStyles() as RecipeCardStyles;
     return (
         <HStack {...styles.stats}>
             {bookmarks > 0 && <BookmarksStat value={bookmarks} />}
@@ -68,8 +67,8 @@ const DishCardStats = ({ likes = 0, bookmarks = 0 }: { likes?: number; bookmarks
     );
 };
 
-const DishCardBadge = ({ children, ...rest }: BadgeProps) => {
-    const styles = useStyles() as DishCardStyles;
+const RecipeCardBadge = ({ children, ...rest }: BadgeProps) => {
+    const styles = useStyles() as RecipeCardStyles;
     return (
         <Badge {...styles.badge} {...rest}>
             {children}
@@ -77,7 +76,7 @@ const DishCardBadge = ({ children, ...rest }: BadgeProps) => {
     );
 };
 
-const DishCardButtons = (props: StackProps) => {
+const RecipeCardButtons = (props: StackProps) => {
     const lg = useBreakpointValue({ base: false, lg: true });
     return (
         <HStack gap={2} justifyContent='end' {...props}>
@@ -100,8 +99,8 @@ const DishCardButtons = (props: StackProps) => {
     );
 };
 
-const DishCardImage = (props: ImageProps) => {
-    const styles = useStyles() as DishCardStyles;
+const RecipeCardImage = (props: ImageProps) => {
+    const styles = useStyles() as RecipeCardStyles;
     return (
         <Box __css={styles.imageContainer}>
             <Image h='full' objectFit='cover' {...props} />
@@ -109,26 +108,26 @@ const DishCardImage = (props: ImageProps) => {
     );
 };
 
-const DishCardCategory = ({
+const RecipeCardCategory = ({
     iconSrc,
     label,
     ...rest
 }: { iconSrc: string; label: string } & BadgeProps) => {
-    const styles = useStyles() as DishCardStyles;
+    const styles = useStyles() as RecipeCardStyles;
     return (
-        <DishCardBadge {...styles.category} {...rest}>
+        <RecipeCardBadge {...styles.category} {...rest}>
             <Image src={iconSrc} boxSize={4} />
             {label}
-        </DishCardBadge>
+        </RecipeCardBadge>
     );
 };
 
-export interface DishCardProps extends DishCardRootProps {
-    variant?: DishCardVariant;
+export interface RecipeCardProps extends RecipeCardRootProps {
+    variant?: RecipeCardVariant;
     title: React.ReactNode;
-    category: { label: string; iconSrc: string };
+    category: { label: string; iconSrc: string }[];
     description?: string;
-    imgSrc?: string;
+    image?: string;
     bookmarks?: number;
     likes?: number;
     recommendation?: {
@@ -137,12 +136,12 @@ export interface DishCardProps extends DishCardRootProps {
     };
 }
 
-const CDishCard = ({ title, category, ...rest }: DishCardProps) => (
-    <DishCardRoot {...rest}>
-        <DishCardBody>
+const CRecipeCard = ({ title, category, ...rest }: RecipeCardProps) => (
+    <RecipeCardRoot {...rest}>
+        <RecipeCardBody>
             <HStack gap={2} minW={0}>
-                <Image boxSize={6} src={category.iconSrc} alt={category.label} />
-                <DishCardTitle>{title}</DishCardTitle>
+                <Image boxSize={6} src={category[0].iconSrc} alt={category[0].label} />
+                <RecipeCardTitle>{title}</RecipeCardTitle>
             </HStack>
             <Button
                 size={{ base: 'xs', lg: 'sm' }}
@@ -153,37 +152,37 @@ const CDishCard = ({ title, category, ...rest }: DishCardProps) => (
             >
                 Готовить
             </Button>
-        </DishCardBody>
-    </DishCardRoot>
+        </RecipeCardBody>
+    </RecipeCardRoot>
 );
 
-const VDishCard = ({
+const VRecipeCard = ({
     variant,
-    imgSrc,
+    image,
     title,
     description,
     likes,
     bookmarks,
     category,
     ...rest
-}: DishCardProps) => (
-    <DishCardRoot variant={variant} {...rest}>
-        {variant !== 'no-image' && <DishCardImage src={imgSrc} />}
-        <DishCardBody>
+}: RecipeCardProps) => (
+    <RecipeCardRoot variant={variant} {...rest}>
+        {variant !== 'no-image' && <RecipeCardImage src={image} />}
+        <RecipeCardBody>
             <Box flexGrow={1}>
-                <DishCardTitle>{title}</DishCardTitle>
-                <DishCardDescription>{description}</DishCardDescription>
+                <RecipeCardTitle>{title}</RecipeCardTitle>
+                <RecipeCardDescription>{description}</RecipeCardDescription>
             </Box>
             <HStack justify='space-between' gap={0}>
-                <DishCardCategory iconSrc={category.iconSrc} label={category.label} />
-                <DishCardStats bookmarks={bookmarks} likes={likes} />
+                <RecipeCardCategory iconSrc={category[0].iconSrc} label={category[0].label} />
+                <RecipeCardStats bookmarks={bookmarks} likes={likes} />
             </HStack>
-        </DishCardBody>
-    </DishCardRoot>
+        </RecipeCardBody>
+    </RecipeCardRoot>
 );
 
-const HDishCard = ({
-    imgSrc,
+const HRecipeCard = ({
+    image,
     title,
     description,
     category,
@@ -191,38 +190,38 @@ const HDishCard = ({
     likes,
     recommendation,
     ...rest
-}: DishCardProps) => (
-    <DishCardRoot {...rest}>
-        <DishCardImage src={imgSrc} />
-        <DishCardBody>
+}: RecipeCardProps) => (
+    <RecipeCardRoot {...rest}>
+        <RecipeCardImage src={image} />
+        <RecipeCardBody>
             <Box order={1} flexGrow={1}>
-                <DishCardTitle>{title}</DishCardTitle>
-                <DishCardDescription>{description}</DishCardDescription>
+                <RecipeCardTitle>{title}</RecipeCardTitle>
+                <RecipeCardDescription>{description}</RecipeCardDescription>
             </Box>
             <HStack order={0} justify='space-between' gap={0}>
-                <DishCardCategory iconSrc={category.iconSrc} label={category.label} />
-                <DishCardStats bookmarks={bookmarks} likes={likes} />
+                <RecipeCardCategory iconSrc={category[0].iconSrc} label={category[0].label} />
+                <RecipeCardStats bookmarks={bookmarks} likes={likes} />
             </HStack>
-            <DishCardButtons order={2} />
-        </DishCardBody>
+            <RecipeCardButtons order={2} />
+        </RecipeCardBody>
         {recommendation && (
-            <DishCardBadge h={7} hideBelow='lg' bg='lime.150' bottom={5} left={6} pos='absolute'>
+            <RecipeCardBadge h={7} hideBelow='lg' bg='lime.150' bottom={5} left={6} pos='absolute'>
                 <Avatar size='2xs' src={recommendation.avatarSrc} />
                 {`${recommendation.name} рекомендует`}
-            </DishCardBadge>
+            </RecipeCardBadge>
         )}
-    </DishCardRoot>
+    </RecipeCardRoot>
 );
 
-export const DishCard = ({ variant = 'vertical', ...props }: DishCardProps) => {
+export const RecipeCard = ({ variant = 'vertical', ...props }: RecipeCardProps) => {
     switch (variant) {
         case 'vertical':
         case 'no-image':
-            return <VDishCard variant={variant} {...props} />;
+            return <VRecipeCard variant={variant} {...props} />;
         case 'horizontal':
-            return <HDishCard variant={variant} {...props} />;
+            return <HRecipeCard variant={variant} {...props} />;
         case 'compact':
-            return <CDishCard variant={variant} {...props} />;
+            return <CRecipeCard variant={variant} {...props} />;
         default:
             throw new Error('Unknown variant');
     }

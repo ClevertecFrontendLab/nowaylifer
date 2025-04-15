@@ -2,7 +2,7 @@ import { Box, Center, Heading, SimpleGrid, Stack, Text, VStack } from '@chakra-u
 
 import { foodMenu } from '~/shared/constants/food-menu';
 import { Button } from '~/shared/ui/Button';
-import { DishCard } from '~/shared/ui/RecipeCard';
+import { RecipeCard } from '~/shared/ui/RecipeCard';
 import { Section, SectionHeading } from '~/shared/ui/Section';
 import { SearchBar } from '~/widgets/SearchBar';
 
@@ -26,7 +26,7 @@ export default function JuiciestPage() {
                         lg: '668px',
                     }}
                 >
-                    <DishCard
+                    <RecipeCard
                         variant='horizontal'
                         title='Лапша с курицей и шафраном'
                         category={[foodMenu[3].category]}
@@ -36,7 +36,7 @@ export default function JuiciestPage() {
                         bookmarks={258}
                         likes={342}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='horizontal'
                         category={[foodMenu[9].category]}
                         image='/images/том-ям.png'
@@ -45,7 +45,7 @@ export default function JuiciestPage() {
                         bookmarks={124}
                         likes={324}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='horizontal'
                         category={[foodMenu[3].category]}
                         image='/images/пряная-ветчина.png'
@@ -55,7 +55,7 @@ export default function JuiciestPage() {
                         bookmarks={159}
                         likes={257}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='horizontal'
                         category={[foodMenu[3].category]}
                         image='/images/кнели-со-спагетти.png'
@@ -64,7 +64,7 @@ export default function JuiciestPage() {
                         bookmarks={124}
                         likes={231}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='horizontal'
                         category={[foodMenu[3].category]}
                         image='/images/картошка-тушеная.png'
@@ -73,7 +73,7 @@ export default function JuiciestPage() {
                         bookmarks={120}
                         likes={180}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='horizontal'
                         category={[foodMenu[7].category]}
                         image='/images/картофельные-рулетики.png'
@@ -82,7 +82,7 @@ export default function JuiciestPage() {
                         bookmarks={85}
                         likes={180}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='horizontal'
                         category={[foodMenu[5].category]}
                         image='/images/овощная-лазанья.png'
@@ -91,7 +91,7 @@ export default function JuiciestPage() {
                         bookmarks={85}
                         likes={152}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='horizontal'
                         category={[foodMenu[3].category]}
                         image='/images/тефтели-из-булгура.png'
@@ -130,7 +130,7 @@ export default function JuiciestPage() {
                     </Text>
                 </Stack>
                 <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
-                    <DishCard
+                    <RecipeCard
                         variant='no-image'
                         category={[foodMenu[6].category]}
                         title='Картошка, тушенная с болгарским перцем и фасолью в томатном соусе'
@@ -146,7 +146,7 @@ export default function JuiciestPage() {
                             '2xl': '322px',
                         }}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='no-image'
                         category={[foodMenu[6].category]}
                         title='Капустные котлеты'
@@ -163,17 +163,17 @@ export default function JuiciestPage() {
                         }}
                     />
                     <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
-                        <DishCard
+                        <RecipeCard
                             variant='compact'
                             category={[foodMenu[3].category]}
                             title='Стейк для вегетарианцев'
                         />
-                        <DishCard
+                        <RecipeCard
                             variant='compact'
                             category={[foodMenu[3].category]}
                             title='Котлеты из гречки и фасоли'
                         />
-                        <DishCard
+                        <RecipeCard
                             variant='compact'
                             category={[foodMenu[2].category]}
                             title='Сырный суп с лапшой и брокколи'

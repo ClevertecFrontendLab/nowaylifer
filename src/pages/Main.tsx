@@ -17,7 +17,7 @@ import { foodMenu } from '~/shared/constants/food-menu';
 import { BlogCard } from '~/shared/ui/BlogCard';
 import { Button } from '~/shared/ui/Button';
 import { Link } from '~/shared/ui/Link';
-import { DishCard } from '~/shared/ui/RecipeCard';
+import { RecipeCard } from '~/shared/ui/RecipeCard';
 import { Section, SectionHeading } from '~/shared/ui/Section';
 import { SearchBar } from '~/widgets/SearchBar';
 
@@ -65,7 +65,7 @@ export default function MainPage() {
                     <SliderRightControlButton hideBelow='lg' pos='absolute' right={-2} top='35%' />
                     <Box overflowX='hidden'>
                         <Flex gap={{ base: 3, '2xl': 6 }}>
-                            <DishCard
+                            <RecipeCard
                                 variant='vertical'
                                 title='Солянка с грибами'
                                 description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
@@ -74,7 +74,7 @@ export default function MainPage() {
                                 bookmarks={1}
                                 flexShrink={0}
                             />
-                            <DishCard
+                            <RecipeCard
                                 variant='vertical'
                                 title='Капустные котлеты'
                                 description='Капустные котлеты по этому рецепту получаются необычайно пышными и  невероятно вкусными. Мягкий вкус и лёгкая пряная нотка наверняка помогут сделать эти чудесные котлеты из капусты одним из ваших любимых овощных  блюд.'
@@ -84,7 +84,7 @@ export default function MainPage() {
                                 likes={1}
                                 flexShrink={0}
                             />
-                            <DishCard
+                            <RecipeCard
                                 variant='vertical'
                                 title={<>Оладьи на кефире&nbsp;"Пышные"</>}
                                 description='Очень вкусные и нежные оладьи на кефире. Настоятельно рекомендую пышные кефирные оладьи на завтрак.'
@@ -93,7 +93,7 @@ export default function MainPage() {
                                 likes={1}
                                 flexShrink={0}
                             />
-                            <DishCard
+                            <RecipeCard
                                 variant='vertical'
                                 title='Салат "Здоровье"'
                                 description='Сельдерей очень полезен для здоровья, пора набираться витаминов. Не  салат, а сплошное удовольствие:) Вкусный, необычный, а главное быстрый.'
@@ -129,7 +129,7 @@ export default function MainPage() {
                         lg: '668px',
                     }}
                 >
-                    <DishCard
+                    <RecipeCard
                         variant='horizontal'
                         title='Кнели со спагетти'
                         category={[foodMenu[6].category]}
@@ -138,7 +138,7 @@ export default function MainPage() {
                         bookmarks={85}
                         likes={152}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='horizontal'
                         category={[foodMenu[3].category]}
                         image='/images/пряная-ветчина.png'
@@ -148,7 +148,7 @@ export default function MainPage() {
                         bookmarks={159}
                         likes={257}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='horizontal'
                         category={[foodMenu[3].category]}
                         image='/images/лапша-с-курицей.png'
@@ -158,7 +158,7 @@ export default function MainPage() {
                         bookmarks={258}
                         likes={342}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='horizontal'
                         category={[foodMenu[9].category]}
                         image='/images/том-ям.png'
@@ -268,7 +268,7 @@ export default function MainPage() {
                     </Text>
                 </Stack>
                 <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
-                    <DishCard
+                    <RecipeCard
                         variant='no-image'
                         category={[foodMenu[6].category]}
                         title='Картошка, тушенная с болгарским перцем и фасолью в томатном соусе'
@@ -284,7 +284,7 @@ export default function MainPage() {
                             '2xl': '322px',
                         }}
                     />
-                    <DishCard
+                    <RecipeCard
                         variant='no-image'
                         category={[foodMenu[6].category]}
                         title='Капустные котлеты'
@@ -301,17 +301,17 @@ export default function MainPage() {
                         }}
                     />
                     <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
-                        <DishCard
+                        <RecipeCard
                             variant='compact'
                             category={[foodMenu[3].category]}
                             title='Стейк для вегетарианцев'
                         />
-                        <DishCard
+                        <RecipeCard
                             variant='compact'
                             category={[foodMenu[3].category]}
                             title='Котлеты из гречки и фасоли'
                         />
-                        <DishCard
+                        <RecipeCard
                             variant='compact'
                             category={[foodMenu[2].category]}
                             title='Сырный суп с лапшой и брокколи'

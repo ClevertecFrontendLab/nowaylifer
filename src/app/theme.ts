@@ -6,11 +6,11 @@ import {
     ThemeOverride,
 } from '@chakra-ui/react';
 
-import { dishCardTheme } from '~/shared/ui/DishCard/DishCard.theme';
+import { recipeCardTheme } from '~/shared/ui/RecipeCard/RecipeCard.theme';
 
 const themeOverride = {
     components: {
-        DishCard: dishCardTheme,
+        RecipeCard: recipeCardTheme,
         Link: {
             baseStyle: {
                 _hover: {

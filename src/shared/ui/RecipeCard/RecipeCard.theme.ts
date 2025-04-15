@@ -1,13 +1,15 @@
 import { createMultiStyleConfigHelpers, HTMLChakraProps } from '@chakra-ui/react';
 
-export type DishCardParts = (typeof dishCardTheme.parts)[number];
+export type RecipeCardParts = (typeof recipeCardTheme.parts)[number];
 
-export type DishCardStyles<T extends React.ElementType = 'div'> = Record<
-    DishCardParts,
+export type RecipeCardStyles<T extends React.ElementType = 'div'> = Record<
+    RecipeCardParts,
     HTMLChakraProps<T>
 >;
 
-export type DishCardVariant = keyof NonNullable<typeof dishCardTheme.variants>;
+export type RecipeCardVariant = keyof NonNullable<typeof recipeCardTheme.variants>;
+
+export const themeKey = 'RecipeCard';
 
 const { defineMultiStyleConfig } = createMultiStyleConfigHelpers([
     'root',
@@ -20,7 +22,7 @@ const { defineMultiStyleConfig } = createMultiStyleConfigHelpers([
     'badge',
 ]);
 
-export const dishCardTheme = defineMultiStyleConfig({
+export const recipeCardTheme = defineMultiStyleConfig({
     defaultProps: {
         variant: 'horizontal',
     },
