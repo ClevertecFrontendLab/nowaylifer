@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router';
 
-import JuiciestPage from '~/pages/main/Juiciest';
-import MainPage from '~/pages/main/Main';
-import VeganPage from '~/pages/main/Vegan';
+import JuiciestPage from '~/pages/Juiciest';
+import MainPage from '~/pages/Main';
+import VeganPage from '~/pages/Vegan';
 import { foodMenu } from '~/shared/constants/food-menu';
 import { RouteHandle } from '~/shared/use-breadcrumbs';
 

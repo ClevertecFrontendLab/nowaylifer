@@ -2,7 +2,7 @@ import { Box, Center, Heading, SimpleGrid, Stack, Text, VStack } from '@chakra-u
 
 import { foodMenu } from '~/shared/constants/food-menu';
 import { Button } from '~/shared/ui/Button';
-import { DishCard } from '~/shared/ui/DishCard';
+import { DishCard } from '~/shared/ui/RecipeCard';
 import { Section, SectionHeading } from '~/shared/ui/Section';
 import { SearchBar } from '~/widgets/SearchBar';
 
@@ -29,8 +29,8 @@ export default function JuiciestPage() {
                     <DishCard
                         variant='horizontal'
                         title='Лапша с курицей и шафраном'
-                        category={foodMenu[3].category}
-                        imgSrc='/images/лапша-с-курицей.png'
+                        category={[foodMenu[3].category]}
+                        image='/images/лапша-с-курицей.png'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
                         recommendation={{ name: 'Alex Cook', avatarSrc: '/images/alex.png' }}
                         bookmarks={258}
@@ -38,8 +38,8 @@ export default function JuiciestPage() {
                     />
                     <DishCard
                         variant='horizontal'
-                        category={foodMenu[9].category}
-                        imgSrc='/images/том-ям.png'
+                        category={[foodMenu[9].category]}
+                        image='/images/том-ям.png'
                         title='Том-ям с капустой кимчи'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
                         bookmarks={124}
@@ -47,8 +47,8 @@ export default function JuiciestPage() {
                     />
                     <DishCard
                         variant='horizontal'
-                        category={foodMenu[3].category}
-                        imgSrc='/images/пряная-ветчина.png'
+                        category={[foodMenu[3].category]}
+                        image='/images/пряная-ветчина.png'
                         title='Пряная ветчина по итальянски'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
                         recommendation={{ name: 'Елена Высоцкая', avatarSrc: '/images/elena.png' }}
@@ -57,8 +57,8 @@ export default function JuiciestPage() {
                     />
                     <DishCard
                         variant='horizontal'
-                        category={foodMenu[3].category}
-                        imgSrc='/images/кнели-со-спагетти.png'
+                        category={[foodMenu[3].category]}
+                        image='/images/кнели-со-спагетти.png'
                         title='Кнели со спагетти'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
                         bookmarks={124}
@@ -66,8 +66,8 @@ export default function JuiciestPage() {
                     />
                     <DishCard
                         variant='horizontal'
-                        category={foodMenu[3].category}
-                        imgSrc='/images/картошка-тушеная.png'
+                        category={[foodMenu[3].category]}
+                        image='/images/картошка-тушеная.png'
                         title='Картошка, тушенная с болгарским перцем и фасолью в томатном соусе'
                         description='Картошка, тушенная с болгарским перцем, фасолью, морковью и луком, -  вариант сытного блюда на каждый день. Фасоль в данном случае заменяет  мясо, делая рагу сытным и питательным. Чтобы сократить время  приготовления, возьмём консервированную фасоль. Блюдо хоть и простое, но в полной мере наполнено ароматами и имеет выразительный вкус за счёт  добавления томатной пасты.'
                         bookmarks={120}
@@ -75,8 +75,8 @@ export default function JuiciestPage() {
                     />
                     <DishCard
                         variant='horizontal'
-                        category={foodMenu[7].category}
-                        imgSrc='/images/картофельные-рулетики.png'
+                        category={[foodMenu[7].category]}
+                        image='/images/картофельные-рулетики.png'
                         title='Картофельные рулетики с грибами'
                         description='Рекомендую всем приготовить постное блюдо из картофеля и грибов.  Готовится это блюдо без яиц, без мяса и без сыра, из самых простых  ингредиентов, а получается очень вкусно и сытно. Постный рецепт  картофельных рулетиков с грибами, в томатном соусе, - на обед, ужин и  даже на праздничный стол!'
                         bookmarks={85}
@@ -84,8 +84,8 @@ export default function JuiciestPage() {
                     />
                     <DishCard
                         variant='horizontal'
-                        category={foodMenu[5].category}
-                        imgSrc='/images/овощная-лазанья.png'
+                        category={[foodMenu[5].category]}
+                        image='/images/овощная-лазанья.png'
                         title='Овощная лазанья из лаваша'
                         description='Большое, сытное блюдо для ценителей блюд без мяса! Такая лазанья  готовится с овощным соусом и соусом бешамель, а вместо листов для  лазаньи используется тонкий лаваш.'
                         bookmarks={85}
@@ -93,8 +93,8 @@ export default function JuiciestPage() {
                     />
                     <DishCard
                         variant='horizontal'
-                        category={foodMenu[3].category}
-                        imgSrc='/images/тефтели-из-булгура.png'
+                        category={[foodMenu[3].category]}
+                        image='/images/тефтели-из-булгура.png'
                         title='Тефтели из булгура и чечевицы, запечённые в томатном соусе'
                         description='Тефтели из булгура и чечевицы – яркие и питательные, отлично подходят  для постного и вегетарианского меню. Тефтели получаются нежными, а также сочными и ароматными благодаря использованию томатного соуса и душистых пряностей.'
                         bookmarks={85}
@@ -132,7 +132,7 @@ export default function JuiciestPage() {
                 <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
                     <DishCard
                         variant='no-image'
-                        category={foodMenu[6].category}
+                        category={[foodMenu[6].category]}
                         title='Картошка, тушенная с болгарским перцем и фасолью в томатном соусе'
                         description='Картошка, тушенная с болгарским перцем, фасолью, морковью и луком, -  вариант сытного блюда на каждый день. Фасоль в данном случае заменяет мясо, делая рагу сытным и питательным. Чтобы сократить время  приготовления, возьмём консервированную фасоль. Блюдо хоть и простое, но в полной мере наполнено ароматами и имеет выразительный вкус за счёт  добавления томатной пасты.'
                         bookmarks={1}
@@ -148,7 +148,7 @@ export default function JuiciestPage() {
                     />
                     <DishCard
                         variant='no-image'
-                        category={foodMenu[6].category}
+                        category={[foodMenu[6].category]}
                         title='Капустные котлеты'
                         description='Капустные котлеты по этому рецепту получаются необычайно пышными и  невероятно вкусными. Мягкий вкус и лёгкая пряная нотка наверняка помогут сделать эти чудесные котлеты из капусты одним из ваших любимых овощных  блюд.'
                         bookmarks={2}
@@ -165,17 +165,17 @@ export default function JuiciestPage() {
                     <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
                         <DishCard
                             variant='compact'
-                            category={foodMenu[3].category}
+                            category={[foodMenu[3].category]}
                             title='Стейк для вегетарианцев'
                         />
                         <DishCard
                             variant='compact'
-                            category={foodMenu[3].category}
+                            category={[foodMenu[3].category]}
                             title='Котлеты из гречки и фасоли'
                         />
                         <DishCard
                             variant='compact'
-                            category={foodMenu[2].category}
+                            category={[foodMenu[2].category]}
                             title='Сырный суп с лапшой и брокколи'
                         />
                     </Stack>

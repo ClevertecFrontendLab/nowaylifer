@@ -16,8 +16,8 @@ import {
 import { foodMenu } from '~/shared/constants/food-menu';
 import { BlogCard } from '~/shared/ui/BlogCard';
 import { Button } from '~/shared/ui/Button';
-import { DishCard } from '~/shared/ui/DishCard';
 import { Link } from '~/shared/ui/Link';
+import { DishCard } from '~/shared/ui/RecipeCard';
 import { Section, SectionHeading } from '~/shared/ui/Section';
 import { SearchBar } from '~/widgets/SearchBar';
 
@@ -69,8 +69,8 @@ export default function MainPage() {
                                 variant='vertical'
                                 title='Солянка с грибами'
                                 description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                                imgSrc='/images/солянка-с-грибами.png'
-                                category={foodMenu[2].category}
+                                image='/images/солянка-с-грибами.png'
+                                category={[foodMenu[2].category]}
                                 bookmarks={1}
                                 flexShrink={0}
                             />
@@ -78,8 +78,8 @@ export default function MainPage() {
                                 variant='vertical'
                                 title='Капустные котлеты'
                                 description='Капустные котлеты по этому рецепту получаются необычайно пышными и  невероятно вкусными. Мягкий вкус и лёгкая пряная нотка наверняка помогут сделать эти чудесные котлеты из капусты одним из ваших любимых овощных  блюд.'
-                                imgSrc='/images/капустные-котлеты.png'
-                                category={foodMenu[6].category}
+                                image='/images/капустные-котлеты.png'
+                                category={[foodMenu[6].category]}
                                 bookmarks={2}
                                 likes={1}
                                 flexShrink={0}
@@ -88,8 +88,8 @@ export default function MainPage() {
                                 variant='vertical'
                                 title={<>Оладьи на кефире&nbsp;"Пышные"</>}
                                 description='Очень вкусные и нежные оладьи на кефире. Настоятельно рекомендую пышные кефирные оладьи на завтрак.'
-                                imgSrc='/images/оладьи-пышные.png'
-                                category={foodMenu[4].category}
+                                image='/images/оладьи-пышные.png'
+                                category={[foodMenu[4].category]}
                                 likes={1}
                                 flexShrink={0}
                             />
@@ -97,8 +97,8 @@ export default function MainPage() {
                                 variant='vertical'
                                 title='Салат "Здоровье"'
                                 description='Сельдерей очень полезен для здоровья, пора набираться витаминов. Не  салат, а сплошное удовольствие:) Вкусный, необычный, а главное быстрый.'
-                                imgSrc='/images/салат-здоровье.png'
-                                category={foodMenu[0].category}
+                                image='/images/салат-здоровье.png'
+                                category={[foodMenu[0].category]}
                                 flexShrink={0}
                             />
                         </Flex>
@@ -132,16 +132,16 @@ export default function MainPage() {
                     <DishCard
                         variant='horizontal'
                         title='Кнели со спагетти'
-                        category={foodMenu[6].category}
-                        imgSrc='/images/кнели-со-спагетти.png'
+                        category={[foodMenu[6].category]}
+                        image='/images/кнели-со-спагетти.png'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
                         bookmarks={85}
                         likes={152}
                     />
                     <DishCard
                         variant='horizontal'
-                        category={foodMenu[3].category}
-                        imgSrc='/images/пряная-ветчина.png'
+                        category={[foodMenu[3].category]}
+                        image='/images/пряная-ветчина.png'
                         title='Пряная ветчина по итальянски'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
                         recommendation={{ name: 'Елена Высоцкая', avatarSrc: '/images/elena.png' }}
@@ -150,8 +150,8 @@ export default function MainPage() {
                     />
                     <DishCard
                         variant='horizontal'
-                        category={foodMenu[3].category}
-                        imgSrc='/images/лапша-с-курицей.png'
+                        category={[foodMenu[3].category]}
+                        image='/images/лапша-с-курицей.png'
                         title='Лапша с курицей и шафраном'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
                         recommendation={{ name: 'Alex Cook', avatarSrc: '/images/alex.png' }}
@@ -160,8 +160,8 @@ export default function MainPage() {
                     />
                     <DishCard
                         variant='horizontal'
-                        category={foodMenu[9].category}
-                        imgSrc='/images/том-ям.png'
+                        category={[foodMenu[9].category]}
+                        image='/images/том-ям.png'
                         title='Том-ям с капустой кимчи'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
                         bookmarks={124}
@@ -270,7 +270,7 @@ export default function MainPage() {
                 <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
                     <DishCard
                         variant='no-image'
-                        category={foodMenu[6].category}
+                        category={[foodMenu[6].category]}
                         title='Картошка, тушенная с болгарским перцем и фасолью в томатном соусе'
                         description='Картошка, тушенная с болгарским перцем, фасолью, морковью и луком, -  вариант сытного блюда на каждый день. Фасоль в данном случае заменяет мясо, делая рагу сытным и питательным. Чтобы сократить время  приготовления, возьмём консервированную фасоль. Блюдо хоть и простое, но в полной мере наполнено ароматами и имеет выразительный вкус за счёт  добавления томатной пасты.'
                         bookmarks={1}
@@ -286,7 +286,7 @@ export default function MainPage() {
                     />
                     <DishCard
                         variant='no-image'
-                        category={foodMenu[6].category}
+                        category={[foodMenu[6].category]}
                         title='Капустные котлеты'
                         description='Капустные котлеты по этому рецепту получаются необычайно пышными и  невероятно вкусными. Мягкий вкус и лёгкая пряная нотка наверняка помогут сделать эти чудесные котлеты из капусты одним из ваших любимых овощных  блюд.'
                         bookmarks={2}
@@ -303,17 +303,17 @@ export default function MainPage() {
                     <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
                         <DishCard
                             variant='compact'
-                            category={foodMenu[3].category}
+                            category={[foodMenu[3].category]}
                             title='Стейк для вегетарианцев'
                         />
                         <DishCard
                             variant='compact'
-                            category={foodMenu[3].category}
+                            category={[foodMenu[3].category]}
                             title='Котлеты из гречки и фасоли'
                         />
                         <DishCard
                             variant='compact'
-                            category={foodMenu[2].category}
+                            category={[foodMenu[2].category]}
                             title='Сырный суп с лапшой и брокколи'
                         />
                     </Stack>
