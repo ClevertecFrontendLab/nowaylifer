@@ -1,51 +1,14 @@
-import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-import {
-    Box,
-    Center,
-    Flex,
-    Heading,
-    HStack,
-    IconButton,
-    IconButtonProps,
-    SimpleGrid,
-    Stack,
-    Text,
-    VStack,
-} from '@chakra-ui/react';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { Box, Center, Heading, HStack, SimpleGrid, Stack, Text, VStack } from '@chakra-ui/react';
 
 import { RecipeCard, recipeCategoryMap } from '~/entities/recipe';
+import { mockRecipes } from '~/entities/recipe/mock-recipes';
 import { BlogCard } from '~/shared/ui/BlogCard';
 import { Button } from '~/shared/ui/Button';
 import { Link } from '~/shared/ui/Link';
-import { RecipeCard } from '~/shared/ui/RecipeCard';
 import { Section, SectionHeading } from '~/shared/ui/Section';
+import { RecipeSlider } from '~/widgets/RecipeSlider';
 import { SearchBar } from '~/widgets/SearchBar';
-
-const SliderLeftControlButton = (props: Omit<IconButtonProps, 'aria-label'>) => (
-    <IconButton
-        size='lg'
-        bg='black'
-        color='lime.50'
-        zIndex={1}
-        transition='none'
-        aria-label='Slide left'
-        icon={<ArrowBackIcon boxSize={6} />}
-        {...props}
-    />
-);
-
-const SliderRightControlButton = (props: Omit<IconButtonProps, 'aria-label'>) => (
-    <IconButton
-        size='lg'
-        bg='black'
-        color='lime.50'
-        zIndex={1}
-        transition='none'
-        aria-label='Slide right'
-        icon={<ArrowForwardIcon boxSize={6} />}
-        {...props}
-    />
-);
 
 export default function MainPage() {
     return (
@@ -60,50 +23,7 @@ export default function MainPage() {
             </VStack>
             <Section>
                 <SectionHeading mb={6}>Новые рецепты</SectionHeading>
-                <Box pos='relative'>
-                    <SliderLeftControlButton hideBelow='lg' pos='absolute' left={-2} top='35%' />
-                    <SliderRightControlButton hideBelow='lg' pos='absolute' right={-2} top='35%' />
-                    <Box overflowX='hidden'>
-                        <Flex gap={{ base: 3, '2xl': 6 }}>
-                            <RecipeCard
-                                variant='vertical'
-                                title='Солянка с грибами'
-                                description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                                image='/images/солянка-с-грибами.png'
-                                category={[foodMenu[2].category]}
-                                bookmarks={1}
-                                flexShrink={0}
-                            />
-                            <RecipeCard
-                                variant='vertical'
-                                title='Капустные котлеты'
-                                description='Капустные котлеты по этому рецепту получаются необычайно пышными и  невероятно вкусными. Мягкий вкус и лёгкая пряная нотка наверняка помогут сделать эти чудесные котлеты из капусты одним из ваших любимых овощных  блюд.'
-                                image='/images/капустные-котлеты.png'
-                                category={[foodMenu[6].category]}
-                                bookmarks={2}
-                                likes={1}
-                                flexShrink={0}
-                            />
-                            <RecipeCard
-                                variant='vertical'
-                                title={<>Оладьи на кефире&nbsp;"Пышные"</>}
-                                description='Очень вкусные и нежные оладьи на кефире. Настоятельно рекомендую пышные кефирные оладьи на завтрак.'
-                                image='/images/оладьи-пышные.png'
-                                category={[foodMenu[4].category]}
-                                likes={1}
-                                flexShrink={0}
-                            />
-                            <RecipeCard
-                                variant='vertical'
-                                title='Салат "Здоровье"'
-                                description='Сельдерей очень полезен для здоровья, пора набираться витаминов. Не  салат, а сплошное удовольствие:) Вкусный, необычный, а главное быстрый.'
-                                image='/images/салат-здоровье.png'
-                                category={[foodMenu[0].category]}
-                                flexShrink={0}
-                            />
-                        </Flex>
-                    </Box>
-                </Box>
+                <RecipeSlider recipes={mockRecipes} />
             </Section>
             <Section>
                 <HStack justify='space-between' mb={6}>

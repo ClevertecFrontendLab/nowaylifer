@@ -2,6 +2,7 @@ import { Box, Container, Heading, ListItem, OrderedList, Stack } from '@chakra-u
 
 import { RecipeCard, recipeCategoryMap } from '~/entities/recipe';
 import { mockRecipes } from '~/entities/recipe/mock-recipes';
+import { RecipeSlider } from '~/widgets/RecipeSlider';
 
 import { AuthorCard } from './AuthorCard';
 import { IngridientTable } from './IngridientTable';
@@ -73,6 +74,16 @@ export default function RecipePage() {
                     friends={125}
                 />
             </Container>
+            <Box as='section'>
+                <Heading
+                    fontWeight='medium'
+                    fontSize={{ base: '2xl', lg: '4xl', '2xl': '5xl' }}
+                    mb={{ base: 3, lg: 6 }}
+                >
+                    Новые рецепты
+                </Heading>
+                <RecipeSlider recipes={mockRecipes} />
+            </Box>
         </Box>
     );
 }
