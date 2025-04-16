@@ -14,9 +14,8 @@ import {
     VStack,
 } from '@chakra-ui/react';
 
-import { foodMenu } from '~/shared/constants/food-menu';
+import { RecipeCard, recipeCategoryMap } from '~/entities/recipe';
 import { Button } from '~/shared/ui/Button';
-import { RecipeCard } from '~/shared/ui/RecipeCard';
 import { Section, SectionHeading } from '~/shared/ui/Section';
 import { SearchBar } from '~/widgets/SearchBar';
 
@@ -46,16 +45,18 @@ export default function VeganPage() {
                 <Tabs defaultIndex={2}>
                     <Box pos='relative' overflowX='auto' sx={{ scrollbarWidth: 'none' }}>
                         <TabList border='none'>
-                            {foodMenu[6].subcategories.map((entry) => (
-                                <Tab
-                                    key={entry.label}
-                                    marginBottom={0}
-                                    borderBottom='2px solid'
-                                    borderColor='chakra-border-color'
-                                >
-                                    {entry.label}
-                                </Tab>
-                            ))}
+                            {Object.values(recipeCategoryMap['vegan'].subcategories).map(
+                                (entry) => (
+                                    <Tab
+                                        key={entry.label}
+                                        marginBottom={0}
+                                        borderBottom='2px solid'
+                                        borderColor='chakra-border-color'
+                                    >
+                                        {entry.label}
+                                    </Tab>
+                                ),
+                            )}
                         </TabList>
                         <TabIndicator />
                     </Box>
@@ -74,7 +75,7 @@ export default function VeganPage() {
                                 <RecipeCard
                                     variant='horizontal'
                                     title='Картошка, тушенная с болгарским перцем и фасолью в томатном соусе'
-                                    category={[foodMenu[9].category]}
+                                    category={[recipeCategoryMap['child-dish']]}
                                     image='/images/картошка-тушеная.png'
                                     description='Картошка, тушенная с болгарским перцем, фасолью, морковью и луком, -  вариант сытного блюда на каждый день. Фасоль в данном случае заменяет  мясо, делая рагу сытным и питательным. Чтобы сократить время  приготовления, возьмём консервированную фасоль. Блюдо хоть и простое, но в полной мере наполнено ароматами и имеет выразительный вкус за счёт  добавления томатной пасты.'
                                     bookmarks={85}
@@ -82,7 +83,7 @@ export default function VeganPage() {
                                 />
                                 <RecipeCard
                                     variant='horizontal'
-                                    category={[foodMenu[7].category]}
+                                    category={[recipeCategoryMap['desserts-pastry']]}
                                     image='/images/картофельные-рулетики.png'
                                     title='Картофельные рулетики с грибами'
                                     description='Рекомендую всем приготовить постное блюдо из картофеля и грибов.  Готовится это блюдо без яиц, без мяса и без сыра, из самых простых  ингредиентов, а получается очень вкусно и сытно. Постный рецепт  картофельных рулетиков с грибами, в томатном соусе, - на обед, ужин и  даже на праздничный стол!'
@@ -91,7 +92,7 @@ export default function VeganPage() {
                                 />
                                 <RecipeCard
                                     variant='horizontal'
-                                    category={[foodMenu[9].category]}
+                                    category={[recipeCategoryMap['sauces']]}
                                     image='/images/том-ям.png'
                                     title='Том-ям с капустой кимчи'
                                     description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
@@ -100,7 +101,7 @@ export default function VeganPage() {
                                 />
                                 <RecipeCard
                                     variant='horizontal'
-                                    category={[foodMenu[5].category]}
+                                    category={[recipeCategoryMap['ready-made']]}
                                     image='/images/овощная-лазанья.png'
                                     title='Овощная лазанья из лаваша'
                                     description='Большое, сытное блюдо для ценителей блюд без мяса! Такая лазанья  готовится с овощным соусом и соусом бешамель, а вместо листов для  лазаньи используется тонкий лаваш.'
@@ -109,7 +110,7 @@ export default function VeganPage() {
                                 />
                                 <RecipeCard
                                     variant='horizontal'
-                                    category={[foodMenu[3].category]}
+                                    category={[recipeCategoryMap['snacks']]}
                                     image='/images/тефтели-из-булгура.png'
                                     title='Тефтели из булгура и чечевицы, запечённые в томатном соусе'
                                     description='Тефтели из булгура и чечевицы – яркие и питательные, отлично подходят  для постного и вегетарианского меню. Тефтели получаются нежными, а также сочными и ароматными благодаря использованию томатного соуса и душистых пряностей.'
@@ -118,7 +119,7 @@ export default function VeganPage() {
                                 />
                                 <RecipeCard
                                     variant='horizontal'
-                                    category={[foodMenu[3].category]}
+                                    category={[recipeCategoryMap['desserts-pastry']]}
                                     image='/images/тефтели-из-булгура.png'
                                     title='Тефтели из булгура и чечевицы, запечённые в томатном соусе'
                                     description='Тефтели из булгура и чечевицы – яркие и питательные, отлично подходят  для постного и вегетарианского меню. Тефтели получаются нежными, а также сочными и ароматными благодаря использованию томатного соуса и душистых пряностей.'
@@ -127,7 +128,7 @@ export default function VeganPage() {
                                 />
                                 <RecipeCard
                                     variant='horizontal'
-                                    category={[foodMenu[9].category]}
+                                    category={[recipeCategoryMap['national']]}
                                     image='/images/чесночная-картошка.png'
                                     title='Чесночная картошка'
                                     description='Такая картошечка украсит любой семейный обед! Все будут в полном  восторге, очень вкусно! Аромат чеснока, хрустящая корочка на картошечке - просто объедение! Отличная идея для обеда или ужина, готовится просто!'
@@ -136,7 +137,7 @@ export default function VeganPage() {
                                 />
                                 <RecipeCard
                                     variant='horizontal'
-                                    category={[foodMenu[9].category]}
+                                    category={[recipeCategoryMap['ready-made']]}
                                     image='/images/пури.png'
                                     title='Пури'
                                     description='Пури - это индийские жареные лепешки, которые готовятся из пресного  теста. Рецепт лепешек пури требует самых доступных ингредиентов, и  времени на приготовление хрустящих лепешек уйдет мало.'
@@ -183,7 +184,7 @@ export default function VeganPage() {
                 <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
                     <RecipeCard
                         variant='no-image'
-                        category={[foodMenu[7].category]}
+                        category={[recipeCategoryMap['beverages']]}
                         title='Бананово-молочное желе'
                         description='Молочное желе – это просто, вкусно и полезно, ведь для его приготовления в качестве основы используется молоко.'
                         bookmarks={1}
@@ -199,7 +200,7 @@ export default function VeganPage() {
                     />
                     <RecipeCard
                         variant='no-image'
-                        category={[foodMenu[7].category]}
+                        category={[recipeCategoryMap['first-dish']]}
                         title='Нежный сливочно-сырный крем для кексов'
                         description='Сливочно-сырным кремом можно украсить кексы, либо другую выпечку, а также этим кремом можно наполнить заварные пирожные.'
                         bookmarks={2}
@@ -216,17 +217,17 @@ export default function VeganPage() {
                     <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
                         <RecipeCard
                             variant='compact'
-                            category={[foodMenu[7].category]}
+                            category={[recipeCategoryMap['heal-dish']]}
                             title='Домашние сырные палочки'
                         />
                         <RecipeCard
                             variant='compact'
-                            category={[foodMenu[9].category]}
+                            category={[recipeCategoryMap['national']]}
                             title='Панкейки'
                         />
                         <RecipeCard
                             variant='compact'
-                            category={[foodMenu[6].category]}
+                            category={[recipeCategoryMap['sauces']]}
                             title='Воздушное банановое печенье на сковороде'
                         />
                     </Stack>

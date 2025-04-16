@@ -6,7 +6,7 @@ import {
     ThemeOverride,
 } from '@chakra-ui/react';
 
-import { recipeCardTheme } from '~/shared/ui/RecipeCard/RecipeCard.theme';
+import { recipeCardTheme } from '~/entities/recipe';
 
 const themeOverride = {
     components: {

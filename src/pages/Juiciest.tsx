@@ -1,8 +1,7 @@
 import { Box, Center, Heading, SimpleGrid, Stack, Text, VStack } from '@chakra-ui/react';
 
-import { foodMenu } from '~/shared/constants/food-menu';
+import { RecipeCard, recipeCategoryMap } from '~/entities/recipe';
 import { Button } from '~/shared/ui/Button';
-import { RecipeCard } from '~/shared/ui/RecipeCard';
 import { Section, SectionHeading } from '~/shared/ui/Section';
 import { SearchBar } from '~/widgets/SearchBar';
 
@@ -29,7 +28,7 @@ export default function JuiciestPage() {
                     <RecipeCard
                         variant='horizontal'
                         title='Лапша с курицей и шафраном'
-                        category={[foodMenu[3].category]}
+                        category={[recipeCategoryMap['beverages']]}
                         image='/images/лапша-с-курицей.png'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
                         recommendation={{ name: 'Alex Cook', avatarSrc: '/images/alex.png' }}
@@ -38,7 +37,7 @@ export default function JuiciestPage() {
                     />
                     <RecipeCard
                         variant='horizontal'
-                        category={[foodMenu[9].category]}
+                        category={[recipeCategoryMap['salads']]}
                         image='/images/том-ям.png'
                         title='Том-ям с капустой кимчи'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
@@ -47,7 +46,7 @@ export default function JuiciestPage() {
                     />
                     <RecipeCard
                         variant='horizontal'
-                        category={[foodMenu[3].category]}
+                        category={[recipeCategoryMap['sauces']]}
                         image='/images/пряная-ветчина.png'
                         title='Пряная ветчина по итальянски'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
@@ -57,7 +56,7 @@ export default function JuiciestPage() {
                     />
                     <RecipeCard
                         variant='horizontal'
-                        category={[foodMenu[3].category]}
+                        category={[recipeCategoryMap['national']]}
                         image='/images/кнели-со-спагетти.png'
                         title='Кнели со спагетти'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
@@ -66,7 +65,7 @@ export default function JuiciestPage() {
                     />
                     <RecipeCard
                         variant='horizontal'
-                        category={[foodMenu[3].category]}
+                        category={[recipeCategoryMap['second-dish']]}
                         image='/images/картошка-тушеная.png'
                         title='Картошка, тушенная с болгарским перцем и фасолью в томатном соусе'
                         description='Картошка, тушенная с болгарским перцем, фасолью, морковью и луком, -  вариант сытного блюда на каждый день. Фасоль в данном случае заменяет  мясо, делая рагу сытным и питательным. Чтобы сократить время  приготовления, возьмём консервированную фасоль. Блюдо хоть и простое, но в полной мере наполнено ароматами и имеет выразительный вкус за счёт  добавления томатной пасты.'
@@ -75,7 +74,7 @@ export default function JuiciestPage() {
                     />
                     <RecipeCard
                         variant='horizontal'
-                        category={[foodMenu[7].category]}
+                        category={[recipeCategoryMap['heal-dish']]}
                         image='/images/картофельные-рулетики.png'
                         title='Картофельные рулетики с грибами'
                         description='Рекомендую всем приготовить постное блюдо из картофеля и грибов.  Готовится это блюдо без яиц, без мяса и без сыра, из самых простых  ингредиентов, а получается очень вкусно и сытно. Постный рецепт  картофельных рулетиков с грибами, в томатном соусе, - на обед, ужин и  даже на праздничный стол!'
@@ -84,7 +83,7 @@ export default function JuiciestPage() {
                     />
                     <RecipeCard
                         variant='horizontal'
-                        category={[foodMenu[5].category]}
+                        category={[recipeCategoryMap['national']]}
                         image='/images/овощная-лазанья.png'
                         title='Овощная лазанья из лаваша'
                         description='Большое, сытное блюдо для ценителей блюд без мяса! Такая лазанья  готовится с овощным соусом и соусом бешамель, а вместо листов для  лазаньи используется тонкий лаваш.'
@@ -93,7 +92,7 @@ export default function JuiciestPage() {
                     />
                     <RecipeCard
                         variant='horizontal'
-                        category={[foodMenu[3].category]}
+                        category={[recipeCategoryMap['sauces']]}
                         image='/images/тефтели-из-булгура.png'
                         title='Тефтели из булгура и чечевицы, запечённые в томатном соусе'
                         description='Тефтели из булгура и чечевицы – яркие и питательные, отлично подходят  для постного и вегетарианского меню. Тефтели получаются нежными, а также сочными и ароматными благодаря использованию томатного соуса и душистых пряностей.'
@@ -132,7 +131,7 @@ export default function JuiciestPage() {
                 <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
                     <RecipeCard
                         variant='no-image'
-                        category={[foodMenu[6].category]}
+                        category={[recipeCategoryMap['beverages']]}
                         title='Картошка, тушенная с болгарским перцем и фасолью в томатном соусе'
                         description='Картошка, тушенная с болгарским перцем, фасолью, морковью и луком, -  вариант сытного блюда на каждый день. Фасоль в данном случае заменяет мясо, делая рагу сытным и питательным. Чтобы сократить время  приготовления, возьмём консервированную фасоль. Блюдо хоть и простое, но в полной мере наполнено ароматами и имеет выразительный вкус за счёт  добавления томатной пасты.'
                         bookmarks={1}
@@ -148,7 +147,7 @@ export default function JuiciestPage() {
                     />
                     <RecipeCard
                         variant='no-image'
-                        category={[foodMenu[6].category]}
+                        category={[recipeCategoryMap['national']]}
                         title='Капустные котлеты'
                         description='Капустные котлеты по этому рецепту получаются необычайно пышными и  невероятно вкусными. Мягкий вкус и лёгкая пряная нотка наверняка помогут сделать эти чудесные котлеты из капусты одним из ваших любимых овощных  блюд.'
                         bookmarks={2}
@@ -165,17 +164,17 @@ export default function JuiciestPage() {
                     <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
                         <RecipeCard
                             variant='compact'
-                            category={[foodMenu[3].category]}
+                            category={[recipeCategoryMap['heal-dish']]}
                             title='Стейк для вегетарианцев'
                         />
                         <RecipeCard
                             variant='compact'
-                            category={[foodMenu[3].category]}
+                            category={[recipeCategoryMap['salads']]}
                             title='Котлеты из гречки и фасоли'
                         />
                         <RecipeCard
                             variant='compact'
-                            category={[foodMenu[2].category]}
+                            category={[recipeCategoryMap['sauces']]}
                             title='Сырный суп с лапшой и брокколи'
                         />
                     </Stack>

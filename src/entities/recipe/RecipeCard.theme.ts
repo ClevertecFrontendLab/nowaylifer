@@ -43,6 +43,7 @@ export const recipeCardTheme = defineMultiStyleConfig({
         },
         stats: {
             gap: 2,
+            fontSize: 'xs',
         },
         badge: {
             h: 6,

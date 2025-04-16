@@ -12,22 +12,23 @@ import {
     ListItem,
     UnorderedList,
 } from '@chakra-ui/react';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 
 import { Link } from '~/shared/ui/Link';
 
-import { foodMenu } from '../../shared/constants/food-menu';
+import { recipeCategoryMap } from '../../entities/recipe/recipe-category';
 
 export const FoodMenu = () => {
     const params = useParams<'category' | 'subcategory'>();
-    const navigate = useNavigate();
     return (
         <Accordion
             allowToggle
-            defaultIndex={foodMenu.findIndex((v) => v.category.slug === params.category)}
+            defaultIndex={Object.keys(recipeCategoryMap).findIndex(
+                (key) => key === params.category,
+            )}
         >
-            {foodMenu.map((item, sectionIdx) => {
-                const categoryActive = item.category.slug === params.category;
+            {Object.entries(recipeCategoryMap).map(([slug, category], sectionIdx) => {
+                const categoryActive = slug === params.category;
                 return (
                     <AccordionItem key={sectionIdx} border='none'>
                         <AccordionButton
@@ -39,68 +40,64 @@ export const FoodMenu = () => {
                             bg={categoryActive ? 'lime.100' : undefined}
                             py={3}
                             px={2}
-                            onClick={
-                                item.category.slug === 'vegan-cuisine'
-                                    ? () => navigate('/vegan-cuisine/second-courses')
-                                    : undefined
-                            }
-                            data-test-id={
-                                item.category.slug === 'vegan-cuisine' ? 'vegan-cuisine' : undefined
-                            }
                         >
-                            <Image src={item.category.iconSrc} boxSize={6} mr={3} />
+                            <Image src={category.iconSrc} boxSize={6} mr={3} />
                             <Box fontWeight={categoryActive ? 'bold' : 'medium'}>
-                                {item.category.label}
+                                {category.label}
                             </Box>
                             <AccordionIcon as={ChevronDownIcon} w={4} h={4} ml='auto' />
                         </AccordionButton>
                         <AccordionPanel py={0}>
                             <UnorderedList styleType='none'>
-                                {item.subcategories.map((entry, entryIdx) => {
-                                    const entryActive =
-                                        categoryActive && entry.slug === params.subcategory;
-                                    return (
-                                        <ListItem key={entryIdx}>
-                                            <Link
-                                                to='/vegan-cuisine/second-courses'
-                                                _hover={{
-                                                    ...(entryActive
-                                                        ? undefined
-                                                        : { bg: 'lime.50' }),
-                                                }}
-                                                _focusVisible={{
-                                                    boxShadow: 'none',
-                                                    bg: entryActive ? undefined : 'lime.50',
-                                                }}
-                                                variant='unstyled'
-                                                textAlign='left'
-                                                display='block'
-                                                pos='relative'
-                                                role='group'
-                                                w='full'
-                                                py={1.5}
-                                                px={3}
-                                            >
-                                                <ListIcon
-                                                    active={entryActive}
-                                                    _groupFocus={
-                                                        entryActive
+                                {Object.entries(category.subcategories).map(
+                                    ([slug, subcategory], entryIdx) => {
+                                        const entryActive =
+                                            categoryActive && slug === params.subcategory;
+                                        return (
+                                            <ListItem key={entryIdx}>
+                                                <Link
+                                                    to='/vegan-cuisine/second-courses'
+                                                    _hover={{
+                                                        ...(entryActive
                                                             ? undefined
-                                                            : { visibility: 'hidden' }
-                                                    }
-                                                    _groupHover={
-                                                        entryActive
-                                                            ? undefined
-                                                            : { visibility: 'hidden' }
-                                                    }
-                                                />
-                                                <Box fontWeight={entryActive ? 'bold' : 'medium'}>
-                                                    {entry.label}
-                                                </Box>
-                                            </Link>
-                                        </ListItem>
-                                    );
-                                })}
+                                                            : { bg: 'lime.50' }),
+                                                    }}
+                                                    _focusVisible={{
+                                                        boxShadow: 'none',
+                                                        bg: entryActive ? undefined : 'lime.50',
+                                                    }}
+                                                    variant='unstyled'
+                                                    textAlign='left'
+                                                    display='block'
+                                                    pos='relative'
+                                                    role='group'
+                                                    w='full'
+                                                    py={1.5}
+                                                    px={3}
+                                                >
+                                                    <ListIcon
+                                                        active={entryActive}
+                                                        _groupFocus={
+                                                            entryActive
+                                                                ? undefined
+                                                                : { visibility: 'hidden' }
+                                                        }
+                                                        _groupHover={
+                                                            entryActive
+                                                                ? undefined
+                                                                : { visibility: 'hidden' }
+                                                        }
+                                                    />
+                                                    <Box
+                                                        fontWeight={entryActive ? 'bold' : 'medium'}
+                                                    >
+                                                        {subcategory.label}
+                                                    </Box>
+                                                </Link>
+                                            </ListItem>
+                                        );
+                                    },
+                                )}
                             </UnorderedList>
                         </AccordionPanel>
                     </AccordionItem>

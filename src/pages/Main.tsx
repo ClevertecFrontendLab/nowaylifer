@@ -13,7 +13,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 
-import { foodMenu } from '~/shared/constants/food-menu';
+import { RecipeCard, recipeCategoryMap } from '~/entities/recipe';
 import { BlogCard } from '~/shared/ui/BlogCard';
 import { Button } from '~/shared/ui/Button';
 import { Link } from '~/shared/ui/Link';
@@ -132,7 +132,7 @@ export default function MainPage() {
                     <RecipeCard
                         variant='horizontal'
                         title='Кнели со спагетти'
-                        category={[foodMenu[6].category]}
+                        category={[recipeCategoryMap['beverages']]}
                         image='/images/кнели-со-спагетти.png'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
                         bookmarks={85}
@@ -140,7 +140,7 @@ export default function MainPage() {
                     />
                     <RecipeCard
                         variant='horizontal'
-                        category={[foodMenu[3].category]}
+                        category={[recipeCategoryMap['desserts-pastry']]}
                         image='/images/пряная-ветчина.png'
                         title='Пряная ветчина по итальянски'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
@@ -150,7 +150,7 @@ export default function MainPage() {
                     />
                     <RecipeCard
                         variant='horizontal'
-                        category={[foodMenu[3].category]}
+                        category={[recipeCategoryMap['first-dish']]}
                         image='/images/лапша-с-курицей.png'
                         title='Лапша с курицей и шафраном'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
@@ -160,7 +160,7 @@ export default function MainPage() {
                     />
                     <RecipeCard
                         variant='horizontal'
-                        category={[foodMenu[9].category]}
+                        category={[recipeCategoryMap['first-dish']]}
                         image='/images/том-ям.png'
                         title='Том-ям с капустой кимчи'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
@@ -270,7 +270,7 @@ export default function MainPage() {
                 <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
                     <RecipeCard
                         variant='no-image'
-                        category={[foodMenu[6].category]}
+                        category={[recipeCategoryMap['beverages']]}
                         title='Картошка, тушенная с болгарским перцем и фасолью в томатном соусе'
                         description='Картошка, тушенная с болгарским перцем, фасолью, морковью и луком, -  вариант сытного блюда на каждый день. Фасоль в данном случае заменяет мясо, делая рагу сытным и питательным. Чтобы сократить время  приготовления, возьмём консервированную фасоль. Блюдо хоть и простое, но в полной мере наполнено ароматами и имеет выразительный вкус за счёт  добавления томатной пасты.'
                         bookmarks={1}
@@ -286,7 +286,7 @@ export default function MainPage() {
                     />
                     <RecipeCard
                         variant='no-image'
-                        category={[foodMenu[6].category]}
+                        category={[recipeCategoryMap['child-dish']]}
                         title='Капустные котлеты'
                         description='Капустные котлеты по этому рецепту получаются необычайно пышными и  невероятно вкусными. Мягкий вкус и лёгкая пряная нотка наверняка помогут сделать эти чудесные котлеты из капусты одним из ваших любимых овощных  блюд.'
                         bookmarks={2}
@@ -303,17 +303,17 @@ export default function MainPage() {
                     <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
                         <RecipeCard
                             variant='compact'
-                            category={[foodMenu[3].category]}
+                            category={[recipeCategoryMap['beverages']]}
                             title='Стейк для вегетарианцев'
                         />
                         <RecipeCard
                             variant='compact'
-                            category={[foodMenu[3].category]}
+                            category={[recipeCategoryMap['child-dish']]}
                             title='Котлеты из гречки и фасоли'
                         />
                         <RecipeCard
                             variant='compact'
-                            category={[foodMenu[2].category]}
+                            category={[recipeCategoryMap['child-dish']]}
                             title='Сырный суп с лапшой и брокколи'
                         />
                     </Stack>

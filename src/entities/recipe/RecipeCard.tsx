@@ -23,11 +23,11 @@ import {
     WrapItem,
 } from '@chakra-ui/react';
 
-import { BookmarkIcon } from '../BookmarkIcon';
-import { Button } from '../Button';
-import { ClockIcon } from '../ClockIcon';
-import { EmojiHeartEyesIcon } from '../EmojiHeartEyesIcon';
-import { BookmarksStat, LikesStat } from '../Stats';
+import { BookmarkIcon } from '../../shared/ui/BookmarkIcon';
+import { Button } from '../../shared/ui/Button';
+import { ClockIcon } from '../../shared/ui/ClockIcon';
+import { EmojiHeartEyesIcon } from '../../shared/ui/EmojiHeartEyesIcon';
+import { BookmarksStat, LikesStat } from '../../shared/ui/Stats';
 import { RecipeCardStyles, RecipeCardVariant, themeKey } from './RecipeCard.theme';
 
 const [StylesProvider, useStyles] = createStylesContext(themeKey);

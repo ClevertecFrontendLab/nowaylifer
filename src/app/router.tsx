@@ -1,22 +1,14 @@
 import { createBrowserRouter } from 'react-router';
 
+import { recipeCategoryMap } from '~/entities/recipe';
+import { mockRecipes } from '~/entities/recipe/mock-recipes';
 import JuiciestPage from '~/pages/Juiciest';
 import MainPage from '~/pages/Main';
 import RecipePage from '~/pages/Recipe/Recipe';
 import VeganPage from '~/pages/Vegan';
-import { foodMenu } from '~/shared/constants/food-menu';
-import { recipies } from '~/shared/constants/recipes';
 import { RouteHandle } from '~/shared/use-breadcrumbs';
 
 import RootLayout from './RootLayout';
-
-const subcategorySlugToBreadcrumb: Record<string, string> = {
-    'second-dish': foodMenu[6].subcategories[2].label,
-};
-
-const categorySlugToBreadcrumb: Record<string, string> = {
-    vegan: foodMenu[6].category.label,
-};
 
 export const router = createBrowserRouter([
     {
@@ -28,7 +20,7 @@ export const router = createBrowserRouter([
             {
                 path: ':category',
                 handle: {
-                    breadcrumb: (match) => categorySlugToBreadcrumb[match.params.category!],
+                    breadcrumb: (match) => recipeCategoryMap[match.params.category!].label,
                 } satisfies RouteHandle,
                 children: [
                     {
@@ -36,7 +28,9 @@ export const router = createBrowserRouter([
                         Component: VeganPage,
                         handle: {
                             breadcrumb: (match) =>
-                                subcategorySlugToBreadcrumb[match.params.subcategory!],
+                                recipeCategoryMap[match.params.category!].subcategories[
+                                    match.params.subcategory!
+                                ].label,
                         } satisfies RouteHandle,
                     },
                     {
@@ -48,9 +42,10 @@ export const router = createBrowserRouter([
                                 return [
                                     {
                                         href: `/${category}/${subcategory}`,
-                                        label: subcategorySlugToBreadcrumb[subcategory!],
+                                        label: recipeCategoryMap[match.params.category!]
+                                            .subcategories[match.params.subcategory!].label,
                                     },
-                                    recipies[Number(id)].title,
+                                    mockRecipes[Number(id)].title,
                                 ];
                             },
                         } satisfies RouteHandle,
