@@ -40,11 +40,14 @@ export const AppHeader = () => {
                 hideBelow='lg'
                 separator={<ChevronRightIcon color='gray.800' w='22px' h={6} />}
             >
-                {breadcrumbs.map((breadcrumb) => (
-                    <BreadcrumbItem key={breadcrumb.pathname} isCurrentPage={breadcrumb.active}>
+                {breadcrumbs.map((breadcrumb, i) => (
+                    <BreadcrumbItem
+                        key={breadcrumb.href}
+                        isCurrentPage={i === breadcrumbs.length - 1}
+                    >
                         <BreadcrumbLink
                             as={ReactRouterLink}
-                            to={breadcrumb.pathname}
+                            to={breadcrumb.href}
                             color='blackAlpha.700'
                             _activeLink={{ color: 'black' }}
                         >

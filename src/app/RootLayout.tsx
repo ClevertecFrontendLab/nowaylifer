@@ -36,8 +36,9 @@ export default function RootLayout() {
             <GridItem
                 area='main'
                 minW={0}
-                maxW={{ base: 'full', lg: '920px', '2xl': '1408px' }}
-                marginInline={{ base: 'auto', xl: '0' }}
+                maxW={{ base: 'full', lg: '928px', '2xl': '1408px' }}
+                mx={{ base: 'auto', xl: '0' }}
+                px={{ base: 4, md: 5, lg: 6 }}
             >
                 <Outlet />
             </GridItem>

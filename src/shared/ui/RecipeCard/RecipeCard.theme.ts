@@ -14,6 +14,7 @@ export const themeKey = 'RecipeCard';
 const { defineMultiStyleConfig } = createMultiStyleConfigHelpers([
     'root',
     'body',
+    'image',
     'imageContainer',
     'title',
     'description',
@@ -29,12 +30,6 @@ export const recipeCardTheme = defineMultiStyleConfig({
     baseStyle: {
         root: {
             pos: 'relative',
-            display: 'flex',
-            overflow: 'hidden',
-            boxShadow: 'none',
-            borderWidth: '1px',
-            borderRadius: 'lg',
-            borderColor: 'blackAlpha.200',
             transitionProperty: 'box-shadow',
             transitionDuration: 'normal',
             _hover: {
@@ -51,9 +46,8 @@ export const recipeCardTheme = defineMultiStyleConfig({
         },
         badge: {
             h: 6,
-            px: { base: 1, lg: 2 },
-            gap: { base: '2px', lg: 2 },
-            color: 'black',
+            px: 2,
+            gap: 2,
             variant: 'solid',
             fontSize: 'sm',
             bg: 'lime.150',
@@ -65,14 +59,16 @@ export const recipeCardTheme = defineMultiStyleConfig({
             borderRadius: 'base',
             flexShrink: 0,
         },
+        category: {
+            gap: { base: '2px', lg: 2 },
+            px: { base: 1, lg: 2 },
+        },
         title: {
             fontWeight: 'medium',
             fontSize: { base: 'md', lg: 'lg', '2xl': 'xl' },
-
             mb: 2,
         },
         description: {
-            hideBelow: 'lg',
             fontSize: 'sm',
             noOfLines: 3,
         },
@@ -107,6 +103,9 @@ export const recipeCardTheme = defineMultiStyleConfig({
                 noOfLines: { base: 2, lg: 1 },
                 isTruncated: { lg: true },
             },
+            description: {
+                hideBelow: 'lg',
+            },
         },
         horizontal: {
             root: {
@@ -130,6 +129,9 @@ export const recipeCardTheme = defineMultiStyleConfig({
                 noOfLines: { base: 2, lg: 1 },
                 isTruncated: { lg: true },
                 mt: { base: 0, lg: 6 },
+            },
+            description: {
+                hideBelow: 'lg',
             },
             category: {
                 bg: 'lime.50',
@@ -162,11 +164,54 @@ export const recipeCardTheme = defineMultiStyleConfig({
             category: {
                 bg: 'lime.50',
             },
-            description: {
-                hideBelow: {},
-            },
             title: {
                 isTruncated: true,
+            },
+        },
+        detailed: {
+            root: {
+                flexDir: { base: 'column', md: 'row' },
+                border: 'none',
+                minH: { base: 'auto', md: '224px', lg: '410px' },
+                h: { base: 'auto', lg: 0 },
+                _hover: {
+                    boxShadow: 'none',
+                },
+            },
+            body: {
+                pb: 0,
+                px: 0,
+                pt: { base: 4, md: 0 },
+                pl: { base: 0, md: 4, lg: 6 },
+                minW: 'auto',
+            },
+            title: {
+                mt: 8,
+                mb: { base: 4, lg: 6 },
+                fontWeight: 700,
+                fontSize: () => ({ base: '2xl', lg: '5xl' }),
+            },
+            description: {
+                mb: 6,
+                noOfLines: {},
+            },
+            stats: {
+                fontSize: { base: 'xs', '2xl': 'sm' },
+                alignSelf: 'start',
+            },
+            category: {
+                bg: 'lime.50',
+                gap: 2,
+                px: 2,
+            },
+            imageContainer: {
+                maxW: { base: 'full', md: '232px', lg: '353px', '2xl': '553px' },
+                h: { base: '224px', md: 'auto' },
+                flexShrink: 1,
+            },
+            image: {
+                w: 'full',
+                borderRadius: 'lg',
             },
         },
     },

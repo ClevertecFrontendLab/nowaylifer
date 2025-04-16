@@ -1,4 +1,4 @@
-import { tabsAnatomy } from '@chakra-ui/anatomy';
+import { cardAnatomy, tabsAnatomy } from '@chakra-ui/anatomy';
 import {
     createMultiStyleConfigHelpers,
     extendTheme,
@@ -51,6 +51,25 @@ const themeOverride = {
                 },
             },
         },
+        Badge: {
+            baseStyle: {
+                color: 'black',
+                textTransform: 'none',
+                fontWeight: 'normal',
+                fontSize: 'sm',
+            },
+        },
+        Card: createMultiStyleConfigHelpers(cardAnatomy.keys).defineMultiStyleConfig({
+            baseStyle: {
+                container: {
+                    boxShadow: 'none',
+                    borderColor: 'chakra-border-color',
+                    borderWidth: '1px',
+                    borderRadius: 'lg',
+                    overflow: 'hidden',
+                },
+            },
+        }),
     },
     breakpoints: {
         '1.5xl': '90em',
@@ -72,6 +91,9 @@ const themeOverride = {
             600: '#2DB100',
             800: '#134B00',
         },
+    },
+    lineHeights: {
+        short: 1.33,
     },
     fonts: {
         body: 'Inter Variable, sans-serif',

@@ -2,18 +2,20 @@ import { createBrowserRouter } from 'react-router';
 
 import JuiciestPage from '~/pages/Juiciest';
 import MainPage from '~/pages/Main';
+import RecipePage from '~/pages/Recipe/Recipe';
 import VeganPage from '~/pages/Vegan';
 import { foodMenu } from '~/shared/constants/food-menu';
+import { recipies } from '~/shared/constants/recipes';
 import { RouteHandle } from '~/shared/use-breadcrumbs';
 
 import RootLayout from './RootLayout';
 
 const subcategorySlugToBreadcrumb: Record<string, string> = {
-    'second-courses': foodMenu[6].subcategories[2].label,
+    'second-dish': foodMenu[6].subcategories[2].label,
 };
 
 const categorySlugToBreadcrumb: Record<string, string> = {
-    'vegan-cuisine': foodMenu[6].category.label,
+    vegan: foodMenu[6].category.label,
 };
 
 export const router = createBrowserRouter([
@@ -26,8 +28,7 @@ export const router = createBrowserRouter([
             {
                 path: ':category',
                 handle: {
-                    breadcrumb: (match) =>
-                        match.params.category && categorySlugToBreadcrumb[match.params.category],
+                    breadcrumb: (match) => categorySlugToBreadcrumb[match.params.category!],
                 } satisfies RouteHandle,
                 children: [
                     {
@@ -35,8 +36,23 @@ export const router = createBrowserRouter([
                         Component: VeganPage,
                         handle: {
                             breadcrumb: (match) =>
-                                match.params.subcategory &&
-                                subcategorySlugToBreadcrumb[match.params.subcategory],
+                                subcategorySlugToBreadcrumb[match.params.subcategory!],
+                        } satisfies RouteHandle,
+                    },
+                    {
+                        path: ':subcategory/:id',
+                        Component: RecipePage,
+                        handle: {
+                            breadcrumb: (match) => {
+                                const { category, subcategory, id } = match.params;
+                                return [
+                                    {
+                                        href: `/${category}/${subcategory}`,
+                                        label: subcategorySlugToBreadcrumb[subcategory!],
+                                    },
+                                    recipies[Number(id)].title,
+                                ];
+                            },
                         } satisfies RouteHandle,
                     },
                 ],
