@@ -2,11 +2,11 @@ import { createBrowserRouter } from 'react-router';
 
 import { recipeCategoryMap } from '~/entities/recipe';
 import { mockRecipes } from '~/entities/recipe/mock-recipes';
+import { RouteHandle } from '~/features/breadcrumbs';
 import JuiciestPage from '~/pages/Juiciest';
 import MainPage from '~/pages/Main';
 import RecipePage from '~/pages/Recipe/Recipe';
 import VeganPage from '~/pages/Vegan';
-import { RouteHandle } from '~/shared/use-breadcrumbs';
 
 import RootLayout from './RootLayout';
 

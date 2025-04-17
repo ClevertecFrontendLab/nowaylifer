@@ -1,6 +1,6 @@
 import { UIMatch, useMatches } from 'react-router';
 
-type BreadcrumbData = { href: string; label: string };
+import { BreadcrumbData, RouteHandle } from './types';
 
 export const useBreadcrumbs = (): BreadcrumbData[] => {
     const matches = useMatches() as UIMatch<unknown, RouteHandle | undefined>[];
@@ -13,13 +13,3 @@ export const useBreadcrumbs = (): BreadcrumbData[] => {
             return arr.map((v) => (typeof v === 'string' ? { label: v, href: m.pathname } : v));
         });
 };
-
-export interface RouteHandle {
-    breadcrumb?:
-        | string
-        | BreadcrumbData
-        | (string | BreadcrumbData)[]
-        | ((
-              match: UIMatch<unknown, RouteHandle | undefined>,
-          ) => string | BreadcrumbData | (string | BreadcrumbData)[]);
-}

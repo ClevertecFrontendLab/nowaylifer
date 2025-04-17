@@ -1,0 +1,11 @@
+.header {
+    background-color: var(--chakra-colors-lime-50);
+}
+
+.header[data-menu-open] {
+    background-color: white;
+}
+
+.header[data-menu-open] .stats {
+    visibility: hidden;
+}
