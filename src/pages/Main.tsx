@@ -23,7 +23,11 @@ export default function MainPage() {
             </VStack>
             <Section>
                 <SectionHeading mb={6}>Новые рецепты</SectionHeading>
-                <RecipeSlider recipes={mockRecipes} />
+                <RecipeSlider
+                    recipes={[...mockRecipes]
+                        .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
+                        .slice(0, 10)}
+                />
             </Section>
             <Section>
                 <HStack justify='space-between' mb={6}>
@@ -64,7 +68,10 @@ export default function MainPage() {
                         image='/images/пряная-ветчина.png'
                         title='Пряная ветчина по итальянски'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                        recommendation={{ name: 'Елена Высоцкая', avatarSrc: '/images/elena.png' }}
+                        recommendation={{
+                            displayName: 'Елена Высоцкая',
+                            avatar: '/images/elena.png',
+                        }}
                         bookmarks={159}
                         likes={257}
                     />
@@ -74,7 +81,7 @@ export default function MainPage() {
                         image='/images/лапша-с-курицей.png'
                         title='Лапша с курицей и шафраном'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                        recommendation={{ name: 'Alex Cook', avatarSrc: '/images/alex.png' }}
+                        recommendation={{ displayName: 'Alex Cook', avatar: '/images/alex.png' }}
                         bookmarks={258}
                         likes={342}
                     />

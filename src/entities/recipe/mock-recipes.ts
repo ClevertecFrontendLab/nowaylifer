@@ -1,4 +1,6 @@
-export const mockRecipes = [
+import { Recipe } from './interface';
+
+export const mockRecipes: Recipe[] = [
     {
         id: '0',
         title: 'Картошка, тушенная с болгарским перцем и фасолью в томатном соусе',
@@ -287,6 +289,10 @@ export const mockRecipes = [
         date: '2024-03-08T00:00:00Z',
         time: '40 минут',
         portions: 4,
+        recommendation: {
+            displayName: 'Alex Cook',
+            avatar: '/images/alex.png',
+        },
         nutritionValue: { calories: 400, proteins: 30, fats: 15, carbohydrates: 50 },
         ingredients: [
             { title: 'лапша', count: 200, measureUnit: 'г' },
@@ -522,6 +528,10 @@ export const mockRecipes = [
         date: '2023-03-20T00:00:00Z',
         portions: 2,
         time: '25 минут',
+        recommendation: {
+            displayName: 'Елена Высоцкая',
+            avatar: '/images/elena.png',
+        },
         nutritionValue: { calories: 150, proteins: 4, fats: 6, carbohydrates: 20 },
         ingredients: [
             { title: 'цуккини', count: 1, measureUnit: 'шт.' },

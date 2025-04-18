@@ -31,7 +31,7 @@ export default function JuiciestPage() {
                         category={[recipeCategoryMap['beverages']]}
                         image='/images/лапша-с-курицей.png'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                        recommendation={{ name: 'Alex Cook', avatarSrc: '/images/alex.png' }}
+                        recommendation={{ displayName: 'Alex Cook', avatar: '/images/alex.png' }}
                         bookmarks={258}
                         likes={342}
                     />
@@ -50,7 +50,10 @@ export default function JuiciestPage() {
                         image='/images/пряная-ветчина.png'
                         title='Пряная ветчина по итальянски'
                         description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                        recommendation={{ name: 'Елена Высоцкая', avatarSrc: '/images/elena.png' }}
+                        recommendation={{
+                            displayName: 'Елена Высоцкая',
+                            avatar: '/images/elena.png',
+                        }}
                         bookmarks={159}
                         likes={257}
                     />

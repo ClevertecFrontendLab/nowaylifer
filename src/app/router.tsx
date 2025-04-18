@@ -3,10 +3,10 @@ import { createBrowserRouter } from 'react-router';
 import { recipeCategoryMap } from '~/entities/recipe';
 import { mockRecipes } from '~/entities/recipe/mock-recipes';
 import { RouteHandle } from '~/features/breadcrumbs';
+import CategoryPage from '~/pages/category';
 import JuiciestPage from '~/pages/Juiciest';
 import MainPage from '~/pages/Main';
 import RecipePage from '~/pages/Recipe/Recipe';
-import VeganPage from '~/pages/Vegan';
 
 import RootLayout from './RootLayout';
 
@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
                 children: [
                     {
                         path: ':subcategory',
-                        Component: VeganPage,
+                        Component: CategoryPage,
                         handle: {
                             breadcrumb: (match) =>
                                 recipeCategoryMap[match.params.category!].subcategories[

@@ -136,8 +136,8 @@ export interface RecipeCardProps extends RecipeCardRootProps {
     bookmarks?: number;
     likes?: number;
     recommendation?: {
-        avatarSrc: string;
-        name: string;
+        displayName: string;
+        avatar?: string;
     };
 }
 
@@ -211,8 +211,8 @@ const HRecipeCard = ({
         </RecipeCardBody>
         {recommendation && (
             <RecipeCardBadge h={7} hideBelow='lg' bg='lime.150' bottom={5} left={6} pos='absolute'>
-                <Avatar size='2xs' src={recommendation.avatarSrc} />
-                {`${recommendation.name} рекомендует`}
+                <Avatar size='2xs' src={recommendation.avatar} />
+                {`${recommendation.displayName} рекомендует`}
             </RecipeCardBadge>
         )}
     </RecipeCardRoot>

@@ -82,7 +82,11 @@ export default function RecipePage() {
                 >
                     Новые рецепты
                 </Heading>
-                <RecipeSlider recipes={mockRecipes} />
+                <RecipeSlider
+                    recipes={[...mockRecipes]
+                        .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
+                        .slice(0, 10)}
+                />
             </Box>
         </Box>
     );

@@ -1,0 +1,218 @@
+import {
+    Box,
+    Center,
+    Heading,
+    SimpleGrid,
+    Stack,
+    Tab,
+    TabIndicator,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Tabs,
+    Text,
+    VStack,
+} from '@chakra-ui/react';
+import { useEffect, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router';
+
+import { RecipeCard, recipeCategoryMap } from '~/entities/recipe';
+import { mockRecipes } from '~/entities/recipe/mock-recipes';
+import { Button } from '~/shared/ui/Button';
+import { Section, SectionHeading } from '~/shared/ui/Section';
+import { SearchBar } from '~/widgets/SearchBar';
+
+import { scrollTabIntoView } from './scroll-tab-into-view';
+
+export function CategoryPage() {
+    const params = useParams<'category' | 'subcategory'>();
+    const category = recipeCategoryMap[params.category!];
+    const subcategory = category.subcategories[params.subcategory!];
+    const scrollableRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const tab = scrollableRef.current?.querySelector<HTMLElement>(
+            `[data-index="${subcategory.index}"]`,
+        );
+
+        if (!tab || !scrollableRef.current) return;
+
+        scrollTabIntoView({
+            scrollable: scrollableRef.current,
+            tab,
+            offset: 300,
+            behavior: 'smooth',
+        });
+    }, [subcategory]);
+
+    return (
+        <Box as='main' py={{ base: 4, lg: 8 }}>
+            <VStack justify='center' mb={8} px={{ base: 4, md: 5, lg: 6 }}>
+                <Heading fontSize={{ base: '2xl', lg: '5xl' }} mb={4}>
+                    {category.label}
+                </Heading>
+                <Text
+                    fontWeight='medium'
+                    color='blackAlpha.600'
+                    textAlign='center'
+                    maxW={{ base: 'full', lg: '696px' }}
+                    fontSize={{ base: 'sm', lg: 'md' }}
+                    mb={{ base: 4, lg: 8 }}
+                >
+                    {category.description}
+                </Text>
+                <Box w='full' maxW='518px'>
+                    <SearchBar />
+                </Box>
+            </VStack>
+            <Section>
+                <Tabs
+                    index={subcategory.index}
+                    onChange={(index) => {
+                        const subcSlug = Object.values(category.subcategories)[index].slug;
+                        navigate(`/${category.slug}/${subcSlug}`);
+                    }}
+                >
+                    <Box
+                        ref={scrollableRef}
+                        pos='relative'
+                        overflowX='auto'
+                        sx={{ scrollbarWidth: 'none' }}
+                    >
+                        <TabList minW='full' w='max-content' border='none'>
+                            {Object.values(category.subcategories).map(({ label }) => (
+                                <Tab
+                                    key={label}
+                                    marginBottom={0}
+                                    borderBottom='2px solid'
+                                    borderColor='chakra-border-color'
+                                >
+                                    {label}
+                                </Tab>
+                            ))}
+                        </TabList>
+                        <TabIndicator key={params.category} />
+                    </Box>
+                    <TabPanels>
+                        {Object.values(category.subcategories).map((subc) => (
+                            <TabPanel>
+                                <SimpleGrid
+                                    spacing={{ base: 3, md: 4, '2xl': 6 }}
+                                    mb={4}
+                                    minChildWidth={{
+                                        base: '328px',
+                                        lg: '668px',
+                                    }}
+                                >
+                                    {mockRecipes
+                                        .filter(
+                                            (r) =>
+                                                r.category.includes(category.slug) &&
+                                                r.subcategory.includes(subc.slug),
+                                        )
+                                        .map((r) => (
+                                            <RecipeCard
+                                                variant='horizontal'
+                                                title={r.title}
+                                                description={r.description}
+                                                bookmarks={r.bookmarks}
+                                                recommendation={r.recommendation}
+                                                likes={r.likes}
+                                                image={r.image}
+                                                category={[recipeCategoryMap[r.category[0]]]}
+                                            />
+                                        ))}
+                                </SimpleGrid>
+                                <Center>
+                                    <Button
+                                        variant='solid'
+                                        bg='lime.400'
+                                        size={{ base: 'md', '2xl': 'lg' }}
+                                    >
+                                        Загрузить еще
+                                    </Button>
+                                </Center>
+                            </TabPanel>
+                        ))}
+                    </TabPanels>
+                </Tabs>
+            </Section>
+            <Section>
+                <Stack
+                    gap={3}
+                    align={{ base: 'start', lg: 'center' }}
+                    justify='space-between'
+                    mb={{ base: 4, lg: 6 }}
+                    pt={{ base: 2, lg: 6 }}
+                    borderTopWidth='1px'
+                    borderColor='blackAlpha.200'
+                    direction={{ base: 'column', lg: 'row' }}
+                >
+                    <SectionHeading flex={1}>Десерты, выпечка</SectionHeading>
+                    <Text
+                        flex={{ base: 2, '2xl': 1 }}
+                        fontWeight='medium'
+                        color='blackAlpha.700'
+                        fontSize={{ base: 'sm', lg: 'md' }}
+                    >
+                        Без них невозможно представить себе ни современную, ни традиционную
+                        кулинарию. Пироги и печенья, блины, пончики, вареники и, конечно, хлеб -
+                        рецепты изделий из теста многообразны и невероятно популярны.
+                    </Text>
+                </Stack>
+                <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
+                    <RecipeCard
+                        variant='no-image'
+                        category={[recipeCategoryMap['beverages']]}
+                        title='Бананово-молочное желе'
+                        description='Молочное желе – это просто, вкусно и полезно, ведь для его приготовления в качестве основы используется молоко.'
+                        bookmarks={1}
+                        likes={1}
+                        flexShrink={0}
+                        maxW={{
+                            base: 'full',
+                            md: '232px',
+                            lg: '248px',
+                            '1.5xl': '282px',
+                            '2xl': '322px',
+                        }}
+                    />
+                    <RecipeCard
+                        variant='no-image'
+                        category={[recipeCategoryMap['first-dish']]}
+                        title='Нежный сливочно-сырный крем для кексов'
+                        description='Сливочно-сырным кремом можно украсить кексы, либо другую выпечку, а также этим кремом можно наполнить заварные пирожные.'
+                        bookmarks={2}
+                        likes={1}
+                        flexShrink={0}
+                        maxW={{
+                            base: 'full',
+                            md: '232px',
+                            lg: '248px',
+                            '1.5xl': '282px',
+                            '2xl': '322px',
+                        }}
+                    />
+                    <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
+                        <RecipeCard
+                            variant='compact'
+                            category={[recipeCategoryMap['heal-dish']]}
+                            title='Домашние сырные палочки'
+                        />
+                        <RecipeCard
+                            variant='compact'
+                            category={[recipeCategoryMap['national']]}
+                            title='Панкейки'
+                        />
+                        <RecipeCard
+                            variant='compact'
+                            category={[recipeCategoryMap['sauces']]}
+                            title='Воздушное банановое печенье на сковороде'
+                        />
+                    </Stack>
+                </Stack>
+            </Section>
+        </Box>
+    );
+}
