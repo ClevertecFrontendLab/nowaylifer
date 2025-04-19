@@ -5,11 +5,11 @@ import {
     Box,
     BoxProps,
     UnorderedList,
-    useCallbackRef,
 } from '@chakra-ui/react';
+import { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-import { recipeCategoryMap, RecipeSubcategory } from '~/entities/recipe';
+import { RecipeCategory, recipeCategoryMap, RecipeSubcategory } from '~/entities/recipe';
 
 import { CategoryItem } from './CategoryItem';
 import { SubcategoryItem } from './SubcategoryItem';
@@ -22,9 +22,11 @@ export const RecipeMenu = (props: RecipeMenuProps) => {
     const params = useParams<'category' | 'subcategory'>();
     const navigate = useNavigate();
 
-    const handleSubcategoryClick = useCallbackRef((subcategory: RecipeSubcategory) => {
-        navigate(`/${params.category}/${subcategory.slug}`);
-    });
+    const handleSubcategoryClick = useCallback(
+        (category: RecipeCategory, subcategory: RecipeSubcategory) =>
+            navigate(`/${category.slug}/${subcategory.slug}`),
+        [navigate],
+    );
 
     return (
         <Box pr={1} overflow='hidden' {...props}>
@@ -39,9 +41,7 @@ export const RecipeMenu = (props: RecipeMenuProps) => {
             >
                 <Accordion
                     allowToggle
-                    defaultIndex={
-                        params.category ? recipeCategoryMap[params.category].index : undefined
-                    }
+                    defaultIndex={params.category ? recipeCategoryMap[params.category].index : -1}
                     onChange={(expanded) => {
                         const index = Array.isArray(expanded) ? expanded[0] : expanded;
                         if (index >= 0) {
@@ -65,10 +65,11 @@ export const RecipeMenu = (props: RecipeMenuProps) => {
                                                     subcategory.slug === params.subcategory;
                                                 return (
                                                     <SubcategoryItem
-                                                        onClick={handleSubcategoryClick}
                                                         key={subcategory.slug}
+                                                        category={category}
                                                         subcategory={subcategory}
                                                         active={isSubcategoryActive}
+                                                        onClick={handleSubcategoryClick}
                                                     />
                                                 );
                                             },
