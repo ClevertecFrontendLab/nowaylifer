@@ -6,14 +6,11 @@ import {
     Icon,
     IconButton,
     IconProps,
-    Input,
-    InputGroup,
-    InputRightElement,
     Select,
     Switch,
 } from '@chakra-ui/react';
 
-import { SearchIcon } from '~/shared/ui/SearchIcon';
+import { SearchRecipeInput } from '~/features/search-recipe';
 
 import classes from './SearchBar.module.css';
 
@@ -28,20 +25,7 @@ export const SearchBar = () => (
                 icon={<FilterIcon boxSize={{ base: '1em', lg: 6 }} />}
                 aria-label='Применить фильтр к поиску'
             />
-            <InputGroup>
-                <Input
-                    size={{ base: 'sm', lg: 'lg' }}
-                    borderColor='blackAlpha.600'
-                    borderRadius={{ base: 'base', lg: 'md' }}
-                    _placeholder={{ color: 'lime.800' }}
-                    _hover={{ borderColor: 'blackAlpha.600' }}
-                    _focus={{ boxShadow: 'none', borderColor: 'blackAlpha.600' }}
-                    placeholder='Название или ингридиент...'
-                />
-                <InputRightElement h='full' w='auto' px={{ base: 2, lg: 4 }}>
-                    <SearchIcon boxSize={{ base: 3.5, lg: 4.5 }} />
-                </InputRightElement>
-            </InputGroup>
+            <SearchRecipeInput />
         </HStack>
         <HStack gap={3} pl={2} hideBelow='lg'>
             <FormControl display='flex' alignItems='center'>

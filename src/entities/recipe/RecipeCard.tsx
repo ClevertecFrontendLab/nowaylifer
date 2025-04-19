@@ -11,6 +11,7 @@ import {
     Heading,
     HeadingProps,
     HStack,
+    HTMLChakraProps,
     IconButton,
     Image,
     ImageProps,
@@ -38,6 +39,12 @@ interface RecipeCardRootProps extends Omit<CardProps, 'title'> {
     variant?: RecipeCardVariant;
 }
 
+export interface RecipeCardProps extends RecipeCardRootProps {
+    variant?: RecipeCardVariant;
+    recipe: Recipe;
+    renderTitle?: (styleProps: HTMLChakraProps<'div'>) => React.ReactNode;
+}
+
 const RecipeCardRoot = (props: RecipeCardRootProps) => {
     const { size, variant, children, ...rest } = props;
     const styles = useMultiStyleConfig(themeKey, { size, variant }) as RecipeCardStyles;
@@ -53,9 +60,20 @@ const RecipeCardBody = (props: CardBodyProps) => {
     return <CardBody {...styles.body} {...props} />;
 };
 
-const RecipeCardTitle = (props: HeadingProps) => {
+const RecipeCardTitle = ({
+    children,
+    ...rest
+}: Omit<HeadingProps, 'children'> & {
+    children?: React.ReactNode | ((styleProps: HTMLChakraProps<'div'>) => React.ReactNode);
+}) => {
     const styles = useStyles() as RecipeCardStyles;
-    return <Heading {...styles.title} {...props} />;
+    return typeof children === 'function' ? (
+        children(styles.title)
+    ) : (
+        <Heading {...styles.title} {...rest}>
+            {children}
+        </Heading>
+    );
 };
 
 const RecipeCardDescription = (props: TextProps) => {
@@ -128,11 +146,6 @@ const RecipeCardCategory = ({
     );
 };
 
-export interface RecipeCardProps extends RecipeCardRootProps {
-    variant?: RecipeCardVariant;
-    recipe: Recipe;
-}
-
 const CompactRecipeCard = ({ recipe, ...rest }: RecipeCardProps) => (
     <RecipeCardRoot {...rest}>
         <RecipeCardBody>
@@ -172,12 +185,12 @@ const VRecipeCard = ({ variant, recipe, ...rest }: RecipeCardProps) => (
     </RecipeCardRoot>
 );
 
-const HRecipeCard = ({ recipe, ...rest }: RecipeCardProps) => (
+const HRecipeCard = ({ recipe, renderTitle, ...rest }: RecipeCardProps) => (
     <RecipeCardRoot {...rest}>
         <RecipeCardImage src={recipe.image} />
         <RecipeCardBody>
             <Box order={1} flexGrow={1}>
-                <RecipeCardTitle>{recipe.title}</RecipeCardTitle>
+                <RecipeCardTitle>{renderTitle ?? recipe.title}</RecipeCardTitle>
                 <RecipeCardDescription>{recipe.description}</RecipeCardDescription>
             </Box>
             <HStack order={0} justify='space-between' gap={0}>

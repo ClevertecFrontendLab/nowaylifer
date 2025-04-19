@@ -18,6 +18,13 @@ import { useNavigate, useParams } from 'react-router';
 
 import { RecipeCard, recipeCategoryMap } from '~/entities/recipe';
 import { mockRecipes } from '~/entities/recipe/mock-recipes';
+import {
+    clearRecipeSearch,
+    filterMatchingRecipe,
+    HighlightSearchMatch,
+    selectRecipeSearch,
+} from '~/features/search-recipe';
+import { useAppDispatch, useAppSelector } from '~/shared/store';
 import { Button } from '~/shared/ui/Button';
 import { Section, SectionHeading } from '~/shared/ui/Section';
 import { SearchBar } from '~/widgets/SearchBar';
@@ -29,7 +36,17 @@ export function CategoryPage() {
     const category = recipeCategoryMap[params.category!];
     const subcategory = category.subcategories[params.subcategory!];
     const scrollableRef = useRef<HTMLDivElement>(null);
+    const search = useAppSelector(selectRecipeSearch);
+    const dispatch = useAppDispatch();
+    console.log(search);
     const navigate = useNavigate();
+
+    useEffect(
+        () => () => {
+            dispatch(clearRecipeSearch());
+        },
+        [dispatch],
+    );
 
     useEffect(() => {
         const tab = scrollableRef.current?.querySelector<HTMLElement>(
@@ -106,13 +123,21 @@ export function CategoryPage() {
                                         .filter(
                                             (r) =>
                                                 r.category.includes(category.slug) &&
-                                                r.subcategory.includes(subc.slug),
+                                                r.subcategory.includes(subc.slug) &&
+                                                filterMatchingRecipe(r, search),
                                         )
                                         .map((r) => (
                                             <RecipeCard
                                                 key={r.id}
-                                                variant='horizontal'
                                                 recipe={r}
+                                                variant='horizontal'
+                                                renderTitle={(styleProps) => (
+                                                    <Heading {...styleProps}>
+                                                        <HighlightSearchMatch query={search}>
+                                                            {r.title}
+                                                        </HighlightSearchMatch>
+                                                    </Heading>
+                                                )}
                                             />
                                         ))}
                                 </SimpleGrid>

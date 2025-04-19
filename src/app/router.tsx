@@ -4,9 +4,9 @@ import { recipeCategoryMap } from '~/entities/recipe';
 import { mockRecipes } from '~/entities/recipe/mock-recipes';
 import { RouteHandle } from '~/features/breadcrumbs';
 import CategoryPage from '~/pages/category';
-import JuiciestPage from '~/pages/Juiciest';
-import MainPage from '~/pages/Main';
-import RecipePage from '~/pages/Recipe/Recipe';
+import JuiciestPage from '~/pages/JuiciestPage';
+import MainPage from '~/pages/MainPage';
+import RecipePage from '~/pages/recipe/RecipePage';
 
 import RootLayout from './RootLayout';
 
