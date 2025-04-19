@@ -1,6 +1,6 @@
 import { Box, Container, Heading, ListItem, OrderedList, Stack } from '@chakra-ui/react';
 
-import { RecipeCard, recipeCategoryMap } from '~/entities/recipe';
+import { RecipeCard } from '~/entities/recipe';
 import { mockRecipes } from '~/entities/recipe/mock-recipes';
 import { RecipeSlider } from '~/widgets/RecipeSlider';
 
@@ -13,17 +13,7 @@ export default function RecipePage() {
     const recipe = mockRecipes[3];
     return (
         <Box as='main' py={{ base: 4, lg: 8 }}>
-            <RecipeCard
-                variant='detailed'
-                category={recipe.category.map((c) => recipeCategoryMap[c])}
-                title={recipe.title}
-                time={recipe.time}
-                image={recipe.image}
-                description={recipe.description}
-                bookmarks={recipe.bookmarks}
-                likes={recipe.likes}
-                mb={{ base: 6, lg: 10 }}
-            />
+            <RecipeCard variant='detailed' recipe={recipe} mb={{ base: 6, lg: 10 }} />
             <Container
                 p={0}
                 mb={{ base: 10, lg: 14 }}

@@ -6,7 +6,7 @@ import { Box, IconButton, IconButtonProps } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
-import { Recipe, RecipeCard, recipeCategoryMap } from '~/entities/recipe';
+import { Recipe, RecipeCard } from '~/entities/recipe';
 
 export const RecipeSlider = ({ recipes }: { recipes: Recipe[] }) => {
     const swiperRef = useRef<SwiperRef>(null);
@@ -21,15 +21,7 @@ export const RecipeSlider = ({ recipes }: { recipes: Recipe[] }) => {
             >
                 {recipes.map((r) => (
                     <SwiperSlide key={r.id} style={{ width: 'auto', paddingBottom: 8 }}>
-                        <RecipeCard
-                            variant='vertical'
-                            title={r.title}
-                            category={[recipeCategoryMap[r.category[0]]]}
-                            description={r.description}
-                            likes={r.likes}
-                            bookmarks={r.bookmarks}
-                            image={r.image}
-                        />
+                        <RecipeCard variant='vertical' recipe={r} />
                     </SwiperSlide>
                 ))}
             </Swiper>

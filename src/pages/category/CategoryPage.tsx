@@ -96,14 +96,11 @@ export function CategoryPage() {
                     </Box>
                     <TabPanels>
                         {Object.values(category.subcategories).map((subc) => (
-                            <TabPanel>
+                            <TabPanel key={subc.index}>
                                 <SimpleGrid
-                                    spacing={{ base: 3, md: 4, '2xl': 6 }}
                                     mb={4}
-                                    minChildWidth={{
-                                        base: '328px',
-                                        lg: '668px',
-                                    }}
+                                    spacing={{ base: 3, md: 4, '2xl': 6 }}
+                                    minChildWidth={{ base: '328px', lg: '668px' }}
                                 >
                                     {mockRecipes
                                         .filter(
@@ -113,14 +110,9 @@ export function CategoryPage() {
                                         )
                                         .map((r) => (
                                             <RecipeCard
+                                                key={r.id}
                                                 variant='horizontal'
-                                                title={r.title}
-                                                description={r.description}
-                                                bookmarks={r.bookmarks}
-                                                recommendation={r.recommendation}
-                                                likes={r.likes}
-                                                image={r.image}
-                                                category={[recipeCategoryMap[r.category[0]]]}
+                                                recipe={r}
                                             />
                                         ))}
                                 </SimpleGrid>
@@ -149,26 +141,22 @@ export function CategoryPage() {
                     borderColor='blackAlpha.200'
                     direction={{ base: 'column', lg: 'row' }}
                 >
-                    <SectionHeading flex={1}>Десерты, выпечка</SectionHeading>
+                    <SectionHeading flex={1}>
+                        {recipeCategoryMap['desserts-pastry'].label}
+                    </SectionHeading>
                     <Text
                         flex={{ base: 2, '2xl': 1 }}
                         fontWeight='medium'
                         color='blackAlpha.700'
                         fontSize={{ base: 'sm', lg: 'md' }}
                     >
-                        Без них невозможно представить себе ни современную, ни традиционную
-                        кулинарию. Пироги и печенья, блины, пончики, вареники и, конечно, хлеб -
-                        рецепты изделий из теста многообразны и невероятно популярны.
+                        {recipeCategoryMap['desserts-pastry'].description}
                     </Text>
                 </Stack>
                 <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
                     <RecipeCard
                         variant='no-image'
-                        category={[recipeCategoryMap['beverages']]}
-                        title='Бананово-молочное желе'
-                        description='Молочное желе – это просто, вкусно и полезно, ведь для его приготовления в качестве основы используется молоко.'
-                        bookmarks={1}
-                        likes={1}
+                        recipe={mockRecipes[19]}
                         flexShrink={0}
                         maxW={{
                             base: 'full',
@@ -180,11 +168,7 @@ export function CategoryPage() {
                     />
                     <RecipeCard
                         variant='no-image'
-                        category={[recipeCategoryMap['first-dish']]}
-                        title='Нежный сливочно-сырный крем для кексов'
-                        description='Сливочно-сырным кремом можно украсить кексы, либо другую выпечку, а также этим кремом можно наполнить заварные пирожные.'
-                        bookmarks={2}
-                        likes={1}
+                        recipe={mockRecipes[20]}
                         flexShrink={0}
                         maxW={{
                             base: 'full',
@@ -195,21 +179,9 @@ export function CategoryPage() {
                         }}
                     />
                     <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
-                        <RecipeCard
-                            variant='compact'
-                            category={[recipeCategoryMap['heal-dish']]}
-                            title='Домашние сырные палочки'
-                        />
-                        <RecipeCard
-                            variant='compact'
-                            category={[recipeCategoryMap['national']]}
-                            title='Панкейки'
-                        />
-                        <RecipeCard
-                            variant='compact'
-                            category={[recipeCategoryMap['sauces']]}
-                            title='Воздушное банановое печенье на сковороде'
-                        />
+                        <RecipeCard variant='compact' recipe={mockRecipes[21]} />
+                        <RecipeCard variant='compact' recipe={mockRecipes[22]} />
+                        <RecipeCard variant='compact' recipe={mockRecipes[23]} />
                     </Stack>
                 </Stack>
             </Section>

@@ -28,6 +28,8 @@ import { Button } from '../../shared/ui/Button';
 import { ClockIcon } from '../../shared/ui/ClockIcon';
 import { EmojiHeartEyesIcon } from '../../shared/ui/EmojiHeartEyesIcon';
 import { BookmarksStat, LikesStat } from '../../shared/ui/Stats';
+import { Recipe } from './interface';
+import { recipeCategoryMap } from './recipe-category';
 import { RecipeCardStyles, RecipeCardVariant, themeKey } from './RecipeCard.theme';
 
 const [StylesProvider, useStyles] = createStylesContext(themeKey);
@@ -128,25 +130,15 @@ const RecipeCardCategory = ({
 
 export interface RecipeCardProps extends RecipeCardRootProps {
     variant?: RecipeCardVariant;
-    title: React.ReactNode;
-    category: { label: string; iconSrc: string }[];
-    description?: string;
-    image?: string;
-    time?: string;
-    bookmarks?: number;
-    likes?: number;
-    recommendation?: {
-        displayName: string;
-        avatar?: string;
-    };
+    recipe: Recipe;
 }
 
-const CompactRecipeCard = ({ title, category, ...rest }: RecipeCardProps) => (
+const CompactRecipeCard = ({ recipe, ...rest }: RecipeCardProps) => (
     <RecipeCardRoot {...rest}>
         <RecipeCardBody>
             <HStack gap={2} minW={0}>
-                <Image boxSize={6} src={category[0].iconSrc} alt={category[0].label} />
-                <RecipeCardTitle>{title}</RecipeCardTitle>
+                <Image boxSize={6} src={recipeCategoryMap[recipe.category[0]].iconSrc} />
+                <RecipeCardTitle>{recipe.title}</RecipeCardTitle>
             </HStack>
             <Button
                 size={{ base: 'xs', lg: 'sm' }}
@@ -161,94 +153,76 @@ const CompactRecipeCard = ({ title, category, ...rest }: RecipeCardProps) => (
     </RecipeCardRoot>
 );
 
-const VRecipeCard = ({
-    variant,
-    image,
-    title,
-    description,
-    likes,
-    bookmarks,
-    category,
-    ...rest
-}: RecipeCardProps) => (
+const VRecipeCard = ({ variant, recipe, ...rest }: RecipeCardProps) => (
     <RecipeCardRoot variant={variant} {...rest}>
-        {variant !== 'no-image' && <RecipeCardImage src={image} />}
+        {variant !== 'no-image' && <RecipeCardImage src={recipe.image} />}
         <RecipeCardBody>
             <Box flexGrow={1}>
-                <RecipeCardTitle>{title}</RecipeCardTitle>
-                <RecipeCardDescription>{description}</RecipeCardDescription>
+                <RecipeCardTitle>{recipe.title}</RecipeCardTitle>
+                <RecipeCardDescription>{recipe.description}</RecipeCardDescription>
             </Box>
             <HStack justify='space-between' gap={0}>
-                <RecipeCardCategory iconSrc={category[0].iconSrc} label={category[0].label} />
-                <RecipeCardStats bookmarks={bookmarks} likes={likes} />
+                <RecipeCardCategory
+                    iconSrc={recipeCategoryMap[recipe.category[0]].iconSrc}
+                    label={recipeCategoryMap[recipe.category[0]].label}
+                />
+                <RecipeCardStats bookmarks={recipe.bookmarks} likes={recipe.likes} />
             </HStack>
         </RecipeCardBody>
     </RecipeCardRoot>
 );
 
-const HRecipeCard = ({
-    image,
-    title,
-    description,
-    category,
-    bookmarks,
-    likes,
-    recommendation,
-    ...rest
-}: RecipeCardProps) => (
+const HRecipeCard = ({ recipe, ...rest }: RecipeCardProps) => (
     <RecipeCardRoot {...rest}>
-        <RecipeCardImage src={image} />
+        <RecipeCardImage src={recipe.image} />
         <RecipeCardBody>
             <Box order={1} flexGrow={1}>
-                <RecipeCardTitle>{title}</RecipeCardTitle>
-                <RecipeCardDescription>{description}</RecipeCardDescription>
+                <RecipeCardTitle>{recipe.title}</RecipeCardTitle>
+                <RecipeCardDescription>{recipe.description}</RecipeCardDescription>
             </Box>
             <HStack order={0} justify='space-between' gap={0}>
-                <RecipeCardCategory iconSrc={category[0].iconSrc} label={category[0].label} />
-                <RecipeCardStats bookmarks={bookmarks} likes={likes} />
+                <RecipeCardCategory
+                    iconSrc={recipeCategoryMap[recipe.category[0]].iconSrc}
+                    label={recipeCategoryMap[recipe.category[0]].label}
+                />
+                <RecipeCardStats bookmarks={recipe.bookmarks} likes={recipe.likes} />
             </HStack>
             <RecipeCardButtons order={2} />
         </RecipeCardBody>
-        {recommendation && (
+        {recipe.recommendation && (
             <RecipeCardBadge h={7} hideBelow='lg' bg='lime.150' bottom={5} left={6} pos='absolute'>
-                <Avatar size='2xs' src={recommendation.avatar} />
-                {`${recommendation.displayName} рекомендует`}
+                <Avatar size='2xs' src={recipe.recommendation.avatar} />
+                {`${recipe.recommendation.displayName} рекомендует`}
             </RecipeCardBadge>
         )}
     </RecipeCardRoot>
 );
 
-const DetailedRecipeCard = ({
-    image,
-    bookmarks,
-    likes,
-    title,
-    time,
-    description,
-    category,
-    ...rest
-}: RecipeCardProps) => (
+const DetailedRecipeCard = ({ recipe, ...rest }: RecipeCardProps) => (
     <RecipeCardRoot {...rest}>
-        <RecipeCardImage src={image} />
+        <RecipeCardImage src={recipe.image} />
         <RecipeCardBody>
             <Box order={1} flexGrow={1}>
-                <RecipeCardTitle>{title}</RecipeCardTitle>
-                <RecipeCardDescription>{description}</RecipeCardDescription>
+                <RecipeCardTitle>{recipe.title}</RecipeCardTitle>
+                <RecipeCardDescription>{recipe.description}</RecipeCardDescription>
             </Box>
             <HStack order={0} justify='space-between' gap={1}>
                 <Wrap gap={2}>
-                    {category.map((c) => (
-                        <WrapItem key={c.label}>
-                            <RecipeCardCategory label={c.label} iconSrc={c.iconSrc} />
+                    {recipe.category.map((c, idx) => (
+                        <WrapItem key={idx}>
+                            <RecipeCardCategory
+                                label={recipeCategoryMap[c].label}
+                                iconSrc={recipeCategoryMap[c].iconSrc}
+                            />
                         </WrapItem>
                     ))}
                 </Wrap>
-                <RecipeCardStats bookmarks={bookmarks} likes={likes} />
+                <RecipeCardStats bookmarks={recipe.bookmarks} likes={recipe.likes} />
             </HStack>
             <HStack order={2} alignItems='end' wrap={{ base: 'wrap', md: 'nowrap' }} gap={3}>
                 <RecipeCardBadge bg='blackAlpha.100' mr='auto'>
                     <ClockIcon />
-                    {time}
+                    {recipe.time}
                 </RecipeCardBadge>
                 <HStack gap={{ base: 3, '2xl': 4 }}>
                     <Button

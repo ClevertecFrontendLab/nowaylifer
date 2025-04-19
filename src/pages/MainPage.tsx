@@ -53,47 +53,10 @@ export default function MainPage() {
                         lg: '668px',
                     }}
                 >
-                    <RecipeCard
-                        variant='horizontal'
-                        title='Кнели со спагетти'
-                        category={[recipeCategoryMap['beverages']]}
-                        image='/images/кнели-со-спагетти.png'
-                        description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                        bookmarks={85}
-                        likes={152}
-                    />
-                    <RecipeCard
-                        variant='horizontal'
-                        category={[recipeCategoryMap['desserts-pastry']]}
-                        image='/images/пряная-ветчина.png'
-                        title='Пряная ветчина по итальянски'
-                        description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                        recommendation={{
-                            displayName: 'Елена Высоцкая',
-                            avatar: '/images/elena.png',
-                        }}
-                        bookmarks={159}
-                        likes={257}
-                    />
-                    <RecipeCard
-                        variant='horizontal'
-                        category={[recipeCategoryMap['first-dish']]}
-                        image='/images/лапша-с-курицей.png'
-                        title='Лапша с курицей и шафраном'
-                        description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                        recommendation={{ displayName: 'Alex Cook', avatar: '/images/alex.png' }}
-                        bookmarks={258}
-                        likes={342}
-                    />
-                    <RecipeCard
-                        variant='horizontal'
-                        category={[recipeCategoryMap['first-dish']]}
-                        image='/images/том-ям.png'
-                        title='Том-ям с капустой кимчи'
-                        description='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                        bookmarks={124}
-                        likes={324}
-                    />
+                    <RecipeCard variant='horizontal' recipe={mockRecipes[13]} />
+                    <RecipeCard variant='horizontal' recipe={mockRecipes[14]} />
+                    <RecipeCard variant='horizontal' recipe={mockRecipes[7]} />
+                    <RecipeCard variant='horizontal' recipe={mockRecipes[12]} />
                 </SimpleGrid>
                 <Center hideFrom='lg'>
                     <Button
@@ -183,25 +146,20 @@ export default function MainPage() {
                     mb={{ base: 4, lg: 6 }}
                     direction={{ base: 'column', lg: 'row' }}
                 >
-                    <SectionHeading flex={1}>Веганская кухня</SectionHeading>
+                    <SectionHeading flex={1}>{recipeCategoryMap.vegan.label}</SectionHeading>
                     <Text
                         flex={{ base: 2, '2xl': 1 }}
                         fontWeight='medium'
                         color='blackAlpha.700'
                         fontSize={{ base: 'sm', lg: 'md' }}
                     >
-                        Интересны не только убеждённым вегетарианцам, но и тем, кто хочет
-                        попробовать вегетарианскую диету и готовить вкусные вегетарианские блюда.
+                        {recipeCategoryMap.vegan.description}
                     </Text>
                 </Stack>
                 <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
                     <RecipeCard
                         variant='no-image'
-                        category={[recipeCategoryMap['beverages']]}
-                        title='Картошка, тушенная с болгарским перцем и фасолью в томатном соусе'
-                        description='Картошка, тушенная с болгарским перцем, фасолью, морковью и луком, -  вариант сытного блюда на каждый день. Фасоль в данном случае заменяет мясо, делая рагу сытным и питательным. Чтобы сократить время  приготовления, возьмём консервированную фасоль. Блюдо хоть и простое, но в полной мере наполнено ароматами и имеет выразительный вкус за счёт  добавления томатной пасты.'
-                        bookmarks={1}
-                        likes={1}
+                        recipe={mockRecipes[0]}
                         flexShrink={0}
                         maxW={{
                             base: 'full',
@@ -213,11 +171,7 @@ export default function MainPage() {
                     />
                     <RecipeCard
                         variant='no-image'
-                        category={[recipeCategoryMap['child-dish']]}
-                        title='Капустные котлеты'
-                        description='Капустные котлеты по этому рецепту получаются необычайно пышными и  невероятно вкусными. Мягкий вкус и лёгкая пряная нотка наверняка помогут сделать эти чудесные котлеты из капусты одним из ваших любимых овощных  блюд.'
-                        bookmarks={2}
-                        likes={1}
+                        recipe={mockRecipes[5]}
                         flexShrink={0}
                         maxW={{
                             base: 'full',
@@ -228,21 +182,9 @@ export default function MainPage() {
                         }}
                     />
                     <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
-                        <RecipeCard
-                            variant='compact'
-                            category={[recipeCategoryMap['beverages']]}
-                            title='Стейк для вегетарианцев'
-                        />
-                        <RecipeCard
-                            variant='compact'
-                            category={[recipeCategoryMap['child-dish']]}
-                            title='Котлеты из гречки и фасоли'
-                        />
-                        <RecipeCard
-                            variant='compact'
-                            category={[recipeCategoryMap['child-dish']]}
-                            title='Сырный суп с лапшой и брокколи'
-                        />
+                        <RecipeCard variant='compact' recipe={mockRecipes[16]} />
+                        <RecipeCard variant='compact' recipe={mockRecipes[17]} />
+                        <RecipeCard variant='compact' recipe={mockRecipes[18]} />
                     </Stack>
                 </Stack>
             </Section>
