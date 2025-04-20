@@ -6,38 +6,45 @@ import {
     Icon,
     IconButton,
     IconProps,
-    Select,
     Switch,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 
+import { AllergenSelect } from '~/features/filter-recipe';
 import { SearchRecipeInput } from '~/features/search-recipe';
 
 import classes from './SearchBar.module.css';
 
-export const SearchBar = () => (
-    <Box>
-        <HStack mb={4} gap={3}>
-            <IconButton
-                variant='outline'
-                borderColor='blackAlpha.600'
-                className={classes.filterButton}
-                size={{ base: 'sm', lg: 'lg' }}
-                icon={<FilterIcon boxSize={{ base: '1em', lg: 6 }} />}
-                aria-label='Применить фильтр к поиску'
-            />
-            <SearchRecipeInput />
-        </HStack>
-        <HStack gap={3} pl={2} hideBelow='lg'>
-            <FormControl display='flex' alignItems='center'>
-                <FormLabel w='max-content' htmlFor='exclude-allergens' mb={0}>
-                    Исключить мои аллергены
-                </FormLabel>
-                <Switch id='exclude-allergens' />
-            </FormControl>
-            <Select color='blackAlpha.700' placeholder='Выберите из списка...' />
-        </HStack>
-    </Box>
-);
+export const SearchBar = () => {
+    const [selectEnabled, setSelectEnabled] = useState(false);
+    return (
+        <Box>
+            <HStack mb={4} gap={3}>
+                <IconButton
+                    variant='outline'
+                    borderColor='blackAlpha.600'
+                    className={classes.filterButton}
+                    size={{ base: 'sm', lg: 'lg' }}
+                    icon={<FilterIcon boxSize={{ base: '1em', lg: 6 }} />}
+                    aria-label='Применить фильтр к поиску'
+                />
+                <SearchRecipeInput />
+            </HStack>
+            <HStack justify='space-between' gap={3} pl={2} hideBelow='lg'>
+                <FormControl w='auto' display='flex' alignItems='center' alignSelf='start' h={10}>
+                    <FormLabel w='max-content' htmlFor='exclude-allergens' mb={0}>
+                        Исключить аллергены
+                    </FormLabel>
+                    <Switch
+                        onChange={(e) => setSelectEnabled(e.target.checked)}
+                        id='exclude-allergens'
+                    />
+                </FormControl>
+                <AllergenSelect disabled={!selectEnabled} />
+            </HStack>
+        </Box>
+    );
+};
 
 const FilterIcon = (props: IconProps) => (
     <Icon viewBox='0 0 24 24' boxSize='1em' {...props}>

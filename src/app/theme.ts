@@ -1,7 +1,14 @@
-import { cardAnatomy, tabsAnatomy } from '@chakra-ui/anatomy';
+import {
+    cardAnatomy,
+    checkboxAnatomy,
+    inputAnatomy,
+    switchAnatomy,
+    tabsAnatomy,
+} from '@chakra-ui/anatomy';
 import {
     createMultiStyleConfigHelpers,
     extendTheme,
+    InputProps,
     Theme as DefaultTheme,
     ThemeOverride,
 } from '@chakra-ui/react';
@@ -67,6 +74,43 @@ const themeOverride = {
                     borderWidth: '1px',
                     borderRadius: 'lg',
                     overflow: 'hidden',
+                },
+            },
+        }),
+        Input: createMultiStyleConfigHelpers(inputAnatomy.keys).defineMultiStyleConfig({
+            defaultProps: {
+                ['focusBorderColor' as string]: 'lime.300',
+            } satisfies InputProps,
+            baseStyle: {
+                group: {
+                    borderColor: 'blackAlpha.600',
+                },
+                field: {
+                    color: 'lime.800',
+                    _placeholder: { color: 'lime.800' },
+                },
+            },
+        }),
+        Checkbox: createMultiStyleConfigHelpers(checkboxAnatomy.keys).defineMultiStyleConfig({
+            baseStyle: {
+                control: {
+                    color: 'black',
+                    borderColor: 'lime.150',
+                    _checked: {
+                        color: 'black',
+                        bg: 'lime.400',
+                        borderColor: 'lime.400',
+                    },
+                },
+            },
+        }),
+        Switch: createMultiStyleConfigHelpers(switchAnatomy.keys).defineMultiStyleConfig({
+            baseStyle: {
+                track: {
+                    '--switch-bg': 'colors.blackAlpha.300',
+                    _checked: {
+                        '--switch-bg': 'colors.lime.400',
+                    },
                 },
             },
         }),

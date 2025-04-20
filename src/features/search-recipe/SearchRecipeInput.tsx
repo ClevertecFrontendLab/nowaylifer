@@ -32,11 +32,7 @@ export const SearchRecipeInput = (props: BoxProps) => {
                     setSearchEnabled(value.length >= SEARCH_WORD_MIN_LENGTH);
                 }}
                 onKeyDown={(e) => e.key === 'Enter' && searchEnabled && search()}
-                borderColor='blackAlpha.600'
                 borderRadius={{ base: 'base', lg: 'md' }}
-                _placeholder={{ color: 'lime.800' }}
-                _hover={{ borderColor: 'blackAlpha.600' }}
-                _focus={{ boxShadow: 'none', borderColor: 'blackAlpha.600' }}
                 placeholder='Название или ингридиент...'
             />
             <InputRightElement>

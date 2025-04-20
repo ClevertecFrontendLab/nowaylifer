@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 import { RecipeCard, recipeCategoryMap } from '~/entities/recipe';
 import { mockRecipes } from '~/entities/recipe/mock-recipes';
+import { filterRecipe, selectRecipeFilters } from '~/features/filter-recipe';
 import {
     clearRecipeSearch,
     filterMatchingRecipe,
@@ -20,8 +21,11 @@ import { SearchBar } from '~/widgets/SearchBar';
 
 export default function MainPage() {
     const search = useAppSelector(selectRecipeSearch);
+    const filters = useAppSelector(selectRecipeFilters);
     const dispatch = useAppDispatch();
     const hasSearch = !!search;
+    const hasFilters = !!filters.excludedAllergens.length;
+    const showAll = hasSearch || hasFilters;
 
     useEffect(
         () => () => {
@@ -40,7 +44,7 @@ export default function MainPage() {
                     <SearchBar />
                 </Box>
             </VStack>
-            {hasSearch && (
+            {showAll && (
                 <Box>
                     <SimpleGrid
                         mb={4}
@@ -48,7 +52,9 @@ export default function MainPage() {
                         minChildWidth={{ base: '328px', lg: '668px' }}
                     >
                         {mockRecipes
-                            .filter((r) => filterMatchingRecipe(r, search))
+                            .filter(
+                                (r) => filterRecipe(r, filters) && filterMatchingRecipe(r, search),
+                            )
                             .map((r) => (
                                 <RecipeCard
                                     key={r.id}
@@ -71,7 +77,7 @@ export default function MainPage() {
                     </Center>
                 </Box>
             )}
-            {!hasSearch && (
+            {!showAll && (
                 <>
                     <Section>
                         <SectionHeading mb={6}>Новые рецепты</SectionHeading>

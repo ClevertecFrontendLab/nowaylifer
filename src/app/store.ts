@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
+import { filterRecipeSlice } from '~/features/filter-recipe';
 import { searchRecipeSlice } from '~/features/search-recipe';
 
 const rootReducer = combineReducers({
     [searchRecipeSlice.name]: searchRecipeSlice.reducer,
+    [filterRecipeSlice.name]: filterRecipeSlice.reducer,
 });
 
 export const store = configureStore({
