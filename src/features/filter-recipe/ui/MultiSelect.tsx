@@ -5,17 +5,23 @@ import {
     IconButton,
     IconProps,
     Input,
+    SystemStyleObject,
     useControllableState,
     useMergeRefs,
 } from '@chakra-ui/react';
 import {
     chakraComponents,
     ChakraStylesConfig,
+    ControlProps,
     GroupBase,
+    MenuListProps,
+    MenuPlacement,
+    MenuPosition,
+    MenuProps,
     MultiValue,
     OptionBase,
+    OptionProps,
     Select,
-    SelectComponentsConfig,
     SelectInstance,
 } from 'chakra-react-select';
 import { useEffect, useRef } from 'react';
@@ -25,25 +31,42 @@ export interface Option extends OptionBase {
     value: string;
 }
 
-export interface MultiSelectProps {
+export type SelectHandle = SelectInstance<Option, true>;
+
+export type MultiSelectProps = SystemStyleObject & {
+    ref?: React.Ref<SelectHandle>;
     disabled?: boolean;
     placeholder?: string;
+    menuPortalTarget?: HTMLElement | null;
+    withMenuInput?: boolean;
     menuInputPlaceholder?: string;
     value?: MultiValue<Option>;
     options?: Option[];
+    menuPlacement?: MenuPlacement;
+    menuPosition?: MenuPosition;
+    minMenuHeight?: number;
+    maxMenuHeight?: number;
     onChange?: (value: MultiValue<Option>) => void;
-}
+};
 
 export const MultiSelect = ({
     value,
     onChange,
     disabled,
     options,
+    ref,
+    withMenuInput,
+    menuPortalTarget,
     placeholder,
+    menuPlacement = 'auto',
+    menuPosition,
+    minMenuHeight,
+    maxMenuHeight,
     menuInputPlaceholder,
+    ...containerStyles
 }: MultiSelectProps) => {
     const [_value, setValue] = useControllableState({ value, onChange, defaultValue: [] });
-    const selectRef = useRef<SelectInstance<Option, true>>(null);
+    const selectRef = useRef<SelectHandle>(null);
     const menuInputRef = useRef<HTMLInputElement>(null);
     const controlRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -60,7 +83,7 @@ export const MultiSelect = ({
 
     useEffect(() => {
         const select = selectRef.current;
-        if (!select) return;
+        if (!withMenuInput || !select) return;
 
         const isBlurOutsideMenu = (e: React.FocusEvent<HTMLInputElement>) =>
             !e.relatedTarget || !menuRef.current || !menuRef.current.contains(e.relatedTarget);
@@ -76,98 +99,120 @@ export const MultiSelect = ({
         return () => {
             select.onInputBlur = originalMethod;
         };
-    }, []);
+    }, [withMenuInput]);
 
     return (
         <Select<Option, true, GroupBase<Option>>
             isMulti
             value={_value}
             options={options}
-            ref={selectRef}
+            ref={useMergeRefs(selectRef, ref)}
             menuRef={menuRef}
             tagVariant='outline'
+            menuPlacement={menuPlacement}
+            menuPosition={menuPosition}
             isDisabled={disabled}
             controlRef={controlRef}
             onChange={setValue}
-            menuPortalTarget={document.body}
-            components={components}
+            menuPortalTarget={menuPortalTarget}
+            maxMenuHeight={maxMenuHeight}
+            minMenuHeight={minMenuHeight}
+            components={{
+                Option,
+                Control,
+                MenuList,
+                MultiValueRemove,
+                Menu: withMenuInput ? MenuWithInput : chakraComponents.Menu,
+            }}
             hideSelectedOptions={false}
             backspaceRemovesValue={false}
             closeMenuOnSelect={false}
             tabSelectsValue={false}
             isSearchable={false}
             placeholder={placeholder}
-            chakraStyles={chakraStyles}
-            menuButtonProps={{ onClick: addCustomValue }}
-            menuInputProps={{
-                ref: menuInputRef,
-                placeholder: menuInputPlaceholder,
-                onKeyDown: (e) => e.key === 'Enter' && addCustomValue(),
-                onBlur: (e) => {
-                    if (!controlRef.current?.contains(e.relatedTarget)) {
-                        selectRef.current?.focus();
-                        selectRef.current?.blur();
-                    }
-                },
+            chakraStyles={{
+                ...chakraStyles,
+                container: (provided) => ({ ...provided, w: 'full', ...containerStyles }),
             }}
+            menuButtonProps={withMenuInput ? { onClick: addCustomValue } : undefined}
+            menuInputProps={
+                withMenuInput
+                    ? {
+                          ref: menuInputRef,
+                          placeholder: menuInputPlaceholder,
+                          onKeyDown: (e) => e.key === 'Enter' && addCustomValue(),
+                          onBlur: (e) => {
+                              if (!controlRef.current?.contains(e.relatedTarget)) {
+                                  selectRef.current?.focus();
+                                  selectRef.current?.blur();
+                              }
+                          },
+                      }
+                    : undefined
+            }
         />
     );
 };
 
-const components: SelectComponentsConfig<Option, true, GroupBase<Option>> = {
-    MultiValueRemove: () => null,
-    Control: ({ innerRef, selectProps, ...props }) => (
-        <chakraComponents.Control
-            innerRef={useMergeRefs(innerRef, selectProps.controlRef)}
-            selectProps={selectProps}
-            {...props}
-        />
-    ),
-    Menu: ({ children, selectProps, innerRef, ...props }) => {
-        const { menuInputProps, menuButtonProps, menuFooterProps, menuRef } = selectProps;
-        const { onKeyDown, onTouchEnd, onMouseDown, ...inputProps } = menuInputProps ?? {};
-        const ref = useMergeRefs(menuRef, innerRef);
-        return (
-            <chakraComponents.Menu innerRef={ref} selectProps={selectProps} {...props}>
-                {children}
-                <HStack bg='white' py={2} pl={6} pr={2} {...menuFooterProps}>
-                    <Input
-                        size='sm'
-                        borderRadius='base'
-                        onTouchEnd={(e) => {
-                            e.stopPropagation();
-                            onTouchEnd?.(e);
-                        }}
-                        onMouseDown={(e) => {
-                            e.stopPropagation();
-                            onMouseDown?.(e);
-                        }}
-                        onKeyDown={(e) => {
-                            e.stopPropagation();
-                            onKeyDown?.(e);
-                        }}
-                        {...inputProps}
-                    />
-                    <IconButton
-                        variant='ghost'
-                        size='xs'
-                        color='lime.600'
-                        aria-label='Добавить в список'
-                        icon={<PlusIcon />}
-                        {...menuButtonProps}
-                    />
-                </HStack>
-            </chakraComponents.Menu>
-        );
-    },
-    Option: ({ children, isSelected, ...props }) => (
-        <chakraComponents.Option isSelected={isSelected} {...props}>
-            <Checkbox size='sm' pointerEvents='none' isChecked={isSelected}>
-                {children}
-            </Checkbox>
-        </chakraComponents.Option>
-    ),
+const Control = ({ selectProps, innerRef, ...props }: ControlProps<Option, true>) => (
+    <chakraComponents.Control
+        innerRef={useMergeRefs(innerRef, selectProps.controlRef)}
+        selectProps={selectProps}
+        {...props}
+    />
+);
+
+const MenuList = ({ className, ...props }: MenuListProps<Option, true>) => (
+    <chakraComponents.MenuList className={`${className} custom-scrollbar`} {...props} />
+);
+
+const MultiValueRemove = () => null;
+
+const MenuWithInput = ({ selectProps, innerRef, children, ...props }: MenuProps<Option, true>) => {
+    const { menuInputProps, menuButtonProps, menuFooterProps, menuRef } = selectProps;
+    const { onKeyDown, onTouchEnd, onMouseDown, ...inputProps } = menuInputProps ?? {};
+    const ref = useMergeRefs(menuRef, innerRef);
+    return (
+        <chakraComponents.Menu innerRef={ref} selectProps={selectProps} {...props}>
+            {children}
+            <HStack bg='white' py={2} pl={6} pr={2} {...menuFooterProps}>
+                <Input
+                    size='sm'
+                    borderRadius='base'
+                    onTouchEnd={(e) => {
+                        e.stopPropagation();
+                        onTouchEnd?.(e);
+                    }}
+                    onMouseDown={(e) => {
+                        e.stopPropagation();
+                        onMouseDown?.(e);
+                    }}
+                    onKeyDown={(e) => {
+                        e.stopPropagation();
+                        onKeyDown?.(e);
+                    }}
+                    {...inputProps}
+                />
+                <IconButton
+                    variant='ghost'
+                    size='xs'
+                    color='lime.600'
+                    aria-label='Добавить в список'
+                    icon={<PlusIcon />}
+                    {...menuButtonProps}
+                />
+            </HStack>
+        </chakraComponents.Menu>
+    );
 };
+
+const Option = ({ children, isSelected, ...props }: OptionProps<Option, true>) => (
+    <chakraComponents.Option isSelected={isSelected} {...props}>
+        <Checkbox size='sm' pointerEvents='none' isChecked={isSelected}>
+            {children}
+        </Checkbox>
+    </chakraComponents.Option>
+);
 
 const chakraStyles: ChakraStylesConfig<Option, true, GroupBase<Option>> = {
     valueContainer: (provided) => ({ ...provided, py: 2, columnGap: 2, rowGap: 1 }),
@@ -189,14 +234,14 @@ const chakraStyles: ChakraStylesConfig<Option, true, GroupBase<Option>> = {
         fontSize: 'sm',
         paddingBlock: 1.5,
         paddingInline: 4,
-        lineHeight: '20px',
+        lineHeight: 5,
         color: 'gray.800',
         _even: { bg: 'none' },
         _odd: { bg: 'blackAlpha.100' },
     }),
     menu: (provided) => ({
         ...provided,
-        mt: 0,
+        my: 0,
         borderRadius: 'base',
         overflow: 'hidden',
         borderWidth: '1px',

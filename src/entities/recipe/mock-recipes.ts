@@ -46,7 +46,7 @@ export const mockRecipes: Recipe[] = [
             },
         ],
         meat: '',
-        side: 'potatoes',
+        side: 'картошка',
     },
     {
         id: '1',
@@ -85,7 +85,7 @@ export const mockRecipes: Recipe[] = [
                 image: '/images/step3.png',
             },
         ],
-        side: 'potatoes',
+        side: 'картошка',
     },
     {
         id: '2',
@@ -200,7 +200,7 @@ export const mockRecipes: Recipe[] = [
                 image: '/images/step3.png',
             },
         ],
-        side: 'potatoes',
+        side: 'картошка',
     },
     {
         id: '5',

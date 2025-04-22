@@ -18,7 +18,7 @@ import { useNavigate, useParams } from 'react-router';
 
 import { RecipeCard, recipeCategoryMap } from '~/entities/recipe';
 import { mockRecipes } from '~/entities/recipe/mock-recipes';
-import { filterRecipe, selectRecipeFilters } from '~/features/filter-recipe';
+import { filterRecipe, selectAppliedFilterGroups } from '~/features/filter-recipe';
 import {
     clearRecipeSearch,
     filterMatchingRecipe,
@@ -38,7 +38,7 @@ export function CategoryPage() {
     const subcategory = category.subcategories[params.subcategory!];
     const scrollableRef = useRef<HTMLDivElement>(null);
     const search = useAppSelector(selectRecipeSearch);
-    const filters = useAppSelector(selectRecipeFilters);
+    const filterGroups = useAppSelector(selectAppliedFilterGroups);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -126,7 +126,7 @@ export function CategoryPage() {
                                                 r.category.includes(category.slug) &&
                                                 r.subcategory.includes(subc.slug) &&
                                                 filterMatchingRecipe(r, search) &&
-                                                filterRecipe(r, filters),
+                                                filterRecipe(r, filterGroups),
                                         )
                                         .map((r) => (
                                             <RecipeCard

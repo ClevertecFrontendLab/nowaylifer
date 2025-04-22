@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 import { RecipeCard, recipeCategoryMap } from '~/entities/recipe';
 import { mockRecipes } from '~/entities/recipe/mock-recipes';
-import { filterRecipe, selectRecipeFilters } from '~/features/filter-recipe';
+import { filterRecipe, selectAppliedFilterGroups } from '~/features/filter-recipe';
 import {
     clearRecipeSearch,
     filterMatchingRecipe,
@@ -21,11 +21,9 @@ import { SearchBar } from '~/widgets/SearchBar';
 
 export default function MainPage() {
     const search = useAppSelector(selectRecipeSearch);
-    const filters = useAppSelector(selectRecipeFilters);
+    const filterGroups = useAppSelector(selectAppliedFilterGroups);
     const dispatch = useAppDispatch();
-    const hasSearch = !!search;
-    const hasFilters = !!filters.excludedAllergens.length;
-    const showAll = hasSearch || hasFilters;
+    const showAllRecipes = !!search || !!filterGroups.length;
 
     useEffect(
         () => () => {
@@ -44,7 +42,7 @@ export default function MainPage() {
                     <SearchBar />
                 </Box>
             </VStack>
-            {showAll && (
+            {showAllRecipes && (
                 <Box>
                     <SimpleGrid
                         mb={4}
@@ -53,7 +51,9 @@ export default function MainPage() {
                     >
                         {mockRecipes
                             .filter(
-                                (r) => filterRecipe(r, filters) && filterMatchingRecipe(r, search),
+                                (r) =>
+                                    filterMatchingRecipe(r, search) &&
+                                    filterRecipe(r, filterGroups),
                             )
                             .map((r) => (
                                 <RecipeCard
@@ -77,7 +77,7 @@ export default function MainPage() {
                     </Center>
                 </Box>
             )}
-            {!showAll && (
+            {!showAllRecipes && (
                 <>
                     <Section>
                         <SectionHeading mb={6}>Новые рецепты</SectionHeading>

@@ -31,7 +31,10 @@ export const RecipeMenu = (props: RecipeMenuProps) => {
     return (
         <Box pr={1} overflow='hidden' {...props}>
             <Box
-                sx={{ '&::-webkit-scrollbar-track': { marginBottom: 2 } }}
+                sx={{
+                    '::-webkit-scrollbar-track': { mb: 2 },
+                    scrollbarGutter: 'stable',
+                }}
                 className='custom-scrollbar'
                 overflowX='hidden'
                 overflowY='auto'

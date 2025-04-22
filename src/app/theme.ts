@@ -58,6 +58,18 @@ const themeOverride = {
                 },
             },
         },
+        CloseButton: {
+            variants: {
+                inverted: {
+                    bg: 'black',
+                    color: 'white',
+                    _hover: {
+                        bg: 'transparent',
+                        color: 'black',
+                    },
+                },
+            },
+        },
         Badge: {
             baseStyle: {
                 color: 'black',
@@ -120,9 +132,13 @@ const themeOverride = {
     },
     space: {
         '4.5': '1.125rem',
+        '5.5': '1.375rem',
+        '6.5': '1.625rem',
     },
     sizes: {
         '4.5': '1.125rem',
+        '5.5': '1.375rem',
+        '6.5': '1.625rem',
     },
     colors: {
         lime: {
@@ -133,6 +149,7 @@ const themeOverride = {
             400: '#B1FF2E',
             '300-rgb': '196, 255, 97',
             600: '#2DB100',
+            700: '#207E00',
             800: '#134B00',
         },
     },
