@@ -35,8 +35,9 @@ export const HamburgerMenu = ({ onOpenChange, isOpen, children }: HamburgerMenuP
         isOpen={isOpen}
         onOpen={() => onOpenChange?.(true)}
         onClose={() => onOpenChange?.(false)}
+        isLazy
     >
-        {({ isOpen }) => (
+        {({ isOpen, onClose }) => (
             <>
                 {React.Children.map(children, (child) =>
                     isValidElement<{ isOpen?: boolean }>(child)
@@ -53,13 +54,18 @@ export const HamburgerMenu = ({ onOpenChange, isOpen, children }: HamburgerMenuP
                             border='none'
                             pb={8}
                             pt={4}
-                            data-test-id='nav'
                         >
-                            <Breadcrumbs px={5} mb={3} />
-                            <RecipeMenu mb={3} />
-                            <Box pt={4} px={6}>
-                                <About />
-                                <ExitButton />
+                            <Box display='flex' flexDir='column' minH={0} data-test-id='nav'>
+                                <Breadcrumbs
+                                    onBreadcrumbClick={(_, isActive) => !isActive && onClose()}
+                                    px={5}
+                                    mb={3}
+                                />
+                                <RecipeMenu mb={3} />
+                                <Box pt={4} px={6}>
+                                    <About />
+                                    <ExitButton />
+                                </Box>
                             </Box>
                         </MenuList>
                     </RemoveScroll>

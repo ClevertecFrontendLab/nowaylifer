@@ -12,9 +12,14 @@ import { Link as ReactRouterLink } from 'react-router';
 
 import { useBreadcrumbs } from '~/features/breadcrumbs/use-breadcrumbs';
 
+import { BreadcrumbData } from './types';
 import { useWrappingSeperator } from './use-wrapping-seperator';
 
-export const Breadcrumbs = (props: BreadcrumbProps) => {
+export interface BreadcrumbsProps extends BreadcrumbProps {
+    onBreadcrumbClick?: (breadcrumb: BreadcrumbData, isActive: boolean) => void;
+}
+
+export const Breadcrumbs = ({ onBreadcrumbClick, ...props }: BreadcrumbsProps) => {
     const breadcrumbs = useBreadcrumbs();
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -36,6 +41,9 @@ export const Breadcrumbs = (props: BreadcrumbProps) => {
                     </chakra.span>
                     <BreadcrumbLink
                         as={ReactRouterLink}
+                        onClick={() =>
+                            onBreadcrumbClick?.(breadcrumb, i === breadcrumbs.length - 1)
+                        }
                         to={breadcrumb.href}
                         color='blackAlpha.700'
                         _activeLink={{ color: 'black' }}
