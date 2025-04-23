@@ -97,7 +97,7 @@ export default function MainPage() {
                             <SectionHeading>Самое сочное</SectionHeading>
                             <Button
                                 as={Link}
-                                to='/juiciest'
+                                to='/the-juiciest'
                                 hideBelow='lg'
                                 variant='solid'
                                 bg='lime.400'

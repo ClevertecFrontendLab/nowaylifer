@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
     {
         path: '/',
         Component: RootLayout,
-        handle: { breadcrumb: 'Главнaя' } satisfies RouteHandle,
+        handle: { breadcrumb: 'Главная' } satisfies RouteHandle,
         children: [
             { index: true, Component: MainPage },
             {
@@ -53,7 +53,7 @@ export const router = createBrowserRouter([
                 ],
             },
             {
-                path: 'juiciest',
+                path: 'the-juiciest',
                 Component: JuiciestPage,
                 handle: { breadcrumb: 'Самое сочное' } satisfies RouteHandle,
             },
