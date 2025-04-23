@@ -299,6 +299,16 @@ const chakraStyles: ChakraStylesConfig<Option, true, GroupBase<Option>> = {
     }),
     placeholder: (provided) => ({ ...provided, color: 'blackAlpha.700' }),
     container: (provided) => ({ ...provided, w: 'full' }),
+    dropdownIndicator: (provided, { selectProps: { menuIsOpen } }) => ({
+        ...provided,
+        transform: `rotate(${menuIsOpen ? 180 : 0}deg)`,
+    }),
+    control: (provided) => ({
+        ...provided,
+        fontWeight: 'normal',
+        textAlign: 'start',
+        _disabled: { opacity: 1 },
+    }),
 };
 
 const PlusIcon = (props: IconProps) => (
