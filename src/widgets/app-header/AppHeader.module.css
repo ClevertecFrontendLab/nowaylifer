@@ -1,5 +1,6 @@
 .header {
     background-color: var(--chakra-colors-lime-50);
+    position: static !important;
 }
 
 .header[data-menu-open] {

@@ -33,7 +33,7 @@ export const AppHeader = () => {
             data-test-id='header'
         >
             <AppHeaderLogo />
-            <Breadcrumbs hideBelow='lg' ml={{ base: 16, xl: 32 }} />
+            {lg && <Breadcrumbs ml={{ base: 16, xl: 32 }} />}
             <HStack hideBelow='lg' ml='auto' mr={{ base: 8, xl: 16 }} gap={3}>
                 <Avatar size='md' name='bake_and_pie' src='/images/user.png' />
                 <Box>
@@ -50,20 +50,18 @@ export const AppHeader = () => {
                 <FriendsStat px={2} value={589} />
                 <LikesStat px={2} value={587} />
             </HStack>
-            {!lg && (
-                <HamburgerMenu
-                    onOpenChange={(isOpen) => {
-                        if (isOpen) {
-                            containerRef.current?.setAttribute('data-menu-open', '');
-                        } else {
-                            containerRef.current?.removeAttribute('data-menu-open');
-                        }
-                    }}
-                >
-                    <HamburgerMenuButton />
-                    <HamburgerMenuOverlay />
-                </HamburgerMenu>
-            )}
+            <HamburgerMenu
+                onOpenChange={(isOpen) => {
+                    if (isOpen) {
+                        containerRef.current?.setAttribute('data-menu-open', '');
+                    } else {
+                        containerRef.current?.removeAttribute('data-menu-open');
+                    }
+                }}
+            >
+                <HamburgerMenuButton hideFrom='lg' />
+                <HamburgerMenuOverlay />
+            </HamburgerMenu>
         </Flex>
     );
 };

@@ -44,6 +44,11 @@ const themeOverride = {
             }),
         }),
         Button: {
+            baseStyle: {
+                _disabled: {
+                    pointerEvents: 'none',
+                },
+            },
             variants: {
                 outline: {
                     borderColor: 'blackAlpha.600',

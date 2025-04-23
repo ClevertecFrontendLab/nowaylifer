@@ -1,4 +1,4 @@
-import { Circle, Grid, GridItem, HStack, VStack } from '@chakra-ui/react';
+import { Circle, Grid, GridItem, HStack, useBreakpointValue, VStack } from '@chakra-ui/react';
 import { Outlet } from 'react-router';
 
 import { Button } from '~/shared/ui/Button';
@@ -9,6 +9,7 @@ import { BottomMenu } from '~/widgets/BottomMenu';
 import { SidebarMenu } from '~/widgets/SidebarMenu';
 
 export default function RootLayout() {
+    const xl = useBreakpointValue({ base: false, xl: true });
     return (
         <Grid
             templateAreas={`"header      header      header"
@@ -31,7 +32,7 @@ export default function RootLayout() {
                 w='2xs'
                 minW={0}
             >
-                <SidebarMenu />
+                {xl && <SidebarMenu />}
             </GridItem>
             <GridItem
                 area='main'

@@ -13,13 +13,12 @@ import {
     DrawerTrigger,
 } from '~/shared/ui/Drawer';
 
-import { applyFilters, resetFilters, restoreFilters } from '../slice';
+import { applyFilters, resetFilters } from '../slice';
 import { FilterButton } from './FilterButton';
 import { Filters } from './Filters';
 
 export const FilterDrawer = ({ children }: { children?: React.ReactNode }) => {
     const drawerRef = useRef<DrawerHandle>(null);
-    const shouldRestoreRef = useRef(true);
     const dispatch = useAppDispatch();
     return (
         <DrawerContext ref={drawerRef}>
@@ -27,12 +26,7 @@ export const FilterDrawer = ({ children }: { children?: React.ReactNode }) => {
             <Drawer
                 placement='right'
                 preserveScrollBarGap={false}
-                onCloseComplete={() => {
-                    if (shouldRestoreRef.current) {
-                        dispatch(restoreFilters());
-                    }
-                    shouldRestoreRef.current = true;
-                }}
+                onCloseComplete={() => dispatch(resetFilters())}
             >
                 <DrawerOverlay />
                 <DrawerContent maxW={{ base: '344px', lg: '463px' }} data-test-id='filter-drawer'>
@@ -75,7 +69,6 @@ export const FilterDrawer = ({ children }: { children?: React.ReactNode }) => {
                             }}
                             onFind={() => {
                                 dispatch(applyFilters());
-                                shouldRestoreRef.current = false;
                                 drawerRef.current?.close();
                             }}
                         />

@@ -86,6 +86,7 @@ export function CategoryPage() {
             </VStack>
             <Section>
                 <Tabs
+                    isLazy
                     index={subcategory.index}
                     onChange={(index) => {
                         const subcSlug = Object.values(category.subcategories)[index].slug;
