@@ -7,6 +7,7 @@ import React, { useRef } from 'react';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 import { Recipe, RecipeCard } from '~/entities/recipe';
+import { isE2E } from '~/shared/lib/is-e2e';
 
 export const RecipeSlider = ({ recipes }: { recipes: Recipe[] }) => {
     const swiperRef = useRef<SwiperRef>(null);
@@ -18,6 +19,7 @@ export const RecipeSlider = ({ recipes }: { recipes: Recipe[] }) => {
                 slidesPerView='auto'
                 spaceBetween={12}
                 breakpoints={{ 1536: { spaceBetween: 24 } }}
+                speed={isE2E() ? 0 : undefined}
             >
                 {recipes.map((r, i) => (
                     <SwiperSlide
