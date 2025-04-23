@@ -1,3 +1,4 @@
+export { buildRecipeLink } from './build-recipe-link';
 export type { Recipe, RecipeCategory, RecipeSubcategory } from './interface';
 export { recipeCategoryMap } from './recipe-category';
 export { RecipeCard, type RecipeCardProps } from './RecipeCard';

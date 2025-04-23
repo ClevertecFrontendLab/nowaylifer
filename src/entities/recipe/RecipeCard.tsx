@@ -15,6 +15,8 @@ import {
     IconButton,
     Image,
     ImageProps,
+    LinkBox,
+    LinkOverlay,
     ResponsiveValue,
     StackProps,
     Text,
@@ -26,36 +28,49 @@ import {
     WrapItem,
     WrapProps,
 } from '@chakra-ui/react';
-import { isObject } from '@chakra-ui/utils';
+import { createContext, isObject } from '@chakra-ui/utils';
+import { useMemo } from 'react';
+
+import { Link } from '~/shared/ui/Link';
 
 import { BookmarkIcon } from '../../shared/ui/BookmarkIcon';
 import { Button } from '../../shared/ui/Button';
 import { ClockIcon } from '../../shared/ui/ClockIcon';
 import { EmojiHeartEyesIcon } from '../../shared/ui/EmojiHeartEyesIcon';
 import { BookmarksStat, LikesStat } from '../../shared/ui/Stats';
+import { buildRecipeLink } from './build-recipe-link';
 import { Recipe } from './interface';
 import { recipeCategoryMap } from './recipe-category';
 import { RecipeCardStyles, RecipeCardVariant, themeKey } from './RecipeCard.theme';
 
 const [StylesProvider, useStyles] = createStylesContext(themeKey);
 
+type RecipeContext = { recipe: Recipe; recipeLink?: string };
+const [RecipeContextProvider, useRecipeContext] = createContext<RecipeContext>();
+
 interface RecipeCardRootProps extends Omit<CardProps, 'title'> {
+    recipeLink?: string;
     variant?: RecipeCardVariant;
+    recipe: Recipe;
 }
 
 export interface RecipeCardProps extends RecipeCardRootProps {
-    variant?: RecipeCardVariant;
-    recipe: Recipe;
     renderTitle?: (styleProps: HTMLChakraProps<'div'>) => React.ReactNode;
 }
 
 const RecipeCardRoot = (props: RecipeCardRootProps) => {
-    const { size, variant, children, ...rest } = props;
+    const { size, variant, children, recipe, recipeLink, ...rest } = props;
     const styles = useMultiStyleConfig(themeKey, { size, variant }) as RecipeCardStyles;
+    const context = useMemo(
+        () => ({ recipe, recipeLink: recipeLink || buildRecipeLink(recipe) }),
+        [recipe, recipeLink],
+    );
     return (
-        <Card {...styles.root} {...rest}>
-            <StylesProvider value={styles}>{children}</StylesProvider>
-        </Card>
+        <RecipeContextProvider value={context}>
+            <Card as={LinkBox} {...styles.root} {...rest}>
+                <StylesProvider value={styles}>{children}</StylesProvider>
+            </Card>
+        </RecipeContextProvider>
     );
 };
 
@@ -71,12 +86,15 @@ const RecipeCardTitle = ({
     children?: React.ReactNode | ((styleProps: HTMLChakraProps<'div'>) => React.ReactNode);
 }) => {
     const styles = useStyles() as RecipeCardStyles;
+    const { recipeLink } = useRecipeContext();
     return typeof children === 'function' ? (
         children(styles.title)
     ) : (
-        <Heading {...styles.title} {...rest}>
-            {children}
-        </Heading>
+        <LinkOverlay as={Link} to={recipeLink}>
+            <Heading {...styles.title} {...rest}>
+                {children}
+            </Heading>
+        </LinkOverlay>
     );
 };
 
@@ -106,6 +124,7 @@ const RecipeCardBadge = ({ children, ...rest }: BadgeProps) => {
 
 const RecipeCardButtons = (props: StackProps) => {
     const lg = useBreakpointValue({ base: false, lg: true });
+    const { recipeLink } = useRecipeContext();
     return (
         <HStack gap={2} justifyContent='end' {...props}>
             {lg ? (
@@ -120,9 +139,11 @@ const RecipeCardButtons = (props: StackProps) => {
                     icon={<BookmarkIcon />}
                 />
             )}
-            <Button variant='inverted' size={{ base: 'xs', lg: 'sm' }}>
-                Готовить
-            </Button>
+            <LinkOverlay as={Link} to={recipeLink}>
+                <Button as={Box} variant='inverted' size={{ base: 'xs', lg: 'sm' }}>
+                    Готовить
+                </Button>
+            </LinkOverlay>
         </HStack>
     );
 };
@@ -151,7 +172,7 @@ const RecipeCardCategory = ({
 };
 
 const CompactRecipeCard = ({ recipe, ...rest }: RecipeCardProps) => (
-    <RecipeCardRoot {...rest}>
+    <RecipeCardRoot recipe={recipe} {...rest}>
         <RecipeCardBody>
             <HStack gap={2} minW={0}>
                 <Image boxSize={6} src={recipeCategoryMap[recipe.category[0]].iconSrc} />
@@ -160,6 +181,7 @@ const CompactRecipeCard = ({ recipe, ...rest }: RecipeCardProps) => (
             <Button
                 size={{ base: 'xs', lg: 'sm' }}
                 flexShrink={0}
+                as={Link}
                 variant='outline'
                 color='lime.600'
                 borderColor='lime.600'
@@ -171,7 +193,7 @@ const CompactRecipeCard = ({ recipe, ...rest }: RecipeCardProps) => (
 );
 
 const VRecipeCard = ({ variant, recipe, ...rest }: RecipeCardProps) => (
-    <RecipeCardRoot variant={variant} {...rest}>
+    <RecipeCardRoot recipe={recipe} variant={variant} {...rest}>
         {variant !== 'no-image' && <RecipeCardImage src={recipe.image} />}
         <RecipeCardBody>
             <Box flexGrow={1}>
@@ -226,7 +248,7 @@ const RecipeCardCategoryList = ({ categories, onlyFirst }: RecipeCardCategoryLis
 };
 
 const HRecipeCard = ({ recipe, renderTitle, ...rest }: RecipeCardProps) => (
-    <RecipeCardRoot {...rest}>
+    <RecipeCardRoot recipe={recipe} {...rest}>
         <RecipeCardImage src={recipe.image} />
         <RecipeCardBody>
             <Box order={1} flexGrow={1}>
@@ -249,7 +271,7 @@ const HRecipeCard = ({ recipe, renderTitle, ...rest }: RecipeCardProps) => (
 );
 
 const DetailedRecipeCard = ({ recipe, ...rest }: RecipeCardProps) => (
-    <RecipeCardRoot {...rest}>
+    <RecipeCardRoot recipe={recipe} {...rest}>
         <RecipeCardImage src={recipe.image} />
         <RecipeCardBody>
             <Box order={1} flexGrow={1}>

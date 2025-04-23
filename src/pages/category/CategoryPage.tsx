@@ -16,7 +16,7 @@ import {
 import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-import { RecipeCard, recipeCategoryMap } from '~/entities/recipe';
+import { buildRecipeLink, RecipeCard, recipeCategoryMap } from '~/entities/recipe';
 import { mockRecipes } from '~/entities/recipe/mock-recipes';
 import { filterRecipe, selectAppliedFilterGroups } from '~/features/filter-recipe';
 import {
@@ -134,6 +134,11 @@ export function CategoryPage() {
                                             <RecipeCard
                                                 key={r.id}
                                                 recipe={r}
+                                                recipeLink={buildRecipeLink(
+                                                    r,
+                                                    category,
+                                                    subcategory,
+                                                )}
                                                 data-test-id={`food-card-${i}`}
                                                 variant='horizontal'
                                                 renderTitle={(styleProps) => (

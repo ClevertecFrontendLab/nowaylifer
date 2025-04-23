@@ -1,9 +1,6 @@
-import { RecipeCategory, RecipeSubcategory } from './interface';
+import { RecipeCategory } from './interface';
 
-export const recipeCategoryMap: Record<
-    string,
-    RecipeCategory & { subcategories: Record<string, RecipeSubcategory> }
-> = {
+export const recipeCategoryMap: Record<string, RecipeCategory> = {
     salads: {
         index: 0,
         label: 'Салаты',

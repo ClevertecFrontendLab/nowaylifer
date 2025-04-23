@@ -30,4 +30,5 @@ export interface RecipeCategory {
     iconSrc: string;
     slug: string;
     description: string;
+    subcategories: Record<string, RecipeSubcategory>;
 }

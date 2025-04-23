@@ -1,4 +1,5 @@
 import { Box, Container, Heading, ListItem, OrderedList, Stack } from '@chakra-ui/react';
+import { useParams } from 'react-router';
 
 import { RecipeCard } from '~/entities/recipe';
 import { mockRecipes } from '~/entities/recipe/mock-recipes';
@@ -10,7 +11,8 @@ import { NutritionStat } from './NutritionStat';
 import { StepCard } from './StepCard';
 
 export default function RecipePage() {
-    const recipe = mockRecipes[3];
+    const params = useParams<'category' | 'subcategory' | 'id'>();
+    const recipe = mockRecipes.find((r) => r.id === params.id)!;
     return (
         <Box as='main' py={{ base: 4, lg: 8 }}>
             <RecipeCard variant='detailed' recipe={recipe} mb={{ base: 6, lg: 10 }} />
