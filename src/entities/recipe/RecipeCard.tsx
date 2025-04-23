@@ -15,14 +15,18 @@ import {
     IconButton,
     Image,
     ImageProps,
+    ResponsiveValue,
     StackProps,
     Text,
     TextProps,
     useBreakpointValue,
     useMultiStyleConfig,
+    useTheme,
     Wrap,
     WrapItem,
+    WrapProps,
 } from '@chakra-ui/react';
+import { isObject } from '@chakra-ui/utils';
 
 import { BookmarkIcon } from '../../shared/ui/BookmarkIcon';
 import { Button } from '../../shared/ui/Button';
@@ -175,15 +179,51 @@ const VRecipeCard = ({ variant, recipe, ...rest }: RecipeCardProps) => (
                 <RecipeCardDescription>{recipe.description}</RecipeCardDescription>
             </Box>
             <HStack justify='space-between' gap={0}>
-                <RecipeCardCategory
-                    iconSrc={recipeCategoryMap[recipe.category[0]].iconSrc}
-                    label={recipeCategoryMap[recipe.category[0]].label}
+                <RecipeCardCategoryList
+                    categories={recipe.category}
+                    onlyFirst={variant === 'no-image' ? true : { base: false, lg: true }}
                 />
                 <RecipeCardStats bookmarks={recipe.bookmarks} likes={recipe.likes} />
             </HStack>
         </RecipeCardBody>
     </RecipeCardRoot>
 );
+
+interface RecipeCardCategoryListProps extends WrapProps {
+    categories: string[];
+    onlyFirst?: ResponsiveValue<boolean>;
+}
+
+const getDisplayValue = (bool: boolean) => (bool ? 'none' : null);
+
+const RecipeCardCategoryList = ({ categories, onlyFirst }: RecipeCardCategoryListProps) => {
+    const styles = useStyles() as RecipeCardStyles;
+    const theme = useTheme<ChakraTheme>();
+    const { toArrayValue, isResponsive } = theme.__breakpoints!;
+    const value =
+        isObject(onlyFirst) && isResponsive(onlyFirst) ? toArrayValue(onlyFirst) : onlyFirst;
+
+    let dp: WrapProps['display'];
+
+    if (Array.isArray(value)) {
+        dp = value.map(getDisplayValue);
+    } else if (typeof value === 'boolean') {
+        dp = getDisplayValue(value) ?? undefined;
+    }
+
+    return (
+        <Wrap {...styles.categoryList}>
+            {categories.map((c, i) => (
+                <WrapItem key={c} display={i > 0 ? dp : undefined}>
+                    <RecipeCardCategory
+                        iconSrc={recipeCategoryMap[c].iconSrc}
+                        label={recipeCategoryMap[c].label}
+                    />
+                </WrapItem>
+            ))}
+        </Wrap>
+    );
+};
 
 const HRecipeCard = ({ recipe, renderTitle, ...rest }: RecipeCardProps) => (
     <RecipeCardRoot {...rest}>
@@ -193,11 +233,8 @@ const HRecipeCard = ({ recipe, renderTitle, ...rest }: RecipeCardProps) => (
                 <RecipeCardTitle>{renderTitle ?? recipe.title}</RecipeCardTitle>
                 <RecipeCardDescription>{recipe.description}</RecipeCardDescription>
             </Box>
-            <HStack order={0} justify='space-between' gap={0}>
-                <RecipeCardCategory
-                    iconSrc={recipeCategoryMap[recipe.category[0]].iconSrc}
-                    label={recipeCategoryMap[recipe.category[0]].label}
-                />
+            <HStack align='start' justify='space-between' order={0}>
+                <RecipeCardCategoryList categories={recipe.category} />
                 <RecipeCardStats bookmarks={recipe.bookmarks} likes={recipe.likes} />
             </HStack>
             <RecipeCardButtons order={2} />
@@ -220,16 +257,7 @@ const DetailedRecipeCard = ({ recipe, ...rest }: RecipeCardProps) => (
                 <RecipeCardDescription>{recipe.description}</RecipeCardDescription>
             </Box>
             <HStack order={0} justify='space-between' gap={1}>
-                <Wrap gap={2}>
-                    {recipe.category.map((c, idx) => (
-                        <WrapItem key={idx}>
-                            <RecipeCardCategory
-                                label={recipeCategoryMap[c].label}
-                                iconSrc={recipeCategoryMap[c].iconSrc}
-                            />
-                        </WrapItem>
-                    ))}
-                </Wrap>
+                <RecipeCardCategoryList categories={recipe.category} />
                 <RecipeCardStats bookmarks={recipe.bookmarks} likes={recipe.likes} />
             </HStack>
             <HStack order={2} alignItems='end' wrap={{ base: 'wrap', md: 'nowrap' }} gap={3}>

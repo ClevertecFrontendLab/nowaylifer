@@ -20,6 +20,7 @@ const { defineMultiStyleConfig } = createMultiStyleConfigHelpers([
     'description',
     'stats',
     'category',
+    'categoryList',
     'badge',
 ]);
 
@@ -94,11 +95,6 @@ export const recipeCardTheme = defineMultiStyleConfig({
                 pt: { base: 2, lg: 3, '2xl': 4 },
                 pb: { base: 1, lg: 3, '2xl': 5 },
             },
-            category: {
-                top: 2,
-                left: 2,
-                pos: { base: 'absolute', lg: 'static' },
-            },
             title: {
                 display: { base: '-webkit-box', lg: 'block' },
                 noOfLines: { base: 2, lg: 1 },
@@ -107,11 +103,17 @@ export const recipeCardTheme = defineMultiStyleConfig({
             description: {
                 hideBelow: 'lg',
             },
+            categoryList: {
+                direction: { base: 'column', lg: 'row' },
+                pos: { base: 'absolute', lg: 'static' },
+                top: 2,
+                left: 2,
+            },
         },
         horizontal: {
             root: {
                 flexDir: 'row',
-                h: { base: '128px', lg: '244px' },
+                minH: { base: '128px', lg: '244px' },
             },
             imageContainer: {
                 h: 'full',
@@ -133,12 +135,16 @@ export const recipeCardTheme = defineMultiStyleConfig({
             },
             description: {
                 hideBelow: 'lg',
+                mb: { base: 0, lg: 6 },
             },
             category: {
                 bg: 'lime.50',
+            },
+            categoryList: {
+                direction: { base: 'column', lg: 'row' },
+                pos: { base: 'absolute', lg: 'static' },
                 top: 2,
                 left: 2,
-                pos: { base: 'absolute', lg: 'static' },
             },
         },
         compact: {

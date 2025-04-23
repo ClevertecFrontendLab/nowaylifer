@@ -120,6 +120,7 @@ export function CategoryPage() {
                                     mb={4}
                                     spacing={{ base: 3, md: 4, '2xl': 6 }}
                                     minChildWidth={{ base: '328px', lg: '668px' }}
+                                    autoRows='1fr'
                                 >
                                     {mockRecipes
                                         .filter(
