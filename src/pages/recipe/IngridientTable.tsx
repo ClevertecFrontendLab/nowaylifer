@@ -70,8 +70,8 @@ export const IngridientTable = ({
                                 >
                                     <NumberInputField />
                                     <NumberInputStepper>
-                                        <NumberIncrementStepper />
-                                        <NumberDecrementStepper />
+                                        <NumberIncrementStepper data-test-id='increment-stepper' />
+                                        <NumberDecrementStepper data-test-id='decrement-stepper' />
                                     </NumberInputStepper>
                                 </NumberInput>
                             </FormControl>
@@ -79,10 +79,10 @@ export const IngridientTable = ({
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {ingridients.map((ingridient) => (
+                    {ingridients.map((ingridient, i) => (
                         <Tr key={ingridient.title}>
                             <Td fontWeight='medium'>{ingridient.title}</Td>
-                            <Td textAlign='end'>
+                            <Td textAlign='end' data-test-id={`ingredient-quantity-${i}`}>
                                 {Number(
                                     ((portions / defaultPortions) * ingridient.count).toFixed(2),
                                 )}{' '}

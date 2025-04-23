@@ -11,7 +11,7 @@ import { Recipe, RecipeCard } from '~/entities/recipe';
 export const RecipeSlider = ({ recipes }: { recipes: Recipe[] }) => {
     const swiperRef = useRef<SwiperRef>(null);
     return (
-        <Box pos='relative'>
+        <Box pos='relative' data-test-id='carousel'>
             <Swiper
                 ref={swiperRef}
                 loop
@@ -19,8 +19,12 @@ export const RecipeSlider = ({ recipes }: { recipes: Recipe[] }) => {
                 spaceBetween={12}
                 breakpoints={{ 1536: { spaceBetween: 24 } }}
             >
-                {recipes.map((r) => (
-                    <SwiperSlide key={r.id} style={{ width: 'auto', paddingBottom: 8 }}>
+                {recipes.map((r, i) => (
+                    <SwiperSlide
+                        key={r.id}
+                        style={{ width: 'auto', paddingBottom: 8 }}
+                        data-test-id={`carousel-card-${i}`}
+                    >
                         <RecipeCard variant='vertical' recipe={r} />
                     </SwiperSlide>
                 ))}
@@ -31,6 +35,7 @@ export const RecipeSlider = ({ recipes }: { recipes: Recipe[] }) => {
                 top='35%'
                 left={-2}
                 onClick={() => swiperRef.current?.swiper.slidePrev()}
+                data-test-id='carousel-back'
             />
             <SliderNavButton
                 direction='next'
@@ -38,6 +43,7 @@ export const RecipeSlider = ({ recipes }: { recipes: Recipe[] }) => {
                 top='35%'
                 right={-2}
                 onClick={() => swiperRef.current?.swiper.slideNext()}
+                data-test-id='carousel-forward'
             />
         </Box>
     );

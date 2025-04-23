@@ -34,6 +34,7 @@ export const SearchRecipeInput = (props: BoxProps) => {
                 onKeyDown={(e) => e.key === 'Enter' && searchEnabled && search()}
                 borderRadius={{ base: 'base', lg: 'md' }}
                 placeholder='Название или ингридиент...'
+                data-test-id='search-input'
             />
             <InputRightElement>
                 <IconButton
@@ -44,6 +45,7 @@ export const SearchRecipeInput = (props: BoxProps) => {
                     display='flex'
                     size={{ base: 'sm', lg: 'lg' }}
                     aria-label='Искать'
+                    data-test-id='search-button'
                 />
             </InputRightElement>
         </InputGroup>

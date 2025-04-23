@@ -31,6 +31,7 @@ export const SearchBar = () => {
                         Исключить аллергены
                     </FormLabel>
                     <FilterSwitch
+                        data-test-id='allergens-switcher'
                         appliedFilter
                         applyOnChange
                         filterType='allergens'
@@ -47,6 +48,9 @@ export const SearchBar = () => {
                     menuInputPlaceholder='Другой аллерген'
                     disabled={!allergenEnabled}
                     menuPortalTarget={document.body}
+                    menuInputProps={{ 'data-test-id': 'add-other-allergen' }}
+                    menuButtonProps={{ 'data-test-id': 'add-allergen-button' }}
+                    testId={{ control: 'allergens-menu-button', menu: 'allergens-menu' }}
                 />
             </HStack>
         </Box>

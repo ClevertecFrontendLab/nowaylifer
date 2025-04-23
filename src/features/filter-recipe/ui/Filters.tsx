@@ -25,6 +25,7 @@ export const Filters = ({ onClear, onFind }: { onClear: () => void; onFind: () =
                 maxMenuHeight={328}
                 placeholder='Категория'
                 mb={{ base: 4, lg: 6 }}
+                testId={{ control: 'filter-menu-button-категория' }}
             />
             <FilterSelect
                 filterType='authors'
@@ -37,7 +38,11 @@ export const Filters = ({ onClear, onFind }: { onClear: () => void; onFind: () =
             <Box>
                 <FormLabel mb={4} display='flex' gap={3} alignItems='center'>
                     Исключить аллергены
-                    <FilterSwitch filterType='allergens' onChange={setAllergenEnabled} />
+                    <FilterSwitch
+                        data-test-id='allergens-switcher-filter'
+                        filterType='allergens'
+                        onChange={setAllergenEnabled}
+                    />
                 </FormLabel>
                 <FilterSelect
                     filterType='allergens'
@@ -45,14 +50,22 @@ export const Filters = ({ onClear, onFind }: { onClear: () => void; onFind: () =
                     menuPosition='fixed'
                     disabled={!allergenEnabled}
                     minMenuHeight={400}
+                    menuInputProps={{ 'data-test-id': 'add-other-allergen' }}
+                    menuButtonProps={{ 'data-test-id': 'add-allergen-button' }}
                     menuInputPlaceholder='Другой аллерген'
                     placeholder='Выберите из списка аллергенов...'
+                    testId={{ control: 'allergens-menu-button-filter' }}
                 />
             </Box>
             <Spacer minH={8} />
             <SelectedFiltersTagList mb={8} />
             <HStack gap={2} justifyContent='end'>
-                <Button onClick={onClear} size={{ base: 'sm', lg: 'lg' }} variant='outline'>
+                <Button
+                    onClick={onClear}
+                    size={{ base: 'sm', lg: 'lg' }}
+                    variant='outline'
+                    data-test-id='clear-filter-button'
+                >
                     Очистить фильтр
                 </Button>
                 <Button
@@ -60,6 +73,7 @@ export const Filters = ({ onClear, onFind }: { onClear: () => void; onFind: () =
                     disabled={hasAnyFilter ? false : !isFiltersDirty}
                     size={{ base: 'sm', lg: 'lg' }}
                     onClick={onFind}
+                    data-test-id='find-recipe-button'
                 >
                     Найти рецепт
                 </Button>

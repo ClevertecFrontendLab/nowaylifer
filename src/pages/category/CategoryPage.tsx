@@ -99,14 +99,15 @@ export function CategoryPage() {
                         sx={{ scrollbarWidth: 'none' }}
                     >
                         <TabList minW='full' w='max-content' border='none'>
-                            {Object.values(category.subcategories).map(({ label }) => (
+                            {Object.values(category.subcategories).map((sub, i) => (
                                 <Tab
-                                    key={label}
+                                    key={sub.slug}
                                     marginBottom={0}
                                     borderBottom='2px solid'
                                     borderColor='chakra-border-color'
+                                    data-test-id={`tab-${sub.slug}-${i}`}
                                 >
-                                    {label}
+                                    {sub.label}
                                 </Tab>
                             ))}
                         </TabList>
@@ -128,10 +129,11 @@ export function CategoryPage() {
                                                 filterMatchingRecipe(r, search) &&
                                                 filterRecipe(r, filterGroups),
                                         )
-                                        .map((r) => (
+                                        .map((r, i) => (
                                             <RecipeCard
                                                 key={r.id}
                                                 recipe={r}
+                                                data-test-id={`food-card-${i}`}
                                                 variant='horizontal'
                                                 renderTitle={(styleProps) => (
                                                     <Heading {...styleProps}>

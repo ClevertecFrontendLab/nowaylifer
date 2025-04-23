@@ -1,10 +1,10 @@
-import { Box, BoxProps, ListItem } from '@chakra-ui/react';
+import { Box, BoxProps, ListItem, ListItemProps } from '@chakra-ui/react';
 import { memo } from 'react';
 
 import { RecipeCategory, RecipeSubcategory } from '~/entities/recipe/interface';
 import { Button } from '~/shared/ui/Button';
 
-export interface SubcategoryItemProps {
+export interface SubcategoryItemProps extends Omit<ListItemProps, 'onClick'> {
     active?: boolean;
     onClick?: (category: RecipeCategory, subcategory: RecipeSubcategory) => void;
     subcategory: RecipeSubcategory;
@@ -12,8 +12,8 @@ export interface SubcategoryItemProps {
 }
 
 export const SubcategoryItem = memo(
-    ({ active, category, subcategory, onClick }: SubcategoryItemProps) => (
-        <ListItem>
+    ({ active, category, subcategory, onClick, ...props }: SubcategoryItemProps) => (
+        <ListItem {...props}>
             <Button
                 onClick={() => onClick?.(category, subcategory)}
                 _hover={{ ...(active ? undefined : { bg: 'lime.50' }) }}

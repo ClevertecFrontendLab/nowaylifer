@@ -35,7 +35,7 @@ export const FilterDrawer = ({ children }: { children?: React.ReactNode }) => {
                 }}
             >
                 <DrawerOverlay />
-                <DrawerContent maxW={{ base: '344px', lg: '463px' }}>
+                <DrawerContent maxW={{ base: '344px', lg: '463px' }} data-test-id='filter-drawer'>
                     <DrawerHeader
                         fontSize='2xl'
                         display='flex'
@@ -53,6 +53,7 @@ export const FilterDrawer = ({ children }: { children?: React.ReactNode }) => {
                             pos='static'
                             variant='inverted'
                             borderRadius='full'
+                            data-test-id='close-filter-drawer'
                         />
                     </DrawerHeader>
                     <DrawerBody
@@ -87,6 +88,6 @@ export const FilterDrawer = ({ children }: { children?: React.ReactNode }) => {
 
 export const FilterDrawerTrigger = () => (
     <DrawerTrigger>
-        <FilterButton />
+        <FilterButton data-test-id='filter-button' />
     </DrawerTrigger>
 );

@@ -53,6 +53,7 @@ export const HamburgerMenu = ({ onOpenChange, isOpen, children }: HamburgerMenuP
                             border='none'
                             pb={8}
                             pt={4}
+                            data-test-id='nav'
                         >
                             <Breadcrumbs px={5} mb={3} />
                             <RecipeMenu mb={3} />
@@ -87,7 +88,11 @@ export const HamburgerMenuOverlay = ({ isOpen, ...rest }: { isOpen?: boolean } &
 );
 
 export const HamburgerMenuButton = (props: { isOpen?: boolean } & MenuButtonProps) => (
-    <MenuButton as={HamburgerMenuIcon} {...props} />
+    <MenuButton
+        as={HamburgerMenuIcon}
+        data-test-id={props.isOpen ? 'close-icon' : 'hamburger-icon'}
+        {...props}
+    />
 );
 
 const HamburgerMenuIcon = forwardRef<{ isOpen: boolean } & IconButtonProps, 'button'>(

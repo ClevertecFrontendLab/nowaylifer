@@ -40,6 +40,7 @@ export const SidebarMenu = (props: BoxProps) => {
             justifyContent='space-between'
             className={classes.sidebar}
             {...props}
+            data-test-id='nav'
         >
             <RecipeMenu ref={menuRef} minH={0} borderBottomRadius='xl' />
             <Box ref={spaceRef} flex={1} />

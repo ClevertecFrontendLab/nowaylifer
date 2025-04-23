@@ -26,6 +26,7 @@ export const Breadcrumbs = (props: BreadcrumbProps) => {
             sx={{ '& > ol': { flexWrap: 'wrap', rowGap: 1 } }}
             separator={<BreadcrumbSeparator />}
             spacing={0}
+            data-test-id='breadcrumbs'
             {...props}
         >
             {breadcrumbs.map((breadcrumb, i) => (

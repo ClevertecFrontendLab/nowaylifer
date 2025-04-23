@@ -1,14 +1,18 @@
 import {
+    Button,
     Checkbox,
     HStack,
     Icon,
     IconButton,
+    IconButtonProps,
     IconProps,
     Input,
+    InputProps,
     SystemStyleObject,
     useControllableState,
     useMergeRefs,
 } from '@chakra-ui/react';
+import { cx } from '@chakra-ui/utils';
 import {
     chakraComponents,
     ChakraStylesConfig,
@@ -29,6 +33,7 @@ import { useEffect, useRef } from 'react';
 export interface Option extends OptionBase {
     label: string;
     value: string;
+    testId?: string;
 }
 
 export type SelectHandle = SelectInstance<Option, true>;
@@ -46,7 +51,10 @@ export type MultiSelectProps = SystemStyleObject & {
     menuPosition?: MenuPosition;
     minMenuHeight?: number;
     maxMenuHeight?: number;
+    menuInputProps?: InputProps;
+    menuButtonProps?: Omit<IconButtonProps, 'aria-label'>;
     onChange?: (value: MultiValue<Option>) => void;
+    testId?: { control?: string; menu?: string };
 };
 
 export const MultiSelect = ({
@@ -63,6 +71,9 @@ export const MultiSelect = ({
     minMenuHeight,
     maxMenuHeight,
     menuInputPlaceholder,
+    menuButtonProps,
+    menuInputProps,
+    testId,
     ...containerStyles
 }: MultiSelectProps) => {
     const [_value, setValue] = useControllableState({ value, onChange, defaultValue: [] });
@@ -104,6 +115,7 @@ export const MultiSelect = ({
     return (
         <Select<Option, true, GroupBase<Option>>
             isMulti
+            testId={testId}
             value={_value}
             options={options}
             ref={useMergeRefs(selectRef, ref)}
@@ -134,7 +146,9 @@ export const MultiSelect = ({
                 ...chakraStyles,
                 container: (provided) => ({ ...provided, w: 'full', ...containerStyles }),
             }}
-            menuButtonProps={withMenuInput ? { onClick: addCustomValue } : undefined}
+            menuButtonProps={
+                withMenuInput ? { onClick: addCustomValue, ...menuButtonProps } : undefined
+            }
             menuInputProps={
                 withMenuInput
                     ? {
@@ -147,6 +161,7 @@ export const MultiSelect = ({
                                   selectRef.current?.blur();
                               }
                           },
+                          ...menuInputProps,
                       }
                     : undefined
             }
@@ -154,16 +169,33 @@ export const MultiSelect = ({
     );
 };
 
-const Control = ({ selectProps, innerRef, ...props }: ControlProps<Option, true>) => (
+const Control = ({ selectProps, innerRef, innerProps, ...props }: ControlProps<Option, true>) => (
     <chakraComponents.Control
         innerRef={useMergeRefs(innerRef, selectProps.controlRef)}
         selectProps={selectProps}
+        innerProps={{
+            ...innerProps,
+            ['as' as string]: Button,
+            ['variant' as string]: 'unstyled',
+            ['disabled' as string]: selectProps.isDisabled,
+            'data-test-id': selectProps.testId?.control,
+        }}
         {...props}
     />
 );
 
-const MenuList = ({ className, ...props }: MenuListProps<Option, true>) => (
-    <chakraComponents.MenuList className={`${className} custom-scrollbar`} {...props} />
+const MenuList = ({
+    className,
+    innerProps,
+    selectProps,
+    ...props
+}: MenuListProps<Option, true>) => (
+    <chakraComponents.MenuList
+        className={cx(className, 'custom-scrollbar')}
+        innerProps={{ ...innerProps, 'data-test-id': selectProps.testId?.menu }}
+        selectProps={selectProps}
+        {...props}
+    />
 );
 
 const MultiValueRemove = () => null;
@@ -206,8 +238,19 @@ const MenuWithInput = ({ selectProps, innerRef, children, ...props }: MenuProps<
     );
 };
 
-const Option = ({ children, isSelected, ...props }: OptionProps<Option, true>) => (
-    <chakraComponents.Option isSelected={isSelected} {...props}>
+const Option = ({
+    children,
+    isSelected,
+    data,
+    innerProps,
+    ...props
+}: OptionProps<Option, true>) => (
+    <chakraComponents.Option
+        data={data}
+        isSelected={isSelected}
+        innerProps={{ ...innerProps, 'data-test-id': data.testId }}
+        {...props}
+    >
         <Checkbox size='sm' pointerEvents='none' isChecked={isSelected}>
             {children}
         </Checkbox>

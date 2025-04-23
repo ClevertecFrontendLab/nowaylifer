@@ -1,20 +1,29 @@
-import { AccordionButton, AccordionIcon, Box, Icon, IconProps, Image } from '@chakra-ui/react';
+import {
+    AccordionButton,
+    AccordionButtonProps,
+    AccordionIcon,
+    Box,
+    Icon,
+    IconProps,
+    Image,
+} from '@chakra-ui/react';
 import { memo } from 'react';
 
 import { RecipeCategory } from '~/entities/recipe';
 
-export interface CategoryItemProps {
+export interface CategoryItemProps extends AccordionButtonProps {
     active?: boolean;
     category: RecipeCategory;
 }
 
-export const CategoryItem = memo(({ active, category }: CategoryItemProps) => (
+export const CategoryItem = memo(({ active, category, ...props }: CategoryItemProps) => (
     <AccordionButton
         _focusVisible={{ boxShadow: 'none', bg: active ? undefined : 'lime.100' }}
         _hover={active ? {} : { bg: 'lime.50' }}
         bg={active ? 'lime.100' : undefined}
         py={3}
         px={2}
+        {...props}
     >
         <Image src={category.iconSrc} boxSize={6} mr={3} />
         <Box fontWeight={active ? 'bold' : 'medium'}>{category.label}</Box>

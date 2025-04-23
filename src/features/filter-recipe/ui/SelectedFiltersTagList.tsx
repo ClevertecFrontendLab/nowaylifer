@@ -34,7 +34,13 @@ export const SelectedFiltersTagList = ({
         >
             {sortedFilters.map((filter) => (
                 <ListItem key={`${filter.type}-${filter.value}`}>
-                    <Tag borderWidth='1px' borderColor='lime.400' bg='lime.100' color='lime.700'>
+                    <Tag
+                        borderWidth='1px'
+                        borderColor='lime.400'
+                        bg='lime.100'
+                        color='lime.700'
+                        data-test-id='filter-tag'
+                    >
                         <TagLabel>{filter.label}</TagLabel>
                         <TagCloseButton onClick={() => dispatch(removeFilter(filter))} />
                     </Tag>

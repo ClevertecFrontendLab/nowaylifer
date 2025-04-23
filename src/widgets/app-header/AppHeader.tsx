@@ -24,7 +24,14 @@ export const AppHeader = () => {
     }, [lg]);
 
     return (
-        <Flex ref={containerRef} as='header' align='center' p={4} className={classes.header}>
+        <Flex
+            ref={containerRef}
+            as='header'
+            align='center'
+            p={4}
+            className={classes.header}
+            data-test-id='header'
+        >
             <AppHeaderLogo />
             <Breadcrumbs hideBelow='lg' ml={{ base: 16, xl: 32 }} />
             <HStack hideBelow='lg' ml='auto' mr={{ base: 8, xl: 16 }} gap={3}>

@@ -55,11 +55,12 @@ export default function MainPage() {
                                     filterMatchingRecipe(r, search) &&
                                     filterRecipe(r, filterGroups),
                             )
-                            .map((r) => (
+                            .map((r, i) => (
                                 <RecipeCard
                                     key={r.id}
                                     recipe={r}
                                     variant='horizontal'
+                                    data-test-id={`food-card-${i}`}
                                     renderTitle={(styleProps) => (
                                         <Heading {...styleProps}>
                                             <HighlightSearchMatch query={search}>
@@ -111,10 +112,26 @@ export default function MainPage() {
                             spacing={{ base: 3, md: 4, '2xl': 6 }}
                             minChildWidth={{ base: '328px', lg: '668px' }}
                         >
-                            <RecipeCard variant='horizontal' recipe={mockRecipes[13]} />
-                            <RecipeCard variant='horizontal' recipe={mockRecipes[14]} />
-                            <RecipeCard variant='horizontal' recipe={mockRecipes[7]} />
-                            <RecipeCard variant='horizontal' recipe={mockRecipes[12]} />
+                            <RecipeCard
+                                data-test-id='card-link-0'
+                                variant='horizontal'
+                                recipe={mockRecipes[7]}
+                            />
+                            <RecipeCard
+                                data-test-id='card-link-1'
+                                variant='horizontal'
+                                recipe={mockRecipes[13]}
+                            />
+                            <RecipeCard
+                                data-test-id='card-link-2'
+                                variant='horizontal'
+                                recipe={mockRecipes[14]}
+                            />
+                            <RecipeCard
+                                datat-test-id='card-link-3'
+                                variant='horizontal'
+                                recipe={mockRecipes[12]}
+                            />
                         </SimpleGrid>
                         <Center hideFrom='lg'>
                             <Button

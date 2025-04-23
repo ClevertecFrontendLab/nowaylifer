@@ -36,6 +36,7 @@ export const FilterCheckboxList = ({
                                     }),
                                 )
                             }
+                            data-test-id={o.testId}
                         >
                             {o.label}
                         </FilterCheckbox>

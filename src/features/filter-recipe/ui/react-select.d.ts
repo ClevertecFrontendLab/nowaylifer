@@ -3,6 +3,7 @@ import type {} from 'react-select/base';
 
 declare module 'react-select/base' {
     interface Props {
+        testId?: { control?: string; menu?: string };
         menuRef?: React.Ref<HTMLDivElement>;
         controlRef?: React.Ref<HTMLDivElement>;
         menuFooterProps?: BoxProps & { ref?: React.Ref<HTMLDivElement> };

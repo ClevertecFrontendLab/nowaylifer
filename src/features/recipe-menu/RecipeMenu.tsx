@@ -58,7 +58,13 @@ export const RecipeMenu = (props: RecipeMenuProps) => {
                         const isCategoryActive = category.slug === params?.category;
                         return (
                             <AccordionItem key={category.slug} border='none'>
-                                <CategoryItem active={isCategoryActive} category={category} />
+                                <CategoryItem
+                                    active={isCategoryActive}
+                                    category={category}
+                                    data-test-id={
+                                        category.slug === 'vegan' ? 'vegan-cuisine' : category.slug
+                                    }
+                                />
                                 <AccordionPanel py={0}>
                                     <UnorderedList styleType='none'>
                                         {Object.values(category.subcategories).map(
@@ -73,6 +79,11 @@ export const RecipeMenu = (props: RecipeMenuProps) => {
                                                         subcategory={subcategory}
                                                         active={isSubcategoryActive}
                                                         onClick={handleSubcategoryClick}
+                                                        data-test-id={
+                                                            isSubcategoryActive
+                                                                ? `${subcategory.slug}-active`
+                                                                : undefined
+                                                        }
                                                     />
                                                 );
                                             },
