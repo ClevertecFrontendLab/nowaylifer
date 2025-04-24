@@ -43,6 +43,7 @@ export const recipeCardTheme = defineMultiStyleConfig({
             minW: 0,
         },
         stats: {
+            display: 'flex',
             gap: 2,
             fontSize: 'xs',
         },
@@ -171,8 +172,20 @@ export const recipeCardTheme = defineMultiStyleConfig({
             category: {
                 bg: 'lime.50',
             },
+            categoryList: {
+                alignSelf: 'end',
+            },
             title: {
                 isTruncated: true,
+            },
+            stats: {
+                display: 'grid',
+                flex: 1,
+                w: 'full',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(35px, auto))',
+                justifyItems: 'start',
+                justifyContent: 'end',
+                rowGap: 0,
             },
         },
         detailed: {

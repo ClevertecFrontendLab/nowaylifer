@@ -90,7 +90,7 @@ const RecipeCardTitle = ({
     return typeof children === 'function' ? (
         children(styles.title)
     ) : (
-        <LinkOverlay as={Link} to={recipeLink}>
+        <LinkOverlay as={Link} to={recipeLink} minW={0}>
             <Heading {...styles.title} {...rest}>
                 {children}
             </Heading>
@@ -106,10 +106,10 @@ const RecipeCardDescription = (props: TextProps) => {
 const RecipeCardStats = ({ likes = 0, bookmarks = 0 }: { likes?: number; bookmarks?: number }) => {
     const styles = useStyles() as RecipeCardStyles;
     return (
-        <HStack {...styles.stats}>
+        <Box {...styles.stats}>
             {bookmarks > 0 && <BookmarksStat value={bookmarks} />}
             {likes > 0 && <LikesStat value={likes} />}
-        </HStack>
+        </Box>
     );
 };
 
