@@ -8,10 +8,6 @@
     }
 }
 
-.custom-scrollbar {
-    scrollbar-gutter: stable;
-}
-
 .custom-scrollbar::-webkit-scrollbar {
     width: var(--chakra-space-2);
 }

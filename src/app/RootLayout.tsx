@@ -1,14 +1,15 @@
-import { Circle, Grid, GridItem, HStack, VStack } from '@chakra-ui/react';
+import { Circle, Grid, GridItem, HStack, useBreakpointValue, VStack } from '@chakra-ui/react';
 import { Outlet } from 'react-router';
 
 import { Button } from '~/shared/ui/Button';
 import { PenIcon } from '~/shared/ui/PenIcon';
 import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/Stats';
-import { AppHeader } from '~/widgets/AppHeader';
+import { AppHeader } from '~/widgets/app-header';
 import { BottomMenu } from '~/widgets/BottomMenu';
 import { SidebarMenu } from '~/widgets/SidebarMenu';
 
 export default function RootLayout() {
+    const xl = useBreakpointValue({ base: false, xl: true });
     return (
         <Grid
             templateAreas={`"header      header      header"
@@ -18,7 +19,7 @@ export default function RootLayout() {
             gridTemplateColumns='auto 1fr auto'
             minH='100vh'
         >
-            <GridItem area='header' zIndex='docked' position='sticky' top={0} minW={0}>
+            <GridItem area='header' zIndex='sticky' position='sticky' top={0} minW={0}>
                 <AppHeader />
             </GridItem>
             <GridItem
@@ -31,13 +32,14 @@ export default function RootLayout() {
                 w='2xs'
                 minW={0}
             >
-                <SidebarMenu />
+                {xl && <SidebarMenu />}
             </GridItem>
             <GridItem
                 area='main'
                 minW={0}
-                maxW={{ base: 'full', lg: '920px', '2xl': '1408px' }}
-                marginInline={{ base: 'auto', xl: '0' }}
+                maxW={{ base: 'full', lg: '928px', '2xl': '1408px' }}
+                mx={{ base: 'auto', xl: '0' }}
+                px={{ base: 4, md: 5, lg: 6 }}
             >
                 <Outlet />
             </GridItem>
@@ -78,7 +80,14 @@ export default function RootLayout() {
                     </HStack>
                 </VStack>
             </GridItem>
-            <GridItem area='bottom-menu' hideFrom='lg' position='sticky' bottom={0} minW={0}>
+            <GridItem
+                zIndex='docked'
+                area='bottom-menu'
+                hideFrom='lg'
+                position='sticky'
+                bottom={0}
+                minW={0}
+            >
                 <BottomMenu />
             </GridItem>
         </Grid>

@@ -11,6 +11,7 @@ import React, { cloneElement } from 'react';
 import { BookmarkIcon } from './BookmarkIcon';
 import { EmojiHeartEyesIcon } from './EmojiHeartEyesIcon';
 import { PeopleIcon } from './PeopleIcon';
+import { PeopleIconOutline } from './PeopleIconOutline';
 
 export const BookmarksStat = (props: Omit<BaseStatProps, 'label' | 'icon'>) => (
     <BaseStat label='Количество добавленных в избранное' icon={<BookmarkIcon />} {...props} />
@@ -20,8 +21,15 @@ export const LikesStat = (props: Omit<BaseStatProps, 'label' | 'icon'>) => (
     <BaseStat label='Количество лайков' icon={<EmojiHeartEyesIcon />} {...props} />
 );
 
-export const FriendsStat = (props: Omit<BaseStatProps, 'label' | 'icon'>) => (
-    <BaseStat label='Количество друзей' icon={<PeopleIcon />} {...props} />
+export const FriendsStat = ({
+    variant = 'solid',
+    ...rest
+}: { variant?: 'outline' | 'solid' } & Omit<BaseStatProps, 'label' | 'icon'>) => (
+    <BaseStat
+        label='Количество друзей'
+        icon={variant === 'solid' ? <PeopleIcon /> : <PeopleIconOutline />}
+        {...rest}
+    />
 );
 
 interface BaseStatProps extends StatProps {
@@ -30,7 +38,7 @@ interface BaseStatProps extends StatProps {
     value: string | number;
 }
 
-const BaseStat = ({ icon, label, value, fontSize = 'xs', ...rest }: BaseStatProps) => (
+const BaseStat = ({ icon, label, value, fontSize = 'inherit', ...rest }: BaseStatProps) => (
     <Stat
         p={1}
         fontSize={fontSize}
@@ -43,11 +51,11 @@ const BaseStat = ({ icon, label, value, fontSize = 'xs', ...rest }: BaseStatProp
         }}
         {...rest}
     >
-        <StatLabel lineHeight={0} fontSize={fontSize}>
+        <StatLabel lineHeight={0} fontSize='inherit'>
             {cloneElement<IconProps>(icon, { boxSize: icon.props.boxSize ?? '1em' })}
             <VisuallyHidden>{label}</VisuallyHidden>
         </StatLabel>
-        <StatNumber lineHeight={1.33} fontWeight='semibold' fontSize={fontSize} color='lime.600'>
+        <StatNumber lineHeight='short' fontWeight='semibold' fontSize='inherit' color='lime.600'>
             {value}
         </StatNumber>
     </Stat>

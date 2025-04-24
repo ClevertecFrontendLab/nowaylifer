@@ -1,16 +1,23 @@
-import { tabsAnatomy } from '@chakra-ui/anatomy';
+import {
+    cardAnatomy,
+    checkboxAnatomy,
+    inputAnatomy,
+    switchAnatomy,
+    tabsAnatomy,
+} from '@chakra-ui/anatomy';
 import {
     createMultiStyleConfigHelpers,
     extendTheme,
+    InputProps,
     Theme as DefaultTheme,
     ThemeOverride,
 } from '@chakra-ui/react';
 
-import { dishCardTheme } from '~/shared/ui/DishCard/DishCard.theme';
+import { recipeCardTheme } from '~/entities/recipe';
 
 const themeOverride = {
     components: {
-        DishCard: dishCardTheme,
+        RecipeCard: recipeCardTheme,
         Link: {
             baseStyle: {
                 _hover: {
@@ -37,6 +44,11 @@ const themeOverride = {
             }),
         }),
         Button: {
+            baseStyle: {
+                _disabled: {
+                    pointerEvents: 'none',
+                },
+            },
             variants: {
                 outline: {
                     borderColor: 'blackAlpha.600',
@@ -51,15 +63,87 @@ const themeOverride = {
                 },
             },
         },
+        CloseButton: {
+            variants: {
+                inverted: {
+                    bg: 'black',
+                    color: 'white',
+                    _hover: {
+                        bg: 'transparent',
+                        color: 'black',
+                    },
+                },
+            },
+        },
+        Badge: {
+            baseStyle: {
+                color: 'black',
+                textTransform: 'none',
+                fontWeight: 'normal',
+                fontSize: 'sm',
+            },
+        },
+        Card: createMultiStyleConfigHelpers(cardAnatomy.keys).defineMultiStyleConfig({
+            baseStyle: {
+                container: {
+                    boxShadow: 'none',
+                    borderColor: 'chakra-border-color',
+                    borderWidth: '1px',
+                    borderRadius: 'lg',
+                    overflow: 'hidden',
+                },
+            },
+        }),
+        Input: createMultiStyleConfigHelpers(inputAnatomy.keys).defineMultiStyleConfig({
+            defaultProps: {
+                ['focusBorderColor' as string]: 'lime.300',
+            } satisfies InputProps,
+            baseStyle: {
+                group: {
+                    borderColor: 'blackAlpha.600',
+                },
+                field: {
+                    color: 'lime.800',
+                    _placeholder: { color: 'lime.800' },
+                },
+            },
+        }),
+        Checkbox: createMultiStyleConfigHelpers(checkboxAnatomy.keys).defineMultiStyleConfig({
+            baseStyle: {
+                control: {
+                    color: 'black',
+                    borderColor: 'lime.150',
+                    _checked: {
+                        color: 'black',
+                        bg: 'lime.400',
+                        borderColor: 'lime.400',
+                    },
+                },
+            },
+        }),
+        Switch: createMultiStyleConfigHelpers(switchAnatomy.keys).defineMultiStyleConfig({
+            baseStyle: {
+                track: {
+                    '--switch-bg': 'colors.blackAlpha.300',
+                    _checked: {
+                        '--switch-bg': 'colors.lime.400',
+                    },
+                },
+            },
+        }),
     },
     breakpoints: {
         '1.5xl': '90em',
     },
     space: {
         '4.5': '1.125rem',
+        '5.5': '1.375rem',
+        '6.5': '1.625rem',
     },
     sizes: {
         '4.5': '1.125rem',
+        '5.5': '1.375rem',
+        '6.5': '1.625rem',
     },
     colors: {
         lime: {
@@ -70,8 +154,12 @@ const themeOverride = {
             400: '#B1FF2E',
             '300-rgb': '196, 255, 97',
             600: '#2DB100',
+            700: '#207E00',
             800: '#134B00',
         },
+    },
+    lineHeights: {
+        short: 1.33,
     },
     fonts: {
         body: 'Inter Variable, sans-serif',

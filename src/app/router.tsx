@@ -1,48 +1,59 @@
 import { createBrowserRouter } from 'react-router';
 
-import JuiciestPage from '~/pages/main/Juiciest';
-import MainPage from '~/pages/main/Main';
-import VeganPage from '~/pages/main/Vegan';
-import { foodMenu } from '~/shared/constants/food-menu';
-import { RouteHandle } from '~/shared/use-breadcrumbs';
+import { recipeCategoryMap } from '~/entities/recipe';
+import { mockRecipes } from '~/entities/recipe/mock-recipes';
+import { RouteHandle } from '~/features/breadcrumbs';
+import CategoryPage from '~/pages/category';
+import JuiciestPage from '~/pages/JuiciestPage';
+import MainPage from '~/pages/MainPage';
+import RecipePage from '~/pages/recipe/RecipePage';
 
 import RootLayout from './RootLayout';
-
-const subcategorySlugToBreadcrumb: Record<string, string> = {
-    'second-courses': foodMenu[6].subcategories[2].label,
-};
-
-const categorySlugToBreadcrumb: Record<string, string> = {
-    'vegan-cuisine': foodMenu[6].category.label,
-};
 
 export const router = createBrowserRouter([
     {
         path: '/',
         Component: RootLayout,
-        handle: { breadcrumb: 'Главнaя' } satisfies RouteHandle,
+        handle: { breadcrumb: 'Главная' } satisfies RouteHandle,
         children: [
             { index: true, Component: MainPage },
             {
                 path: ':category',
                 handle: {
-                    breadcrumb: (match) =>
-                        match.params.category && categorySlugToBreadcrumb[match.params.category],
+                    breadcrumb: (match) => recipeCategoryMap[match.params.category!].label,
                 } satisfies RouteHandle,
                 children: [
                     {
                         path: ':subcategory',
-                        Component: VeganPage,
+                        Component: CategoryPage,
                         handle: {
                             breadcrumb: (match) =>
-                                match.params.subcategory &&
-                                subcategorySlugToBreadcrumb[match.params.subcategory],
+                                recipeCategoryMap[match.params.category!].subcategories[
+                                    match.params.subcategory!
+                                ].label,
+                        } satisfies RouteHandle,
+                    },
+                    {
+                        path: ':subcategory/:id',
+                        Component: RecipePage,
+                        handle: {
+                            breadcrumb: (match) => {
+                                const { category, subcategory, id } = match.params;
+                                return [
+                                    {
+                                        href: `/${category}/${subcategory}`,
+                                        label: recipeCategoryMap[match.params.category!]
+                                            .subcategories[match.params.subcategory!].label,
+                                    },
+                                    mockRecipes[Number(id)].title,
+                                ];
+                            },
                         } satisfies RouteHandle,
                     },
                 ],
             },
             {
-                path: 'juiciest',
+                path: 'the-juiciest',
                 Component: JuiciestPage,
                 handle: { breadcrumb: 'Самое сочное' } satisfies RouteHandle,
             },
