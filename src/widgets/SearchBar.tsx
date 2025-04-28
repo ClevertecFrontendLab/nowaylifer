@@ -28,7 +28,7 @@ export const SearchBar = () => {
             <HStack justify='space-between' gap={3} pl={2} hideBelow='lg'>
                 <FormControl w='auto' display='flex' alignItems='center' alignSelf='start' h={10}>
                     <FormLabel w='max-content' htmlFor='exclude-allergens' mb={0}>
-                        Исключить аллергены
+                        Исключить мои аллергены
                     </FormLabel>
                     <FilterSwitch
                         data-test-id='allergens-switcher'
@@ -40,17 +40,20 @@ export const SearchBar = () => {
                     />
                 </FormControl>
                 <FilterSelect
-                    applyOnChange
-                    appliedFilter
-                    withMenuInput
                     filterType='allergens'
-                    placeholder='Выберите из списка...'
-                    menuInputPlaceholder='Другой аллерген'
+                    appliedFilter
+                    footerInputPlaceholder='Другой аллерген'
+                    placeholder='Выберите из списка аллергенов...'
+                    applyOnChange
+                    withFooter
+                    withinPortal
                     disabled={!allergenEnabled}
-                    menuPortalTarget={document.body}
-                    menuInputProps={{ 'data-test-id': 'add-other-allergen' }}
-                    menuButtonProps={{ 'data-test-id': 'add-allergen-button' }}
-                    testId={{ control: 'allergens-menu-button', menu: 'allergens-menu' }}
+                    testId={{
+                        field: 'allergens-menu-button',
+                        menu: 'allergens-menu',
+                        footerInput: 'add-other-allergen',
+                        footerButton: 'add-allergen-button',
+                    }}
                 />
             </HStack>
         </Box>

@@ -22,14 +22,12 @@ export const Filters = ({ onClear, onFind }: { onClear: () => void; onFind: () =
         <Flex h='max' minH='full' direction='column'>
             <FilterSelect
                 filterType='categories'
-                maxMenuHeight={328}
                 placeholder='Категория'
                 mb={{ base: 4, lg: 6 }}
-                testId={{ control: 'filter-menu-button-категория' }}
+                testId={{ field: 'filter-menu-button-категория' }}
             />
             <FilterSelect
                 filterType='authors'
-                maxMenuHeight={360}
                 placeholder='Поик по автору'
                 mb={{ base: 4, lg: 6 }}
             />
@@ -46,15 +44,15 @@ export const Filters = ({ onClear, onFind }: { onClear: () => void; onFind: () =
                 </FormLabel>
                 <FilterSelect
                     filterType='allergens'
-                    withMenuInput={true}
-                    menuPosition='fixed'
+                    withFooter
                     disabled={!allergenEnabled}
-                    minMenuHeight={400}
-                    menuInputProps={{ 'data-test-id': 'add-other-allergen' }}
-                    menuButtonProps={{ 'data-test-id': 'add-allergen-button' }}
-                    menuInputPlaceholder='Другой аллерген'
+                    footerInputPlaceholder='Другой аллерген'
                     placeholder='Выберите из списка аллергенов...'
-                    testId={{ control: 'allergens-menu-button-filter' }}
+                    testId={{
+                        field: 'allergens-menu-button-filter',
+                        footerInput: 'add-other-allergen',
+                        footerButton: 'add-allergen-button',
+                    }}
                 />
             </Box>
             <Spacer minH={8} />
