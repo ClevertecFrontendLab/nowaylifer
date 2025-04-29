@@ -1,14 +1,12 @@
 import { Icon, IconButton, IconButtonProps, IconProps } from '@chakra-ui/react';
 
-import classes from './FilterButton.module.css';
-
 export const FilterButton = (props: Omit<IconButtonProps, 'aria-label'>) => (
     <IconButton
         variant='outline'
         borderColor='blackAlpha.600'
-        className={classes.filterButton}
         size={{ base: 'sm', lg: 'lg' }}
         icon={<FilterIcon boxSize={{ base: '1em', lg: 6 }} />}
+        px='0 !important'
         aria-label='Применить фильтр'
         {...props}
     />
