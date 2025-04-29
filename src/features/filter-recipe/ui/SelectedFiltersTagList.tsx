@@ -13,12 +13,9 @@ import { useMemo, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '~/shared/store';
 
 import { removeFilter, selectFilters } from '../slice';
-import { Filter, FilterType } from '../types';
+import { Filter } from '../types';
 
-export const SelectedFiltersTagList = ({
-    filterTypes,
-    ...props
-}: { filterTypes?: FilterType[] } & ListProps) => {
+export const SelectedFiltersTagList = (props: ListProps) => {
     const filters = useAppSelector(selectFilters);
     const sortedFilters = usePreviousFilterOrder(filters);
     const dispatch = useAppDispatch();

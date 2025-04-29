@@ -30,13 +30,6 @@ export const slice = createSlice({
         applyFilters: create.reducer((state) => {
             FILTER_TYPES.forEach((t) => slice.caseReducers.applyFilter(state, applyFilter(t)));
         }),
-        restoreFilter: create.reducer<FilterType>((state, action) => {
-            const group = state.filters[action.payload];
-            group.current = group.applied;
-        }),
-        restoreFilters: create.reducer((state) => {
-            FILTER_TYPES.forEach((t) => slice.caseReducers.restoreFilter(state, restoreFilter(t)));
-        }),
         setFilter: create.reducer<FilterGroup>((state, action) => {
             const { type, filters } = action.payload;
             state.filters[type].current = filters;
@@ -71,7 +64,7 @@ export const slice = createSlice({
                 const group = state.filters[t];
                 return group.applied !== group.current && group.applied.length > 0;
             }),
-        selectFilter: (state, filter: FilterType) => state.filters[filter].current,
+        selectFilter: (state, filter: FilterType): Filter[] => state.filters[filter].current,
         selectAppliedFilter: (state, type: FilterType): Filter[] => state.filters[type].applied,
         selectFilters: createSelector(
             FILTER_TYPES.map((t) => (state: FilterRecipeState) => state.filters[t].current),
@@ -95,8 +88,6 @@ export const {
     applyFilters,
     resetFilter,
     resetFilters,
-    restoreFilter,
-    restoreFilters,
     toggleFilter,
 } = slice.actions;
 

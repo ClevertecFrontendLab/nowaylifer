@@ -27,14 +27,9 @@ export const FilterCheckboxList = ({
                     <ListItem key={o.value}>
                         <FilterCheckbox
                             value={o.value}
-                            isChecked={!!filterState.find((f) => o.value === f.value)}
+                            isChecked={filterState.some((f) => o.value === f.value)}
                             onChange={(e) =>
-                                dispatch(
-                                    toggleFilter({
-                                        filter: { type: filterType, ...o },
-                                        flag: e.target.checked,
-                                    }),
-                                )
+                                dispatch(toggleFilter({ filter: o, flag: e.target.checked }))
                             }
                             data-test-id={o.testId}
                         >
