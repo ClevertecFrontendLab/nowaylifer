@@ -12,6 +12,7 @@ export interface UseMultiSelectProps<Item> {
     value?: NoInfer<Item>[];
     disabled?: boolean;
     onChange?: (selectedItems: NoInfer<Item>[]) => void;
+    onIsOpenChange?: UseSelectProps<Item>['onIsOpenChange'];
     closeOnSelect?: boolean;
 }
 
@@ -23,6 +24,7 @@ export const useMultiSelect = <Item>({
     value,
     disabled,
     onChange,
+    onIsOpenChange,
 }: UseMultiSelectProps<Item>) => {
     const {
         getSelectedItemProps,
@@ -62,6 +64,7 @@ export const useMultiSelect = <Item>({
             items,
             itemToString,
             itemToKey,
+            onIsOpenChange,
             stateReducer: (state, { type, changes }) => {
                 switch (type) {
                     case useSelect.stateChangeTypes.ItemClick:

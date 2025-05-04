@@ -129,9 +129,7 @@ const baseStyleIcon = defineStyle({
     color: 'gray.700',
 });
 
-const baseStyleTag = defineStyle({
-    position: 'relative',
-});
+const baseStyleTag = defineStyle({});
 
 const baseStylePlaceholder = defineStyle({
     color: 'chakra-placeholder-color',
