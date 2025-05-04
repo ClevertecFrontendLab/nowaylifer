@@ -1,21 +1,35 @@
 import { Box, Container, Heading, ListItem, OrderedList, Stack } from '@chakra-ui/react';
-import { useParams } from 'react-router';
+import { useLoaderData } from 'react-router';
 
+import { selectCategoriesInvariant } from '~/entities/category/selectors';
 import { RecipeCard } from '~/entities/recipe';
-import { mockRecipes } from '~/entities/recipe/mock-recipes';
-import { RecipeSlider } from '~/widgets/RecipeSlider';
+import { recipeApi } from '~/entities/recipe/api';
+import { RecipeWithAuthor } from '~/entities/recipe/interface';
+import { getRecipeRootCategories } from '~/entities/recipe/util';
+import { useAppSelector } from '~/shared/store';
+import { Section, SectionHeading } from '~/shared/ui/Section';
+import { buildImageSrc } from '~/shared/util';
+import { NewRecipesSlider } from '~/widgets/NewRecipesSlider';
 
 import { AuthorCard } from './AuthorCard';
 import { IngridientTable } from './IngridientTable';
 import { NutritionStat } from './NutritionStat';
 import { StepCard } from './StepCard';
 
-export default function RecipePage() {
-    const params = useParams<'category' | 'subcategory' | 'id'>();
-    const recipe = mockRecipes.find((r) => r.id === params.id)!;
+export function RecipePage() {
+    const initialRecipe = useLoaderData<RecipeWithAuthor>();
+    const { data } = recipeApi.useRecipeByIdQuery(initialRecipe._id);
+    const { categoryById } = useAppSelector(selectCategoriesInvariant);
+    const recipe = data ?? initialRecipe;
+
     return (
         <Box as='main' py={{ base: 4, lg: 8 }}>
-            <RecipeCard variant='detailed' recipe={recipe} mb={{ base: 6, lg: 10 }} />
+            <RecipeCard
+                variant='detailed'
+                categories={getRecipeRootCategories(recipe, categoryById)}
+                recipe={recipe}
+                mb={{ base: 6, lg: 10 }}
+            />
             <Container
                 p={0}
                 mb={{ base: 10, lg: 14 }}
@@ -34,7 +48,7 @@ export default function RecipePage() {
                         value={recipe.nutritionValue.calories}
                         measureUnit='ккал'
                     />
-                    <NutritionStat name='белки' value={recipe.nutritionValue.proteins} />
+                    <NutritionStat name='белки' value={recipe.nutritionValue.protein} />
                     <NutritionStat name='жиры' value={recipe.nutritionValue.fats} />
                     <NutritionStat name='углеводы' value={recipe.nutritionValue.carbohydrates} />
                 </Stack>
@@ -51,7 +65,7 @@ export default function RecipePage() {
                         {recipe.steps.map((step) => (
                             <ListItem key={step.stepNumber} _notLast={{ mb: 5 }}>
                                 <StepCard
-                                    image={step.image}
+                                    image={buildImageSrc(step.image)}
                                     stepNumber={step.stepNumber}
                                     description={step.description}
                                 />
@@ -59,27 +73,12 @@ export default function RecipePage() {
                         ))}
                     </OrderedList>
                 </Box>
-                <AuthorCard
-                    avatar='/images/sergey.png'
-                    displayName='Сергей Разумов'
-                    username='@serge25'
-                    friends={125}
-                />
+                {recipe.authorData && <AuthorCard author={recipe.authorData} />}
             </Container>
-            <Box as='section'>
-                <Heading
-                    fontWeight='medium'
-                    fontSize={{ base: '2xl', lg: '4xl', '2xl': '5xl' }}
-                    mb={{ base: 3, lg: 6 }}
-                >
-                    Новые рецепты
-                </Heading>
-                <RecipeSlider
-                    recipes={[...mockRecipes]
-                        .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
-                        .slice(0, 10)}
-                />
-            </Box>
+            <Section>
+                <SectionHeading mb={{ base: 3, lg: 6 }}>Новые рецепты</SectionHeading>
+                <NewRecipesSlider />
+            </Section>
         </Box>
     );
 }

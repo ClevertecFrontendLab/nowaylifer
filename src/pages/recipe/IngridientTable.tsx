@@ -19,7 +19,7 @@ import { useState } from 'react';
 
 export interface IngridientTableProps extends BoxProps {
     defaultPortions?: number;
-    ingridients: { title: string; count: number; measureUnit: string }[];
+    ingridients: { title: string; count: string | number; measureUnit: string }[];
 }
 
 export const IngridientTable = ({
@@ -83,9 +83,11 @@ export const IngridientTable = ({
                         <Tr key={ingridient.title}>
                             <Td fontWeight='medium'>{ingridient.title}</Td>
                             <Td textAlign='end' data-test-id={`ingredient-quantity-${i}`}>
-                                {Number(
-                                    ((portions / defaultPortions) * ingridient.count).toFixed(2),
-                                )}{' '}
+                                {calcIngredientQuantity(
+                                    ingridient.count,
+                                    portions,
+                                    defaultPortions,
+                                )}
                                 {ingridient.measureUnit}
                             </Td>
                         </Tr>
@@ -95,3 +97,9 @@ export const IngridientTable = ({
         </TableContainer>
     );
 };
+
+const calcIngredientQuantity = (
+    count: string | number,
+    portions: number,
+    defaultPortions: number,
+) => Number((portions / defaultPortions) * Number(count)).toFixed(2);
