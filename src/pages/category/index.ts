@@ -1,1 +1,2 @@
-export { CategoryPage as default } from './CategoryPage';
+export { CategoryPage } from './CategoryPage';
+export { loader as categoryPageLoader } from './loader';
