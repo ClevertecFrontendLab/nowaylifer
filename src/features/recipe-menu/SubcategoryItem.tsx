@@ -1,14 +1,14 @@
 import { Box, BoxProps, ListItem, ListItemProps } from '@chakra-ui/react';
 import { memo } from 'react';
 
-import { RecipeCategory, RecipeSubcategory } from '~/entities/recipe/interface';
+import { Category, SubCategory } from '~/entities/category';
 import { Button } from '~/shared/ui/Button';
 
 export interface SubcategoryItemProps extends Omit<ListItemProps, 'onClick'> {
     active?: boolean;
-    onClick?: (category: RecipeCategory, subcategory: RecipeSubcategory) => void;
-    subcategory: RecipeSubcategory;
-    category: RecipeCategory;
+    onClick?: (category: Category, subcategory: SubCategory) => void;
+    subcategory: SubCategory;
+    category: Category;
 }
 
 export const SubcategoryItem = memo(
@@ -35,7 +35,7 @@ export const SubcategoryItem = memo(
                     _groupFocus={active ? undefined : { visibility: 'hidden' }}
                     _groupHover={active ? undefined : { visibility: 'hidden' }}
                 />
-                <Box fontWeight={active ? 'bold' : 'medium'}>{subcategory.label}</Box>
+                <Box fontWeight={active ? 'bold' : 'medium'}>{subcategory.title}</Box>
             </Button>
         </ListItem>
     ),

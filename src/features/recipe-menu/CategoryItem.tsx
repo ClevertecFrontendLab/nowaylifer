@@ -9,11 +9,12 @@ import {
 } from '@chakra-ui/react';
 import { memo } from 'react';
 
-import { RecipeCategory } from '~/entities/recipe';
+import { Category } from '~/entities/category';
+import { buildImageSrc } from '~/shared/util';
 
 export interface CategoryItemProps extends AccordionButtonProps {
+    category: Category;
     active?: boolean;
-    category: RecipeCategory;
 }
 
 export const CategoryItem = memo(({ active, category, ...props }: CategoryItemProps) => (
@@ -21,12 +22,13 @@ export const CategoryItem = memo(({ active, category, ...props }: CategoryItemPr
         _focusVisible={{ boxShadow: 'none', bg: active ? undefined : 'lime.100' }}
         _hover={active ? {} : { bg: 'lime.50' }}
         bg={active ? 'lime.100' : undefined}
+        textAlign='start'
         py={3}
         px={2}
         {...props}
     >
-        <Image src={category.iconSrc} boxSize={6} mr={3} />
-        <Box fontWeight={active ? 'bold' : 'medium'}>{category.label}</Box>
+        <Image src={buildImageSrc(category.icon!)} boxSize={6} mr={3} />
+        <Box fontWeight={active ? 'bold' : 'medium'}>{category.title}</Box>
         <AccordionIcon as={ChevronDownIcon} w={4} h={4} ml='auto' />
     </AccordionButton>
 ));

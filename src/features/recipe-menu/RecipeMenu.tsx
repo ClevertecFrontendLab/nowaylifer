@@ -6,10 +6,13 @@ import {
     BoxProps,
     UnorderedList,
 } from '@chakra-ui/react';
-import { useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router';
 
-import { RecipeCategory, recipeCategoryMap, RecipeSubcategory } from '~/entities/recipe';
+import { Category, SubCategory, useActiveCategories } from '~/entities/category';
+import { selectCategoriesInvariant } from '~/entities/category/selectors';
+import { useAppSelector } from '~/shared/store';
+import { TestId } from '~/shared/test-ids';
 
 import { CategoryItem } from './CategoryItem';
 import { SubcategoryItem } from './SubcategoryItem';
@@ -19,13 +22,19 @@ export interface RecipeMenuProps extends BoxProps {
 }
 
 export const RecipeMenu = (props: RecipeMenuProps) => {
-    const params = useParams<'category' | 'subcategory'>();
+    const [activeRootCategory, activeSubCategory] = useActiveCategories();
+    const { rootCategories } = useAppSelector(selectCategoriesInvariant);
     const navigate = useNavigate();
 
     const handleSubcategoryClick = useCallback(
-        (category: RecipeCategory, subcategory: RecipeSubcategory) =>
-            navigate(`/${category.slug}/${subcategory.slug}`),
+        (category: Category, subcategory: SubCategory) =>
+            navigate(`/${category.category}/${subcategory.category}`),
         [navigate],
+    );
+
+    const expandedIndex = useMemo(
+        () => (activeRootCategory ? rootCategories.indexOf(activeRootCategory) : -1),
+        [activeRootCategory, rootCategories],
     );
 
     return (
@@ -44,50 +53,50 @@ export const RecipeMenu = (props: RecipeMenuProps) => {
             >
                 <Accordion
                     allowToggle
-                    defaultIndex={params.category ? recipeCategoryMap[params.category].index : -1}
+                    defaultIndex={expandedIndex}
                     onChange={(expanded) => {
                         const index = Array.isArray(expanded) ? expanded[0] : expanded;
                         if (index >= 0) {
-                            const category = Object.values(recipeCategoryMap)[index];
-                            const subcategory = Object.values(category.subcategories)[0];
-                            navigate(`/${category.slug}/${subcategory.slug}`);
+                            const category = rootCategories[index];
+                            const subcategory = category.subCategories[0];
+                            navigate(`/${category.category}/${subcategory.category}`);
                         }
                     }}
                 >
-                    {Object.values(recipeCategoryMap).map((category) => {
-                        const isCategoryActive = category.slug === params?.category;
+                    {rootCategories.map((category) => {
+                        const isCategoryActive = category === activeRootCategory;
                         return (
-                            <AccordionItem key={category.slug} border='none'>
+                            <AccordionItem key={category._id} border='none'>
                                 <CategoryItem
                                     active={isCategoryActive}
                                     category={category}
                                     data-test-id={
-                                        category.slug === 'vegan' ? 'vegan-cuisine' : category.slug
+                                        category.category === 'vegan'
+                                            ? TestId.RECIPE_MENU_VEGAN
+                                            : undefined
                                     }
                                 />
                                 <AccordionPanel py={0}>
                                     <UnorderedList styleType='none'>
-                                        {Object.values(category.subcategories).map(
-                                            (subcategory) => {
-                                                const isSubcategoryActive =
-                                                    isCategoryActive &&
-                                                    subcategory.slug === params.subcategory;
-                                                return (
-                                                    <SubcategoryItem
-                                                        key={subcategory.slug}
-                                                        category={category}
-                                                        subcategory={subcategory}
-                                                        active={isSubcategoryActive}
-                                                        onClick={handleSubcategoryClick}
-                                                        data-test-id={
-                                                            isSubcategoryActive
-                                                                ? `${subcategory.slug}-active`
-                                                                : undefined
-                                                        }
-                                                    />
-                                                );
-                                            },
-                                        )}
+                                        {category.subCategories.map((subcategory) => {
+                                            const isSubcategoryActive =
+                                                isCategoryActive &&
+                                                subcategory === activeSubCategory;
+                                            return (
+                                                <SubcategoryItem
+                                                    key={subcategory._id}
+                                                    category={category}
+                                                    subcategory={subcategory}
+                                                    active={isSubcategoryActive}
+                                                    onClick={handleSubcategoryClick}
+                                                    data-test-id={
+                                                        isSubcategoryActive
+                                                            ? `${subcategory.category}-active`
+                                                            : undefined
+                                                    }
+                                                />
+                                            );
+                                        })}
                                     </UnorderedList>
                                 </AccordionPanel>
                             </AccordionItem>
