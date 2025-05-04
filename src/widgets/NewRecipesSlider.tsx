@@ -6,11 +6,22 @@ import { Box, IconButton, IconButtonProps } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
-import { Recipe, RecipeCard } from '~/entities/recipe';
-import { isE2E } from '~/shared/lib/is-e2e';
+import { selectCategoriesInvariant } from '~/entities/category/selectors';
+import { RecipeCard } from '~/entities/recipe';
+import { recipeApi } from '~/entities/recipe/api';
+import { buildRecipeLink, getRecipeRootCategories } from '~/entities/recipe/util';
+import { useAppSelector } from '~/shared/store';
+import { isE2E } from '~/shared/util';
 
-export const RecipeSlider = ({ recipes }: { recipes: Recipe[] }) => {
+export const NewRecipesSlider = () => {
+    const { data: recipes } = recipeApi.useRecipesQuery({
+        sortBy: 'createdAt',
+        sortOrder: 'desc',
+        limit: 10,
+    });
+    const { categoryById } = useAppSelector(selectCategoriesInvariant);
     const swiperRef = useRef<SwiperRef>(null);
+
     return (
         <Box pos='relative' data-test-id='carousel'>
             <Swiper
@@ -21,13 +32,18 @@ export const RecipeSlider = ({ recipes }: { recipes: Recipe[] }) => {
                 breakpoints={{ 1536: { spaceBetween: 24 } }}
                 speed={isE2E() ? 0 : undefined}
             >
-                {recipes.map((r, i) => (
+                {recipes?.map((r, i) => (
                     <SwiperSlide
-                        key={r.id}
+                        key={r._id}
                         style={{ width: 'auto', paddingBottom: 8 }}
                         data-test-id={`carousel-card-${i}`}
                     >
-                        <RecipeCard variant='vertical' recipe={r} />
+                        <RecipeCard
+                            variant='vertical'
+                            recipe={r}
+                            categories={getRecipeRootCategories(r, categoryById)}
+                            recipeLink={buildRecipeLink(r, categoryById)}
+                        />
                     </SwiperSlide>
                 ))}
             </Swiper>
