@@ -1,46 +1,70 @@
 import { BoxProps, IconButton, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
-import { useAppDispatch } from '~/shared/store';
+import { useAppDispatch, useAppSelector } from '~/shared/store';
 import { SearchIcon } from '~/shared/ui/SearchIcon';
 
-import { clearRecipeSearch, setRecipeSearch } from './slice';
+import {
+    applySearchString,
+    selectIsLastSearchSuccess,
+    selectIsSearchEnabled,
+    selectSearchString,
+    setSearchString,
+} from './slice';
 
-const SEARCH_WORD_MIN_LENGTH = 3;
+export interface SearchRecipeInputProps extends BoxProps {
+    onSearchStart?: () => void;
+}
 
-export const SearchRecipeInput = (props: BoxProps) => {
-    const dispatch = useAppDispatch();
+export const SearchRecipeInput = ({ onSearchStart, ...props }: SearchRecipeInputProps) => {
+    const isLastSearchSuccess = useAppSelector(selectIsLastSearchSuccess);
+    const value = useAppSelector(selectSearchString);
+    const isSearchEnabled = useAppSelector(selectIsSearchEnabled);
     const inputRef = useRef<HTMLInputElement>(null);
-    const [searchEnabled, setSearchEnabled] = useState(false);
+    const dispatch = useAppDispatch();
 
     const search = () => {
-        if (!inputRef.current) return;
-        dispatch(setRecipeSearch(inputRef.current.value));
+        dispatch(applySearchString());
+        onSearchStart?.();
     };
 
-    const clear = () => {
-        dispatch(clearRecipeSearch());
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(setSearchString(e.currentTarget.value));
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && isSearchEnabled) {
+            search();
+        }
+    };
+
+    const handleClick = () => {
+        if (isSearchEnabled) {
+            search();
+        }
     };
 
     return (
-        <InputGroup size={{ base: 'sm', lg: 'lg' }} {...props}>
+        <InputGroup
+            size={{ base: 'sm', lg: 'lg' }}
+            borderColor={isLastSearchSuccess === true ? 'lime.600' : undefined}
+            {...props}
+        >
             <Input
                 ref={inputRef}
-                onChange={(e) => {
-                    const value = e.target.value;
-                    if (!value) clear();
-                    setSearchEnabled(value.length >= SEARCH_WORD_MIN_LENGTH);
-                }}
-                onKeyDown={(e) => e.key === 'Enter' && searchEnabled && search()}
+                isInvalid={isLastSearchSuccess === false}
+                value={value}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
                 borderRadius={{ base: 'base', lg: 'md' }}
                 placeholder='Название или ингридиент...'
                 data-test-id='search-input'
             />
             <InputRightElement>
                 <IconButton
-                    disabled={!searchEnabled}
+                    disabled={!isSearchEnabled}
                     icon={<SearchIcon />}
-                    onClick={search}
+                    onClick={handleClick}
                     variant='unstyled'
                     display='flex'
                     size={{ base: 'sm', lg: 'lg' }}

@@ -1,9 +1,12 @@
-export { filterMatchingRecipe } from './filter-matching-recipe';
 export { HighlightSearchMatch } from './HighlightSearchMatch';
 export { SearchRecipeInput } from './SearchRecipeInput';
 export {
-    clearRecipeSearch,
     slice as searchRecipeSlice,
-    selectRecipeSearch,
-    setRecipeSearch,
+    selectAppliedSearchString,
+    selectIsLastSearchSuccess,
+    selectSearchString,
+    setIsLastSearchSuccess,
+    setIsSearchForceEnabled,
+    setSearchString,
 } from './slice';
+export { useUpdateLastSearchResult } from './use-update-last-search-result';
