@@ -1,28 +1,10 @@
-import { createMultiStyleConfigHelpers, HTMLChakraProps } from '@chakra-ui/react';
+import { createMultiStyleConfigHelpers } from '@chakra-ui/react';
 
-export type RecipeCardParts = (typeof recipeCardTheme.parts)[number];
+import { recipeCardAnatomy } from './anatomy';
 
-export type RecipeCardStyles<T extends React.ElementType = 'div'> = Record<
-    RecipeCardParts,
-    HTMLChakraProps<T>
->;
+const { defineMultiStyleConfig } = createMultiStyleConfigHelpers(recipeCardAnatomy.keys);
 
 export type RecipeCardVariant = keyof NonNullable<typeof recipeCardTheme.variants>;
-
-export const themeKey = 'RecipeCard';
-
-const { defineMultiStyleConfig } = createMultiStyleConfigHelpers([
-    'root',
-    'body',
-    'image',
-    'imageContainer',
-    'title',
-    'description',
-    'stats',
-    'category',
-    'categoryList',
-    'badge',
-]);
 
 export const recipeCardTheme = defineMultiStyleConfig({
     defaultProps: {
@@ -79,6 +61,10 @@ export const recipeCardTheme = defineMultiStyleConfig({
             minW: 0,
             flexShrink: 0,
         },
+        image: {
+            boxSize: 'full',
+            objectFit: 'cover',
+        },
     },
     variants: {
         vertical: {
@@ -115,10 +101,11 @@ export const recipeCardTheme = defineMultiStyleConfig({
             root: {
                 flexDir: 'row',
                 minH: { base: '128px', lg: '244px' },
+                maxH: '300px',
             },
             imageContainer: {
                 h: 'full',
-                maxW: {
+                w: {
                     base: '158px',
                     lg: '346px',
                 },
