@@ -1,13 +1,13 @@
-export { filterRecipe } from './filter-recipe';
+export { filtersToParams } from './filters-to-params';
 export {
     applyFilter,
-    FILTER_TYPES,
     slice as filterRecipeSlice,
     resetFilter,
     resetFilters,
-    selectAppliedFilterGroups,
+    selectAppliedFiltersByGroup,
     selectHasAppliedFilter,
     selectHasFilter,
+    selectIsAppliedFromDrawer,
     setFilter,
 } from './slice';
 export type { Filter, FilterGroup, FilterType } from './types';

@@ -1,7 +1,6 @@
 import {
     Checkbox,
     HStack,
-    HTMLChakraProps,
     Icon,
     IconButton,
     IconButtonProps,
@@ -29,8 +28,13 @@ import {
     useMultiSelectContext,
 } from '~/shared/ui/MultiSelect';
 
-import { filterOptions } from '../filter-options';
-import { applyFilter, selectAppliedFilter, selectFilter, setFilter } from '../slice';
+import {
+    applyFilter,
+    selectAppliedFilter,
+    selectFilter,
+    selectFilterOptions,
+    setFilter,
+} from '../slice';
 import { FilterOption, FilterType } from '../types';
 
 interface FilterSelectOptions {
@@ -39,14 +43,19 @@ interface FilterSelectOptions {
     applyOnChange?: boolean;
     withFooter?: boolean;
     footerInputPlaceholder?: string;
-    testId?: { menu?: string; field?: string; footerInput?: string; footerButton?: string };
+    testId?: {
+        menu?: string;
+        field?: string;
+        footerInput?: string;
+        footerButton?: string;
+        option?: (option: FilterOption, index: number) => string | undefined;
+    };
 }
 
 export interface FilterSelectProps
-    extends Pick<MultiSelectProps<FilterOption>, 'disabled' | 'popperConfig'>,
+    extends Omit<MultiSelectProps<FilterOption>, 'items' | 'children' | 'itemToString'>,
         Pick<MultiSelectMenuProps, 'withinPortal' | 'portalProps'>,
         Pick<MultiSelectFieldProps, 'placeholder'>,
-        HTMLChakraProps<'div'>,
         FilterSelectOptions {}
 
 export const FilterSelect = ({
@@ -61,10 +70,13 @@ export const FilterSelect = ({
     appliedFilter = false,
     applyOnChange = false,
     testId,
-    ...containerProps
+    onChange,
+    onIsOpenChange,
+    containerProps,
 }: FilterSelectProps) => {
     const selector = appliedFilter ? selectAppliedFilter : selectFilter;
     const filterState = useAppSelector((state) => selector(state, filterType));
+    const options = useAppSelector((state) => selectFilterOptions(state, filterType));
     const dispatch = useAppDispatch();
     return (
         <MultiSelect
@@ -73,13 +85,15 @@ export const FilterSelect = ({
             disabled={disabled}
             popperConfig={{ ...popperConfig, offset: [0, 0] }}
             itemToString={(item) => (item ? item.label : '')}
-            items={filterOptions[filterType]}
+            items={options}
             value={filterState}
+            onIsOpenChange={onIsOpenChange}
             onChange={(value) => {
                 dispatch(setFilter({ type: filterType, filters: value }));
                 if (applyOnChange) {
                     dispatch(applyFilter(filterType));
                 }
+                onChange?.(value);
             }}
         >
             {({ selectedItems, items }) => (
@@ -121,7 +135,7 @@ export const FilterSelect = ({
                                     _selected={{}}
                                     _active={{}}
                                     _odd={{ bg: 'blackAlpha.100' }}
-                                    data-test-id={item.testId}
+                                    data-test-id={testId?.option?.(item, index)}
                                 >
                                     {({ isSelected }) => (
                                         <Checkbox

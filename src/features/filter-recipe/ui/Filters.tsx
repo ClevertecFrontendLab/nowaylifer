@@ -2,6 +2,7 @@ import { Box, Flex, FormLabel, HStack, Spacer } from '@chakra-ui/react';
 import { useState } from 'react';
 
 import { useAppSelector, useAppStore } from '~/shared/store';
+import { TestId } from '~/shared/test-ids';
 import { Button } from '~/shared/ui/Button';
 
 import { selectHasAnyFilter, selectHasFilter, selectIsFiltersDirty } from '../slice';
@@ -23,23 +24,29 @@ export const Filters = ({ onClear, onFind }: { onClear: () => void; onFind: () =
             <FilterSelect
                 filterType='categories'
                 placeholder='Категория'
-                mb={{ base: 4, lg: 6 }}
-                testId={{ field: 'filter-menu-button-категория' }}
+                containerProps={{ mb: { base: 4, lg: 6 } }}
+                testId={{
+                    field: TestId.CATEGORY_SELECT,
+                    option: (option) =>
+                        option.label === 'Веганская кухня'
+                            ? TestId.VEGAN_CATEGORY_SELECT_OPTION
+                            : undefined,
+                }}
             />
             <FilterSelect
                 filterType='authors'
                 placeholder='Поик по автору'
-                mb={{ base: 4, lg: 6 }}
+                containerProps={{ mb: { base: 4, lg: 6 } }}
             />
             <FilterCheckboxList filterType='meat' title='Тип мяса:' />
-            <FilterCheckboxList filterType='side' title='Тип гарнира:' />
+            <FilterCheckboxList filterType='garnish' title='Тип гарнира:' />
             <Box>
                 <FormLabel mb={4} display='flex' gap={3} alignItems='center'>
                     Исключить аллергены
                     <FilterSwitch
-                        data-test-id='allergens-switcher-filter'
                         filterType='allergens'
                         onChange={setAllergenEnabled}
+                        data-test-id={TestId.ALLERGEN_SWITCH_DRAWER}
                     />
                 </FormLabel>
                 <FilterSelect
@@ -49,9 +56,10 @@ export const Filters = ({ onClear, onFind }: { onClear: () => void; onFind: () =
                     footerInputPlaceholder='Другой аллерген'
                     placeholder='Выберите из списка аллергенов...'
                     testId={{
-                        field: 'allergens-menu-button-filter',
-                        footerInput: 'add-other-allergen',
-                        footerButton: 'add-allergen-button',
+                        field: TestId.ALLERGEN_SELECT_DRAWER,
+                        footerInput: TestId.ALLERGEN_ADD_OTHER_INPUT,
+                        footerButton: TestId.ALLERGEN_ADD_OTHER_BUTTON,
+                        option: (_, idx) => TestId.allergenSelectOption(idx),
                     }}
                 />
             </Box>
@@ -62,7 +70,7 @@ export const Filters = ({ onClear, onFind }: { onClear: () => void; onFind: () =
                     onClick={onClear}
                     size={{ base: 'sm', lg: 'lg' }}
                     variant='outline'
-                    data-test-id='clear-filter-button'
+                    data-test-id={TestId.CLEAR_FILTERS_BUTTON}
                 >
                     Очистить фильтр
                 </Button>
@@ -71,7 +79,7 @@ export const Filters = ({ onClear, onFind }: { onClear: () => void; onFind: () =
                     disabled={hasAnyFilter ? false : !isFiltersDirty}
                     size={{ base: 'sm', lg: 'lg' }}
                     onClick={onFind}
-                    data-test-id='find-recipe-button'
+                    data-test-id={TestId.FIND_RECIPE_BUTTON}
                 >
                     Найти рецепт
                 </Button>

@@ -3,19 +3,23 @@ import { chakra, Checkbox, HTMLChakraProps, ListItem, UnorderedList } from '@cha
 
 import { useAppDispatch, useAppSelector } from '~/shared/store';
 
-import { filterOptions } from '../filter-options';
-import { selectFilter, toggleFilter } from '../slice';
-import { FilterType } from '../types';
+import { selectFilter, selectFilterOptions, toggleFilter } from '../slice';
+import { FilterOption, FilterType } from '../types';
+
+export interface FilterCheckboxListProps extends HTMLChakraProps<'fieldset'> {
+    title: string;
+    filterType: FilterType;
+    testId?: { option?: (option: FilterOption, idx: number) => string | undefined };
+}
 
 export const FilterCheckboxList = ({
     title,
     filterType,
+    testId,
     ...props
-}: {
-    title: string;
-    filterType: FilterType;
-} & HTMLChakraProps<'fieldset'>) => {
+}: FilterCheckboxListProps) => {
     const filterState = useAppSelector((state) => selectFilter(state, filterType));
+    const options = useAppSelector((state) => selectFilterOptions(state, filterType));
     const dispatch = useAppDispatch();
     return (
         <chakra.fieldset mb={{ base: 4, lg: 6 }} {...props}>
@@ -23,7 +27,7 @@ export const FilterCheckboxList = ({
                 {title}
             </chakra.legend>
             <UnorderedList styleType='none' ml={0} spacing={3}>
-                {filterOptions[filterType].map((o) => (
+                {options.map((o, idx) => (
                     <ListItem key={o.value}>
                         <FilterCheckbox
                             value={o.value}
@@ -31,7 +35,7 @@ export const FilterCheckboxList = ({
                             onChange={(e) =>
                                 dispatch(toggleFilter({ filter: o, flag: e.target.checked }))
                             }
-                            data-test-id={o.testId}
+                            data-test-id={testId?.option?.(o, idx) ?? o.testId}
                         >
                             {o.label}
                         </FilterCheckbox>

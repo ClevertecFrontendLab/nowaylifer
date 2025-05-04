@@ -13,7 +13,7 @@ import {
     DrawerTrigger,
 } from '~/shared/ui/Drawer';
 
-import { applyFilters, resetFilters } from '../slice';
+import { applyFilters, resetFilters, setIsAppliedFromDrawer } from '../slice';
 import { FilterButton } from './FilterButton';
 import { Filters } from './Filters';
 
@@ -68,6 +68,8 @@ export const FilterDrawer = ({ children }: { children?: React.ReactNode }) => {
                                 dispatch(applyFilters());
                             }}
                             onFind={() => {
+                                dispatch(setIsAppliedFromDrawer(true));
+                                setTimeout(() => dispatch(setIsAppliedFromDrawer(false)), 500);
                                 dispatch(applyFilters());
                                 drawerRef.current?.close();
                             }}
