@@ -1,34 +1,35 @@
 export interface Recipe {
-    id: string;
     title: string;
     description: string;
-    category: string[];
-    subcategory: string[];
+    time: number;
     image: string;
-    bookmarks: number;
-    likes: number;
-    date: string;
-    time: string;
-    recommendation?: { displayName: string; avatar?: string };
+    meat: string;
+    garnish: string;
     portions: number;
-    nutritionValue: { calories: number; proteins: number; fats: number; carbohydrates: number };
-    ingredients: { title: string; count: number; measureUnit: string }[];
-    steps: { stepNumber: number; description: string; image?: string }[];
-    meat?: string;
-    side?: string;
+    authorId: string;
+    categoriesIds: string[];
+    steps: { stepNumber: number; description: string; image: string }[];
+    nutritionValue: {
+        calories: number;
+        protein: number;
+        fats: number;
+        carbohydrates: number;
+    };
+    ingredients: { title: string; count: string; measureUnit: string }[];
+    likes: number;
+    views: number;
+    bookmarks: number;
+    createdAt: string;
+    _id: string;
 }
 
-export interface RecipeSubcategory {
-    index: number;
-    label: string;
-    slug: string;
+export interface Author {
+    login: string;
+    firstName: string;
+    lastName: string;
+    subscribers?: string[];
 }
 
-export interface RecipeCategory {
-    index: number;
-    label: string;
-    iconSrc: string;
-    slug: string;
-    description: string;
-    subcategories: Record<string, RecipeSubcategory>;
+export interface RecipeWithAuthor extends Recipe {
+    authorData?: Author;
 }
