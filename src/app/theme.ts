@@ -14,10 +14,12 @@ import {
 } from '@chakra-ui/react';
 
 import { recipeCardTheme } from '~/entities/recipe';
+import { loaderTheme } from '~/shared/ui/Loader.theme';
 import { multiSelectTheme } from '~/shared/ui/MultiSelect';
 
 const themeOverride = {
     components: {
+        Loader: loaderTheme,
         MultiSelect: multiSelectTheme,
         RecipeCard: recipeCardTheme,
         Link: {
@@ -141,11 +143,13 @@ const themeOverride = {
         '4.5': '1.125rem',
         '5.5': '1.375rem',
         '6.5': '1.625rem',
+        '7.5': '1.875rem',
     },
     sizes: {
         '4.5': '1.125rem',
         '5.5': '1.375rem',
         '6.5': '1.625rem',
+        '7.5': '1.875rem',
     },
     colors: {
         lime: {
