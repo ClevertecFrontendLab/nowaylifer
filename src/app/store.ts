@@ -11,6 +11,8 @@ import { apiSlice } from '~/shared/api';
 import { listenerMiddleware } from '~/shared/store';
 import { appLoaderSlice } from '~/widgets/app-loader';
 
+import { rtkQueryErrorLogger } from './error-logger.middleware';
+
 enableMapSet();
 
 const rootReducer = combineReducers({
@@ -30,7 +32,8 @@ export const store = configureStore({
             } satisfies SerializableStateInvariantMiddlewareOptions,
         })
             .prepend(listenerMiddleware.middleware)
-            .concat(apiSlice.middleware),
+            .concat(apiSlice.middleware)
+            .concat(rtkQueryErrorLogger),
 });
 
 declare global {

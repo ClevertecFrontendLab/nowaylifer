@@ -1,3 +1,5 @@
+import { createStandaloneToast } from '@chakra-ui/react';
+
 import { IMAGE_BASE_URL } from './config';
 
 export const buildImageSrc = (path: string) => new URL(path, IMAGE_BASE_URL).href;

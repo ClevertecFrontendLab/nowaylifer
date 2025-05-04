@@ -18,6 +18,13 @@ import { loaderTheme } from '~/shared/ui/Loader.theme';
 import { multiSelectTheme } from '~/shared/ui/MultiSelect';
 
 const themeOverride = {
+    styles: {
+        global: {
+            '#chakra-toast-manager-bottom': {
+                width: '100vw',
+            },
+        },
+    },
     components: {
         Loader: loaderTheme,
         MultiSelect: multiSelectTheme,
