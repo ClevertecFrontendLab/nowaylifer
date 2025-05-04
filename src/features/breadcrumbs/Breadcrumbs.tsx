@@ -10,9 +10,10 @@ import {
 import { useRef } from 'react';
 import { Link as ReactRouterLink } from 'react-router';
 
-import { useBreadcrumbs } from '~/features/breadcrumbs/use-breadcrumbs';
+import { useActiveCategories } from '~/entities/category';
 
 import { BreadcrumbData } from './types';
+import { useBreadcrumbs } from './use-breadcrumbs';
 import { useWrappingSeperator } from './use-wrapping-seperator';
 
 export interface BreadcrumbsProps extends BreadcrumbProps {
@@ -20,8 +21,9 @@ export interface BreadcrumbsProps extends BreadcrumbProps {
 }
 
 export const Breadcrumbs = ({ onBreadcrumbClick, ...props }: BreadcrumbsProps) => {
-    const breadcrumbs = useBreadcrumbs();
     const containerRef = useRef<HTMLDivElement>(null);
+    const activeCategories = useActiveCategories();
+    const breadcrumbs = useBreadcrumbs(activeCategories);
 
     useWrappingSeperator(containerRef);
 
@@ -34,19 +36,19 @@ export const Breadcrumbs = ({ onBreadcrumbClick, ...props }: BreadcrumbsProps) =
             data-test-id='breadcrumbs'
             {...props}
         >
-            {breadcrumbs.map((breadcrumb, i) => (
+            {breadcrumbs.filter(Boolean).map((breadcrumb, i) => (
                 <BreadcrumbItem key={breadcrumb.href} isCurrentPage={i === breadcrumbs.length - 1}>
                     <chakra.span role='presentation' display='none'>
                         <BreadcrumbSeparator />
                     </chakra.span>
                     <BreadcrumbLink
                         as={ReactRouterLink}
-                        onClick={() =>
-                            onBreadcrumbClick?.(breadcrumb, i === breadcrumbs.length - 1)
-                        }
                         to={breadcrumb.href}
                         color='blackAlpha.700'
                         _activeLink={{ color: 'black' }}
+                        onClick={() => {
+                            onBreadcrumbClick?.(breadcrumb, i === breadcrumbs.length - 1);
+                        }}
                     >
                         {breadcrumb.label}
                     </BreadcrumbLink>

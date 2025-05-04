@@ -1,15 +1,19 @@
-import { UIMatch, useMatches } from 'react-router';
+import { UIMatch, useLocation, useMatches } from 'react-router';
 
-import { BreadcrumbData, RouteHandle } from './types';
+import { BreadcrumbData, RouteBreadcrumb } from './types';
 
-export const useBreadcrumbs = (): BreadcrumbData[] => {
-    const matches = useMatches() as UIMatch<unknown, RouteHandle | undefined>[];
+export function useBreadcrumbs(): BreadcrumbData[];
+export function useBreadcrumbs<ExtraArg>(extraArg: ExtraArg): BreadcrumbData[];
+export function useBreadcrumbs<ExtraArg>(extraArg?: ExtraArg): BreadcrumbData[] {
+    const matches = useMatches() as UIMatch<unknown, RouteBreadcrumb<ExtraArg, unknown>>[];
+    const location = useLocation();
     return matches
-        .filter((m) => m.handle?.breadcrumb)
+        .filter((m) => m.handle?.crumb)
         .flatMap((m) => {
-            const breadcrumb = m.handle!.breadcrumb!;
-            const resolved = typeof breadcrumb === 'function' ? breadcrumb(m) : breadcrumb;
+            const crumb = m.handle!.crumb!;
+            const resolved =
+                typeof crumb === 'function' ? crumb(m, location, extraArg as ExtraArg) : crumb;
             const arr = Array.isArray(resolved) ? resolved : [resolved];
             return arr.map((v) => (typeof v === 'string' ? { label: v, href: m.pathname } : v));
         });
-};
+}

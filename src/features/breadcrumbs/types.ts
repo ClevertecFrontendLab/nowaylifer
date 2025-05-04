@@ -1,13 +1,15 @@
-import { UIMatch } from 'react-router';
+import { Location, UIMatch } from 'react-router';
 
-export interface RouteHandle {
-    breadcrumb?:
+export interface RouteBreadcrumb<ExtraArg = unknown, Data = unknown> {
+    crumb?:
         | string
         | BreadcrumbData
-        | (string | BreadcrumbData)[]
+        | Array<string | BreadcrumbData>
         | ((
-              match: UIMatch<unknown, RouteHandle | undefined>,
-          ) => string | BreadcrumbData | (string | BreadcrumbData)[]);
+              match: UIMatch<Data>,
+              location: Location,
+              extraArg: ExtraArg,
+          ) => string | BreadcrumbData | Array<string | BreadcrumbData>);
 }
 
 export type BreadcrumbData = { href: string; label: string };
