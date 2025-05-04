@@ -2,15 +2,24 @@
 import '@fontsource-variable/inter';
 import './styles.css';
 
-import { RouterProvider } from 'react-router';
+import { ChakraProvider } from '@chakra-ui/react';
+import { Provider as StoreProvider } from 'react-redux';
+import { RouterProvider as ReactRouterProvider } from 'react-router';
 
-import { Providers } from './providers';
-import { router } from './router';
+import { AppLoaderProvider } from '~/widgets/app-loader';
+
+import { createRouter } from './router/router';
+import { store } from './store';
+import { theme } from './theme';
 
 export default function App() {
     return (
-        <Providers>
-            <RouterProvider router={router} />
-        </Providers>
+        <ChakraProvider theme={theme}>
+            <StoreProvider store={store}>
+                <AppLoaderProvider>
+                    <ReactRouterProvider router={createRouter(store)} />
+                </AppLoaderProvider>
+            </StoreProvider>
+        </ChakraProvider>
     );
 }
