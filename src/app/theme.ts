@@ -1,4 +1,5 @@
 import {
+    alertAnatomy,
     cardAnatomy,
     checkboxAnatomy,
     inputAnatomy,
@@ -22,10 +23,20 @@ const themeOverride = {
         global: {
             '#chakra-toast-manager-bottom': {
                 width: '100vw',
+                pb: 8,
             },
         },
     },
     components: {
+        Alert: createMultiStyleConfigHelpers(alertAnatomy.keys).defineMultiStyleConfig({
+            variants: {
+                solid: ({ colorScheme: c }) => ({
+                    container: {
+                        ['--alert-bg']: `colors.${c}.500`,
+                    },
+                }),
+            },
+        }),
         Loader: loaderTheme,
         MultiSelect: multiSelectTheme,
         RecipeCard: recipeCardTheme,

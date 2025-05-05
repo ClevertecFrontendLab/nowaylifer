@@ -43,8 +43,7 @@ export const Toast = (props: ToastProps) => {
             status={status}
             variant={variant}
             id={ids?.root}
-            alignItems='start'
-            borderRadius='md'
+            alignItems='center'
             boxShadow='lg'
             paddingEnd={8}
             textAlign='start'
