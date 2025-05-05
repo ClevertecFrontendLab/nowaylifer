@@ -96,6 +96,7 @@ export function MainPage() {
                                 bg='lime.400'
                                 size={{ base: 'md', '2xl': 'lg' }}
                                 onClick={fetchNextPage}
+                                disabled={isFetchingNextPage}
                                 data-test-id={TestId.LOAD_MORE_BUTTON}
                             >
                                 {isFetchingNextPage ? 'Загрузка...' : 'Загрузить еще'}

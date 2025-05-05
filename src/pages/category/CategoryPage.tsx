@@ -191,6 +191,7 @@ export function CategoryPage() {
                                             size={{ base: 'md', '2xl': 'lg' }}
                                             onClick={fetchNextPage}
                                             data-test-id={TestId.LOAD_MORE_BUTTON}
+                                            disabled={isFetchingNextPage}
                                         >
                                             {isFetchingNextPage ? 'Загрузка...' : 'Загрузить еще'}
                                         </Button>
