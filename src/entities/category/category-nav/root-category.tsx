@@ -9,29 +9,31 @@ import {
 } from '@chakra-ui/react';
 import { memo } from 'react';
 
-import { Category } from '~/entities/category';
+import { RootCategory } from '~/entities/category';
 import { buildImageSrc } from '~/shared/util';
 
-export interface CategoryItemProps extends AccordionButtonProps {
-    category: Category;
-    active?: boolean;
+export interface RootCategoryItemProps extends AccordionButtonProps {
+    rootCategory: RootCategory;
+    isActive?: boolean;
 }
 
-export const CategoryItem = memo(({ active, category, ...props }: CategoryItemProps) => (
-    <AccordionButton
-        _focusVisible={{ boxShadow: 'none', bg: active ? undefined : 'lime.100' }}
-        _hover={active ? {} : { bg: 'lime.50' }}
-        bg={active ? 'lime.100' : undefined}
-        textAlign='start'
-        py={3}
-        px={2}
-        {...props}
-    >
-        <Image src={buildImageSrc(category.icon!)} boxSize={6} mr={3} />
-        <Box fontWeight={active ? 'bold' : 'medium'}>{category.title}</Box>
-        <AccordionIcon as={ChevronDownIcon} w={4} h={4} ml='auto' />
-    </AccordionButton>
-));
+export const RootCategoryItem = memo(
+    ({ isActive, rootCategory, ...props }: RootCategoryItemProps) => (
+        <AccordionButton
+            _focusVisible={{ boxShadow: 'none', bg: isActive ? undefined : 'lime.100' }}
+            _hover={isActive ? {} : { bg: 'lime.50' }}
+            bg={isActive ? 'lime.100' : undefined}
+            textAlign='start'
+            py={3}
+            px={2}
+            {...props}
+        >
+            <Image src={buildImageSrc(rootCategory.icon)} boxSize={6} mr={3} />
+            <Box fontWeight={isActive ? 'bold' : 'medium'}>{rootCategory.title}</Box>
+            <AccordionIcon as={ChevronDownIcon} w={4} h={4} ml='auto' />
+        </AccordionButton>
+    ),
+);
 
 const ChevronDownIcon = (props: IconProps) => (
     <Icon viewBox='0 0 16 16' {...props}>

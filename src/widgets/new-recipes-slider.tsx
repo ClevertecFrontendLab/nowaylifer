@@ -9,7 +9,7 @@ import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import { selectCategoriesInvariant } from '~/entities/category/selectors';
 import { RecipeCard } from '~/entities/recipe';
 import { recipeApi } from '~/entities/recipe/api';
-import { buildRecipeLink, getRecipeRootCategories } from '~/entities/recipe/util';
+import { buildRecipePath, getRecipeRootCategories } from '~/entities/recipe/util';
 import { useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { isE2E } from '~/shared/util';
@@ -47,7 +47,7 @@ export const NewRecipesSlider = () => {
                             variant='vertical'
                             recipe={r}
                             categories={getRecipeRootCategories(r, categoryById)}
-                            recipeLink={buildRecipeLink(r, categoryById)}
+                            recipeLink={buildRecipePath(r, categoryById)}
                         />
                     </SwiperSlide>
                 ))}

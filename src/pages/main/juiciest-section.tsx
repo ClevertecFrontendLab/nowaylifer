@@ -3,7 +3,7 @@ import { Box, Button, Center, HStack, SimpleGrid, useBreakpointValue } from '@ch
 import { Link } from 'react-router';
 
 import { selectCategoriesInvariant } from '~/entities/category';
-import { buildRecipeLink, getRecipeRootCategories, recipeApi, RecipeCard } from '~/entities/recipe';
+import { buildRecipePath, getRecipeRootCategories, recipeApi, RecipeCard } from '~/entities/recipe';
 import { RoutePath } from '~/shared/router';
 import { useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
@@ -44,7 +44,7 @@ export const JuiciestSection = () => {
                             recipe={r}
                             variant='horizontal'
                             categories={getRecipeRootCategories(r, categoryById)}
-                            recipeLink={buildRecipeLink(r, categoryById)}
+                            recipeLink={buildRecipePath(r, categoryById)}
                             testId={{ link: TestId.recipeCardLink(idx) }}
                         />
                     ))}

@@ -8,6 +8,9 @@ export const isSubCategory = (value: Category | SubCategory): value is SubCatego
 export const isRootCategory = (value: Category | SubCategory): value is RootCategory =>
     !isSubCategory(value);
 
+export const buildCategoryPath = (root: RootCategory, sub: SubCategory) =>
+    `/${root.category}/${sub.category}`;
+
 export const CategoryParams = {
     RootCategory: {
         param: 'rootcategory',

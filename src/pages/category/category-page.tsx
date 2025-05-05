@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router';
 
 import { selectCategoriesInvariant, useActiveCategories } from '~/entities/category';
 import {
-    buildRecipeLink,
+    buildRecipePath,
     getRecipeRootCategories,
     recipeApi,
     RecipeCard,
@@ -163,7 +163,7 @@ export function CategoryPage() {
                                                 key={r._id}
                                                 recipe={r}
                                                 variant='horizontal'
-                                                recipeLink={buildRecipeLink(
+                                                recipeLink={buildRecipePath(
                                                     r,
                                                     categoryById,
                                                     activeCategories,

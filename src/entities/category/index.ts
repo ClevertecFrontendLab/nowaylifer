@@ -1,9 +1,11 @@
 export { categoryApi, type CategoryState } from './api';
+export { CategoryNav, type CategoryNavProps } from './category-nav';
 export type { Category, RootCategory, SubCategory } from './interface';
 export { initCategoriesMiddleware } from './lib/init-categories.middleware';
 export { useActiveCategories } from './lib/use-active-categories';
 export {
     type ActiveCategories,
+    buildCategoryPath,
     CategoryParams,
     isRootCategory,
     isSubCategory,

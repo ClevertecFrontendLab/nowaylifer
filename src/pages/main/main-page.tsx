@@ -3,7 +3,7 @@ import { Box, Center, Heading, SimpleGrid, useBreakpointValue, VStack } from '@c
 import { selectCategoriesInvariant } from '~/entities/category/selectors';
 import { RecipeCard } from '~/entities/recipe';
 import { recipeApi, selectFromRecipeInfiniteQueryResult } from '~/entities/recipe/api';
-import { buildRecipeLink, getRecipeRootCategories } from '~/entities/recipe/util';
+import { buildRecipePath, getRecipeRootCategories } from '~/entities/recipe/util';
 import { filtersToParams } from '~/features/filter-recipe/filters-to-params';
 import {
     selectAppliedFiltersByGroup,
@@ -77,7 +77,7 @@ export function MainPage() {
                                 recipe={r}
                                 variant='horizontal'
                                 categories={getRecipeRootCategories(r, categoryById)}
-                                recipeLink={buildRecipeLink(r, categoryById)}
+                                recipeLink={buildRecipePath(r, categoryById)}
                                 testId={{ root: TestId.recipeCard(idx) }}
                                 renderTitle={(styleProps) => (
                                     <Heading {...styleProps}>

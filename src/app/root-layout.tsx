@@ -6,7 +6,7 @@ import { PenIcon } from '~/shared/ui/pen-icon';
 import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/stats';
 import { AppHeader } from '~/widgets/app-header';
 import { BottomMenu } from '~/widgets/bottom-menu';
-import { SidebarMenu } from '~/widgets/sidebar-menu';
+import { SidebarMenu } from '~/widgets/side-bar-menu';
 
 export default function RootLayout() {
     const xl = useBreakpointValue({ base: false, xl: true });

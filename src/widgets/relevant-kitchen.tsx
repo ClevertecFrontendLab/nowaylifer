@@ -5,7 +5,7 @@ import { memo } from 'react';
 import { selectCategoriesInvariant } from '~/entities/category/selectors';
 import { RecipeCard } from '~/entities/recipe';
 import { recipeApi } from '~/entities/recipe/api';
-import { buildRecipeLink, getRecipeRootCategories } from '~/entities/recipe/util';
+import { buildRecipePath, getRecipeRootCategories } from '~/entities/recipe/util';
 import { useAppSelector } from '~/shared/store';
 import { Section, SectionHeading } from '~/shared/ui/section';
 
@@ -51,7 +51,7 @@ export const RelevantKitchen = memo(() => {
                             variant='no-image'
                             recipe={r}
                             categories={getRecipeRootCategories(r, categoryById)}
-                            recipeLink={buildRecipeLink(r, categoryById)}
+                            recipeLink={buildRecipePath(r, categoryById)}
                         />
                     ))}
                 <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
@@ -63,7 +63,7 @@ export const RelevantKitchen = memo(() => {
                                 recipe={r}
                                 variant='compact'
                                 categories={getRecipeRootCategories(r, categoryById)}
-                                recipeLink={buildRecipeLink(r, categoryById)}
+                                recipeLink={buildRecipePath(r, categoryById)}
                             />
                         ))}
                 </Stack>

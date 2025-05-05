@@ -2,7 +2,7 @@ import { Box, Center, Heading, SimpleGrid, useBreakpointValue, VStack } from '@c
 
 import { selectCategoriesInvariant } from '~/entities/category';
 import {
-    buildRecipeLink,
+    buildRecipePath,
     getRecipeRootCategories,
     recipeApi,
     RecipeCard,
@@ -71,7 +71,7 @@ export function JuiciestPage() {
                             recipe={r}
                             variant='horizontal'
                             categories={getRecipeRootCategories(r, categoryById)}
-                            recipeLink={buildRecipeLink(r, categoryById)}
+                            recipeLink={buildRecipePath(r, categoryById)}
                             data-test-id={TestId.recipeCard(idx)}
                             renderTitle={(styleProps) => (
                                 <Heading {...styleProps}>

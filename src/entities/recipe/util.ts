@@ -1,5 +1,6 @@
 import {
     ActiveCategories,
+    buildCategoryPath,
     CategoryById,
     isRootCategory,
     isSubCategory,
@@ -23,7 +24,7 @@ export const getRecipeRootCategories = (recipe: Recipe, categoryById: CategoryBy
     ),
 ];
 
-export function buildRecipeLink(
+export function buildRecipePath(
     recipe: Recipe,
     categoryById: CategoryById,
     activeCategories?: ActiveCategories,
@@ -35,6 +36,7 @@ export function buildRecipeLink(
 
     const category = categoryById[recipe.categoriesIds[0]];
     if (!category) return '';
+
     const rootCategory = isRootCategory(category)
         ? category
         : (categoryById[category.rootCategoryId] as RootCategory);
@@ -43,5 +45,5 @@ export function buildRecipeLink(
     return getRecipePath(recipe, rootCategory, subCategory);
 }
 
-export const getRecipePath = (recipe: Recipe, root: RootCategory, sub: SubCategory) =>
-    `/${root.category}/${sub.category}/${recipe._id}`;
+const getRecipePath = (recipe: Recipe, root: RootCategory, sub: SubCategory) =>
+    `${buildCategoryPath(root, sub)}/${recipe._id}`;
