@@ -1,4 +1,5 @@
 import {
+    alertAnatomy,
     cardAnatomy,
     checkboxAnatomy,
     inputAnatomy,
@@ -14,9 +15,30 @@ import {
 } from '@chakra-ui/react';
 
 import { recipeCardTheme } from '~/entities/recipe';
+import { loaderTheme } from '~/shared/ui/loader.theme';
+import { multiSelectTheme } from '~/shared/ui/multi-select';
 
 const themeOverride = {
+    styles: {
+        global: {
+            '#chakra-toast-manager-bottom': {
+                width: '100vw',
+                pb: 8,
+            },
+        },
+    },
     components: {
+        Alert: createMultiStyleConfigHelpers(alertAnatomy.keys).defineMultiStyleConfig({
+            variants: {
+                solid: ({ colorScheme: c }) => ({
+                    container: {
+                        ['--alert-bg']: `colors.${c}.500`,
+                    },
+                }),
+            },
+        }),
+        Loader: loaderTheme,
+        MultiSelect: multiSelectTheme,
         RecipeCard: recipeCardTheme,
         Link: {
             baseStyle: {
@@ -27,21 +49,21 @@ const themeOverride = {
         },
         Tabs: createMultiStyleConfigHelpers(tabsAnatomy.keys).defineMultiStyleConfig({
             defaultProps: { colorScheme: 'lime' },
-            baseStyle: ({ colorScheme }) => ({
+            baseStyle: {
                 tab: {
-                    '--tabs-color': `colors.${colorScheme}.800`,
+                    '--tabs-color': `colorPallete.800`,
                     fontWeight: 'medium',
                     whiteSpace: 'nowrap',
                     _first: { marginLeft: 'auto' },
                     _last: { marginRight: 'auto' },
                 },
                 indicator: {
-                    bg: `${colorScheme}.600`,
+                    bg: `colorPallete.600`,
                     h: '2px',
                     mt: '-1.5px',
                 },
                 tabpanel: { p: 0, pt: 6 },
-            }),
+            },
         }),
         Button: {
             baseStyle: {
@@ -139,11 +161,13 @@ const themeOverride = {
         '4.5': '1.125rem',
         '5.5': '1.375rem',
         '6.5': '1.625rem',
+        '7.5': '1.875rem',
     },
     sizes: {
         '4.5': '1.125rem',
         '5.5': '1.375rem',
         '6.5': '1.625rem',
+        '7.5': '1.875rem',
     },
     colors: {
         lime: {
@@ -176,7 +200,7 @@ const themeOverride = {
     },
 } satisfies ThemeOverride;
 
-export const theme = extendTheme(themeOverride);
+export const theme = extendTheme(themeOverride) as ChakraTheme;
 
 declare global {
     type ChakraTheme = typeof themeOverride & DefaultTheme;

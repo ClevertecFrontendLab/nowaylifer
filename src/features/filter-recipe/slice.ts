@@ -1,41 +1,64 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
-import { filterConfig } from './filter-config';
-import { Filter, FilterGroup, FilterType } from './types';
+import { categoryApi } from '~/entities/category';
+import { categoriesHydrated } from '~/entities/category/lib/init-categories.middleware';
+
+import { defaultFilterOptions } from './filter-options';
+import {
+    Filter,
+    FILTER_TYPES,
+    FilterGroup,
+    FilterOption,
+    FiltersByGroups,
+    FilterType,
+} from './types';
 
 export interface FilterRecipeState {
-    filters: { [Type in FilterType]: { type: Type; current: Filter[]; applied: Filter[] } };
+    isAppliedFromDrawer: boolean;
+    filters: {
+        [Type in FilterType]: {
+            type: Type;
+            current: Filter[];
+            applied: Filter[];
+            options: FilterOption[];
+        };
+    };
 }
-
-export const FILTER_TYPES = Object.keys(filterConfig) as FilterType[];
 
 const emptyFilterArray: Filter[] = [];
 
 export const slice = createSlice({
     name: 'filterRecipe',
     initialState: (): FilterRecipeState => ({
+        isAppliedFromDrawer: false,
         filters: FILTER_TYPES.reduce(
-            (acc, next) => ({
+            (acc, type) => ({
                 ...acc,
-                [next]: { type: next, current: emptyFilterArray, applied: emptyFilterArray },
+                [type]: {
+                    type,
+                    current: emptyFilterArray,
+                    applied: emptyFilterArray,
+                    options: defaultFilterOptions[type].map((o) => ({ ...o, type })),
+                },
             }),
             {} as FilterRecipeState['filters'],
         ),
     }),
     reducers: (create) => ({
+        setIsAppliedFromDrawer: create.reducer<boolean>((state, action) => {
+            state.isAppliedFromDrawer = action.payload;
+        }),
+        setFilterOptions: create.reducer<{ type: FilterType; options: FilterOption[] }>(
+            (state, action) => {
+                state.filters[action.payload.type].options = action.payload.options;
+            },
+        ),
         applyFilter: create.reducer<FilterType>((state, action) => {
             const group = state.filters[action.payload];
             group.applied = group.current;
         }),
         applyFilters: create.reducer((state) => {
             FILTER_TYPES.forEach((t) => slice.caseReducers.applyFilter(state, applyFilter(t)));
-        }),
-        restoreFilter: create.reducer<FilterType>((state, action) => {
-            const group = state.filters[action.payload];
-            group.current = group.applied;
-        }),
-        restoreFilters: create.reducer((state) => {
-            FILTER_TYPES.forEach((t) => slice.caseReducers.restoreFilter(state, restoreFilter(t)));
         }),
         setFilter: create.reducer<FilterGroup>((state, action) => {
             const { type, filters } = action.payload;
@@ -61,8 +84,33 @@ export const slice = createSlice({
         resetFilters: create.reducer((state) => {
             FILTER_TYPES.forEach((t) => slice.caseReducers.resetFilter(state, resetFilter(t)));
         }),
+        restoreFilter: create.reducer<FilterType>((state, action) => {
+            const group = state.filters[action.payload];
+            group.current = group.applied;
+        }),
+        restoreFilters: create.reducer((state) => {
+            FILTER_TYPES.forEach((t) => slice.caseReducers.restoreFilter(state, restoreFilter(t)));
+        }),
     }),
+    extraReducers: (build) => {
+        build.addMatcher(
+            isAnyOf(categoryApi.endpoints.categories.matchFulfilled, categoriesHydrated.match),
+            (state, action) => {
+                const options = action.payload.rootCategories.map<FilterOption>((category) => ({
+                    type: 'categories',
+                    label: category.title,
+                    value: category._id,
+                }));
+                slice.caseReducers.setFilterOptions(
+                    state,
+                    slice.actions.setFilterOptions({ type: 'categories', options }),
+                );
+            },
+        );
+    },
     selectors: {
+        selectIsAppliedFromDrawer: (state) => state.isAppliedFromDrawer,
+        selectFilterOptions: (state, type: FilterType) => state.filters[type].options,
         selectHasAnyFilter: (state) => FILTER_TYPES.some((t) => state.filters[t].current.length),
         selectHasFilter: (state, type: FilterType) => !!state.filters[type].current.length,
         selectHasAppliedFilter: (state, type: FilterType) => !!state.filters[type].applied.length,
@@ -71,18 +119,20 @@ export const slice = createSlice({
                 const group = state.filters[t];
                 return group.applied !== group.current && group.applied.length > 0;
             }),
-        selectFilter: (state, filter: FilterType) => state.filters[filter].current,
+        selectFilter: (state, filter: FilterType): Filter[] => state.filters[filter].current,
         selectAppliedFilter: (state, type: FilterType): Filter[] => state.filters[type].applied,
         selectFilters: createSelector(
             FILTER_TYPES.map((t) => (state: FilterRecipeState) => state.filters[t].current),
             (...groups): Filter[] => groups.flat(),
         ),
-        selectAppliedFilterGroups: createSelector(
+        selectAppliedFiltersByGroup: createSelector(
             FILTER_TYPES.map((t) => (state: FilterRecipeState) => state.filters[t].applied),
-            (...groups): FilterGroup[] =>
-                groups
-                    .flatMap((filters, i) => ({ type: FILTER_TYPES[i], filters }))
-                    .filter((group) => group.filters.length),
+            (...groups): FiltersByGroups =>
+                groups.reduce(
+                    (acc, filters, idx) =>
+                        filters.length ? { ...acc, [FILTER_TYPES[idx]]: filters } : acc,
+                    {},
+                ),
         ),
     },
 });
@@ -94,6 +144,7 @@ export const {
     applyFilter,
     applyFilters,
     resetFilter,
+    setIsAppliedFromDrawer,
     resetFilters,
     restoreFilter,
     restoreFilters,
@@ -101,12 +152,14 @@ export const {
 } = slice.actions;
 
 export const {
+    selectIsAppliedFromDrawer,
+    selectFilterOptions,
+    selectAppliedFiltersByGroup,
     selectFilter,
     selectHasAppliedFilter,
     selectHasFilter,
     selectIsFiltersDirty,
     selectFilters,
     selectAppliedFilter,
-    selectAppliedFilterGroups,
     selectHasAnyFilter,
 } = slice.getSelectors(slice.selectSlice);

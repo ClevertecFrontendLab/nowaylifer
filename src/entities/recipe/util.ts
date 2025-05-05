@@ -1,0 +1,47 @@
+import {
+    ActiveCategories,
+    CategoryById,
+    isRootCategory,
+    isSubCategory,
+    RootCategory,
+    SubCategory,
+} from '~/entities/category/@x/recipe';
+
+import { Recipe } from './interface';
+
+export const getRecipeRootCategories = (recipe: Recipe, categoryById: CategoryById) => [
+    ...new Set(
+        recipe.categoriesIds.reduce<RootCategory[]>((acc, id) => {
+            const category = categoryById[id];
+            if (!category) return acc;
+            if (isSubCategory(category)) {
+                const rootCategory = categoryById[category.rootCategoryId] as RootCategory;
+                return acc.concat(rootCategory);
+            }
+            return acc.concat(category);
+        }, []),
+    ),
+];
+
+export function buildRecipeLink(
+    recipe: Recipe,
+    categoryById: CategoryById,
+    activeCategories?: ActiveCategories,
+) {
+    if (activeCategories) {
+        const [rootCategory, subCategory] = activeCategories;
+        return getRecipePath(recipe, rootCategory, subCategory);
+    }
+
+    const category = categoryById[recipe.categoriesIds[0]];
+    if (!category) return '';
+    const rootCategory = isRootCategory(category)
+        ? category
+        : (categoryById[category.rootCategoryId] as RootCategory);
+
+    const subCategory = rootCategory.subCategories[0];
+    return getRecipePath(recipe, rootCategory, subCategory);
+}
+
+export const getRecipePath = (recipe: Recipe, root: RootCategory, sub: SubCategory) =>
+    `/${root.category}/${sub.category}/${recipe._id}`;

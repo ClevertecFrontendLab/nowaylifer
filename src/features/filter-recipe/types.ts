@@ -1,11 +1,20 @@
-import { Recipe } from '~/entities/recipe';
+export const FILTER_TYPES = ['allergens', 'meat', 'garnish', 'categories', 'authors'] as const;
 
-import { filterConfig } from './filter-config';
+export type FilterType = (typeof FILTER_TYPES)[number];
 
-export type FilterType = keyof typeof filterConfig;
+export interface Filter {
+    type: FilterType;
+    label: string;
+    value: string;
+}
 
-export type FilterMatcher = (recipe: Recipe, filter: Filter) => boolean;
+export interface FilterGroup {
+    type: FilterType;
+    filters: Filter[];
+}
 
-export type Filter = { type: FilterType; label: string; value: string };
+export interface FilterOption extends Filter {
+    testId?: string;
+}
 
-export type FilterGroup = { type: FilterType; filters: Filter[] };
+export type FiltersByGroups = Partial<Record<FilterType, Filter[]>>;

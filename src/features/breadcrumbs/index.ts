@@ -1,2 +1,2 @@
-export { Breadcrumbs } from './Breadcrumbs';
-export type { BreadcrumbData, RouteHandle } from './types';
+export { Breadcrumbs } from './breadcrumbs';
+export type { BreadcrumbData, RouteBreadcrumb } from './types';

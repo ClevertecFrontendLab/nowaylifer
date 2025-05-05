@@ -1,19 +1,18 @@
-import { recipeCategoryMap } from '~/entities/recipe';
+import { TestId } from '~/shared/test-ids';
 
-import { FilterType } from './types';
-import { Option } from './ui/MultiSelect';
+import { FilterOption, FilterType } from './types';
 
-export const filterOptions: Record<FilterType, Option[]> = {
+export const defaultFilterOptions: Record<FilterType, Omit<FilterOption, 'type'>[]> = {
     allergens: [
-        { label: 'Молочные продукты', value: 'молочные продукты', testId: 'allergen-0' },
-        { label: 'Яйцо', value: 'яйцо', testId: 'allergen-1' },
-        { label: 'Рыба', value: 'рыба', testId: 'allergen-2' },
-        { label: 'Моллюски', value: 'моллюски', testId: 'allergen-3' },
-        { label: 'Орехи', value: 'орехи', testId: 'allergen-4' },
-        { label: 'Томат (помидор)', value: 'томат', testId: 'allergen-5' },
-        { label: 'Цитрусовые', value: 'цитрусовые', testId: 'allergen-6' },
-        { label: 'Клубника (ягоды)', value: 'ягоды', testId: 'allergen-7' },
-        { label: 'Шоколад', value: 'шоколад', testId: 'allergen-8' },
+        { label: 'Молочные продукты', value: 'молочные продукты' },
+        { label: 'Яйцо', value: 'яйцо' },
+        { label: 'Рыба', value: 'рыба' },
+        { label: 'Моллюски', value: 'моллюски' },
+        { label: 'Орехи', value: 'орехи' },
+        { label: 'Томат (помидор)', value: 'томат' },
+        { label: 'Цитрусовые', value: 'цитрусовые' },
+        { label: 'Клубника (ягоды)', value: 'ягоды' },
+        { label: 'Шоколад', value: 'шоколад' },
     ],
     authors: [
         { label: 'Елена Мин', value: 'Елена Мин' },
@@ -28,11 +27,7 @@ export const filterOptions: Record<FilterType, Option[]> = {
         { label: 'Повар Ши', value: 'Повар Ши' },
         { label: 'Только новые авторы', value: 'Только новые авторы' },
     ],
-    categories: Object.values(recipeCategoryMap).map((c) => ({
-        label: c.label,
-        value: c.slug,
-        testId: c.slug === 'vegan' ? 'checkbox-веганская кухня' : undefined,
-    })),
+    categories: [],
     meat: [
         { label: 'Курица', value: 'курица' },
         { label: 'Свинина', value: 'свинина' },
@@ -40,8 +35,8 @@ export const filterOptions: Record<FilterType, Option[]> = {
         { label: 'Индейка', value: 'индейка' },
         { label: 'Утка', value: 'утка' },
     ],
-    side: [
-        { label: 'Картошка', value: 'картошка', testId: 'checkbox-картошка' },
+    garnish: [
+        { label: 'Картошка', value: 'картошка', testId: TestId.POTATO_GARNISH_OPTION },
         { label: 'Гречка', value: 'гречка' },
         { label: 'Паста', value: 'паста' },
         { label: 'Спагетти', value: 'спагетти' },
