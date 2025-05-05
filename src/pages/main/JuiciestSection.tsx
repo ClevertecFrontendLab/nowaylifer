@@ -9,16 +9,19 @@ import { useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { ButtonProps } from '~/shared/ui/Button';
 import { Section, SectionHeading } from '~/shared/ui/Section';
+import { useShowAppLoader } from '~/widgets/app-loader';
 
 export const JuiciestSection = () => {
     const { categoryById } = useAppSelector(selectCategoriesInvariant);
-    const { data: recipes } = recipeApi.useRecipesQuery({
+    const { data: recipes, isLoading } = recipeApi.useRecipesQuery({
         sortBy: 'likes',
         sortOrder: 'desc',
         limit: 4,
     });
 
     const md = useBreakpointValue({ base: false, md: true, lg: false });
+
+    useShowAppLoader(isLoading);
 
     return (
         <Box as='main' py={{ base: 4, lg: 8 }}>

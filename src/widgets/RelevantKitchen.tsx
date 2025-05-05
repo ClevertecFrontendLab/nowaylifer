@@ -9,13 +9,17 @@ import { buildRecipeLink, getRecipeRootCategories } from '~/entities/recipe/util
 import { useAppSelector } from '~/shared/store';
 import { Section, SectionHeading } from '~/shared/ui/Section';
 
+import { useShowAppLoader } from './app-loader';
+
 export const RelevantKitchen = memo(() => {
     const { categoryById, rootCategories } = useAppSelector(selectCategoriesInvariant);
     const rootCategory = useConst(() => sample(rootCategories)!);
-    const { data: recipes } = recipeApi.useRelevantRecipesQuery({
+    const { data: recipes, isLoading } = recipeApi.useRelevantRecipesQuery({
         subCategoriesIds: rootCategory.subCategories!.map((s) => s._id),
         maxRecipes: 5,
     });
+
+    useShowAppLoader(isLoading);
 
     return (
         <Section>
