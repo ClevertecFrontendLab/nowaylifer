@@ -6,7 +6,7 @@ import { useActiveCategories } from '~/entities/category';
 export const NavigateToSubCategory = () => {
     const [rootCategory, subCategory] = useActiveCategories();
     if (subCategory) return <Outlet />;
-    invariant(!!rootCategory, 'root category is undefined');
+    invariant(!!rootCategory, 'Root category is undefined');
     const firstSubCategory = rootCategory.subCategories[0];
     return <Navigate to={`/${rootCategory.category}/${firstSubCategory.category}`} />;
 };

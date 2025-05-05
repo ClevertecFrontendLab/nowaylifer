@@ -1,5 +1,6 @@
 import { Avatar, Box, BoxProps, Circle, HStack, Icon, IconProps, Square } from '@chakra-ui/react';
 
+import { TestId } from '~/shared/test-ids';
 import { Button } from '~/shared/ui/Button';
 import { PenIcon } from '~/shared/ui/PenIcon';
 import { SearchIcon } from '~/shared/ui/SearchIcon';
@@ -8,7 +9,7 @@ export const BottomMenu = (props: BoxProps) => (
     <Box
         bg='lime.50'
         height='84px'
-        data-test-id='footer'
+        data-test-id={TestId.FOOTER}
         sx={{ position: 'static !important;' }}
         {...props}
     >

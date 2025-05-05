@@ -1,6 +1,6 @@
 import { redirect, unstable_MiddlewareFunction } from 'react-router';
 
-import { storeContext } from '~/shared/router';
+import { RoutePath, storeContext } from '~/shared/router';
 
 import { selectActiveCategories } from '../selectors';
 import { CategoryParams } from './util';
@@ -18,7 +18,7 @@ export const validateCategoryParamsMiddleware: unstable_MiddlewareFunction = (
     );
     const activeCategories = selectActiveCategories(store.getState(), params);
     if (activeCategories.length < categoryParamsLength) {
-        throw redirect('/not-found');
+        throw redirect(RoutePath.NotFound);
     }
     return next();
 };

@@ -2,6 +2,7 @@ import { Avatar, Box, Flex, HStack, Text, useBreakpointValue } from '@chakra-ui/
 import { useEffect, useRef } from 'react';
 
 import { Breadcrumbs } from '~/features/breadcrumbs';
+import { TestId } from '~/shared/test-ids';
 import { Logo } from '~/shared/ui/Logo';
 import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/Stats';
 
@@ -30,7 +31,7 @@ export const AppHeader = () => {
             align='center'
             p={4}
             className={classes.header}
-            data-test-id='header'
+            data-test-id={TestId.HEADER}
         >
             <AppHeaderLogo />
             {lg && <Breadcrumbs ml={{ base: 16, xl: 32 }} />}

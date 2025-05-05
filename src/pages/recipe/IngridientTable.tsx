@@ -17,9 +17,12 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
+import { Recipe } from '~/entities/recipe';
+import { TestId } from '~/shared/test-ids';
+
 export interface IngridientTableProps extends BoxProps {
     defaultPortions?: number;
-    ingridients: { title: string; count: string | number; measureUnit: string }[];
+    ingridients: Recipe['ingredients'];
 }
 
 export const IngridientTable = ({
@@ -70,8 +73,12 @@ export const IngridientTable = ({
                                 >
                                     <NumberInputField />
                                     <NumberInputStepper>
-                                        <NumberIncrementStepper data-test-id='increment-stepper' />
-                                        <NumberDecrementStepper data-test-id='decrement-stepper' />
+                                        <NumberIncrementStepper
+                                            data-test-id={TestId.PORTIONS_INCREMENT}
+                                        />
+                                        <NumberDecrementStepper
+                                            data-test-id={TestId.PORTIONS_DECREMENT}
+                                        />
                                     </NumberInputStepper>
                                 </NumberInput>
                             </FormControl>
@@ -79,10 +86,10 @@ export const IngridientTable = ({
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {ingridients.map((ingridient, i) => (
+                    {ingridients.map((ingridient, idx) => (
                         <Tr key={ingridient.title}>
                             <Td fontWeight='medium'>{ingridient.title}</Td>
-                            <Td textAlign='end' data-test-id={`ingredient-quantity-${i}`}>
+                            <Td textAlign='end' data-test-id={TestId.ingredientQuantity(idx)}>
                                 {calcIngredientQuantity(
                                     ingridient.count,
                                     portions,

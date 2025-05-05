@@ -16,6 +16,7 @@ import { RemoveScroll } from 'react-remove-scroll';
 
 import { Breadcrumbs } from '~/features/breadcrumbs';
 import { RecipeMenu } from '~/features/recipe-menu';
+import { TestId } from '~/shared/test-ids';
 import { About } from '~/shared/ui/About';
 import { ExitButton } from '~/shared/ui/ExitButton';
 
@@ -55,7 +56,7 @@ export const HamburgerMenu = ({ onOpenChange, isOpen, children }: HamburgerMenuP
                             pb={8}
                             pt={4}
                         >
-                            <Box display='flex' flexDir='column' minH={0} data-test-id='nav'>
+                            <Box display='flex' flexDir='column' minH={0} data-test-id={TestId.NAV}>
                                 <Breadcrumbs
                                     onBreadcrumbClick={(_, isActive) => !isActive && onClose()}
                                     px={5}

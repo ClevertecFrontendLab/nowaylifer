@@ -7,6 +7,7 @@ import {
 import { shuffle } from 'lodash';
 
 import {
+    ApiEndpoints,
     apiSlice,
     PaginatedResponse,
     PaginationRequestMeta,
@@ -39,10 +40,7 @@ const defaultRecipeRequestParams: RecipeRequestParams = {
 export const recipeApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
         recipeById: build.query<RecipeWithAuthor, string>({
-            query: (id) => ({
-                url: `/recipe/${id}`,
-                method: 'GET',
-            }),
+            query: (id) => ({ url: `${ApiEndpoints.RECIPE}/${id}` }),
         }),
         paginatedRecipes: build.infiniteQuery<
             PaginatedResponse<Recipe>,
@@ -51,8 +49,7 @@ export const recipeApi = apiSlice.injectEndpoints({
         >({
             infiniteQueryOptions,
             query: ({ queryArg: params, pageParam }) => ({
-                url: '/recipe',
-                method: 'GET',
+                url: ApiEndpoints.RECIPE,
                 params: {
                     ...defaultRecipeRequestParams,
                     ...params,
@@ -61,11 +58,7 @@ export const recipeApi = apiSlice.injectEndpoints({
             }),
         }),
         recipes: build.query<Recipe[], RecipeRequestParams>({
-            query: (params) => ({
-                url: '/recipe',
-                method: 'GET',
-                params,
-            }),
+            query: (params) => ({ url: ApiEndpoints.RECIPE, params }),
             transformResponse: (rawResult: PaginatedResponse<Recipe>) => rawResult.data,
         }),
         paginatedRecipesBySubCategory: build.infiniteQuery<
@@ -77,7 +70,9 @@ export const recipeApi = apiSlice.injectEndpoints({
             query: ({ queryArg: { subCategoryId, ...params }, pageParam }) => {
                 const hasParams = Object.values(params).filter(Boolean).length;
                 return {
-                    url: hasParams ? '/recipe' : `/recipe/category/${subCategoryId}`,
+                    url: hasParams
+                        ? ApiEndpoints.RECIPE
+                        : `${ApiEndpoints.RECIPE_SUBCATEGORY}/${subCategoryId}`,
                     params: {
                         ...defaultRecipeRequestParams,
                         ...params,
@@ -103,8 +98,7 @@ export const recipeApi = apiSlice.injectEndpoints({
             { subCategoryId: string } & RecipeRequestParams
         >({
             query: ({ subCategoryId, ...params }) => ({
-                url: `/recipe/category/${subCategoryId}`,
-                method: 'GET',
+                url: `${ApiEndpoints.RECIPE_SUBCATEGORY}/${subCategoryId}`,
                 params,
             }),
             transformResponse: (rawResult: PaginatedResponse<Recipe>) => rawResult.data,
@@ -125,7 +119,7 @@ export const recipeApi = apiSlice.injectEndpoints({
                     );
                     const result = await Promise.all(promises);
                     const recipes: Recipe[] = shuffle(
-                        result.flat().filter(Boolean).slice(0, maxRecipes),
+                        result.flat().slice(0, maxRecipes).filter(Boolean),
                     );
                     return { data: recipes };
                 },

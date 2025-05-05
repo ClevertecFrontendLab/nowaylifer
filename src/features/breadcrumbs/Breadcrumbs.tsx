@@ -11,6 +11,7 @@ import { useRef } from 'react';
 import { Link as ReactRouterLink } from 'react-router';
 
 import { useActiveCategories } from '~/entities/category';
+import { TestId } from '~/shared/test-ids';
 
 import { BreadcrumbData } from './types';
 import { useBreadcrumbs } from './use-breadcrumbs';
@@ -33,7 +34,7 @@ export const Breadcrumbs = ({ onBreadcrumbClick, ...props }: BreadcrumbsProps) =
             sx={{ '& > ol': { flexWrap: 'wrap', rowGap: 1 } }}
             separator={<BreadcrumbSeparator />}
             spacing={0}
-            data-test-id='breadcrumbs'
+            data-test-id={TestId.BREADCRUMBS}
             {...props}
         >
             {breadcrumbs.filter(Boolean).map((breadcrumb, i) => (
@@ -46,9 +47,9 @@ export const Breadcrumbs = ({ onBreadcrumbClick, ...props }: BreadcrumbsProps) =
                         to={breadcrumb.href}
                         color='blackAlpha.700'
                         _activeLink={{ color: 'black' }}
-                        onClick={() => {
-                            onBreadcrumbClick?.(breadcrumb, i === breadcrumbs.length - 1);
-                        }}
+                        onClick={() =>
+                            onBreadcrumbClick?.(breadcrumb, i === breadcrumbs.length - 1)
+                        }
                     >
                         {breadcrumb.label}
                     </BreadcrumbLink>

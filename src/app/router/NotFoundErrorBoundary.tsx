@@ -1,5 +1,6 @@
 import { Navigate, useRouteError } from 'react-router';
 
+import { RoutePath } from '~/shared/router';
 import { isFetchBaseQueryError } from '~/shared/store';
 
 export const NotFoundErrorBoundary = () => {
@@ -10,7 +11,7 @@ export const NotFoundErrorBoundary = () => {
         error.status >= 400 &&
         error.status < 500
     ) {
-        return <Navigate to='/not-found' />;
+        return <Navigate to={RoutePath.NotFound} />;
     }
     throw error;
 };

@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 
 import { useAppDispatch } from '~/shared/store';
+import { TestId } from '~/shared/test-ids';
 import {
     Drawer,
     DrawerBody,
@@ -29,7 +30,10 @@ export const FilterDrawer = ({ children }: { children?: React.ReactNode }) => {
                 onCloseComplete={() => dispatch(resetFilters())}
             >
                 <DrawerOverlay />
-                <DrawerContent maxW={{ base: '344px', lg: '463px' }} data-test-id='filter-drawer'>
+                <DrawerContent
+                    maxW={{ base: '344px', lg: '463px' }}
+                    data-test-id={TestId.FILTER_DRAWER}
+                >
                     <DrawerHeader
                         fontSize='2xl'
                         display='flex'
@@ -47,7 +51,7 @@ export const FilterDrawer = ({ children }: { children?: React.ReactNode }) => {
                             pos='static'
                             variant='inverted'
                             borderRadius='full'
-                            data-test-id='close-filter-drawer'
+                            data-test-id={TestId.FILTER_DRAWER_CLOSE}
                         />
                     </DrawerHeader>
                     <DrawerBody
@@ -83,6 +87,6 @@ export const FilterDrawer = ({ children }: { children?: React.ReactNode }) => {
 
 export const FilterDrawerTrigger = () => (
     <DrawerTrigger>
-        <FilterButton data-test-id='filter-button' />
+        <FilterButton data-test-id={TestId.FILTER_DRAWER_TRIGGER} />
     </DrawerTrigger>
 );

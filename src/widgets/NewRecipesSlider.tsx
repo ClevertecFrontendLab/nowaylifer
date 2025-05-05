@@ -11,6 +11,7 @@ import { RecipeCard } from '~/entities/recipe';
 import { recipeApi } from '~/entities/recipe/api';
 import { buildRecipeLink, getRecipeRootCategories } from '~/entities/recipe/util';
 import { useAppSelector } from '~/shared/store';
+import { TestId } from '~/shared/test-ids';
 import { isE2E } from '~/shared/util';
 
 export const NewRecipesSlider = () => {
@@ -23,7 +24,7 @@ export const NewRecipesSlider = () => {
     const swiperRef = useRef<SwiperRef>(null);
 
     return (
-        <Box pos='relative' data-test-id='carousel'>
+        <Box pos='relative' data-test-id={TestId.CAROUSEL}>
             <Swiper
                 ref={swiperRef}
                 loop
@@ -32,11 +33,11 @@ export const NewRecipesSlider = () => {
                 breakpoints={{ 1536: { spaceBetween: 24 } }}
                 speed={isE2E() ? 0 : undefined}
             >
-                {recipes?.map((r, i) => (
+                {recipes?.map((r, idx) => (
                     <SwiperSlide
                         key={r._id}
                         style={{ width: 'auto', paddingBottom: 8 }}
-                        data-test-id={`carousel-card-${i}`}
+                        data-test-id={TestId.carouselCard(idx)}
                     >
                         <RecipeCard
                             variant='vertical'
@@ -53,7 +54,7 @@ export const NewRecipesSlider = () => {
                 top='35%'
                 left={-2}
                 onClick={() => swiperRef.current?.swiper.slidePrev()}
-                data-test-id='carousel-back'
+                data-test-id={TestId.CAROUSEL_BACK}
             />
             <SliderNavButton
                 direction='next'
@@ -61,7 +62,7 @@ export const NewRecipesSlider = () => {
                 top='35%'
                 right={-2}
                 onClick={() => swiperRef.current?.swiper.slideNext()}
-                data-test-id='carousel-forward'
+                data-test-id={TestId.CAROUSEL_FORWARD}
             />
         </Box>
     );

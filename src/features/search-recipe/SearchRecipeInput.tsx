@@ -2,6 +2,7 @@ import { BoxProps, IconButton, Input, InputGroup, InputRightElement } from '@cha
 import { useRef } from 'react';
 
 import { useAppDispatch, useAppSelector } from '~/shared/store';
+import { TestId } from '~/shared/test-ids';
 import { SearchIcon } from '~/shared/ui/SearchIcon';
 
 import {
@@ -58,7 +59,7 @@ export const SearchRecipeInput = ({ onSearchStart, ...props }: SearchRecipeInput
                 onKeyDown={handleKeyDown}
                 borderRadius={{ base: 'base', lg: 'md' }}
                 placeholder='Название или ингридиент...'
-                data-test-id='search-input'
+                data-test-id={TestId.SEARCH_INPUT}
             />
             <InputRightElement>
                 <IconButton
@@ -69,7 +70,7 @@ export const SearchRecipeInput = ({ onSearchStart, ...props }: SearchRecipeInput
                     display='flex'
                     size={{ base: 'sm', lg: 'lg' }}
                     aria-label='Искать'
-                    data-test-id='search-button'
+                    data-test-id={TestId.SEARCH_BUTTON}
                 />
             </InputRightElement>
         </InputGroup>

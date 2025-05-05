@@ -38,8 +38,8 @@ export const MultiSelect = <Item,>({
 }: MultiSelectProps<Item>) => {
     const styles = useMultiStyleConfig('MultiSelect', props);
     const { popperConfig, ...ownProps } = omitThemingProps(props);
-    const ctx = useMultiSelect(ownProps);
     const popper = usePopper({ enabled: true, matchWidth: true, ...popperConfig });
+    const ctx = useMultiSelect(ownProps);
     return (
         <MultiSelectProvider value={{ ...ctx, popper }}>
             <MultiSelectStylesProvider value={styles}>

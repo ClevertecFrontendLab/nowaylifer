@@ -13,7 +13,7 @@ import { CategoryPage, categoryPageLoader } from '~/pages/category';
 import { JuiciestPage, juiciestPageLoader } from '~/pages/juiciest';
 import { MainPage } from '~/pages/main';
 import { RecipePage, recipePageLoader } from '~/pages/recipe';
-import { storeContext } from '~/shared/router';
+import { RoutePath, storeContext } from '~/shared/router';
 import { AppLoaderSpinner } from '~/widgets/app-loader';
 import { PageNotFound } from '~/widgets/PageNotFound';
 
@@ -27,20 +27,20 @@ const routerConfig: RouteObject[] = [
         Component: AppLoaderOnNavigation,
         hydrateFallbackElement: <AppLoaderSpinner bg='transparent' />,
         unstable_middleware: [initCategoriesMiddleware],
-        loader: noop,
+        loader: noop, // stub loader to always run middleware
         children: [
             {
                 Component: RootLayout,
                 handle: {
-                    crumb: (_, location) => (location.pathname === '/not-found' ? '' : 'Главная'),
+                    crumb: (_, { pathname }) => (pathname === RoutePath.NotFound ? '' : 'Главная'),
                 } satisfies RouteBreadcrumb,
                 unstable_middleware: [validateCategoryParamsMiddleware],
                 errorElement: <NotFoundErrorBoundary />,
                 children: [
                     { index: true, Component: MainPage },
-                    { path: 'not-found', Component: PageNotFound },
+                    { path: RoutePath.NotFound, Component: PageNotFound },
                     {
-                        path: 'the-juiciest',
+                        path: RoutePath.Juiciest,
                         handle: { crumb: 'Самое сочное' },
                         Component: JuiciestPage,
                         loader: juiciestPageLoader,

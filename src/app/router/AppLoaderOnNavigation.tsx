@@ -3,7 +3,7 @@ import { Outlet, useNavigation } from 'react-router';
 import { useShowAppLoader } from '~/widgets/app-loader';
 
 export const AppLoaderOnNavigation = () => {
-    const navigation = useNavigation();
-    useShowAppLoader(navigation.state === 'loading');
+    const { state } = useNavigation();
+    useShowAppLoader(state === 'loading');
     return <Outlet />;
 };

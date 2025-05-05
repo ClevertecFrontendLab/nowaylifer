@@ -1,6 +1,6 @@
 import { keyBy } from 'lodash';
 
-import { apiSlice } from '~/shared/api';
+import { ApiEndpoints, apiSlice } from '~/shared/api';
 
 import { Category, RootCategory } from './interface';
 import { CATEGORY_STORAGE_KEY, isRootCategory } from './lib/util';
@@ -16,10 +16,7 @@ export const categoryApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
         categories: build.query<CategoryState, void>({
             keepUnusedDataFor: Infinity,
-            query: () => ({
-                url: '/category',
-                method: 'GET',
-            }),
+            query: () => ({ url: ApiEndpoints.CATEGORY }),
             transformResponse: (rawResult: Category[]) => ({
                 rootCategories: rawResult.filter(isRootCategory),
                 categoryById: keyBy(rawResult, (c) => c._id),
@@ -29,7 +26,7 @@ export const categoryApi = apiSlice.injectEndpoints({
                     const result = await queryFulfilled;
                     localStorage.setItem(CATEGORY_STORAGE_KEY, JSON.stringify(result.data));
                 } catch {
-                    // ingore
+                    // ignore
                 }
             },
         }),

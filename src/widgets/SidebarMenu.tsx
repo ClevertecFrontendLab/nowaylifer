@@ -2,6 +2,7 @@ import { Box, BoxProps } from '@chakra-ui/react';
 import { useLayoutEffect, useRef } from 'react';
 
 import { RecipeMenu } from '~/features/recipe-menu';
+import { TestId } from '~/shared/test-ids';
 import { About } from '~/shared/ui/About';
 import { ExitButton } from '~/shared/ui/ExitButton';
 
@@ -40,7 +41,7 @@ export const SidebarMenu = (props: BoxProps) => {
             justifyContent='space-between'
             className={classes.sidebar}
             {...props}
-            data-test-id='nav'
+            data-test-id={TestId.NAV}
         >
             <RecipeMenu ref={menuRef} minH={0} borderBottomRadius='xl' />
             <Box ref={spaceRef} flex={1} />

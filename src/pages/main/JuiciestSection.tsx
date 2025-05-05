@@ -4,8 +4,10 @@ import { Link } from 'react-router';
 
 import { selectCategoriesInvariant } from '~/entities/category';
 import { buildRecipeLink, getRecipeRootCategories, recipeApi, RecipeCard } from '~/entities/recipe';
+import { RoutePath } from '~/shared/router';
 import { useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
+import { ButtonProps } from '~/shared/ui/Button';
 import { Section, SectionHeading } from '~/shared/ui/Section';
 
 export const JuiciestSection = () => {
@@ -23,18 +25,10 @@ export const JuiciestSection = () => {
             <Section>
                 <HStack justify='space-between' mb={6}>
                     <SectionHeading>Самое сочное</SectionHeading>
-                    <Button
-                        as={Link}
-                        to='/the-juiciest'
+                    <JuiciestLink
                         hideBelow='lg'
-                        variant='solid'
-                        bg='lime.400'
                         data-test-id={md ? undefined : TestId.JUICIEST_LINK}
-                        rightIcon={<ArrowForwardIcon />}
-                        size={{ base: 'md', '2xl': 'lg' }}
-                    >
-                        Вся подборка
-                    </Button>
+                    />
                 </HStack>
                 <SimpleGrid
                     mb={{ base: 3, lg: 0 }}
@@ -53,19 +47,25 @@ export const JuiciestSection = () => {
                     ))}
                 </SimpleGrid>
                 <Center hideFrom='lg'>
-                    <Button
-                        as={Link}
-                        to='/the-juiciest'
-                        variant='solid'
-                        bg='lime.400'
+                    <JuiciestLink
                         data-test-id={md ? TestId.JUICIEST_LINK : TestId.JUICIEST_LINK_MOBILE}
-                        rightIcon={<ArrowForwardIcon />}
-                        size={{ base: 'md', '2xl': 'lg' }}
-                    >
-                        Вся подборка
-                    </Button>
+                    />
                 </Center>
             </Section>
         </Box>
     );
 };
+
+const JuiciestLink = (props: ButtonProps) => (
+    <Button
+        as={Link}
+        to={RoutePath.Juiciest}
+        variant='solid'
+        bg='lime.400'
+        rightIcon={<ArrowForwardIcon />}
+        size={{ base: 'md', '2xl': 'lg' }}
+        {...props}
+    >
+        Вся подборка
+    </Button>
+);

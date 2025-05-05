@@ -1,5 +1,6 @@
 import { chakra, HTMLChakraProps, Portal, PortalProps } from '@chakra-ui/react';
 import { cx, lazyDisclosure, LazyMode, MaybeRenderProp, runIfFn } from '@chakra-ui/utils';
+import { noop } from 'lodash';
 import { useRef } from 'react';
 
 import { multiSelectClassNames } from './anatomy';
@@ -91,7 +92,7 @@ export const MultiSelectItem = <Item,>({
                 index,
                 'aria-selected': isSelected,
             })}
-            onMouseDown={() => {}} // override downshift handler
+            onMouseDown={noop} // override downshift handler
             {...props}
         >
             {runIfFn(children, { ...state, isSelected })}

@@ -11,6 +11,7 @@ import { eq, intersectionWith, unionWith } from 'lodash-es';
 import { useMemo, useRef } from 'react';
 
 import { useAppDispatch, useAppSelector } from '~/shared/store';
+import { TestId } from '~/shared/test-ids';
 
 import { removeFilter, selectFilters } from '../slice';
 import { Filter } from '../types';
@@ -36,7 +37,7 @@ export const SelectedFiltersTagList = (props: ListProps) => {
                         borderColor='lime.400'
                         bg='lime.100'
                         color='lime.700'
-                        data-test-id='filter-tag'
+                        data-test-id={TestId.SELECTED_FILER_TAG}
                     >
                         <TagLabel>{filter.label}</TagLabel>
                         <TagCloseButton onClick={() => dispatch(removeFilter(filter))} />
