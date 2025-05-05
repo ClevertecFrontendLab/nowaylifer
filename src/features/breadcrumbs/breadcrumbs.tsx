@@ -19,25 +19,32 @@ import { useWrappingSeperator } from './use-wrapping-seperator';
 
 export interface BreadcrumbsProps extends BreadcrumbProps {
     onBreadcrumbClick?: (breadcrumb: BreadcrumbData, isActive: boolean) => void;
+    wrappingSeperatorOffset?: number;
+    wrap?: boolean;
 }
 
-export const Breadcrumbs = ({ onBreadcrumbClick, ...props }: BreadcrumbsProps) => {
+export const Breadcrumbs = ({
+    onBreadcrumbClick,
+    wrap = true,
+    wrappingSeperatorOffset = 8,
+    ...props
+}: BreadcrumbsProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const activeCategories = useActiveCategories();
     const breadcrumbs = useBreadcrumbs(activeCategories);
 
-    useWrappingSeperator(containerRef);
+    useWrappingSeperator(containerRef, wrappingSeperatorOffset, wrap);
 
     return (
         <Breadcrumb
             ref={containerRef}
-            sx={{ '& > ol': { flexWrap: 'wrap', rowGap: 1 } }}
             separator={<BreadcrumbSeparator />}
+            listProps={wrap ? { flexWrap: 'wrap', rowGap: 1 } : undefined}
             spacing={0}
             data-test-id={TestId.BREADCRUMBS}
             {...props}
         >
-            {breadcrumbs.filter(Boolean).map((breadcrumb, i) => (
+            {breadcrumbs.map((breadcrumb, i) => (
                 <BreadcrumbItem key={breadcrumb.href} isCurrentPage={i === breadcrumbs.length - 1}>
                     <chakra.span role='presentation' display='none'>
                         <BreadcrumbSeparator />
