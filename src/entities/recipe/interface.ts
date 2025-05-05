@@ -27,6 +27,7 @@ export interface Author {
     login: string;
     firstName: string;
     lastName: string;
+    avatar?: string;
     subscribers?: string[];
 }
 

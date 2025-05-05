@@ -1,8 +1,20 @@
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, Button, Center, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
 
+import { Author } from '~/entities/recipe';
 import { BlogCard } from '~/shared/ui/BlogCard';
 import { Section } from '~/shared/ui/Section';
+
+const authors: Author[] = [
+    { firstName: 'Елена', lastName: 'Высоцкая', login: 'elenapovar', avatar: '/images/elena.png' },
+    { firstName: 'Alex', lastName: 'Cook', login: 'funtasticooking', avatar: '/images/alex.png' },
+    {
+        firstName: 'Екатерина',
+        lastName: 'Константинопольская',
+        login: 'bake_and_pie',
+        avatar: '/images/ekaterina.png',
+    },
+];
 
 export const BlogsSection = () => (
     <Section>
@@ -25,30 +37,13 @@ export const BlogsSection = () => (
                 spacing={{ base: 3, lg: 4 }}
                 mb={{ base: 3, lg: 0 }}
             >
-                <BlogCard
-                    content='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                    author={{
-                        displayName: 'Елена Высоцкая',
-                        username: '@elenapovar',
-                        avatarSrc: '/images/elena.png',
-                    }}
-                />
-                <BlogCard
-                    content='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                    author={{
-                        displayName: 'Alex Cook',
-                        username: '@funtasticooking',
-                        avatarSrc: '/images/alex.png',
-                    }}
-                />
-                <BlogCard
-                    content='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                    author={{
-                        displayName: 'Екатерина Константинопольская',
-                        username: '@bake_and_pie',
-                        avatarSrc: '/images/ekaterina.png',
-                    }}
-                />
+                {authors.map((author) => (
+                    <BlogCard
+                        key={author.login}
+                        author={author}
+                        content='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
+                    />
+                ))}
             </SimpleGrid>
             <Center hideFrom='lg'>
                 <Button
