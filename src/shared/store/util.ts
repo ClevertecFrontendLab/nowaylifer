@@ -5,6 +5,6 @@ export const isFetchBaseQueryError = (error: unknown): error is FetchBaseQueryEr
 
 export const isErrorWithMessage = (error: unknown): error is { message: string } =>
     typeof error === 'object' &&
-    error != null &&
+    error !== null &&
     'message' in error &&
     typeof error.message === 'string';

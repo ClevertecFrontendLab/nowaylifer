@@ -4,7 +4,7 @@ import { HorizontalRecipeCard } from './HorizontalRecipeCard';
 import { RecipeCardProps } from './props';
 import { VerticalRecipeCard } from './VerticalRecipeCard';
 
-export const RecipeCard = ({ variant = 'horizontal', ...props }: RecipeCardProps) => {
+export const RecipeCard = ({ variant, ...props }: RecipeCardProps) => {
     switch (variant) {
         case 'vertical':
         case 'no-image':
@@ -16,6 +16,6 @@ export const RecipeCard = ({ variant = 'horizontal', ...props }: RecipeCardProps
         case 'detailed':
             return <DetailedRecipeCard variant={variant} {...props} />;
         default:
-            throw new Error('Unknown RecipeCard variant');
+            return <HorizontalRecipeCard variant='horizontal' {...props} />;
     }
 };

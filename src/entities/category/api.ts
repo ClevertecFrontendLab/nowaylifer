@@ -3,7 +3,7 @@ import { keyBy } from 'lodash';
 import { apiSlice } from '~/shared/api';
 
 import { Category, RootCategory } from './interface';
-import { isRootCategory } from './lib/util';
+import { CATEGORY_STORAGE_KEY, isRootCategory } from './lib/util';
 
 export type CategoryById = Record<string, Category>;
 
@@ -27,7 +27,7 @@ export const categoryApi = apiSlice.injectEndpoints({
             onQueryStarted: async (_, { queryFulfilled }) => {
                 try {
                     const result = await queryFulfilled;
-                    localStorage.setItem('category', JSON.stringify(result.data));
+                    localStorage.setItem(CATEGORY_STORAGE_KEY, JSON.stringify(result.data));
                 } catch {
                     // ingore
                 }

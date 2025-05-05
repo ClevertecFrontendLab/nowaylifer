@@ -28,18 +28,18 @@ export const RecipeCardCategoryList = ({ onlyFirst }: RecipeCardCategoryListProp
     const value =
         isObject(onlyFirst) && isResponsive(onlyFirst) ? toArrayValue(onlyFirst) : onlyFirst;
 
-    let dp: WrapProps['display'];
+    let itemDisplay: WrapProps['display'];
 
     if (Array.isArray(value)) {
-        dp = value.map(getDisplayValue);
+        itemDisplay = value.map(getDisplayValue);
     } else if (typeof value === 'boolean') {
-        dp = getDisplayValue(value) ?? undefined;
+        itemDisplay = getDisplayValue(value) ?? undefined;
     }
 
     return (
         <Wrap {...styles.categoryList}>
             {categories.map((c, i) => (
-                <WrapItem key={c._id} display={i > 0 ? dp : undefined}>
+                <WrapItem key={c._id} display={i > 0 ? itemDisplay : undefined}>
                     <RecipeCardCategory iconSrc={buildImageSrc(c.icon!)} label={c.title} />
                 </WrapItem>
             ))}
