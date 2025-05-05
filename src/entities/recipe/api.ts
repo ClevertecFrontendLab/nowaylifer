@@ -37,6 +37,17 @@ const defaultRecipeRequestParams: RecipeRequestParams = {
     limit: 8,
 };
 
+const fixRecipesBySubCategoryResponse = (
+    raw:
+        | PaginatedResponse<Recipe>
+        | (Omit<PaginatedResponse<Recipe>, 'data'> & { data: [Recipe[]] }),
+): PaginatedResponse<Recipe> => {
+    if (Array.isArray(raw.data?.[0])) {
+        return { ...raw, data: raw.data[0] };
+    }
+    return raw as PaginatedResponse<Recipe>;
+};
+
 export const recipeApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
         recipeById: build.query<RecipeWithAuthor, string>({
@@ -81,17 +92,7 @@ export const recipeApi = apiSlice.injectEndpoints({
                     } satisfies RecipeRequestParams,
                 };
             },
-            transformResponse: (
-                rawResponse:
-                    | PaginatedResponse<Recipe>
-                    | (Omit<PaginatedResponse<Recipe>, 'data'> & { data: [Recipe[]] }),
-            ): PaginatedResponse<Recipe> => {
-                // taking into account error in tests response data
-                if (Array.isArray(rawResponse.data?.[0])) {
-                    return { ...rawResponse, data: rawResponse.data[0] };
-                }
-                return rawResponse as PaginatedResponse<Recipe>;
-            },
+            transformResponse: fixRecipesBySubCategoryResponse,
         }),
         recipesBySubCategory: build.query<
             Recipe[],
@@ -101,7 +102,8 @@ export const recipeApi = apiSlice.injectEndpoints({
                 url: `${ApiEndpoints.RECIPE_SUBCATEGORY}/${subCategoryId}`,
                 params,
             }),
-            transformResponse: (rawResult: PaginatedResponse<Recipe>) => rawResult.data,
+            transformResponse: (raw: PaginatedResponse<Recipe>) =>
+                fixRecipesBySubCategoryResponse(raw).data,
         }),
         relevantRecipes: build.query<Recipe[], { subCategoriesIds: string[]; maxRecipes?: number }>(
             {
@@ -119,7 +121,7 @@ export const recipeApi = apiSlice.injectEndpoints({
                     );
                     const result = await Promise.all(promises);
                     const recipes: Recipe[] = shuffle(
-                        result.flat().slice(0, maxRecipes).filter(Boolean),
+                        result.flat().filter(Boolean).slice(0, maxRecipes),
                     );
                     return { data: recipes };
                 },
