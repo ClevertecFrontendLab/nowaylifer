@@ -37,19 +37,21 @@ import {
 } from '../slice';
 import { FilterOption, FilterType } from '../types';
 
+interface FilterSelectTestId {
+    menu?: string;
+    field?: string;
+    footerInput?: string;
+    footerButton?: string;
+    option?: (option: FilterOption, index: number) => string | undefined;
+}
+
 interface FilterSelectOptions {
     filterType: FilterType;
     appliedFilter?: boolean;
     applyOnChange?: boolean;
     withFooter?: boolean;
     footerInputPlaceholder?: string;
-    testId?: {
-        menu?: string;
-        field?: string;
-        footerInput?: string;
-        footerButton?: string;
-        option?: (option: FilterOption, index: number) => string | undefined;
-    };
+    testId?: FilterSelectTestId;
 }
 
 export interface FilterSelectProps

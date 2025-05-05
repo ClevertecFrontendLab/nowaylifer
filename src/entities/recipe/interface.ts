@@ -1,3 +1,15 @@
+export interface RecipeIngredient {
+    title: string;
+    count: string;
+    measureUnit: string;
+}
+
+export interface RecipeStep {
+    stepNumber: number;
+    description: string;
+    image: string;
+}
+
 export interface Recipe {
     title: string;
     description: string;
@@ -8,14 +20,14 @@ export interface Recipe {
     portions: number;
     authorId: string;
     categoriesIds: string[];
-    steps: { stepNumber: number; description: string; image: string }[];
+    steps: RecipeStep[];
     nutritionValue: {
         calories: number;
         protein: number;
         fats: number;
         carbohydrates: number;
     };
-    ingredients: { title: string; count: string; measureUnit: string }[];
+    ingredients: RecipeIngredient[];
     likes: number;
     views: number;
     bookmarks: number;
