@@ -1,5 +1,5 @@
-export { HighlightSearchMatch } from './HighlightSearchMatch';
-export { SearchRecipeInput } from './SearchRecipeInput';
+export { HighlightSearchMatch } from './highlight-search-match';
+export { SearchRecipeInput } from './search-recipe-input';
 export {
     slice as searchRecipeSlice,
     selectAppliedSearchString,

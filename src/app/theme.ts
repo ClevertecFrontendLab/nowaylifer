@@ -15,8 +15,8 @@ import {
 } from '@chakra-ui/react';
 
 import { recipeCardTheme } from '~/entities/recipe';
-import { loaderTheme } from '~/shared/ui/Loader.theme';
-import { multiSelectTheme } from '~/shared/ui/MultiSelect';
+import { loaderTheme } from '~/shared/ui/loader.theme';
+import { multiSelectTheme } from '~/shared/ui/multi-select';
 
 const themeOverride = {
     styles: {

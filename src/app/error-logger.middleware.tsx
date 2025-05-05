@@ -1,7 +1,7 @@
 import { isRejectedWithValue, Middleware, MiddlewareAPI } from '@reduxjs/toolkit';
 
 import { TestId } from '~/shared/test-ids';
-import { Toast } from '~/shared/ui/Toast';
+import { Toast } from '~/shared/ui/toast';
 import { toast } from '~/shared/util';
 
 export const rtkQueryErrorLogger: Middleware = (_api: MiddlewareAPI) => (next) => (action) => {

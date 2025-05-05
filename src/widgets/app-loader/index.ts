@@ -1,6 +1,6 @@
-export { AppLoaderProvider } from './AppLoaderProvider';
-export { AppLoaderSpinner } from './AppLoaderSpinner';
+export { AppLoaderSpinner } from './app-loader-spinner';
 export { useAppLoader } from './context';
+export { AppLoaderProvider } from './provider';
 export {
     slice as appLoaderSlice,
     selectIsAppLoaderRunning,

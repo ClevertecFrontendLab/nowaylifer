@@ -1,1 +1,1 @@
-export { RecipeMenu } from './RecipeMenu';
+export { RecipeMenu } from './recipe-menu';

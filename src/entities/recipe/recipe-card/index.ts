@@ -1,3 +1,3 @@
 export type { RecipeCardProps } from './props';
-export { RecipeCard } from './RecipeCard';
+export { RecipeCard } from './recipe-card';
 export { recipeCardTheme } from './theme';

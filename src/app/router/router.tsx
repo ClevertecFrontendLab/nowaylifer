@@ -15,12 +15,12 @@ import { MainPage } from '~/pages/main';
 import { RecipePage, recipePageLoader } from '~/pages/recipe';
 import { RoutePath, storeContext } from '~/shared/router';
 import { AppLoaderSpinner } from '~/widgets/app-loader';
-import { PageNotFound } from '~/widgets/PageNotFound';
+import { PageNotFound } from '~/widgets/page-not-found';
 
-import RootLayout from '../RootLayout';
-import { AppLoaderOnNavigation } from './AppLoaderOnNavigation';
-import { NavigateToSubCategory } from './NavigateToSubCategory';
-import { NotFoundErrorBoundary } from './NotFoundErrorBoundary';
+import RootLayout from '../root-layout';
+import { AppLoaderOnNavigation } from './app-loader-on-navigation';
+import { NavigateToSubCategory } from './navigate-to-subcategory';
+import { NotFoundErrorBoundary } from './not-found-error-boundary';
 
 const routerConfig: RouteObject[] = [
     {
