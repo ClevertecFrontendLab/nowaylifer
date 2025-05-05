@@ -32,7 +32,8 @@ const routerConfig: RouteObject[] = [
             {
                 Component: RootLayout,
                 handle: {
-                    crumb: (_, { pathname }) => (pathname === RoutePath.NotFound ? '' : 'Главная'),
+                    crumb: (_, { pathname }) =>
+                        pathname === RoutePath.NotFound ? undefined : 'Главная',
                 } satisfies RouteBreadcrumb,
                 unstable_middleware: [validateCategoryParamsMiddleware],
                 errorElement: <NotFoundErrorBoundary />,

@@ -10,10 +10,12 @@ export function useBreadcrumbs<ExtraArg>(extraArg?: ExtraArg): BreadcrumbData[] 
     return matches
         .filter((m) => m.handle?.crumb)
         .flatMap((m) => {
-            const crumb = m.handle!.crumb!;
+            const crumb = m.handle.crumb;
             const resolved =
                 typeof crumb === 'function' ? crumb(m, location, extraArg as ExtraArg) : crumb;
             const arr = Array.isArray(resolved) ? resolved : [resolved];
-            return arr.map((v) => (typeof v === 'string' ? { label: v, href: m.pathname } : v));
+            return arr
+                .map((v) => (typeof v === 'string' ? { label: v, href: m.pathname } : v))
+                .filter((v) => !!v);
         });
 }
