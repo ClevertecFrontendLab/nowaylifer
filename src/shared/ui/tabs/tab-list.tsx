@@ -18,6 +18,7 @@ export interface TabListProps extends BoxProps {
     scrollable?: boolean;
     withIndicator?: boolean;
     listProps?: BaseTabListProps;
+    indicatorKey?: string;
     indicatorProps?: TabIndicatorProps;
 }
 
@@ -26,6 +27,7 @@ export const TabList = ({
     scrollable = true,
     withIndicator = true,
     indicatorProps,
+    indicatorKey,
     listProps,
     sx,
     ...props
@@ -53,7 +55,9 @@ export const TabList = ({
             <BaseTabList mx='auto' w={scrollable ? 'max-content' : undefined} {...listProps}>
                 {children}
             </BaseTabList>
-            {withIndicator && <TabIndicator height='2px' mt='-1.5px' {...indicatorProps} />}
+            {withIndicator && (
+                <TabIndicator key={indicatorKey} height='2px' mt='-1.5px' {...indicatorProps} />
+            )}
         </Box>
     );
 };

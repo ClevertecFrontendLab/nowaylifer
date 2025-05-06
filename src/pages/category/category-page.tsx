@@ -97,7 +97,7 @@ export function CategoryPage() {
                         navigate(buildCategoryPath(rootCategory, subCategory));
                     }}
                 >
-                    <TabList>
+                    <TabList indicatorKey={rootCategory._id}>
                         {rootCategory.subCategories.map((sub, idx) => (
                             <Tab
                                 key={sub._id}
