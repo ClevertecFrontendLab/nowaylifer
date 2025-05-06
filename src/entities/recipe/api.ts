@@ -4,7 +4,7 @@ import {
     InfiniteQueryConfigOptions,
     TypedUseInfiniteQueryStateResult,
 } from '@reduxjs/toolkit/query/react';
-import { shuffle } from 'lodash';
+import { shuffle } from 'lodash-es';
 
 import {
     ApiEndpoints,

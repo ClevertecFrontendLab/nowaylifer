@@ -1,5 +1,5 @@
 import { chakra, Stack, Text, useConst } from '@chakra-ui/react';
-import { sample } from 'lodash';
+import { sample } from 'lodash-es';
 import { memo } from 'react';
 
 import { selectCategoriesInvariant } from '~/entities/category/selectors';

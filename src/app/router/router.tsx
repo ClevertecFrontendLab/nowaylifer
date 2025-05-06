@@ -1,4 +1,4 @@
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 import { createBrowserRouter, RouteObject } from 'react-router';
 
 import {
