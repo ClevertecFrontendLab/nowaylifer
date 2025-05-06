@@ -7,6 +7,7 @@ import { recipeApi } from '~/entities/recipe/api';
 import { RecipeWithAuthor } from '~/entities/recipe/interface';
 import { getRecipeRootCategories } from '~/entities/recipe/util';
 import { useAppSelector } from '~/shared/store';
+import { Main } from '~/shared/ui/main';
 import { Section, SectionHeading } from '~/shared/ui/section';
 import { buildImageSrc } from '~/shared/util';
 import { NewRecipesSlider } from '~/widgets/new-recipes-slider';
@@ -23,7 +24,7 @@ export function RecipePage() {
     const recipe = data ?? initialRecipe;
 
     return (
-        <Box as='main' py={{ base: 4, lg: 8 }}>
+        <Main>
             <RecipeCard
                 variant='detailed'
                 categories={getRecipeRootCategories(recipe, categoryById)}
@@ -79,6 +80,6 @@ export function RecipePage() {
                 <SectionHeading mb={{ base: 3, lg: 6 }}>Новые рецепты</SectionHeading>
                 <NewRecipesSlider />
             </Section>
-        </Box>
+        </Main>
     );
 }

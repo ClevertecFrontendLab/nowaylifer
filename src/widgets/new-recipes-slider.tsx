@@ -3,7 +3,7 @@ import 'swiper/css';
 
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, IconButton, IconButtonProps } from '@chakra-ui/react';
-import React, { useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 import { selectCategoriesInvariant } from '~/entities/category/selectors';
@@ -16,7 +16,7 @@ import { isE2E } from '~/shared/util';
 
 import { useShowAppLoader } from './app-loader';
 
-export const NewRecipesSlider = () => {
+export const NewRecipesSlider = memo(() => {
     const { data: recipes, isLoading } = recipeApi.useRecipesQuery({
         sortBy: 'createdAt',
         sortOrder: 'desc',
@@ -70,7 +70,7 @@ export const NewRecipesSlider = () => {
             />
         </Box>
     );
-};
+});
 
 interface SliderNavButtonProps extends Omit<IconButtonProps, 'aria-label'> {
     ref?: React.Ref<HTMLButtonElement>;

@@ -1,4 +1,4 @@
-import { Box, Center, Heading, Text, useBreakpointValue, VStack } from '@chakra-ui/react';
+import { Center, Heading, Text, useBreakpointValue, VStack } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -71,7 +71,7 @@ export function CategoryPage() {
     );
 
     return (
-        <Box as='main' py={{ base: 4, lg: 8 }}>
+        <Main>
             <VStack justify='center' mb={8} px={{ base: 4, md: 5, lg: 6 }}>
                 <Heading fontSize={{ base: '2xl', lg: '5xl' }} mb={4}>
                     {rootCategory.title}
@@ -154,6 +154,6 @@ export function CategoryPage() {
                 </Tabs>
             </Section>
             <RelevantKitchen key={rootCategory._id} />
-        </Box>
+        </Main>
     );
 }

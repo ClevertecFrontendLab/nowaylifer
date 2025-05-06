@@ -60,7 +60,7 @@ export function MainPage() {
     useShowAppLoader(appLoaderEnabled);
 
     return (
-        <Box as='main' py={{ base: 4, lg: 8 }}>
+        <Main>
             <VStack
                 gap={2.5}
                 justify='center'
@@ -114,6 +114,6 @@ export function MainPage() {
                     <RelevantKitchen />
                 </>
             )}
-        </Box>
+        </Main>
     );
 }

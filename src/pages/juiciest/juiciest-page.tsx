@@ -1,4 +1,4 @@
-import { Box, Center, Heading, useBreakpointValue, VStack } from '@chakra-ui/react';
+import { Center, Heading, useBreakpointValue, VStack } from '@chakra-ui/react';
 
 import { selectCategoriesInvariant } from '~/entities/category';
 import {
@@ -54,7 +54,7 @@ export function JuiciestPage() {
     useShowAppLoader(appLoaderEnabled);
 
     return (
-        <Box as='main' py={{ base: 4, lg: 8 }}>
+        <Main>
             <VStack justify='center' mb={8} px={{ base: 4, md: 5, lg: 6 }}>
                 <Heading fontSize={{ base: '2xl', lg: '5xl' }} mb={{ base: 4, lg: 8 }}>
                     Самое сочное
@@ -87,6 +87,6 @@ export function JuiciestPage() {
                     )}
                 </Center>
             </Section>
-        </Box>
+        </Main>
     );
 }
