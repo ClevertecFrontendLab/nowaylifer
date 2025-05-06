@@ -1,12 +1,4 @@
-import {
-    Box,
-    Center,
-    Heading,
-    SimpleGrid,
-    Text,
-    useBreakpointValue,
-    VStack,
-} from '@chakra-ui/react';
+import { Box, Center, Heading, Text, useBreakpointValue, VStack } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -20,6 +12,7 @@ import {
     getRecipeRootCategories,
     recipeApi,
     RecipeCard,
+    RecipeCardsGrid,
     selectFromRecipeInfiniteQueryResult,
 } from '~/entities/recipe';
 import {
@@ -116,12 +109,7 @@ export function CategoryPage() {
                     <TabPanels>
                         {rootCategory.subCategories.map((sub) => (
                             <TabPanel key={sub._id}>
-                                <SimpleGrid
-                                    mb={4}
-                                    spacing={{ base: 3, md: 4, '2xl': 6 }}
-                                    minChildWidth={{ base: '328px', lg: '668px' }}
-                                    autoRows='1fr'
-                                >
+                                <RecipeCardsGrid mb={4}>
                                     {recipes
                                         ?.filter((r) =>
                                             isE2E() ? true : r.categoriesIds.includes(sub._id),
@@ -150,7 +138,7 @@ export function CategoryPage() {
                                                 data-test-id={TestId.recipeCard(idx)}
                                             />
                                         ))}
-                                </SimpleGrid>
+                                </RecipeCardsGrid>
                                 <Center>
                                     {hasNextPage && (
                                         <Button

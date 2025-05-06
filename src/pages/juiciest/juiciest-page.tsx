@@ -1,4 +1,4 @@
-import { Box, Center, Heading, SimpleGrid, useBreakpointValue, VStack } from '@chakra-ui/react';
+import { Box, Center, Heading, useBreakpointValue, VStack } from '@chakra-ui/react';
 
 import { selectCategoriesInvariant } from '~/entities/category';
 import {
@@ -6,6 +6,7 @@ import {
     getRecipeRootCategories,
     recipeApi,
     RecipeCard,
+    RecipeCardsGrid,
     RecipeRequestParams,
     selectFromRecipeInfiniteQueryResult,
 } from '~/entities/recipe';
@@ -60,11 +61,7 @@ export function JuiciestPage() {
                 <SearchBar isLoading={showLoader && !appLoaderEnabled} />
             </VStack>
             <Section>
-                <SimpleGrid
-                    mb={4}
-                    spacing={{ base: 3, md: 4, '2xl': 6 }}
-                    minChildWidth={{ base: '328px', lg: '668px' }}
-                >
+                <RecipeCardsGrid mb={4}>
                     {recipes?.map((r, idx) => (
                         <RecipeCard
                             key={r._id}
@@ -82,7 +79,7 @@ export function JuiciestPage() {
                             )}
                         />
                     ))}
-                </SimpleGrid>
+                </RecipeCardsGrid>
                 <Center>
                     {hasNextPage && (
                         <Button

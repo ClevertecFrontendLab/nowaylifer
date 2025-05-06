@@ -1,7 +1,7 @@
-import { Box, Center, Heading, SimpleGrid, useBreakpointValue, VStack } from '@chakra-ui/react';
+import { Box, Center, Heading, useBreakpointValue, VStack } from '@chakra-ui/react';
 
 import { selectCategoriesInvariant } from '~/entities/category/selectors';
-import { RecipeCard } from '~/entities/recipe';
+import { RecipeCard, RecipeCardsGrid } from '~/entities/recipe';
 import { recipeApi, selectFromRecipeInfiniteQueryResult } from '~/entities/recipe/api';
 import { buildRecipePath, getRecipeRootCategories } from '~/entities/recipe/util';
 import { filtersToParams } from '~/features/filter-recipe/filters-to-params';
@@ -65,12 +65,7 @@ export function MainPage() {
             </VStack>
             {showAllRecipes && (
                 <Box>
-                    <SimpleGrid
-                        mb={4}
-                        spacing={{ base: 3, md: 4, '2xl': 6 }}
-                        minChildWidth={{ base: '328px', lg: '668px' }}
-                        autoRows='1fr'
-                    >
+                    <RecipeCardsGrid mb={4}>
                         {recipes?.map((r, idx) => (
                             <RecipeCard
                                 key={r._id}
@@ -88,7 +83,7 @@ export function MainPage() {
                                 )}
                             />
                         ))}
-                    </SimpleGrid>
+                    </RecipeCardsGrid>
                     <Center>
                         {hasNextPage && (
                             <Button
