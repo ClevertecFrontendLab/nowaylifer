@@ -36,16 +36,9 @@ export const TabList = ({
 
     useUpdateEffect(() => {
         if (!scrollable || selectedIndex == null || !scrollRef.current) return;
-
         const tab = descendants.item(selectedIndex);
         if (!tab) return;
-
-        scrollTabIntoView({
-            scrollable: scrollRef.current,
-            tab: tab.node,
-            offset: 300,
-            behavior: 'smooth',
-        });
+        scrollTabIntoView({ container: scrollRef.current, tab: tab.node, behavior: 'smooth' });
     }, [selectedIndex, descendants, scrollable]);
 
     return (

@@ -1,54 +1,41 @@
 export interface ScrollTabIntoViewOptions {
-    scrollable: HTMLElement;
+    container: HTMLElement;
     tab: HTMLElement;
-    offset?: number;
+    scrollThreshold?: number;
     behavior?: ScrollBehavior;
 }
 
 export const scrollTabIntoView = ({
-    scrollable,
-    tab: target,
-    offset = 0,
+    container,
+    tab,
+    scrollThreshold = 50,
     behavior = 'auto',
 }: ScrollTabIntoViewOptions) => {
-    if (offset < 0) {
-        throw new Error('Offset must not be negative');
-    }
-    const distanceToLeftEdge = target.offsetLeft - scrollable.scrollLeft;
-    const distanceToRightEdge = getOffsetRight(target, scrollable) - getScrollRight(scrollable);
-
-    let scrollBy = 0;
-
-    if (distanceToRightEdge < distanceToLeftEdge && distanceToRightEdge < offset) {
-        const distanceToCenter = getDistanceToCenter('right', scrollable, target);
-        scrollBy = Math.min(
-            Math.max(Math.abs(offset - distanceToRightEdge), offset),
-            distanceToCenter,
-        );
-    } else if (distanceToLeftEdge < distanceToRightEdge && distanceToLeftEdge < offset) {
-        const distanceToCenter = getDistanceToCenter('left', scrollable, target);
-        scrollBy = Math.max(Math.min(distanceToLeftEdge - offset, -offset), -distanceToCenter);
+    const { scrollWidth, offsetWidth: containerWidth, scrollLeft } = container;
+    if (scrollWidth <= containerWidth) {
+        return;
     }
 
-    scrollable.scrollBy({ left: scrollBy, behavior });
+    const { offsetLeft: tabOffsetLeft, offsetWidth: tabOffsetWidth } = tab;
+    const newLeft = tabOffsetLeft - containerWidth / 2 + tabOffsetWidth / 2;
+
+    if (Math.abs(newLeft - scrollLeft) < scrollThreshold) {
+        return;
+    }
+
+    let path = newLeft - scrollLeft;
+
+    if (path < 0) {
+        const remainingPath = -scrollLeft;
+        path = Math.max(path, remainingPath);
+    } else if (path > 0) {
+        const remainingPath = scrollWidth - (scrollLeft + containerWidth);
+        path = Math.min(path, remainingPath);
+    }
+
+    if (path === 0) {
+        return;
+    }
+
+    container.scrollTo({ left: scrollLeft + path, behavior });
 };
-
-const getDistanceToCenter = (
-    nearestEdge: 'right' | 'left',
-    scrollable: HTMLElement,
-    target: HTMLElement,
-) => {
-    const scrollOffset =
-        nearestEdge === 'right' ? getScrollRight(scrollable) : scrollable.scrollLeft;
-    const targetOffset =
-        nearestEdge === 'right' ? getOffsetRight(target, scrollable) : target.offsetLeft;
-    const scrollCenterOffset = scrollOffset + scrollable.clientWidth / 2;
-    const targetCenterOffset = targetOffset + target.offsetWidth / 2;
-    return scrollCenterOffset - targetCenterOffset;
-};
-
-const getScrollRight = (element: Element) =>
-    element.scrollWidth - (element.scrollLeft + element.clientWidth);
-
-const getOffsetRight = (element: HTMLElement, scrollable: Element) =>
-    scrollable.scrollWidth - (element.offsetLeft + element.offsetWidth);
