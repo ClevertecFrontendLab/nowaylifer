@@ -22,7 +22,8 @@ import {
 } from '~/features/search-recipe';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
-import { Button } from '~/shared/ui/button';
+import { LoadMoreButton } from '~/shared/ui/load-more-button';
+import { Main } from '~/shared/ui/main';
 import { Section } from '~/shared/ui/section';
 import { useShowAppLoader } from '~/widgets/app-loader';
 import { SearchBar } from '~/widgets/search-bar';
@@ -82,16 +83,7 @@ export function JuiciestPage() {
                 </RecipeCardsGrid>
                 <Center>
                     {hasNextPage && (
-                        <Button
-                            variant='solid'
-                            bg='lime.400'
-                            size={{ base: 'md', '2xl': 'lg' }}
-                            onClick={fetchNextPage}
-                            disabled={isFetchingNextPage}
-                            data-test-id={TestId.LOAD_MORE_BUTTON}
-                        >
-                            {isFetchingNextPage ? 'Загрузка...' : 'Загрузить еще'}
-                        </Button>
+                        <LoadMoreButton isLoading={isFetchingNextPage} onClick={fetchNextPage} />
                     )}
                 </Center>
             </Section>

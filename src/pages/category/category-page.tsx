@@ -27,7 +27,8 @@ import {
 } from '~/features/search-recipe';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
-import { Button } from '~/shared/ui/button';
+import { LoadMoreButton } from '~/shared/ui/load-more-button';
+import { Main } from '~/shared/ui/main';
 import { Section } from '~/shared/ui/section';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '~/shared/ui/tabs';
 import { isE2E } from '~/shared/util';
@@ -141,16 +142,10 @@ export function CategoryPage() {
                                 </RecipeCardsGrid>
                                 <Center>
                                     {hasNextPage && (
-                                        <Button
-                                            variant='solid'
-                                            bg='lime.400'
-                                            size={{ base: 'md', '2xl': 'lg' }}
+                                        <LoadMoreButton
+                                            isLoading={isFetchingNextPage}
                                             onClick={fetchNextPage}
-                                            data-test-id={TestId.LOAD_MORE_BUTTON}
-                                            disabled={isFetchingNextPage}
-                                        >
-                                            {isFetchingNextPage ? 'Загрузка...' : 'Загрузить еще'}
-                                        </Button>
+                                        />
                                     )}
                                 </Center>
                             </TabPanel>

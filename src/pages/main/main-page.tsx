@@ -1,19 +1,28 @@
 import { Box, Center, Heading, useBreakpointValue, VStack } from '@chakra-ui/react';
 
-import { selectCategoriesInvariant } from '~/entities/category/selectors';
-import { RecipeCard, RecipeCardsGrid } from '~/entities/recipe';
-import { recipeApi, selectFromRecipeInfiniteQueryResult } from '~/entities/recipe/api';
-import { buildRecipePath, getRecipeRootCategories } from '~/entities/recipe/util';
-import { filtersToParams } from '~/features/filter-recipe/filters-to-params';
+import { selectCategoriesInvariant } from '~/entities/category';
 import {
+    buildRecipePath,
+    getRecipeRootCategories,
+    recipeApi,
+    RecipeCard,
+    RecipeCardsGrid,
+    selectFromRecipeInfiniteQueryResult,
+} from '~/entities/recipe';
+import {
+    filtersToParams,
     selectAppliedFiltersByGroup,
     selectIsAppliedFromDrawer,
-} from '~/features/filter-recipe/slice';
-import { HighlightSearchMatch, useUpdateLastSearchResult } from '~/features/search-recipe';
-import { selectAppliedSearchString } from '~/features/search-recipe/slice';
+} from '~/features/filter-recipe';
+import {
+    HighlightSearchMatch,
+    selectAppliedSearchString,
+    useUpdateLastSearchResult,
+} from '~/features/search-recipe';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
-import { Button } from '~/shared/ui/button';
+import { LoadMoreButton } from '~/shared/ui/load-more-button';
+import { Main } from '~/shared/ui/main';
 import { Section, SectionHeading } from '~/shared/ui/section';
 import { useShowAppLoader } from '~/widgets/app-loader';
 import { NewRecipesSlider } from '~/widgets/new-recipes-slider';
@@ -86,16 +95,10 @@ export function MainPage() {
                     </RecipeCardsGrid>
                     <Center>
                         {hasNextPage && (
-                            <Button
-                                variant='solid'
-                                bg='lime.400'
-                                size={{ base: 'md', '2xl': 'lg' }}
+                            <LoadMoreButton
+                                isLoading={isFetchingNextPage}
                                 onClick={fetchNextPage}
-                                disabled={isFetchingNextPage}
-                                data-test-id={TestId.LOAD_MORE_BUTTON}
-                            >
-                                {isFetchingNextPage ? 'Загрузка...' : 'Загрузить еще'}
-                            </Button>
+                            />
                         )}
                     </Center>
                 </Box>
