@@ -49,21 +49,20 @@ const themeOverride = {
         },
         Tabs: createMultiStyleConfigHelpers(tabsAnatomy.keys).defineMultiStyleConfig({
             defaultProps: { colorScheme: 'lime' },
-            baseStyle: {
+            baseStyle: ({ colorScheme: c }) => ({
                 tab: {
-                    '--tabs-color': `colorPallete.800`,
+                    '--tabs-color': `colors.${c}.800`,
                     fontWeight: 'medium',
                     whiteSpace: 'nowrap',
-                    _first: { marginLeft: 'auto' },
-                    _last: { marginRight: 'auto' },
+                    borderBottomColor: 'transparent !important',
+                    // _first: { marginLeft: 'auto' },
+                    // _last: { marginRight: 'auto' },
                 },
                 indicator: {
-                    bg: `colorPallete.600`,
-                    h: '2px',
-                    mt: '-1.5px',
+                    bg: `${c}.600`,
                 },
                 tabpanel: { p: 0, pt: 6 },
-            },
+            }),
         }),
         Button: {
             baseStyle: {

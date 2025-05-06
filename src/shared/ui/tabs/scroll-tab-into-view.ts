@@ -1,4 +1,4 @@
-export interface ScrollTabIntoViewInput {
+export interface ScrollTabIntoViewOptions {
     scrollable: HTMLElement;
     tab: HTMLElement;
     offset?: number;
@@ -10,7 +10,7 @@ export const scrollTabIntoView = ({
     tab: target,
     offset = 0,
     behavior = 'auto',
-}: ScrollTabIntoViewInput) => {
+}: ScrollTabIntoViewOptions) => {
     if (offset < 0) {
         throw new Error('Offset must not be negative');
     }

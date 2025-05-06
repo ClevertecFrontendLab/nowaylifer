@@ -41,4 +41,5 @@ export const TestId = {
     recipeCardLink: (idx: number) => `card-link-${idx}`,
     ingredientQuantity: (idx: number) => `ingredient-quantity-${idx}`,
     activeSubCategory: (category: string) => `${category}-active`,
+    subCategoryTab: (category: string, idx: number) => `tab-${category}-${idx}`,
 };

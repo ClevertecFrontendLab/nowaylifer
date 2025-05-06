@@ -3,20 +3,18 @@ import {
     Center,
     Heading,
     SimpleGrid,
-    Tab,
-    TabIndicator,
-    TabList,
-    TabPanel,
-    TabPanels,
-    Tabs,
     Text,
     useBreakpointValue,
     VStack,
 } from '@chakra-ui/react';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
-import { selectCategoriesInvariant, useActiveCategories } from '~/entities/category';
+import {
+    buildCategoryPath,
+    selectCategoriesInvariant,
+    useActiveCategories,
+} from '~/entities/category';
 import {
     buildRecipePath,
     getRecipeRootCategories,
@@ -38,12 +36,11 @@ import { useAppSelector, useAppSelectorRef } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { Button } from '~/shared/ui/button';
 import { Section } from '~/shared/ui/section';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '~/shared/ui/tabs';
 import { isE2E } from '~/shared/util';
 import { useAppLoader, useShowAppLoader } from '~/widgets/app-loader';
 import { RelevantKitchen } from '~/widgets/relevant-kitchen';
 import { SearchBar } from '~/widgets/search-bar';
-
-import { scrollTabIntoView } from './scroll-tab-into-view';
 
 export function CategoryPage() {
     const activeCategories = useActiveCategories(true);
@@ -52,7 +49,6 @@ export function CategoryPage() {
     const searchString = useAppSelector(selectAppliedSearchString);
     const filtersByGroup = useAppSelector(selectAppliedFiltersByGroup);
     const { categoryById } = useAppSelector(selectCategoriesInvariant);
-    const scrollableRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
     const queryArg = {
@@ -80,21 +76,6 @@ export function CategoryPage() {
         [rootCategory, subCategory],
     );
 
-    useEffect(() => {
-        const tab = scrollableRef.current?.querySelector<HTMLElement>(
-            `[data-index="${subCategoryIndex}"]`,
-        );
-
-        if (!tab || !scrollableRef.current) return;
-
-        scrollTabIntoView({
-            scrollable: scrollableRef.current,
-            tab,
-            offset: 300,
-            behavior: 'smooth',
-        });
-    }, [subCategoryIndex]);
-
     return (
         <Box as='main' py={{ base: 4, lg: 8 }}>
             <VStack justify='center' mb={8} px={{ base: 4, md: 5, lg: 6 }}>
@@ -118,34 +99,23 @@ export function CategoryPage() {
                     isLazy
                     index={subCategoryIndex}
                     onChange={(index) => {
-                        const subcategory = rootCategory.subCategories[index];
-                        navigate(`/${rootCategory.category}/${subcategory.category}`);
+                        const subCategory = rootCategory.subCategories[index];
+                        navigate(buildCategoryPath(rootCategory, subCategory));
                     }}
                 >
-                    <Box
-                        ref={scrollableRef}
-                        pos='relative'
-                        overflowX='auto'
-                        sx={{ scrollbarWidth: 'none' }}
-                    >
-                        <TabList minW='full' w='max-content' border='none'>
-                            {rootCategory.subCategories.map((subcategory, i) => (
-                                <Tab
-                                    key={subcategory._id}
-                                    marginBottom={0}
-                                    borderBottom='2px solid'
-                                    borderColor='chakra-border-color'
-                                    data-test-id={`tab-${subcategory.category}-${i}`}
-                                >
-                                    {subcategory.title}
-                                </Tab>
-                            ))}
-                        </TabList>
-                        <TabIndicator key={rootCategory._id} />
-                    </Box>
+                    <TabList>
+                        {rootCategory.subCategories.map((sub, idx) => (
+                            <Tab
+                                key={sub._id}
+                                data-test-id={TestId.subCategoryTab(sub.category, idx)}
+                            >
+                                {sub.title}
+                            </Tab>
+                        ))}
+                    </TabList>
                     <TabPanels>
-                        {rootCategory.subCategories.map((subcategory) => (
-                            <TabPanel key={subcategory._id}>
+                        {rootCategory.subCategories.map((sub) => (
+                            <TabPanel key={sub._id}>
                                 <SimpleGrid
                                     mb={4}
                                     spacing={{ base: 3, md: 4, '2xl': 6 }}
@@ -154,9 +124,7 @@ export function CategoryPage() {
                                 >
                                     {recipes
                                         ?.filter((r) =>
-                                            isE2E()
-                                                ? true
-                                                : r.categoriesIds.includes(subcategory._id),
+                                            isE2E() ? true : r.categoriesIds.includes(sub._id),
                                         )
                                         .map((r, idx) => (
                                             <RecipeCard
