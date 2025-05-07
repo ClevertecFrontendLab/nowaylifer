@@ -20,7 +20,6 @@ import { PageNotFound } from '~/widgets/page-not-found';
 
 import RootLayout from '../root-layout';
 import { AppLoaderOnNavigation } from './app-loader-on-navigation';
-import { NotFoundErrorBoundary } from './not-found-error-boundary';
 
 const routerConfig: RouteObject[] = [
     {
@@ -36,7 +35,6 @@ const routerConfig: RouteObject[] = [
                         pathname === RoutePath.NotFound ? undefined : 'Главная',
                 } satisfies RouteBreadcrumb,
                 unstable_middleware: [validateCategoryParamsMiddleware],
-                errorElement: <NotFoundErrorBoundary />,
                 children: [
                     { index: true, Component: MainPage },
                     { path: RoutePath.NotFound, Component: PageNotFound },
@@ -54,6 +52,7 @@ const routerConfig: RouteObject[] = [
                                 href: buildCategoryPath(root, root.subCategories[0]),
                             }),
                         } satisfies RouteBreadcrumb<ActiveCategories>,
+                        errorElement: <PageNotFound />,
                         children: [
                             {
                                 path: CategoryParams.SubCategory.pattern,
@@ -71,7 +70,7 @@ const routerConfig: RouteObject[] = [
                                         Component: RecipePage,
                                         loader: recipePageLoader,
                                         handle: {
-                                            crumb: (match) => match.data.title,
+                                            crumb: (match) => match.data?.title,
                                         } satisfies RouteBreadcrumb<
                                             ActiveCategories,
                                             RecipeWithAuthor
