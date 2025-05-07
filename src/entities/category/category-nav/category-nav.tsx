@@ -6,7 +6,7 @@ import {
     BoxProps,
     UseAccordionProps,
 } from '@chakra-ui/react';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import {
@@ -46,13 +46,26 @@ export const CategoryNav = (props: CategoryNavProps) => {
         [activeRoot, activeSub],
     );
 
+    const [index, setIndex] = useState(activeRootIndex);
+    const prevActiveRootIndexRef = useRef(activeRootIndex);
+
+    if (prevActiveRootIndexRef.current !== activeRootIndex) {
+        prevActiveRootIndexRef.current = activeRootIndex;
+        setIndex(activeRootIndex);
+        return null;
+    }
+
     const handleChange: UseAccordionProps['onChange'] = (expanded) => {
         const index = Array.isArray(expanded) ? expanded[0] : expanded;
-        if (index >= 0) {
-            const root = rootCategories[index];
-            const sub = root.subCategories[0];
-            navigate(buildCategoryPath(root, sub));
+        if (index < 0) {
+            return setIndex(index);
         }
+        const root = rootCategories[index];
+        if (root === activeRoot) {
+            return setIndex(index);
+        }
+        const sub = root.subCategories[0];
+        navigate(buildCategoryPath(root, sub));
     };
 
     return (
@@ -64,7 +77,7 @@ export const CategoryNav = (props: CategoryNavProps) => {
             mr={1}
             {...props}
         >
-            <Accordion allowToggle defaultIndex={activeRootIndex} onChange={handleChange}>
+            <Accordion allowToggle index={index} onChange={handleChange}>
                 {rootCategories.map((root) => (
                     <AccordionItem key={root._id} border='none'>
                         <RootCategoryItem
