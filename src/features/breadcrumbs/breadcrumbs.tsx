@@ -44,8 +44,11 @@ export const Breadcrumbs = ({
             data-test-id={TestId.BREADCRUMBS}
             {...props}
         >
-            {breadcrumbs.map((breadcrumb, i) => (
-                <BreadcrumbItem key={breadcrumb.href} isCurrentPage={i === breadcrumbs.length - 1}>
+            {breadcrumbs.map((breadcrumb, idx) => (
+                <BreadcrumbItem
+                    key={idx + breadcrumb.label}
+                    isCurrentPage={idx === breadcrumbs.length - 1}
+                >
                     <chakra.span role='presentation' display='none'>
                         <BreadcrumbSeparator />
                     </chakra.span>
@@ -55,7 +58,7 @@ export const Breadcrumbs = ({
                         color='blackAlpha.700'
                         _activeLink={{ color: 'black' }}
                         onClick={() =>
-                            onBreadcrumbClick?.(breadcrumb, i === breadcrumbs.length - 1)
+                            onBreadcrumbClick?.(breadcrumb, idx === breadcrumbs.length - 1)
                         }
                     >
                         {breadcrumb.label}

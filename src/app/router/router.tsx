@@ -3,6 +3,7 @@ import { createBrowserRouter, RouteObject } from 'react-router';
 
 import {
     ActiveCategories,
+    buildCategoryPath,
     CategoryParams,
     initCategoriesMiddleware,
     validateCategoryParamsMiddleware,
@@ -19,7 +20,6 @@ import { PageNotFound } from '~/widgets/page-not-found';
 
 import RootLayout from '../root-layout';
 import { AppLoaderOnNavigation } from './app-loader-on-navigation';
-import { NavigateToSubCategory } from './navigate-to-subcategory';
 import { NotFoundErrorBoundary } from './not-found-error-boundary';
 
 const routerConfig: RouteObject[] = [
@@ -48,9 +48,11 @@ const routerConfig: RouteObject[] = [
                     },
                     {
                         path: CategoryParams.RootCategory.pattern,
-                        Component: NavigateToSubCategory,
                         handle: {
-                            crumb: (_m, _l, [root]) => root.title,
+                            crumb: (_m, _l, [root]) => ({
+                                label: root.title,
+                                href: buildCategoryPath(root, root.subCategories[0]),
+                            }),
                         } satisfies RouteBreadcrumb<ActiveCategories>,
                         children: [
                             {
