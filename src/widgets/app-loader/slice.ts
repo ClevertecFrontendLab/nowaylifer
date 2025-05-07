@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { uniqueId } from 'lodash-es';
 
 const defaultId = 'DEFAULT_SUBSCRIBER';
 
@@ -28,7 +29,7 @@ export const slice = createSlice({
 });
 
 export const showAppLoaderWhilePendingThunk =
-    (promise: Promise<unknown>, id = performance.now().toString()) =>
+    (promise: Promise<unknown>, id = uniqueId('loader')) =>
     (dispatch: AppDispatch) => {
         promise.finally(() => dispatch(stopAppLoader(id)));
         dispatch(startAppLoader(id));
