@@ -5,7 +5,7 @@ import { ModalsProvider } from '~/shared/infra/modals-provider';
 
 export const RouterProviders = () => (
     <AppLoaderOnNavigation>
-        <ModalsProvider>
+        <ModalsProvider defaultModalProps={{ isCentered: true }}>
             <Outlet />
         </ModalsProvider>
     </AppLoaderOnNavigation>

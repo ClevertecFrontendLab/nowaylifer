@@ -83,8 +83,7 @@ export const SignupForm = () => {
                         const res = await signup(values);
                         if (!res.error) {
                             openModal({
-                                content: <VerifyEmailModalContent email={form.getValues().email} />,
-                                isCentered: true,
+                                content: <VerifyEmailModalContent email={values.email} />,
                             });
                         }
                     })}

@@ -10,4 +10,5 @@ export const RoutePath = {
     NotFound: '/not-found',
     Login: '/login',
     Signup: '/signup',
+    EmailVerificationCallback: '/verification',
 };

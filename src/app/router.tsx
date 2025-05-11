@@ -10,7 +10,7 @@ import {
 } from '~/entities/category';
 import { RecipeWithAuthor } from '~/entities/recipe';
 import { RouteBreadcrumb } from '~/features/breadcrumbs';
-import { AuthLayout } from '~/pages/auth';
+import { AuthLayout, EmailVerificationCallback } from '~/pages/auth';
 import { SignupForm } from '~/pages/auth/ui/signup';
 import { CategoryPage, categoryPageLoader } from '~/pages/category';
 import { JuiciestPage, juiciestPageLoader } from '~/pages/juiciest';
@@ -28,6 +28,10 @@ const routerConfig: RouteObject[] = [
         Component: RouterProviders,
         hydrateFallbackElement: <AppLoaderSpinner bg='transparent' />,
         children: [
+            {
+                path: RoutePath.EmailVerificationCallback,
+                Component: EmailVerificationCallback,
+            },
             {
                 Component: AuthLayout,
                 children: [

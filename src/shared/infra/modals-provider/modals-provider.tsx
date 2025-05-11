@@ -4,23 +4,26 @@ import { useMemo, useState } from 'react';
 
 import { ContextModalProps, ModalsContext, ModalsContextProvider } from './context';
 
-export const ModalsProvider = ({ children }: { children?: React.ReactNode }) => {
-    const [currentModalProps, setCurrentModalProps] = useState<ContextModalProps>();
+export interface ModalsProviderProps {
+    children?: React.ReactNode;
+    defaultModalProps?: ContextModalProps;
+}
+
+export const ModalsProvider = ({ children, defaultModalProps }: ModalsProviderProps) => {
+    const [currentModalProps, setCurrentModalProps] = useState<ContextModalProps | undefined>(
+        defaultModalProps,
+    );
     const [isOpen, { on: open, off: close }] = useBoolean(false);
-    console.log(isOpen);
 
     const ctx: ModalsContext = useMemo(
         () => ({
-            closeModal: () => {
-                console.log('close');
-                return close();
-            },
+            closeModal: () => close(),
             openModal: (props) => {
-                setCurrentModalProps(props);
+                setCurrentModalProps({ ...defaultModalProps, ...props });
                 open();
             },
         }),
-        [close, open],
+        [close, open, defaultModalProps],
     );
 
     const { content, overlayProps, ...modalProps } = currentModalProps ?? {};

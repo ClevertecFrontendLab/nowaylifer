@@ -2,8 +2,7 @@ import { runIfFn } from '@chakra-ui/utils';
 import { BaseQueryEnhancer } from '@reduxjs/toolkit/query/react';
 import { merge } from 'lodash-es';
 
-import { Toast, toast } from '../infra/toast';
-import { TestId } from '../test-ids';
+import { toast } from '../infra/toast';
 import { QueryApiError } from './common';
 import { isQueryApiError } from './util';
 
@@ -27,19 +26,7 @@ const defaultOptions: ErrorLoggerOptions = {
     shouldLogError: true,
     logger: (info) => {
         if (!toast.isActive('apiError')) {
-            toast({
-                ...info,
-                id: 'apiError',
-                status: 'error',
-                isClosable: true,
-                render: ({ position: _, ...props }) => (
-                    <Toast
-                        data-test-id={TestId.ERROR_ALERT}
-                        closeButtonProps={{ 'data-test-id': TestId.ERROR_ALERT_CLOSE }}
-                        {...props}
-                    />
-                ),
-            });
+            toast({ ...info, id: 'apiError', status: 'error' });
         }
     },
     errorLogInfoByStatus: {

@@ -1,5 +1,2 @@
-import { createStandaloneToast } from '@chakra-ui/react';
-
-export const { toast } = createStandaloneToast();
-
-export { Toast, type ToastProps } from './toast';
+export { toast } from './toast';
+export { Toast, type ToastProps } from './toast-component';
