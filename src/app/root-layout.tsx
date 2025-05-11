@@ -17,7 +17,7 @@ export default function RootLayout() {
                             "bottom-menu bottom-menu bottom-menu"`}
             gridTemplateRows='auto 1fr auto'
             gridTemplateColumns='auto 1fr auto'
-            minH='100vh'
+            minH='100dvh'
         >
             <GridItem area='header' zIndex='sticky' position='sticky' top={0} minW={0}>
                 <AppHeader />

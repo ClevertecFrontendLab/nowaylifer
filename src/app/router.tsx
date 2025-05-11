@@ -10,31 +10,39 @@ import {
 } from '~/entities/category';
 import { RecipeWithAuthor } from '~/entities/recipe';
 import { RouteBreadcrumb } from '~/features/breadcrumbs';
+import { AuthLayout } from '~/pages/auth';
+import { SignupForm } from '~/pages/auth/ui/signup';
 import { CategoryPage, categoryPageLoader } from '~/pages/category';
 import { JuiciestPage, juiciestPageLoader } from '~/pages/juiciest';
 import { MainPage } from '~/pages/main';
 import { RecipePage, recipePageLoader } from '~/pages/recipe';
+import { AppLoaderSpinner } from '~/shared/infra/app-loader';
 import { RoutePath, storeContext } from '~/shared/router';
-import { AppLoaderSpinner } from '~/widgets/app-loader';
 import { PageNotFound } from '~/widgets/page-not-found';
 
-import RootLayout from '../root-layout';
-import { AppLoaderOnNavigation } from './app-loader-on-navigation';
+import RootLayout from './root-layout';
+import { RouterProviders } from './router-providers';
 
 const routerConfig: RouteObject[] = [
     {
-        Component: AppLoaderOnNavigation,
+        Component: RouterProviders,
         hydrateFallbackElement: <AppLoaderSpinner bg='transparent' />,
-        unstable_middleware: [initCategoriesMiddleware],
-        loader: noop, // stub loader to always run middleware
         children: [
+            {
+                Component: AuthLayout,
+                children: [
+                    { path: RoutePath.Login, element: <div>login</div> },
+                    { path: RoutePath.Signup, Component: SignupForm },
+                ],
+            },
             {
                 Component: RootLayout,
                 handle: {
                     crumb: (_, { pathname }) =>
                         pathname === RoutePath.NotFound ? undefined : 'Главная',
                 } satisfies RouteBreadcrumb,
-                unstable_middleware: [validateCategoryParamsMiddleware],
+                unstable_middleware: [initCategoriesMiddleware, validateCategoryParamsMiddleware],
+                loader: noop, // stub loader to always run middleware
                 children: [
                     { index: true, Component: MainPage },
                     { path: RoutePath.NotFound, Component: PageNotFound },

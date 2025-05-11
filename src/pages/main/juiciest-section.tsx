@@ -10,12 +10,12 @@ import {
     RecipeCard,
     RecipeCardsGrid,
 } from '~/entities/recipe';
+import { useShowAppLoader } from '~/shared/infra/app-loader';
 import { RoutePath } from '~/shared/router';
 import { useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { ButtonProps } from '~/shared/ui/button';
 import { Section, SectionHeading } from '~/shared/ui/section';
-import { useShowAppLoader } from '~/widgets/app-loader';
 
 export const JuiciestSection = () => {
     const { categoryById } = useAppSelector(selectCategoriesInvariant);

@@ -1,3 +1,4 @@
+export { AppLoaderOnNavigation } from './app-loader-on-navigation';
 export { AppLoaderSpinner } from './app-loader-spinner';
 export { useAppLoader } from './context';
 export { AppLoaderProvider } from './provider';

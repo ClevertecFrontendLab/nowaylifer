@@ -25,6 +25,7 @@ import {
     selectAppliedSearchString,
     useUpdateLastSearchResult,
 } from '~/features/search-recipe';
+import { useAppLoader, useShowAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { LoadMoreButton } from '~/shared/ui/load-more-button';
@@ -32,7 +33,6 @@ import { Main } from '~/shared/ui/main';
 import { Section } from '~/shared/ui/section';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '~/shared/ui/tabs';
 import { isE2E } from '~/shared/util';
-import { useAppLoader, useShowAppLoader } from '~/widgets/app-loader';
 import { RelevantKitchen } from '~/widgets/relevant-kitchen';
 import { SearchBar } from '~/widgets/search-bar';
 

@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export interface PaginationResponseMeta {
     total: number;
     page: number;
@@ -19,3 +21,18 @@ export interface SortingRequestMeta {
     sortBy?: 'createdAt' | 'likes';
     sortOrder?: 'asc' | 'desc';
 }
+
+export const apiErrorResponseSchema = z.object({
+    message: z.string(),
+    statusCode: z.number(),
+    error: z.string().optional(),
+});
+
+export interface QueryHttpError<T = unknown> {
+    data: T;
+    status: number;
+}
+
+export type ApiErrorResponse = z.infer<typeof apiErrorResponseSchema>;
+
+export type QueryApiError = QueryHttpError<ApiErrorResponse>;

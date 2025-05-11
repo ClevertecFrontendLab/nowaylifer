@@ -3,6 +3,7 @@ import {
     cardAnatomy,
     checkboxAnatomy,
     inputAnatomy,
+    progressAnatomy,
     switchAnatomy,
     tabsAnatomy,
 } from '@chakra-ui/anatomy';
@@ -37,6 +38,16 @@ const themeOverride = {
                 }),
             },
         }),
+        Progress: createMultiStyleConfigHelpers(progressAnatomy.keys).defineMultiStyleConfig({
+            baseStyle: {
+                track: {
+                    bgColor: 'blackAlpha.100',
+                },
+                filledTrack: {
+                    bgColor: 'lime.300',
+                },
+            },
+        }),
         Loader: loaderTheme,
         MultiSelect: multiSelectTheme,
         RecipeCard: recipeCardTheme,
@@ -55,8 +66,6 @@ const themeOverride = {
                     fontWeight: 'medium',
                     whiteSpace: 'nowrap',
                     borderBottomColor: 'transparent !important',
-                    // _first: { marginLeft: 'auto' },
-                    // _last: { marginRight: 'auto' },
                 },
                 indicator: {
                     bg: `${c}.600`,

@@ -14,7 +14,7 @@ import { useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { isE2E } from '~/shared/util';
 
-import { useShowAppLoader } from './app-loader';
+import { useShowAppLoader } from '../shared/infra/app-loader';
 
 export const NewRecipesSlider = memo(() => {
     const { data: recipes, isLoading } = recipeApi.useRecipesQuery({

@@ -19,12 +19,12 @@ import {
     selectAppliedSearchString,
     useUpdateLastSearchResult,
 } from '~/features/search-recipe';
+import { useShowAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { LoadMoreButton } from '~/shared/ui/load-more-button';
 import { Main } from '~/shared/ui/main';
 import { Section, SectionHeading } from '~/shared/ui/section';
-import { useShowAppLoader } from '~/widgets/app-loader';
 import { NewRecipesSlider } from '~/widgets/new-recipes-slider';
 import { RelevantKitchen } from '~/widgets/relevant-kitchen';
 import { SearchBar } from '~/widgets/search-bar';

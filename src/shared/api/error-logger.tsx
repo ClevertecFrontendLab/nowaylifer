@@ -1,0 +1,75 @@
+import { runIfFn } from '@chakra-ui/utils';
+import { BaseQueryEnhancer } from '@reduxjs/toolkit/query/react';
+import { merge } from 'lodash-es';
+
+import { Toast, toast } from '../infra/toast';
+import { TestId } from '../test-ids';
+import { QueryApiError } from './common';
+import { isQueryApiError } from './util';
+
+interface ErrorLogInfo {
+    title: string;
+    description?: string;
+}
+
+export interface ErrorLoggerOptions {
+    shouldLogError?: boolean | ((error: QueryApiError) => boolean);
+    logger?: (info: ErrorLogInfo) => void;
+    errorLogInfoByStatus?: Partial<
+        Record<
+            number | 'default',
+            ErrorLogInfo | ((error: QueryApiError) => ErrorLogInfo | null) | null
+        >
+    >;
+}
+
+const defaultOptions: ErrorLoggerOptions = {
+    shouldLogError: true,
+    logger: (info) => {
+        if (!toast.isActive('apiError')) {
+            toast({
+                ...info,
+                id: 'apiError',
+                status: 'error',
+                isClosable: true,
+                render: ({ position: _, ...props }) => (
+                    <Toast
+                        data-test-id={TestId.ERROR_ALERT}
+                        closeButtonProps={{ 'data-test-id': TestId.ERROR_ALERT_CLOSE }}
+                        {...props}
+                    />
+                ),
+            });
+        }
+    },
+    errorLogInfoByStatus: {
+        default: (error) =>
+            error.status >= 500
+                ? { title: 'Ошибка сервера', description: 'Попробуйте немного позже' }
+                : null,
+    },
+};
+
+export const errorLogger: BaseQueryEnhancer<
+    unknown,
+    ErrorLoggerOptions,
+    ErrorLoggerOptions | void
+> = (baseQuery, config) => async (args, api, extraOptions) => {
+    const options: ErrorLoggerOptions = merge({}, defaultOptions, config, extraOptions);
+    const res = await baseQuery(args, api, extraOptions);
+    const err = res.error;
+
+    if (err && isQueryApiError(err) && runIfFn(options.shouldLogError, err)) {
+        const errorByStatus =
+            options.errorLogInfoByStatus?.[err.status] ?? options.errorLogInfoByStatus?.default;
+
+        const info = runIfFn(errorByStatus, err);
+
+        if (info) {
+            options.logger?.(info);
+        }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- currently idk how to properly type this
+    return res as any;
+};

@@ -8,4 +8,6 @@ export const RoutePath = {
     Main: '/',
     Juiciest: '/the-juiciest',
     NotFound: '/not-found',
+    Login: '/login',
+    Signup: '/signup',
 };
