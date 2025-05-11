@@ -4,7 +4,7 @@ import { merge } from 'lodash-es';
 
 import { toast } from '../infra/toast';
 import { QueryApiError } from './common';
-import { isQueryApiError } from './util';
+import { isQueryApiError, isServerError } from './util';
 
 interface ErrorLogInfo {
     title: string;
@@ -31,7 +31,7 @@ const defaultOptions: ErrorLoggerOptions = {
     },
     errorLogInfoByStatus: {
         default: (error) =>
-            error.status >= 500
+            isServerError(error)
                 ? { title: 'Ошибка сервера', description: 'Попробуйте немного позже' }
                 : null,
     },

@@ -1,15 +1,11 @@
 import { Box, BoxProps, Center, Flex, TabPanel, TabPanels, Text } from '@chakra-ui/react';
-import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 
-import { useModal } from '~/shared/infra/modals-provider';
-import { toast } from '~/shared/infra/toast';
 import { RoutePath } from '~/shared/router';
 import { Logo } from '~/shared/ui/logo';
 import { Tab, TabList, Tabs } from '~/shared/ui/tabs';
 
-import { emailVerificationHistoryState } from '../email-verificaton/email-verification-history-state';
-import { VerifyEmailFailModalContent } from './modals/verify-email-fail';
+import { useHandleEmailVerification } from './email-verificaton';
 
 const tabs = [
     { label: 'Вход на сайт', path: RoutePath.Login },
@@ -18,20 +14,7 @@ const tabs = [
 
 export const AuthLayout = () => {
     const navigate = useNavigate();
-    const { openModal } = useModal();
-
-    useEffect(() => {
-        const isEmailVerified = emailVerificationHistoryState.getState();
-        if (isEmailVerified == null) return;
-
-        if (isEmailVerified) {
-            toast({ status: 'success', title: 'Верификация прошла успешно' });
-        } else {
-            openModal({ content: <VerifyEmailFailModalContent /> });
-        }
-
-        emailVerificationHistoryState.clearState();
-    }, [openModal]);
+    useHandleEmailVerification();
 
     return (
         <Flex minH='100dvh'>

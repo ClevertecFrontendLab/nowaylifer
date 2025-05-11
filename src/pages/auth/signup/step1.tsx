@@ -2,8 +2,8 @@ import { FormControl, VStack } from '@chakra-ui/react';
 import { memo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { SignUpSchema } from '../../schema';
-import { ErrorMessage, FormButton, Label, TextField } from '../common';
+import { ErrorMessage, FormButton, Label, TextField } from '../common/ui';
+import { SignUpSchema } from './schema';
 
 export const Step1 = memo(({ next }: { next: () => void }) => {
     const {

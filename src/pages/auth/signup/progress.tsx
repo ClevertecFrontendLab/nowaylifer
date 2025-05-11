@@ -1,7 +1,7 @@
 import { Progress } from '@chakra-ui/react';
 import { FieldValues, Path, useFormContext } from 'react-hook-form';
 
-import { signUpSchemaKeys } from '../../schema';
+import { signUpSchemaKeys } from './schema';
 
 export const FormProgress = () => {
     const count = useValidFieldsCount(signUpSchemaKeys);

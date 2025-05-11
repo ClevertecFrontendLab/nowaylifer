@@ -20,6 +20,9 @@ import { loaderTheme } from '~/shared/ui/loader.theme';
 import { multiSelectTheme } from '~/shared/ui/multi-select';
 
 const themeOverride = {
+    zIndices: {
+        appLoader: 1650,
+    },
     styles: {
         global: {
             '#chakra-toast-manager-bottom': {

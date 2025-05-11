@@ -12,7 +12,7 @@ export const AppLoaderSpinner = (props: BoxProps) => (
             display='flex'
             alignItems='center'
             justifyContent='center'
-            zIndex='overlay'
+            zIndex='appLoader'
             bg='blackAlpha.300'
             backdropFilter='auto'
             backdropBlur='1px'

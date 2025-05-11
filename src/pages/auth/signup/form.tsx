@@ -6,12 +6,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useShowAppLoader } from '~/shared/infra/app-loader';
 import { useModal } from '~/shared/infra/modals-provider';
 
-import { authApi } from '../../api';
-import { signUpSchema, signUpSchemaKeys } from '../../schema';
-import { VerifyEmailModalContent } from '../modals/verify-email';
+import { authApi } from '../api';
 import { FormProgress } from './progress';
+import { signUpSchema, signUpSchemaKeys } from './schema';
 import { Step1 } from './step1';
 import { Step2 } from './step2';
+import { VerifyEmailModalContent } from './verify-email-modal';
 
 const steps = [
     {
@@ -76,6 +76,7 @@ export const SignupForm = () => {
                     ref={formRef}
                     onKeyDown={(e) => {
                         if (e.target instanceof HTMLInputElement && e.key === 'Enter') {
+                            e.preventDefault();
                             next();
                         }
                     }}

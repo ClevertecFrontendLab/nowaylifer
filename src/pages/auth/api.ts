@@ -21,6 +21,16 @@ export const authApi = apiSlice.injectEndpoints({
                 method: HTTPMethod.POST,
                 body,
             }),
+            extraOptions: {
+                errorLogInfoByStatus: {
+                    default: null,
+                    401: { title: 'Неверный логин или пароль', description: 'Попробуйте снова' },
+                    403: {
+                        title: 'E-mail не верифицирован',
+                        description: 'Проверьте почту и перейдите по ссылке',
+                    },
+                },
+            },
         }),
         signup: build.mutation<void, SignupRequestBody>({
             query: (body) => ({

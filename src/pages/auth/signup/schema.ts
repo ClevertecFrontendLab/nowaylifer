@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
-const onlyCyrillic = z.string().regex(/^[а-яё-]+$/iu, 'Только кириллица А-Я, и "-"');
-const startsWithCyrillic = z.string().regex(/^[а-яё]/iu, 'Должно начинаться с кириллицы А-Я');
-const maxLength = z.string().max(50, 'Максимальная длина 50 символов');
+import { maxLength, onlyCyrillic, startsWithCyrillic } from '../common/schema';
 
 export const signUpSchema = z
     .object({

@@ -10,8 +10,7 @@ import {
 } from '~/entities/category';
 import { RecipeWithAuthor } from '~/entities/recipe';
 import { RouteBreadcrumb } from '~/features/breadcrumbs';
-import { AuthLayout, EmailVerificationCallback } from '~/pages/auth';
-import { SignupForm } from '~/pages/auth/ui/signup';
+import { AuthLayout, EmailVerificationCallback, LoginForm, SignupForm } from '~/pages/auth';
 import { CategoryPage, categoryPageLoader } from '~/pages/category';
 import { JuiciestPage, juiciestPageLoader } from '~/pages/juiciest';
 import { MainPage } from '~/pages/main';
@@ -35,7 +34,7 @@ const routerConfig: RouteObject[] = [
             {
                 Component: AuthLayout,
                 children: [
-                    { path: RoutePath.Login, element: <div>login</div> },
+                    { path: RoutePath.Login, Component: LoginForm },
                     { path: RoutePath.Signup, Component: SignupForm },
                 ],
             },

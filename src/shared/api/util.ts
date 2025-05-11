@@ -10,3 +10,5 @@ export const isQueryHttpError = (error: unknown): error is QueryHttpError =>
 
 export const isQueryApiError = (error: unknown): error is QueryApiError =>
     isQueryHttpError(error) && apiErrorResponseSchema.safeParse(error.data).success;
+
+export const isServerError = (error: unknown) => isQueryHttpError(error) && error.status >= 500;

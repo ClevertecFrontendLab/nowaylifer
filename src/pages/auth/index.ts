@@ -1,2 +1,4 @@
-export { EmailVerificationCallback } from './email-verificaton/callback';
-export { AuthLayout } from './ui/layout';
+export { EmailVerificationCallback } from './email-verificaton';
+export { AuthLayout } from './layout';
+export { LoginForm } from './login';
+export { SignupForm } from './signup';
