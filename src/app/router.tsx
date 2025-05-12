@@ -6,6 +6,7 @@ import {
     buildCategoryPath,
     CategoryParams,
     initCategoriesMiddleware,
+    NavigateToSubCategory,
     validateCategoryParamsMiddleware,
 } from '~/entities/category';
 import { RecipeWithAuthor } from '~/entities/recipe';
@@ -80,6 +81,7 @@ const routerConfig: RouteObject[] = [
                             }),
                         } satisfies RouteBreadcrumb<ActiveCategories>,
                         errorElement: <PageNotFound />,
+                        Component: NavigateToSubCategory,
                         children: [
                             {
                                 path: CategoryParams.SubCategory.pattern,

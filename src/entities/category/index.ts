@@ -12,6 +12,7 @@ export {
     type MaybeActiveCategories,
 } from './lib/util';
 export { validateCategoryParamsMiddleware } from './lib/validate-category-params.middleware';
+export { NavigateToSubCategory } from './navigate-to-sub-category';
 export {
     selectActiveCategories,
     selectActiveCategoriesInvariant,
