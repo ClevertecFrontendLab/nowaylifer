@@ -21,6 +21,9 @@ export const sessionApi = apiSlice.injectEndpoints({
                     }
                 });
             },
+            extraOptions: {
+                shouldLogError: false,
+            },
         }),
     }),
 });

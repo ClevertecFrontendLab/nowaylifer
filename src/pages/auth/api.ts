@@ -1,6 +1,6 @@
 import { HTTPMethod } from 'http-method-enum';
 
-import { ApiEndpoints, apiSlice } from '~/shared/api';
+import { ApiEndpoints, apiSlice, isQueryApiError } from '~/shared/api';
 import { setToken } from '~/shared/session';
 
 export interface LoginRequestBody {
@@ -63,7 +63,7 @@ export const authApi = apiSlice.injectEndpoints({
             }),
             extraOptions: {
                 errorLogInfoByStatus: {
-                    400: (error) => ({ title: error.data.message }),
+                    400: (error) => (isQueryApiError(error) ? { title: error.data.message } : null),
                 },
             },
         }),
