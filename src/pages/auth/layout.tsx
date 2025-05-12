@@ -23,6 +23,7 @@ export const AuthLayout = () => {
                     <Logo h={16} w='auto' />
                 </Center>
                 <Tabs
+                    isLazy
                     size='lg'
                     index={tabs.findIndex((tab) => location.pathname.startsWith(tab.path))}
                     onChange={(idx) => navigate(tabs[idx].path)}

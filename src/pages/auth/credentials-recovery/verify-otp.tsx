@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { isClientError } from '~/shared/api/util';
 import { useShowAppLoader } from '~/shared/infra/app-loader';
+import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
 import {
@@ -23,7 +24,7 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
 
     return (
         <SlideFade in={true} offsetY={0} offsetX={64}>
-            <AuthModalBody>
+            <AuthModalBody data-test-id={TestId.VERIFY_OTP_MODAL}>
                 <AuthModalImage src='/images/laptop-breakfast.png' />
                 <AuthModalDescription mb={4}>
                     Мы отправили вам на e-mail <b>{email}</b> шестизначный код. Введите его ниже
@@ -45,8 +46,8 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
                             }
                         }}
                     >
-                        {Array.from({ length: OTP_LENGTH }, () => (
-                            <PinInputField />
+                        {Array.from({ length: OTP_LENGTH }, (_, idx) => (
+                            <PinInputField data-test-id={TestId.otpInput(idx)} />
                         ))}
                     </PinInput>
                 </HStack>

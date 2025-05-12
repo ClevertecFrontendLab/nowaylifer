@@ -5,13 +5,14 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { useShowAppLoader } from '~/shared/infra/app-loader';
 import { useModal } from '~/shared/infra/modals-provider';
+import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
 import { FormProgress } from './progress';
 import { signUpSchema, signUpSchemaKeys } from './schema';
+import { SignUpSuccessModalContent } from './sign-up-success-modal';
 import { Step1 } from './step1';
 import { Step2 } from './step2';
-import { VerifyEmailModalContent } from './verify-email-modal';
 
 const steps = [
     {
@@ -71,8 +72,9 @@ export const SignupForm = () => {
                 <Text>
                     Шаг {stepIndex + 1}. {steps[stepIndex].title}
                 </Text>
-                <FormProgress />
+                <FormProgress data-test-id={TestId.SIGN_UP_PROGRESS} />
                 <chakra.form
+                    data-test-id={TestId.SIGN_UP_FORM}
                     ref={formRef}
                     onKeyDown={(e) => {
                         if (e.target instanceof HTMLInputElement && e.key === 'Enter') {
@@ -84,7 +86,7 @@ export const SignupForm = () => {
                         const res = await signup(values);
                         if (!res.error) {
                             openModal({
-                                content: <VerifyEmailModalContent email={values.email} />,
+                                content: <SignUpSuccessModalContent email={values.email} />,
                             });
                         }
                     })}

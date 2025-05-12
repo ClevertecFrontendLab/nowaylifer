@@ -7,6 +7,7 @@ import { isServerError } from '~/shared/api/util';
 import { useShowAppLoader } from '~/shared/infra/app-loader';
 import { useModal } from '~/shared/infra/modals-provider';
 import { RoutePath } from '~/shared/router';
+import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
 import { ErrorMessage, FormButton, Label, PasswordField, TextField } from '../common/ui';
@@ -35,6 +36,7 @@ export const LoginForm = () => {
 
     return (
         <chakra.form
+            data-test-id={TestId.SIGN_IN_FORM}
             onSubmit={handleSubmit(async (values) => {
                 const res = await login(values);
                 const err = res.error;
@@ -49,20 +51,36 @@ export const LoginForm = () => {
             <VStack gap={6} mb='112px'>
                 <FormControl isInvalid={!!errors.login}>
                     <Label>Логин для входа на сайт</Label>
-                    <TextField placeholder='Введите логин' {...register('login')} />
+                    <TextField
+                        placeholder='Введите логин'
+                        {...register('login')}
+                        data-test-id={TestId.LOGIN_INPUT}
+                    />
                     <ErrorMessage>{errors.login?.message}</ErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.password}>
                     <Label>Пароль</Label>
-                    <PasswordField placeholder='Пароль для сайта' {...register('password')} />
+                    <PasswordField
+                        placeholder='Пароль для сайта'
+                        {...register('password')}
+                        data-test-id={TestId.PASSWORD_INPUT}
+                        visibilityButtonProps={{
+                            'data-test-id': TestId.PASSWORD_VISIBILITY_BUTTON,
+                        }}
+                    />
                     <ErrorMessage>{errors.password?.message}</ErrorMessage>
                 </FormControl>
             </VStack>
-            <FormButton type='submit' mb={4}>
+            <FormButton type='submit' mb={4} data-test-id={TestId.SUBMIT_BUTTON}>
                 Войти
             </FormButton>
             <Center>
-                <Button color='black' variant='link' onClick={openWizard}>
+                <Button
+                    color='black'
+                    variant='link'
+                    onClick={openWizard}
+                    data-test-id={TestId.FORGOT_PASSWORD_LINK}
+                >
                     Забыли логин или пароль?
                 </Button>
             </Center>

@@ -9,7 +9,7 @@ import {
     InputProps,
 } from '@chakra-ui/react';
 
-import { PasswordInput } from './password-input';
+import { PasswordInput, PasswordInputProps } from './password-input';
 
 export const Label = chakra(FormLabel, { baseStyle: { fontWeight: 'normal' } });
 
@@ -25,7 +25,7 @@ export const TextField = (props: InputProps) => (
     <Input size='lg' bg='white' borderColor='lime.150' {...props} />
 );
 
-export const PasswordField = (props: InputProps) => (
+export const PasswordField = (props: PasswordInputProps) => (
     <PasswordInput size='lg' bg='white' borderColor='lime.150' {...props} />
 );
 

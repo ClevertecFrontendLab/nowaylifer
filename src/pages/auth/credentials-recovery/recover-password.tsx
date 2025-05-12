@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { isClientError } from '~/shared/api/util';
 import { useShowAppLoader } from '~/shared/infra/app-loader';
+import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
 import {
@@ -32,7 +33,7 @@ export const RecoverPassword = ({ next }: { next: (email: string) => void }) => 
     useShowAppLoader(isLoading);
 
     return (
-        <AuthModalBody>
+        <AuthModalBody data-test-id={TestId.RECOVER_PASSWORD_MODAL}>
             <AuthModalImage src='/images/american-breakfast.png' />
             <AuthModalDescription mb={4}>
                 Для восстановления входа введите ваш e-mail, куда можно отправить уникальный код
@@ -49,10 +50,16 @@ export const RecoverPassword = ({ next }: { next: (email: string) => void }) => 
             >
                 <FormControl isInvalid={!!errors.email} mb={6}>
                     <Label>Ваш e-mail</Label>
-                    <TextField placeholder='e-mail' {...register('email')} />
+                    <TextField
+                        placeholder='e-mail'
+                        {...register('email')}
+                        data-test-id={TestId.EMAIL_INPUT}
+                    />
                     <ErrorMessage m={0}>{errors.email?.message}</ErrorMessage>
                 </FormControl>
-                <FormButton type='submit'>Получить код</FormButton>
+                <FormButton type='submit' data-test-id={TestId.SUBMIT_BUTTON}>
+                    Получить код
+                </FormButton>
             </chakra.form>
             <AuthModalSmallPrint>Не пришло письмо? Проверьте папку Спам.</AuthModalSmallPrint>
         </AuthModalBody>

@@ -1,3 +1,4 @@
+import { TestId } from '~/shared/test-ids';
 import { Link } from '~/shared/ui/link';
 
 import {
@@ -11,8 +12,8 @@ import {
 } from '../common/auth-modal';
 
 export const VerifyEmailFailModalContent = () => (
-    <AuthModalContent>
-        <AuthModalCloseButton />
+    <AuthModalContent data-test-id={TestId.EMAIL_VERIFICATION_FAILED_MODAL}>
+        <AuthModalCloseButton data-test-id={TestId.MODAL_CLOSE_BUTTON} />
         <AuthModalBody>
             <AuthModalImage src='/images/verify-email-error.jpg' />
             <AuthModalTitle>Упс! Что-то пошло не так</AuthModalTitle>

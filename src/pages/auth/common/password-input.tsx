@@ -1,6 +1,7 @@
 import {
     Icon,
     IconButton,
+    IconButtonProps,
     IconProps,
     Input,
     InputGroup,
@@ -10,11 +11,17 @@ import {
     useBoolean,
 } from '@chakra-ui/react';
 
+export interface PasswordInputProps extends InputProps {
+    containerProps?: InputGroupProps;
+    visibilityButtonProps?: Omit<IconButtonProps, 'aria-label'>;
+}
+
 export const PasswordInput = ({
     size,
     containerProps,
+    visibilityButtonProps,
     ...props
-}: InputProps & { containerProps?: InputGroupProps }) => {
+}: PasswordInputProps) => {
     const [isVisible, { on, off }] = useBoolean(false);
     return (
         <InputGroup size={size} {...containerProps}>
@@ -30,6 +37,7 @@ export const PasswordInput = ({
                     onMouseUp={off}
                     icon={isVisible ? <ViewIcon /> : <ViewOffIcon />}
                     aria-label={isVisible ? 'Скрыть пароль' : 'Показать пароль'}
+                    {...visibilityButtonProps}
                 />
             </InputRightElement>
         </InputGroup>

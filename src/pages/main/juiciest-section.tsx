@@ -1,5 +1,5 @@
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { Box, Button, Center, HStack, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Button, Center, HStack } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
 import { selectCategoriesInvariant } from '~/entities/category';
@@ -25,8 +25,6 @@ export const JuiciestSection = () => {
         limit: 4,
     });
 
-    const md = useBreakpointValue({ base: false, md: true, lg: false });
-
     useShowAppLoader(isLoading);
 
     return (
@@ -34,10 +32,7 @@ export const JuiciestSection = () => {
             <Section>
                 <HStack justify='space-between' mb={6}>
                     <SectionHeading>Самое сочное</SectionHeading>
-                    <JuiciestLink
-                        hideBelow='lg'
-                        data-test-id={md ? undefined : TestId.JUICIEST_LINK}
-                    />
+                    <JuiciestLink hideBelow='lg' data-test-id={TestId.JUICIEST_LINK} />
                 </HStack>
                 <RecipeCardsGrid mb={{ base: 3, lg: 0 }}>
                     {recipes?.map((r, idx) => (
@@ -52,9 +47,7 @@ export const JuiciestSection = () => {
                     ))}
                 </RecipeCardsGrid>
                 <Center hideFrom='lg'>
-                    <JuiciestLink
-                        data-test-id={md ? TestId.JUICIEST_LINK : TestId.JUICIEST_LINK_MOBILE}
-                    />
+                    <JuiciestLink data-test-id={TestId.JUICIEST_LINK_MOBILE} />
                 </Center>
             </Section>
         </Box>

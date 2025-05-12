@@ -1,11 +1,19 @@
-import { Progress } from '@chakra-ui/react';
+import { Progress, ProgressProps } from '@chakra-ui/react';
 import { FieldValues, Path, useFormContext } from 'react-hook-form';
 
 import { signUpSchemaKeys } from './schema';
 
-export const FormProgress = () => {
+export const FormProgress = (props: ProgressProps) => {
     const count = useValidFieldsCount(signUpSchemaKeys);
-    return <Progress mb={6} h={2} hasStripe value={calcProgress(signUpSchemaKeys.length, count)} />;
+    return (
+        <Progress
+            mb={6}
+            h={2}
+            hasStripe
+            value={calcProgress(signUpSchemaKeys.length, count)}
+            {...props}
+        />
+    );
 };
 
 const calcProgress = (totalFields: number, validFields: number) =>

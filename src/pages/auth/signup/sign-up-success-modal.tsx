@@ -1,3 +1,4 @@
+import { TestId } from '~/shared/test-ids';
 import { Link } from '~/shared/ui/link';
 
 import {
@@ -10,9 +11,9 @@ import {
     AuthModalTitle,
 } from '../common/auth-modal';
 
-export const VerifyEmailModalContent = ({ email }: { email: string }) => (
-    <AuthModalContent>
-        <AuthModalCloseButton />
+export const SignUpSuccessModalContent = ({ email }: { email: string }) => (
+    <AuthModalContent data-test-id={TestId.SIGN_UP_SUCCESS_MODAL}>
+        <AuthModalCloseButton data-test-id={TestId.MODAL_CLOSE_BUTTON} />
         <AuthModalBody>
             <AuthModalImage src='/images/verify-email.png' />
             <AuthModalTitle>Остался последний шаг. Нужно верифицировать ваш e-mail</AuthModalTitle>
