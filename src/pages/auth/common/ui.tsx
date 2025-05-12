@@ -21,8 +21,17 @@ export const ErrorMessage = chakra(FormErrorMessage, {
     baseStyle: { fontSize: 'xs', color: 'red.500', mt: 1 },
 });
 
-export const TextField = (props: InputProps) => (
-    <Input size='lg' bg='white' borderColor='lime.150' {...props} />
+export const TextField = ({ onBlur, ...props }: InputProps) => (
+    <Input
+        size='lg'
+        bg='white'
+        borderColor='lime.150'
+        onBlur={(e) => {
+            e.currentTarget.value = e.currentTarget.value.trim();
+            onBlur?.(e);
+        }}
+        {...props}
+    />
 );
 
 export const PasswordField = (props: PasswordInputProps) => (
