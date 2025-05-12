@@ -1,10 +1,10 @@
 import { Progress, ProgressProps } from '@chakra-ui/react';
-import { FieldValues, Path, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
-import { signUpSchemaKeys } from './schema';
+import { SignUpSchema, signUpSchema, signUpSchemaKeys } from './schema';
 
 export const FormProgress = (props: ProgressProps) => {
-    const count = useValidFieldsCount(signUpSchemaKeys);
+    const count = useValidFieldsCount();
     return (
         <Progress
             mb={6}
@@ -19,15 +19,9 @@ export const FormProgress = (props: ProgressProps) => {
 const calcProgress = (totalFields: number, validFields: number) =>
     (100 / totalFields) * validFields;
 
-// updates value only on submit
-const useValidFieldsCount = <T extends FieldValues>(fieldKeys: Path<T>[]) => {
-    const {
-        formState: { submitCount: _ },
-        getFieldState,
-    } = useFormContext<T>();
-
-    return fieldKeys.reduce((count, key) => {
-        const { invalid, isDirty } = getFieldState(key);
-        return isDirty && !invalid ? count + 1 : count;
-    }, 0);
+const useValidFieldsCount = () => {
+    const { watch } = useFormContext<SignUpSchema>();
+    const values = watch();
+    const errors = signUpSchema.safeParse(values).error?.flatten().fieldErrors ?? {};
+    return signUpSchemaKeys.reduce((count, key) => (errors[key] ? count : count + 1), 0);
 };
