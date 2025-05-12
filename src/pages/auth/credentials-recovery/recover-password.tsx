@@ -2,7 +2,7 @@ import { chakra, FormControl } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { isClientError } from '~/shared/api/util';
+import { isQueryHttpError } from '~/shared/api/util';
 import { useShowAppLoader } from '~/shared/infra/app-loader';
 import { TestId } from '~/shared/test-ids';
 
@@ -22,6 +22,7 @@ export const RecoverPassword = ({ next }: { next: (email: string) => void }) => 
         handleSubmit,
         formState: { errors },
         setError,
+        setValue,
     } = useForm({
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
@@ -33,7 +34,7 @@ export const RecoverPassword = ({ next }: { next: (email: string) => void }) => 
     useShowAppLoader(isLoading);
 
     return (
-        <AuthModalBody data-test-id={TestId.RECOVER_PASSWORD_MODAL}>
+        <AuthModalBody>
             <AuthModalImage src='/images/american-breakfast.png' />
             <AuthModalDescription mb={4}>
                 Для восстановления входа введите ваш e-mail, куда можно отправить уникальный код
@@ -43,7 +44,8 @@ export const RecoverPassword = ({ next }: { next: (email: string) => void }) => 
                 onSubmit={handleSubmit(async (values) => {
                     const res = await recoverPassword(values);
                     if (!res.error) return next(values.email);
-                    if (isClientError(res.error)) {
+                    if (isQueryHttpError(res.error)) {
+                        setValue('email', '');
                         setError('email', { message: '' });
                     }
                 })}

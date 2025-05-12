@@ -5,6 +5,7 @@ import {
 } from '@chakra-ui/react';
 
 import { TestId } from '~/shared/test-ids';
+import { isE2E } from '~/shared/util';
 
 import { Toast } from './toast-component';
 
@@ -18,6 +19,7 @@ export interface UseToastOptions extends BaseUseToastOptions {
 export const toast = ({ closeButtonProps, testId, ...options }: UseToastOptions) =>
     baseToast({
         isClosable: true,
+        duration: isE2E() ? 10000 : 5000,
         render: ({ position: _, ...props }) => (
             <Toast
                 data-test-id={testId ?? TestId.ERROR_ALERT}

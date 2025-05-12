@@ -11,6 +11,7 @@ import {
     AuthModalDescription,
     AuthModalImage,
     AuthModalSmallPrint,
+    AuthModalTitle,
 } from '../common/auth-modal';
 
 const OTP_LENGTH = 6;
@@ -24,10 +25,11 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
 
     return (
         <SlideFade in={true} offsetY={0} offsetX={64}>
-            <AuthModalBody data-test-id={TestId.VERIFY_OTP_MODAL}>
+            <AuthModalBody>
                 <AuthModalImage src='/images/laptop-breakfast.png' />
+                {isInvalid && <AuthModalTitle>Неверный код</AuthModalTitle>}
                 <AuthModalDescription mb={4}>
-                    Мы отправили вам на e-mail <b>{email}</b> шестизначный код. Введите его ниже
+                    Мы отправили вам на e-mail <b>{email}</b> шестизначный код. Введите его ниже.
                 </AuthModalDescription>
                 <HStack mb={6} justify='center'>
                     <PinInput
@@ -40,10 +42,8 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
                             setIsInvalid(false);
                             const res = await verifyOtp({ email, otpToken });
                             if (!res.error) return next();
-                            if (isClientError(res.error)) {
-                                setIsInvalid(true);
-                                setOtp('');
-                            }
+                            setIsInvalid(isClientError(res.error));
+                            setOtp('');
                         }}
                     >
                         {Array.from({ length: OTP_LENGTH }, (_, idx) => (

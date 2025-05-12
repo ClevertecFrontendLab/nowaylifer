@@ -93,6 +93,14 @@ export const recipeApi = apiSlice.injectEndpoints({
                 };
             },
             transformResponse: fixRecipesBySubCategoryResponse,
+            extraOptions: {
+                errorLogInfoByStatus: {
+                    404: {
+                        title: 'Ошибка сервера',
+                        description: 'Попробуйте поискать снова попозже',
+                    },
+                },
+            },
         }),
         recipesBySubCategory: build.query<
             Recipe[],
@@ -104,6 +112,14 @@ export const recipeApi = apiSlice.injectEndpoints({
             }),
             transformResponse: (raw: PaginatedResponse<Recipe>) =>
                 fixRecipesBySubCategoryResponse(raw).data,
+            extraOptions: {
+                errorLogInfoByStatus: {
+                    404: {
+                        title: 'Ошибка сервера',
+                        description: 'Попробуйте поискать снова попозже',
+                    },
+                },
+            },
         }),
         relevantRecipes: build.query<Recipe[], { subCategoriesIds: string[]; maxRecipes?: number }>(
             {

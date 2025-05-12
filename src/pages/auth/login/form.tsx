@@ -13,12 +13,12 @@ import { authApi } from '../api';
 import { ErrorMessage, FormButton, Label, PasswordField, TextField } from '../common/ui';
 import { useCredentialsRecoveryWizard } from '../credentials-recovery';
 import { RetryLoginModalContent } from './retry-login-modal';
-import { loginSchema } from './schema';
+import { LoginSchema, loginSchema } from './schema';
 
 export const LoginForm = () => {
     const navigate = useNavigate();
     const { openWizard } = useCredentialsRecoveryWizard();
-    const { openModal } = useModal();
+    const { openModal, closeModal } = useModal();
     const {
         formState: { errors },
         register,
@@ -34,20 +34,31 @@ export const LoginForm = () => {
 
     useShowAppLoader(isLoading);
 
+    const handleValid = async (values: LoginSchema) => {
+        const res = await login(values);
+        if (!res.error) {
+            return navigate(RoutePath.Main);
+        }
+
+        if (isServerError(res.error)) {
+            openModal({
+                content: (
+                    <RetryLoginModalContent
+                        onRetry={async () => {
+                            const res = await login(values);
+                            if (!res.error) {
+                                closeModal();
+                                navigate(RoutePath.Main);
+                            }
+                        }}
+                    />
+                ),
+            });
+        }
+    };
+
     return (
-        <chakra.form
-            data-test-id={TestId.SIGN_IN_FORM}
-            onSubmit={handleSubmit(async (values) => {
-                const res = await login(values);
-                const err = res.error;
-                if (!err) return navigate(RoutePath.Main);
-                if (isServerError(err)) {
-                    openModal({
-                        content: <RetryLoginModalContent onRetry={() => login(values)} />,
-                    });
-                }
-            })}
-        >
+        <chakra.form data-test-id={TestId.SIGN_IN_FORM} onSubmit={handleSubmit(handleValid)}>
             <VStack gap={6} mb='112px'>
                 <FormControl isInvalid={!!errors.login}>
                     <Label>Логин для входа на сайт</Label>

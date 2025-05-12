@@ -18,7 +18,7 @@ import {
 } from '../common/ui';
 import { resetPasswordSchema } from './schema';
 
-export const ResetPassword = ({ next }: { next: () => void }) => {
+export const ResetPassword = ({ email, next }: { email: string; next: () => void }) => {
     const {
         register,
         formState: { errors },
@@ -35,13 +35,14 @@ export const ResetPassword = ({ next }: { next: () => void }) => {
 
     return (
         <SlideFade in={true} offsetY={0} offsetX={64}>
-            <AuthModalBody data-test-id={TestId.RESET_PASSWORD_MODAL}>
+            <AuthModalBody>
                 <AuthModalTitle w='min-content' mx='auto' mb={6}>
                     Восстановление аккаунта
                 </AuthModalTitle>
                 <chakra.form
                     onSubmit={handleSubmit(async (values) => {
-                        const res = await resetPassword(values);
+                        const body = { ...values, email };
+                        const res = await resetPassword(body);
                         if (!res.error) next();
                     })}
                 >

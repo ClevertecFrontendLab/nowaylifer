@@ -2,9 +2,11 @@ import { Box, chakra, Text, useCallbackRef } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 
 import { useShowAppLoader } from '~/shared/infra/app-loader';
 import { useModal } from '~/shared/infra/modals-provider';
+import { RoutePath } from '~/shared/router';
 import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
@@ -31,6 +33,7 @@ export const SignupForm = () => {
     const [stepIndex, setStep] = useState(0);
     const formRef = useRef<HTMLFormElement>(null);
     const { openModal } = useModal();
+    const navigate = useNavigate();
     const form = useForm({
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
@@ -78,13 +81,13 @@ export const SignupForm = () => {
                     ref={formRef}
                     onKeyDown={(e) => {
                         if (e.target instanceof HTMLInputElement && e.key === 'Enter') {
-                            e.preventDefault();
                             next();
                         }
                     }}
                     onSubmit={form.handleSubmit(async (values) => {
                         const res = await signup(values);
                         if (!res.error) {
+                            navigate(RoutePath.Login);
                             openModal({
                                 content: <SignUpSuccessModalContent email={values.email} />,
                             });

@@ -56,6 +56,7 @@ const routerConfig: RouteObject[] = [
                     crumb: (_, { pathname }) =>
                         pathname === RoutePath.NotFound ? undefined : 'Главная',
                 } satisfies RouteBreadcrumb,
+                loader: noop,
                 unstable_middleware: [
                     privateRouteMiddleware,
                     initCategoriesMiddleware,

@@ -13,9 +13,9 @@ import { useShowAppLoader } from '../shared/infra/app-loader';
 
 export const RelevantKitchen = memo(() => {
     const { categoryById, rootCategories } = useAppSelector(selectCategoriesInvariant);
-    const rootCategory = useConst(() => sample(rootCategories)!);
+    const rootCategory = useConst(() => sample(rootCategories));
     const { data: recipes, isLoading } = recipeApi.useRelevantRecipesQuery({
-        subCategoriesIds: rootCategory.subCategories!.map((s) => s._id),
+        subCategoriesIds: rootCategory?.subCategories!.map((s) => s._id) ?? [],
         maxRecipes: 5,
     });
 
@@ -32,14 +32,14 @@ export const RelevantKitchen = memo(() => {
                 borderTopWidth='1px'
                 direction={{ base: 'column', lg: 'row' }}
             >
-                <SectionHeading flex={1}>{rootCategory.title}</SectionHeading>
+                <SectionHeading flex={1}>{rootCategory?.title}</SectionHeading>
                 <Text
                     flex={{ base: 2, '2xl': 1 }}
                     fontWeight='medium'
                     color='blackAlpha.700'
                     fontSize={{ base: 'sm', lg: 'md' }}
                 >
-                    {rootCategory.description}
+                    {rootCategory?.description}
                 </Text>
             </Stack>
             <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
