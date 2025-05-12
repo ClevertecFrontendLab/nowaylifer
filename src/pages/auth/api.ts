@@ -13,6 +13,21 @@ export interface SignupRequestBody extends LoginRequestBody {
     lastName: string;
 }
 
+export interface RecoverPasswordRequestBody {
+    email: string;
+}
+
+export interface VerifyOtpRequestBody {
+    email: string;
+    otpToken: string;
+}
+
+export interface ResetPasswordRequestBody {
+    login: string;
+    password: string;
+    passwordConfirm: string;
+}
+
 export const authApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
         login: build.mutation<void, LoginRequestBody>({
@@ -43,6 +58,36 @@ export const authApi = apiSlice.injectEndpoints({
                     400: (error) => ({ title: error.data.message }),
                 },
             },
+        }),
+        recoverPassword: build.mutation<void, RecoverPasswordRequestBody>({
+            query: (body) => ({
+                url: ApiEndpoints.AUTH_FORGOT_PASSWORD,
+                method: HTTPMethod.POST,
+                body,
+            }),
+            extraOptions: {
+                errorLogInfoByStatus: {
+                    403: {
+                        title: 'Такого e-mail нет',
+                        description:
+                            'Попробуйте другой e-mail или проверьте правильность его написания',
+                    },
+                },
+            },
+        }),
+        verifyOtp: build.mutation<void, VerifyOtpRequestBody>({
+            query: (body) => ({
+                url: ApiEndpoints.AUTH_VERIFY_OTP,
+                method: HTTPMethod.POST,
+                body,
+            }),
+        }),
+        resetPassword: build.mutation<void, ResetPasswordRequestBody>({
+            query: (body) => ({
+                url: ApiEndpoints.AUTH_RESET_PASSWORD,
+                method: HTTPMethod.POST,
+                body,
+            }),
         }),
     }),
 });

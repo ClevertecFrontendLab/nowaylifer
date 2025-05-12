@@ -1,0 +1,60 @@
+import { chakra, FormControl } from '@chakra-ui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+
+import { isClientError } from '~/shared/api/util';
+import { useShowAppLoader } from '~/shared/infra/app-loader';
+
+import { authApi } from '../api';
+import {
+    AuthModalBody,
+    AuthModalDescription,
+    AuthModalImage,
+    AuthModalSmallPrint,
+} from '../common/auth-modal';
+import { ErrorMessage, FormButton, Label, TextField } from '../common/ui';
+import { recoverPasswordSchema } from './schema';
+
+export const RecoverPassword = ({ next }: { next: (email: string) => void }) => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setError,
+    } = useForm({
+        mode: 'onSubmit',
+        reValidateMode: 'onSubmit',
+        resolver: zodResolver(recoverPasswordSchema),
+        defaultValues: { email: '' },
+    });
+
+    const [recoverPassword, { isLoading }] = authApi.useRecoverPasswordMutation();
+    useShowAppLoader(isLoading);
+
+    return (
+        <AuthModalBody>
+            <AuthModalImage src='/images/american-breakfast.png' />
+            <AuthModalDescription mb={4}>
+                Для восстановления входа введите ваш e-mail, куда можно отправить уникальный код
+            </AuthModalDescription>
+            <chakra.form
+                mb={6}
+                onSubmit={handleSubmit(async (values) => {
+                    const res = await recoverPassword(values);
+                    if (!res.error) return next(values.email);
+                    if (isClientError(res.error)) {
+                        setError('email', { message: '' });
+                    }
+                })}
+            >
+                <FormControl isInvalid={!!errors.email} mb={6}>
+                    <Label>Ваш e-mail</Label>
+                    <TextField placeholder='e-mail' {...register('email')} />
+                    <ErrorMessage m={0}>{errors.email?.message}</ErrorMessage>
+                </FormControl>
+                <FormButton type='submit'>Получить код</FormButton>
+            </chakra.form>
+            <AuthModalSmallPrint>Не пришло письмо? Проверьте папку Спам.</AuthModalSmallPrint>
+        </AuthModalBody>
+    );
+};

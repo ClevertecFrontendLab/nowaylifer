@@ -10,11 +10,13 @@ import { RoutePath } from '~/shared/router';
 
 import { authApi } from '../api';
 import { ErrorMessage, FormButton, Label, PasswordField, TextField } from '../common/ui';
+import { useCredentialsRecoveryWizard } from '../credentials-recovery';
 import { RetryLoginModalContent } from './retry-login-modal';
 import { loginSchema } from './schema';
 
 export const LoginForm = () => {
     const navigate = useNavigate();
+    const { openWizard } = useCredentialsRecoveryWizard();
     const { openModal } = useModal();
     const {
         formState: { errors },
@@ -36,9 +38,7 @@ export const LoginForm = () => {
             onSubmit={handleSubmit(async (values) => {
                 const res = await login(values);
                 const err = res.error;
-                if (!err) {
-                    return navigate(RoutePath.Main);
-                }
+                if (!err) return navigate(RoutePath.Main);
                 if (isServerError(err)) {
                     openModal({
                         content: <RetryLoginModalContent onRetry={() => login(values)} />,
@@ -62,7 +62,7 @@ export const LoginForm = () => {
                 Войти
             </FormButton>
             <Center>
-                <Button color='black' variant='link'>
+                <Button color='black' variant='link' onClick={openWizard}>
                     Забыли логин или пароль?
                 </Button>
             </Center>

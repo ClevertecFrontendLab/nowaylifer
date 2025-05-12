@@ -40,7 +40,7 @@ export const SignupForm = () => {
             email: '',
             login: '',
             password: '',
-            confirmPassword: '',
+            passwordConfirm: '',
         },
     });
 

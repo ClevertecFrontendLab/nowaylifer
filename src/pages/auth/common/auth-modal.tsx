@@ -16,7 +16,7 @@ export const AuthModalContent = chakra(ModalContent, {
 
 export const AuthModalBody = chakra(ModalBody, { baseStyle: { p: 8, textAlign: 'center' } });
 
-export const AuthModalTitle = chakra(Heading, { baseStyle: { fontSize: '2xl', mb: 4 } });
+export const AuthModalTitle = chakra(Heading, { baseStyle: { fontSize: '2xl !important', mb: 4 } });
 
 export const AuthModalDescription = chakra(Text, { baseStyle: { color: 'blackAlpha.900', mb: 8 } });
 

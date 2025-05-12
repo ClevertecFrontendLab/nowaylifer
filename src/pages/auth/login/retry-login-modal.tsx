@@ -13,7 +13,7 @@ export const RetryLoginModalContent = ({ onRetry }: { onRetry: () => void }) => 
     <AuthModalContent>
         <AuthModalCloseButton />
         <AuthModalBody>
-            <AuthModalImage src='/images/retry-login.png' />
+            <AuthModalImage src='/images/american-breakfast.png' />
             <AuthModalTitle>Вход не выполнене</AuthModalTitle>
             <AuthModalDescription>Что-то пошло не так. Попробуйте еще раз</AuthModalDescription>
             <Button variant='inverted' w='full' size='lg' onClick={onRetry}>
