@@ -1,6 +1,7 @@
 import { HTTPMethod } from 'http-method-enum';
 
 import { ApiEndpoints, apiSlice } from '~/shared/api';
+import { setToken } from '~/shared/session';
 
 export interface LoginRequestBody {
     login: string;
@@ -36,6 +37,13 @@ export const authApi = apiSlice.injectEndpoints({
                 method: HTTPMethod.POST,
                 body,
             }),
+            onQueryStarted: (_, { queryFulfilled, dispatch }) =>
+                queryFulfilled.then((res) => {
+                    const accessToken = res.meta?.response?.headers.get('Authentication-Access');
+                    if (accessToken) {
+                        dispatch(setToken(accessToken));
+                    }
+                }),
             extraOptions: {
                 errorLogInfoByStatus: {
                     default: null,

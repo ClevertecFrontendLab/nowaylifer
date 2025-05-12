@@ -110,7 +110,7 @@ export const recipeApi = apiSlice.injectEndpoints({
                 queryFn: async (
                     { maxRecipes = 5, subCategoriesIds },
                     { dispatch },
-                ): TypedQueryReturnValue<Recipe[]> => {
+                ): Promise<TypedQueryReturnValue<Recipe[]>> => {
                     const promises = subCategoriesIds.map((id) =>
                         dispatch(
                             recipeApi.endpoints.recipesBySubCategory.initiate(

@@ -1,9 +1,10 @@
 import { runIfFn } from '@chakra-ui/utils';
-import { BaseQueryEnhancer } from '@reduxjs/toolkit/query/react';
+import { BaseQueryEnhancer, BaseQueryResult } from '@reduxjs/toolkit/query/react';
 import { merge } from 'lodash-es';
 
 import { toast } from '../infra/toast';
 import { QueryApiError } from './common';
+import { TypedQueryReturnValue } from './query';
 import { isQueryApiError, isServerError } from './util';
 
 interface ErrorLogInfo {
@@ -37,7 +38,7 @@ const defaultOptions: ErrorLoggerOptions = {
     },
 };
 
-export const errorLogger: BaseQueryEnhancer<
+export const withErrorLogger: BaseQueryEnhancer<
     unknown,
     ErrorLoggerOptions,
     ErrorLoggerOptions | void
@@ -57,6 +58,5 @@ export const errorLogger: BaseQueryEnhancer<
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- currently idk how to properly type this
-    return res as any;
+    return res as TypedQueryReturnValue<BaseQueryResult<typeof baseQuery>>;
 };

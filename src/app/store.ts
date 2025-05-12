@@ -9,6 +9,7 @@ import { filterRecipeSlice } from '~/features/filter-recipe';
 import { searchRecipeSlice } from '~/features/search-recipe';
 import { apiSlice } from '~/shared/api';
 import { appLoaderSlice } from '~/shared/infra/app-loader';
+import { sessionSlice } from '~/shared/session';
 import { listenerMiddleware } from '~/shared/store';
 
 enableMapSet();
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     [filterRecipeSlice.name]: filterRecipeSlice.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
     [appLoaderSlice.name]: appLoaderSlice.reducer,
+    [sessionSlice.name]: sessionSlice.reducer,
 });
 
 export const store = configureStore({

@@ -17,6 +17,11 @@ import { MainPage } from '~/pages/main';
 import { RecipePage, recipePageLoader } from '~/pages/recipe';
 import { AppLoaderSpinner } from '~/shared/infra/app-loader';
 import { RoutePath, storeContext } from '~/shared/router';
+import { checkAuthMiddleware } from '~/shared/session';
+import {
+    hideRouteIfAuthenticatedMiddleware,
+    privateRouteMiddleware,
+} from '~/shared/session/router-middlewares';
 import { PageNotFound } from '~/widgets/page-not-found';
 
 import RootLayout from './root-layout';
@@ -26,16 +31,23 @@ const routerConfig: RouteObject[] = [
     {
         Component: RouterProviders,
         hydrateFallbackElement: <AppLoaderSpinner bg='transparent' />,
+        unstable_middleware: [checkAuthMiddleware],
+        loader: noop, // stub loader to always run middleware
         children: [
             {
-                path: RoutePath.EmailVerificationCallback,
-                Component: EmailVerificationCallback,
-            },
-            {
-                Component: AuthLayout,
+                unstable_middleware: [hideRouteIfAuthenticatedMiddleware],
                 children: [
-                    { path: RoutePath.Login, Component: LoginForm },
-                    { path: RoutePath.Signup, Component: SignupForm },
+                    {
+                        path: RoutePath.EmailVerificationCallback,
+                        Component: EmailVerificationCallback,
+                    },
+                    {
+                        Component: AuthLayout,
+                        children: [
+                            { path: RoutePath.Login, Component: LoginForm },
+                            { path: RoutePath.Signup, Component: SignupForm },
+                        ],
+                    },
                 ],
             },
             {
@@ -44,8 +56,11 @@ const routerConfig: RouteObject[] = [
                     crumb: (_, { pathname }) =>
                         pathname === RoutePath.NotFound ? undefined : 'Главная',
                 } satisfies RouteBreadcrumb,
-                unstable_middleware: [initCategoriesMiddleware, validateCategoryParamsMiddleware],
-                loader: noop, // stub loader to always run middleware
+                unstable_middleware: [
+                    privateRouteMiddleware,
+                    initCategoriesMiddleware,
+                    validateCategoryParamsMiddleware,
+                ],
                 children: [
                     { index: true, Component: MainPage },
                     { path: RoutePath.NotFound, Component: PageNotFound },
