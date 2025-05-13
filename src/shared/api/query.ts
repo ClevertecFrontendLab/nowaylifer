@@ -6,11 +6,12 @@ import {
     QueryReturnValue,
 } from '@reduxjs/toolkit/query/react';
 
+import { withErrorLogger } from '~/shared/infra/error-logger';
+
 import { API_BASE_URL } from '../config';
 import { loggedOut, selectToken } from '../session/slice';
 import { startAppListening } from '../store';
-import { withErrorLogger } from './with-error-logger';
-import { withRefreshToken } from './with-refresh-token';
+import { withRefreshToken } from './refresh-token';
 
 const baseQuery = withErrorLogger(
     withRefreshToken(

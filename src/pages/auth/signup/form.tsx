@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
 import { useShowAppLoader } from '~/shared/infra/app-loader';
-import { useModal } from '~/shared/infra/modals-provider';
+import { useModal } from '~/shared/infra/modals-manager';
 import { RoutePath } from '~/shared/router';
 import { TestId } from '~/shared/test-ids';
 

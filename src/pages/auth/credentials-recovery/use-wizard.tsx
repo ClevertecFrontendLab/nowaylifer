@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { useModal } from '~/shared/infra/modals-provider';
+import { useModal } from '~/shared/infra/modals-manager';
 import { toast } from '~/shared/infra/toast';
 
 import { CredentialsRecoveryWizard } from './wizard';

@@ -1,8 +1,11 @@
-import { Modal, ModalOverlay, useBoolean } from '@chakra-ui/react';
+import { Modal, ModalOverlay } from '@chakra-ui/react';
 import { runIfFn } from '@chakra-ui/utils';
 import { useMemo, useState } from 'react';
 
+import { useAppDispatch, useAppSelector } from '~/shared/store';
+
 import { ContextModalProps, ModalsContext, ModalsContextProvider } from './context';
+import { selectIsModalOpen, setIsModalOpen } from './slice';
 
 export interface ModalsProviderProps {
     children?: React.ReactNode;
@@ -13,24 +16,26 @@ export const ModalsProvider = ({ children, defaultModalProps }: ModalsProviderPr
     const [currentModalProps, setCurrentModalProps] = useState<ContextModalProps | undefined>(
         defaultModalProps,
     );
-    const [isOpen, { on: open, off: close }] = useBoolean(false);
+
+    const isOpen = useAppSelector(selectIsModalOpen);
+    const dispatch = useAppDispatch();
 
     const ctx: ModalsContext = useMemo(
         () => ({
-            closeModal: () => close(),
+            closeModal: () => dispatch(setIsModalOpen(false)),
             openModal: (props) => {
                 setCurrentModalProps({ ...defaultModalProps, ...props });
-                open();
+                dispatch(setIsModalOpen(true));
             },
         }),
-        [close, open, defaultModalProps],
+        [defaultModalProps, dispatch],
     );
 
     const { content, overlayProps, ...modalProps } = currentModalProps ?? {};
 
     return (
         <ModalsContextProvider value={ctx}>
-            <Modal isOpen={isOpen} onClose={close} {...modalProps}>
+            <Modal isOpen={isOpen} onClose={ctx.closeModal} {...modalProps}>
                 <ModalOverlay {...overlayProps} />
                 {runIfFn(content, { onClose: ctx.closeModal })}
             </Modal>

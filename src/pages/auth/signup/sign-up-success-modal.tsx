@@ -18,7 +18,11 @@ export const SignUpSuccessModalContent = ({ email }: { email: string }) => (
             <AuthModalImage src='/images/verify-email.png' />
             <AuthModalTitle>Остался последний шаг. Нужно верифицировать ваш e-mail</AuthModalTitle>
             <AuthModalDescription>
-                Мы отправили вам на почту <b>{email}</b> ссылку для верификации.
+                Мы отправили вам на почту
+                <br />
+                <b>{email}</b>
+                <br />
+                ссылку для верификации.
             </AuthModalDescription>
             <AuthModalSmallPrint>
                 Не пришло письмо? Проверьте папку Спам. По другим вопросам свяжитесь{' '}

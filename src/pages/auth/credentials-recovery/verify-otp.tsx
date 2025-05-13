@@ -29,7 +29,11 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
                 <AuthModalImage src='/images/laptop-breakfast.png' />
                 {isInvalid && <AuthModalTitle>Неверный код</AuthModalTitle>}
                 <AuthModalDescription mb={4}>
-                    Мы отправили вам на e-mail <b>{email}</b> шестизначный код. Введите его ниже.
+                    Мы отправили вам на e-mail
+                    <br />
+                    <b>{email}</b>
+                    <br />
+                    шестизначный код. Введите его ниже.
                 </AuthModalDescription>
                 <HStack mb={6} justify='center'>
                     <PinInput

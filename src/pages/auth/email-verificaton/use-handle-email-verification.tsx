@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useModal } from '~/shared/infra/modals-provider';
+import { useModal } from '~/shared/infra/modals-manager';
 import { toast } from '~/shared/infra/toast';
 
 import { emailVerificationHistoryState } from './email-verification-history-state';

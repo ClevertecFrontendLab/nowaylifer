@@ -45,7 +45,7 @@ export const authApi = apiSlice.injectEndpoints({
                     }
                 }),
             extraOptions: {
-                errorLogInfoByStatus: {
+                errorMetaByStatus: {
                     default: null,
                     401: { title: 'Неверный логин или пароль', description: 'Попробуйте снова' },
                     403: {
@@ -62,7 +62,7 @@ export const authApi = apiSlice.injectEndpoints({
                 body,
             }),
             extraOptions: {
-                errorLogInfoByStatus: {
+                errorMetaByStatus: {
                     400: (error) => (isQueryApiError(error) ? { title: error.data.message } : null),
                 },
             },
@@ -74,7 +74,7 @@ export const authApi = apiSlice.injectEndpoints({
                 body,
             }),
             extraOptions: {
-                errorLogInfoByStatus: {
+                errorMetaByStatus: {
                     403: {
                         title: 'Такого e-mail нет',
                         description:

@@ -11,18 +11,20 @@ import { Toast } from './toast-component';
 
 export const { toast: baseToast } = createStandaloneToast();
 
-export interface UseToastOptions extends BaseUseToastOptions {
+export interface ToastOptions extends BaseUseToastOptions {
+    ref?: React.Ref<HTMLDivElement>;
     closeButtonProps?: CloseButtonProps;
-    testId?: string;
 }
 
-export const toast = ({ closeButtonProps, testId, ...options }: UseToastOptions) =>
+export const toast = ({ ref, closeButtonProps, ...options }: ToastOptions) =>
     baseToast({
         isClosable: true,
         duration: isE2E() ? 10000 : 5000,
-        render: ({ position: _, ...props }) => (
+        containerStyle: { m: 0, pb: { base: 25, lg: 20 } },
+        render: ({ position, containerStyle, ...props }) => (
             <Toast
-                data-test-id={testId ?? TestId.ERROR_ALERT}
+                ref={ref}
+                data-test-id={TestId.ERROR_ALERT}
                 closeButtonProps={{ 'data-test-id': TestId.ERROR_ALERT_CLOSE, ...closeButtonProps }}
                 {...props}
             />

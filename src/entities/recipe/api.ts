@@ -94,7 +94,7 @@ export const recipeApi = apiSlice.injectEndpoints({
             },
             transformResponse: fixRecipesBySubCategoryResponse,
             extraOptions: {
-                errorLogInfoByStatus: {
+                errorMetaByStatus: {
                     404: {
                         title: 'Ошибка сервера',
                         description: 'Попробуйте поискать снова попозже',
@@ -113,7 +113,7 @@ export const recipeApi = apiSlice.injectEndpoints({
             transformResponse: (raw: PaginatedResponse<Recipe>) =>
                 fixRecipesBySubCategoryResponse(raw).data,
             extraOptions: {
-                errorLogInfoByStatus: {
+                errorMetaByStatus: {
                     404: {
                         title: 'Ошибка сервера',
                         description: 'Попробуйте поискать снова попозже',
