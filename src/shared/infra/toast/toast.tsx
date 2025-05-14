@@ -1,38 +1,82 @@
 import {
+    Alert,
+    AlertDescription,
+    AlertIcon,
+    AlertTitle,
+    chakra,
+    CloseButton,
     CloseButtonProps,
-    createStandaloneToast,
-    UseToastOptions as BaseUseToastOptions,
+    ToastProps as BaseToastProps,
 } from '@chakra-ui/react';
 
 import { TestId } from '~/shared/test-ids';
-import { isE2E } from '~/shared/util';
 
-import { Toast } from './toast-component';
-
-export const { toast: baseToast } = createStandaloneToast();
-
-export interface ToastOptions extends BaseUseToastOptions {
-    ref?: React.Ref<HTMLDivElement>;
+export interface ToastProps extends Omit<BaseToastProps, 'position'> {
     closeButtonProps?: CloseButtonProps;
+    ref?: React.Ref<HTMLDivElement>;
 }
 
-export const toast = ({ ref, closeButtonProps, ...options }: ToastOptions) =>
-    baseToast({
-        isClosable: true,
-        duration: isE2E() ? 10000 : 5000,
-        containerStyle: { m: 0, pb: { base: 25, lg: 20 } },
-        render: ({ position, containerStyle, ...props }) => (
-            <Toast
-                ref={ref}
-                data-test-id={TestId.ERROR_ALERT}
-                closeButtonProps={{ 'data-test-id': TestId.ERROR_ALERT_CLOSE, ...closeButtonProps }}
-                {...props}
-            />
-        ),
-        ...options,
-    });
+export const Toast = (props: ToastProps) => {
+    const {
+        status,
+        variant = 'solid',
+        render,
+        id,
+        title,
+        isClosable,
+        closeButtonProps,
+        onClose,
+        description,
+        colorScheme,
+        icon,
+        ref,
+        ...rest
+    } = props;
 
-toast.update = baseToast.update;
-toast.close = baseToast.close;
-toast.closeAll = baseToast.closeAll;
-toast.isActive = baseToast.isActive;
+    const ids = id
+        ? {
+              root: `toast-${id}`,
+              title: `toast-${id}-title`,
+              description: `toast-${id}-description`,
+          }
+        : undefined;
+
+    return (
+        <Alert
+            ref={ref}
+            addRole={false}
+            status={status}
+            variant={variant}
+            id={ids?.root}
+            alignItems='center'
+            boxShadow='lg'
+            paddingEnd={8}
+            textAlign='start'
+            w={{ base: '328px', lg: '400px' }}
+            colorScheme={colorScheme}
+            data-test-id={TestId.ERROR_ALERT}
+            {...rest}
+        >
+            <AlertIcon>{icon}</AlertIcon>
+            <chakra.div flex='1' maxWidth='100%'>
+                {title && <AlertTitle id={ids?.title}>{title}</AlertTitle>}
+                {description && (
+                    <AlertDescription id={ids?.description} display='block'>
+                        {description}
+                    </AlertDescription>
+                )}
+            </chakra.div>
+            {isClosable && (
+                <CloseButton
+                    size='sm'
+                    onClick={onClose}
+                    position='absolute'
+                    insetEnd={1}
+                    data-test-id={TestId.ERROR_ALERT_CLOSE}
+                    top={1}
+                    {...closeButtonProps}
+                />
+            )}
+        </Alert>
+    );
+};

@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 
 export const AuthModalContent = chakra(ModalContent, {
-    baseStyle: { maxW: { base: '316px', lg: '396px' } },
+    baseStyle: { maxW: { base: '316px', lg: '396px' }, borderRadius: '2xl' },
 });
 
 export const AuthModalBody = chakra(ModalBody, { baseStyle: { p: 8, textAlign: 'center' } });

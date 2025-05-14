@@ -1,7 +1,6 @@
 import { createContext } from '@chakra-ui/utils';
-
-import { ToastOptions } from '../toast/toast';
+import { RefCallback } from 'react';
 
 export const [ToastErrorLoggerContextProvider, useToastErrorLogger] = createContext<{
-    setToastOptions: (options: ToastOptions | null) => void;
+    anchorRef: RefCallback<HTMLElement>;
 }>();

@@ -46,8 +46,10 @@ export const LoginForm = () => {
                     <RetryLoginModalContent
                         onRetry={async () => {
                             const res = await login(values);
-                            if (!res.error) {
+                            if (!res.error || !isServerError(res.error)) {
                                 closeModal();
+                            }
+                            if (!res.error) {
                                 navigate(RoutePath.Main);
                             }
                         }}

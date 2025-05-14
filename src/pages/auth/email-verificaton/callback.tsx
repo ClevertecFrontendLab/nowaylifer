@@ -2,7 +2,7 @@ import { Navigate, useSearchParams } from 'react-router';
 
 import { RoutePath } from '~/shared/router';
 
-import { EmailVerificationHistoryState } from './email-verification-history-state';
+import { EmailVerificationHistoryState } from './history-state';
 
 const parseBoolean = (string: string) => {
     switch (string) {
