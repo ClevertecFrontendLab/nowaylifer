@@ -6,11 +6,13 @@ import { selectToken } from './slice';
 
 const sessionContext = unstable_createContext({ isAuthenticated: false });
 
+let checked = false;
+
 export const checkAuthMiddleware: unstable_MiddlewareFunction = async ({ context }, next) => {
     const store = context.get(storeContext);
 
-    if (selectToken(store.getState())) {
-        context.set(sessionContext, { isAuthenticated: true });
+    if (checked) {
+        context.set(sessionContext, { isAuthenticated: !!selectToken(store.getState()) });
         return next();
     }
 
@@ -19,6 +21,8 @@ export const checkAuthMiddleware: unstable_MiddlewareFunction = async ({ context
     if (!res.error) {
         context.set(sessionContext, { isAuthenticated: true });
     }
+
+    checked = true;
 
     return next();
 };
