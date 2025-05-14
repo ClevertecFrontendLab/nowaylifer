@@ -25,8 +25,6 @@ export const withRefreshToken: BaseQueryEnhancer<unknown, unknown, void> =
             return result;
         }
 
-        // handle refresh token
-
         if (!mutex.isLocked()) {
             const release = await mutex.acquire();
 
@@ -50,6 +48,5 @@ export const withRefreshToken: BaseQueryEnhancer<unknown, unknown, void> =
         }
 
         await mutex.waitForUnlock();
-        // retry original request
         return baseQuery(args, api, extraOptions) as QueryResult;
     };

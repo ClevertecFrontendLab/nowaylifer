@@ -11,7 +11,7 @@ import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
 import { FormProgress } from './progress';
-import { signUpSchema, signUpSchemaKeys } from './schema';
+import { SignUpSchema, signUpSchema, signUpSchemaKeys } from './schema';
 import { SignUpSuccessModalContent } from './sign-up-success-modal';
 import { Step1 } from './step1';
 import { Step2 } from './step2';
@@ -69,6 +69,22 @@ export const SignupForm = () => {
 
     const StepComponent = steps[stepIndex].Component;
 
+    const handleFormKeyDown = (e: React.KeyboardEvent) => {
+        if (e.target instanceof HTMLInputElement && e.key === 'Enter') {
+            next();
+        }
+    };
+
+    const handleFormValid = async (values: SignUpSchema) => {
+        const res = await signup(values);
+        if (!res.error) {
+            navigate(RoutePath.Login);
+            openModal({
+                content: <SignUpSuccessModalContent email={values.email} />,
+            });
+        }
+    };
+
     return (
         <Box>
             <FormProvider {...form}>
@@ -79,20 +95,8 @@ export const SignupForm = () => {
                 <chakra.form
                     data-test-id={TestId.SIGN_UP_FORM}
                     ref={formRef}
-                    onKeyDown={(e) => {
-                        if (e.target instanceof HTMLInputElement && e.key === 'Enter') {
-                            next();
-                        }
-                    }}
-                    onSubmit={form.handleSubmit(async (values) => {
-                        const res = await signup(values);
-                        if (!res.error) {
-                            navigate(RoutePath.Login);
-                            openModal({
-                                content: <SignUpSuccessModalContent email={values.email} />,
-                            });
-                        }
-                    })}
+                    onKeyDown={handleFormKeyDown}
+                    onSubmit={form.handleSubmit(handleFormValid)}
                 >
                     <StepComponent next={next} />
                 </chakra.form>

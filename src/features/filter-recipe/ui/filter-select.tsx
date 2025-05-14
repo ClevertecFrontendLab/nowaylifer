@@ -38,11 +38,11 @@ import {
 import { FilterOption, FilterType } from '../types';
 
 interface FilterSelectTestId {
-    menu?: string;
-    field?: string;
-    footerInput?: string;
-    footerButton?: string;
-    option?: (option: FilterOption, index: number) => string | undefined;
+    menu: string;
+    field: string;
+    footerInput: string;
+    footerButton: string;
+    option: (option: FilterOption, index: number) => string | undefined;
 }
 
 interface FilterSelectOptions {
@@ -51,7 +51,7 @@ interface FilterSelectOptions {
     applyOnChange?: boolean;
     withFooter?: boolean;
     footerInputPlaceholder?: string;
-    testId?: FilterSelectTestId;
+    testId?: Partial<FilterSelectTestId>;
 }
 
 export interface FilterSelectProps

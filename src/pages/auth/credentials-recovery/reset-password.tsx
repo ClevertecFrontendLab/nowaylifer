@@ -16,7 +16,7 @@ import {
     PasswordField,
     TextField,
 } from '../common/ui';
-import { resetPasswordSchema } from './schema';
+import { ResetPasswordSchema, resetPasswordSchema } from './schema';
 
 export const ResetPassword = ({ email, next }: { email: string; next: () => void }) => {
     const {
@@ -31,7 +31,14 @@ export const ResetPassword = ({ email, next }: { email: string; next: () => void
     });
 
     const [resetPassword, { isLoading }] = authApi.useResetPasswordMutation();
+
     useShowAppLoader(isLoading);
+
+    const handleFormValid = async (values: ResetPasswordSchema) => {
+        const body = { ...values, email };
+        const res = await resetPassword(body);
+        if (!res.error) next();
+    };
 
     return (
         <SlideFade in={true} offsetY={0} offsetX={64}>
@@ -39,13 +46,7 @@ export const ResetPassword = ({ email, next }: { email: string; next: () => void
                 <AuthModalTitle w='min-content' mx='auto' mb={6}>
                     Восстановление аккаунта
                 </AuthModalTitle>
-                <chakra.form
-                    onSubmit={handleSubmit(async (values) => {
-                        const body = { ...values, email };
-                        const res = await resetPassword(body);
-                        if (!res.error) next();
-                    })}
-                >
+                <chakra.form onSubmit={handleSubmit(handleFormValid)}>
                     <VStack gap={6} mb={8} textAlign='start'>
                         <FormControl isInvalid={!!errors.login}>
                             <Label>Логин для входа на сайт</Label>

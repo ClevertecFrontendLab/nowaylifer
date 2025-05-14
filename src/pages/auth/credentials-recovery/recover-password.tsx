@@ -14,7 +14,7 @@ import {
     AuthModalSmallPrint,
 } from '../common/auth-modal';
 import { ErrorMessage, FormButton, Label, TextField } from '../common/ui';
-import { recoverPasswordSchema } from './schema';
+import { RecoverPasswordSchema, recoverPasswordSchema } from './schema';
 
 export const RecoverPassword = ({ next }: { next: (email: string) => void }) => {
     const {
@@ -31,7 +31,17 @@ export const RecoverPassword = ({ next }: { next: (email: string) => void }) => 
     });
 
     const [recoverPassword, { isLoading }] = authApi.useRecoverPasswordMutation();
+
     useShowAppLoader(isLoading);
+
+    const handleFormValid = async (values: RecoverPasswordSchema) => {
+        const res = await recoverPassword(values);
+        if (!res.error) return next(values.email);
+        if (isQueryHttpError(res.error)) {
+            setValue('email', '');
+            setError('email', { message: '' });
+        }
+    };
 
     return (
         <AuthModalBody>
@@ -39,17 +49,7 @@ export const RecoverPassword = ({ next }: { next: (email: string) => void }) => 
             <AuthModalDescription mb={4}>
                 Для восстановления входа введите ваш e-mail, куда можно отправить уникальный код
             </AuthModalDescription>
-            <chakra.form
-                mb={6}
-                onSubmit={handleSubmit(async (values) => {
-                    const res = await recoverPassword(values);
-                    if (!res.error) return next(values.email);
-                    if (isQueryHttpError(res.error)) {
-                        setValue('email', '');
-                        setError('email', { message: '' });
-                    }
-                })}
-            >
+            <chakra.form mb={6} onSubmit={handleSubmit(handleFormValid)}>
                 <FormControl isInvalid={!!errors.email} mb={6}>
                     <Label>Ваш e-mail</Label>
                     <TextField

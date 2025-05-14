@@ -34,7 +34,7 @@ export const LoginForm = () => {
 
     useShowAppLoader(isLoading);
 
-    const handleValid = async (values: LoginSchema) => {
+    const handleFormValid = async (values: LoginSchema) => {
         const res = await login(values);
         if (!res.error) {
             return navigate(RoutePath.Main);
@@ -58,7 +58,7 @@ export const LoginForm = () => {
     };
 
     return (
-        <chakra.form data-test-id={TestId.SIGN_IN_FORM} onSubmit={handleSubmit(handleValid)}>
+        <chakra.form data-test-id={TestId.SIGN_IN_FORM} onSubmit={handleSubmit(handleFormValid)}>
             <VStack gap={6} mb='112px'>
                 <FormControl isInvalid={!!errors.login}>
                     <Label>Логин для входа на сайт</Label>

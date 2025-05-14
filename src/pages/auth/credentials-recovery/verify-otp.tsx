@@ -23,6 +23,14 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
 
     useShowAppLoader(isLoading);
 
+    const handleOtpComplete = async (otpToken: string) => {
+        setIsInvalid(false);
+        const res = await verifyOtp({ email, otpToken });
+        if (!res.error) return next();
+        setIsInvalid(isClientError(res.error));
+        setOtp('');
+    };
+
     return (
         <SlideFade in={true} offsetY={0} offsetX={64}>
             <AuthModalBody>
@@ -42,13 +50,7 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
                         value={otp}
                         isInvalid={isInvalid}
                         onChange={setOtp}
-                        onComplete={async (otpToken) => {
-                            setIsInvalid(false);
-                            const res = await verifyOtp({ email, otpToken });
-                            if (!res.error) return next();
-                            setIsInvalid(isClientError(res.error));
-                            setOtp('');
-                        }}
+                        onComplete={handleOtpComplete}
                     >
                         {Array.from({ length: OTP_LENGTH }, (_, idx) => (
                             <PinInputField data-test-id={TestId.otpInput(idx)} />

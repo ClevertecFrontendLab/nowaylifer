@@ -5,27 +5,29 @@ import { RoutePath } from '~/shared/router';
 import { EmailVerificationHistoryState } from './email-verification-history-state';
 
 const parseBoolean = (string: string) => {
-    if (string === 'true') {
-        return true;
-    } else if (string === 'false') {
-        return false;
+    switch (string) {
+        case 'true':
+            return true;
+        case 'false':
+            return false;
+        default:
+            return null;
     }
-    return null;
 };
 
 export const EmailVerificationCallback = () => {
     const [searchParams] = useSearchParams();
-    const param = searchParams.get('emailVerified');
-    const isSuccess = typeof param === 'string' && parseBoolean(param);
+    const param = searchParams.get('emailVerified') ?? '';
+    const emailVerified = parseBoolean(param);
 
-    if (isSuccess == null) {
+    if (emailVerified == null) {
         return <Navigate to={RoutePath.Login} />;
     }
 
     return (
         <Navigate
-            to={isSuccess ? RoutePath.Login : RoutePath.Signup}
-            state={{ emailVerified: isSuccess } satisfies EmailVerificationHistoryState}
+            to={emailVerified ? RoutePath.Login : RoutePath.Signup}
+            state={{ emailVerified } satisfies EmailVerificationHistoryState}
         />
     );
 };
