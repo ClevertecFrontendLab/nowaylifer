@@ -49,14 +49,14 @@ export const TabList = ({
         <Box
             ref={scrollRef}
             pos='relative'
-            overflowX='auto'
+            overflowX={scrollable ? 'auto' : 'visible'}
             sx={{ scrollbarWidth: 'none', ...sx }}
             pb={1}
             {...props}
         >
             <BaseTabList
-                mx={centered ? 'auto' : undefined}
                 w={scrollable ? 'max-content' : 'full'}
+                mx={centered ? 'auto' : undefined}
                 {...listProps}
             >
                 {children}

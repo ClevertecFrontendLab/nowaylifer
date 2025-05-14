@@ -3,6 +3,7 @@ import {
     cardAnatomy,
     checkboxAnatomy,
     inputAnatomy,
+    modalAnatomy,
     progressAnatomy,
     switchAnatomy,
     tabsAnatomy,
@@ -31,6 +32,14 @@ const themeOverride = {
         },
     },
     components: {
+        Modal: createMultiStyleConfigHelpers(modalAnatomy.keys).defineMultiStyleConfig({
+            baseStyle: {
+                overlay: {
+                    bg: 'blackAlpha.300',
+                    backdropFilter: 'blur(2px)',
+                },
+            },
+        }),
         Alert: createMultiStyleConfigHelpers(alertAnatomy.keys).defineMultiStyleConfig({
             variants: {
                 solid: ({ colorScheme: c }) => ({
@@ -72,7 +81,8 @@ const themeOverride = {
                 indicator: {
                     bg: `${c}.600`,
                 },
-                tabpanel: { p: 0, pt: 6 },
+                tabpanels: { mt: 6 },
+                tabpanel: { p: 0 },
             }),
         }),
         Button: {

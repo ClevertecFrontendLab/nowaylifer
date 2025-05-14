@@ -92,6 +92,7 @@ export const LoginForm = () => {
                     color='black'
                     variant='link'
                     onClick={openWizard}
+                    lineHeight={6}
                     data-test-id={TestId.FORGOT_PASSWORD_LINK}
                 >
                     Забыли логин или пароль?

@@ -18,7 +18,9 @@ export const RetryLoginModalContent = ({ onRetry }: { onRetry?: () => void }) =>
             <AuthModalImage src='/images/american-breakfast.png' />
             <AuthModalTitle>Вход не выполнен</AuthModalTitle>
             <AuthModalDescription color='blackAlpha.700'>
-                Что-то пошло не так. <br /> Попробуйте еще раз
+                Что-то пошло не так.
+                <br />
+                Попробуйте еще раз
             </AuthModalDescription>
             <Button
                 variant='inverted'

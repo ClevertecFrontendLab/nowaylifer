@@ -3,6 +3,7 @@ import {
     BoxProps,
     chakra,
     Heading,
+    HeadingProps,
     ModalBody,
     ModalCloseButton,
     ModalCloseButtonProps,
@@ -16,12 +17,14 @@ export const AuthModalContent = chakra(ModalContent, {
 
 export const AuthModalBody = chakra(ModalBody, { baseStyle: { p: 8, textAlign: 'center' } });
 
-export const AuthModalTitle = chakra(Heading, { baseStyle: { fontSize: '2xl !important', mb: 4 } });
+export const AuthModalTitle = (props: HeadingProps) => (
+    <Heading fontSize='2xl' mb={4} lineHeight={8} {...props} />
+);
 
 export const AuthModalDescription = chakra(Text, { baseStyle: { color: 'blackAlpha.900', mb: 8 } });
 
 export const AuthModalSmallPrint = chakra(Text, {
-    baseStyle: { fontSize: 'xs', color: 'blackAlpha.600' },
+    baseStyle: { fontSize: 'xs', color: 'blackAlpha.600', lineHeight: 4 },
 });
 
 export const AuthModalImage = ({ src, ...props }: BoxProps & { src: string }) => (

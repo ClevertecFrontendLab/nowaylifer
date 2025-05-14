@@ -1,4 +1,4 @@
-import { HStack, PinInput, PinInputField, SlideFade } from '@chakra-ui/react';
+import { chakra, HStack, PinInput, PinInputField, SlideFade } from '@chakra-ui/react';
 import { useState } from 'react';
 
 import { isClientError } from '~/shared/api/util';
@@ -38,12 +38,12 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
                 {isInvalid && <AuthModalTitle>Неверный код</AuthModalTitle>}
                 <AuthModalDescription mb={4}>
                     Мы отправили вам на e-mail
-                    <br />
-                    <b>{email}</b>
-                    <br />
-                    шестизначный код. Введите его ниже.
+                    <chakra.b display='block' fontWeight='semibold' isTruncated>
+                        {email}
+                    </chakra.b>
+                    шестизначный код. Введите&nbsp;его&nbsp;ниже.
                 </AuthModalDescription>
-                <HStack mb={6} justify='center'>
+                <HStack mb={6} justify='center' gap={1.5}>
                     <PinInput
                         otp
                         focusBorderColor='lime.300'
@@ -53,11 +53,13 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
                         onComplete={handleOtpComplete}
                     >
                         {Array.from({ length: OTP_LENGTH }, (_, idx) => (
-                            <PinInputField data-test-id={TestId.otpInput(idx)} />
+                            <PinInputField flexShrink={0} data-test-id={TestId.otpInput(idx)} />
                         ))}
                     </PinInput>
                 </HStack>
-                <AuthModalSmallPrint>Не пришло письмо? Проверьте папку Спам.</AuthModalSmallPrint>
+                <AuthModalSmallPrint>
+                    Не пришло письмо? Проверьте&nbsp;папку&nbsp;Спам.
+                </AuthModalSmallPrint>
             </AuthModalBody>
         </SlideFade>
     );

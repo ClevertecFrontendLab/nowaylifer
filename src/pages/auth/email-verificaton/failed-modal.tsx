@@ -17,12 +17,12 @@ export const EmailVerificationFailedModalContent = () => (
         <AuthModalBody>
             <AuthModalImage src='/images/verify-email-error.jpg' />
             <AuthModalTitle>Упс! Что-то пошло не так</AuthModalTitle>
-            <AuthModalDescription>
+            <AuthModalDescription color='blackAlpha.700'>
                 Ваша ссылка для верификации недействительна. Попробуйте зарегистрироваться снова.
             </AuthModalDescription>
             <AuthModalSmallPrint>
                 Остались вопросы? Свяжитесь{' '}
-                <Link to='/' textDecoration='underline'>
+                <Link to='/' textDecoration='underline' whiteSpace='nowrap'>
                     с поддержкой.
                 </Link>
             </AuthModalSmallPrint>

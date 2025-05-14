@@ -1,3 +1,5 @@
+import { chakra } from '@chakra-ui/react';
+
 import { TestId } from '~/shared/test-ids';
 import { Link } from '~/shared/ui/link';
 
@@ -19,14 +21,16 @@ export const SignUpSuccessModalContent = ({ email }: { email: string }) => (
             <AuthModalTitle>Остался последний шаг. Нужно верифицировать ваш e-mail</AuthModalTitle>
             <AuthModalDescription>
                 Мы отправили вам на почту
-                <br />
-                <b>{email}</b>
-                <br />
+                <chakra.b display='block' fontWeight='semibold' isTruncated>
+                    {email}
+                </chakra.b>
                 ссылку для верификации.
             </AuthModalDescription>
             <AuthModalSmallPrint>
-                Не пришло письмо? Проверьте папку Спам. По другим вопросам свяжитесь{' '}
-                <Link to='/' textDecoration='underline'>
+                Не пришло письмо? Проверьте&nbsp;папку&nbsp;Спам.
+                <br />
+                По другим вопросам свяжитесь{' '}
+                <Link to='/' textDecoration='underline' whiteSpace='nowrap'>
                     с поддержкой.
                 </Link>
             </AuthModalSmallPrint>

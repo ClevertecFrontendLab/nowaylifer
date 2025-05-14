@@ -35,6 +35,8 @@ export const PasswordInput = ({
                     p={1.5}
                     onMouseDown={on}
                     onMouseUp={off}
+                    onTouchStart={on}
+                    onTouchEnd={off}
                     icon={isVisible ? <ViewIcon /> : <ViewOffIcon />}
                     aria-label={isVisible ? 'Скрыть пароль' : 'Показать пароль'}
                     {...visibilityButtonProps}

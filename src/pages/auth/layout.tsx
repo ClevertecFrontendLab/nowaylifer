@@ -45,14 +45,14 @@ export const AuthLayout = () => {
                     direction='column'
                     flex={1}
                 >
-                    <Center mb='80px'>
+                    <Center mb={{ base: 10, md: 14, lg: 20 }}>
                         <Logo h={{ base: 9.5, lg: 16 }} w='auto' />
                     </Center>
                     <Box px={{ base: 4, lg: 8 }}>
                         <Tabs
                             isLazy
                             w='full'
-                            maxW='461px'
+                            maxW={{ base: '355px', lg: '451px', '2xl': '461px' }}
                             mx='auto'
                             size={{ base: 'md', lg: 'lg' }}
                             index={tabs.findIndex((tab) => location.pathname.startsWith(tab.path))}
@@ -70,7 +70,7 @@ export const AuthLayout = () => {
                                     </Tab>
                                 ))}
                             </TabList>
-                            <TabPanels>
+                            <TabPanels mt={9}>
                                 {tabs.map((tab) => (
                                     <TabPanel key={tab.path}>
                                         <Outlet />
@@ -81,7 +81,7 @@ export const AuthLayout = () => {
                     </Box>
                     <Spacer />
                     <Text fontSize='xs' fontWeight='semibold' p={2.5} mx={{ base: 4, md: 5 }}>
-                        Все права защищены, ученический файл, @Клевер Технолоджи, 2024
+                        Все права защищены, ученический файл, @Клевер Технолоджи, 2025
                     </Text>
                 </Flex>
                 <Hero flex={1} hideBelow='lg' />

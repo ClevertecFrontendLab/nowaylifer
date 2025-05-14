@@ -11,14 +11,14 @@ import {
 
 import { PasswordInput, PasswordInputProps } from './password-input';
 
-export const Label = chakra(FormLabel, { baseStyle: { fontWeight: 'normal' } });
+export const Label = chakra(FormLabel, { baseStyle: { fontWeight: 'normal', mb: 1 } });
 
 export const HelperText = chakra(FormHelperText, {
-    baseStyle: { fontSize: 'xs', color: 'blackAlpha.700', mt: 1 },
+    baseStyle: { fontSize: 'xs', color: 'blackAlpha.700', mt: 1, lineHeight: 4 },
 });
 
 export const ErrorMessage = chakra(FormErrorMessage, {
-    baseStyle: { fontSize: 'xs', color: 'red.500', mt: 1 },
+    baseStyle: { fontSize: 'xs', color: 'red.500', mt: 1, lineHeight: 4 },
 });
 
 export const TextField = ({ onBlur, ...props }: InputProps) => (
