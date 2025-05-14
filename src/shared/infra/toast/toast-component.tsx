@@ -9,8 +9,11 @@ import {
     ToastProps as BaseToastProps,
 } from '@chakra-ui/react';
 
+import { TestId } from '~/shared/test-ids';
+
 export interface ToastProps extends Omit<BaseToastProps, 'position'> {
     closeButtonProps?: CloseButtonProps;
+    ref?: React.Ref<HTMLDivElement>;
 }
 
 export const Toast = (props: ToastProps) => {
@@ -26,6 +29,7 @@ export const Toast = (props: ToastProps) => {
         description,
         colorScheme,
         icon,
+        ref,
         ...rest
     } = props;
 
@@ -39,6 +43,7 @@ export const Toast = (props: ToastProps) => {
 
     return (
         <Alert
+            ref={ref}
             addRole={false}
             status={status}
             variant={variant}
@@ -47,8 +52,9 @@ export const Toast = (props: ToastProps) => {
             boxShadow='lg'
             paddingEnd={8}
             textAlign='start'
-            width='auto'
+            w={{ base: '328px', lg: '400px' }}
             colorScheme={colorScheme}
+            data-test-id={TestId.ERROR_ALERT}
             {...rest}
         >
             <AlertIcon>{icon}</AlertIcon>
@@ -66,6 +72,7 @@ export const Toast = (props: ToastProps) => {
                     onClick={onClose}
                     position='absolute'
                     insetEnd={1}
+                    data-test-id={TestId.ERROR_ALERT_CLOSE}
                     top={1}
                     {...closeButtonProps}
                 />

@@ -33,6 +33,7 @@ export const store = configureStore({
         getDefaultMiddleware({
             serializableCheck: {
                 ignoredPaths: ['appLoader.subsribers'],
+                ignoredActions: ['errorLogger/getOptions'],
             } satisfies SerializableStateInvariantMiddlewareOptions,
         })
             .prepend(listenerMiddleware.middleware)

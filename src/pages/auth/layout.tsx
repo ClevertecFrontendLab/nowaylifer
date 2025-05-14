@@ -8,6 +8,7 @@ import { Logo } from '~/shared/ui/logo';
 import { Tab, TabList, Tabs } from '~/shared/ui/tabs';
 
 import { useHandleEmailVerification } from './email-verificaton';
+import { usePositionErrorLogger } from './use-position-error-logger';
 
 const tabs = [
     { label: 'Вход на сайт', path: RoutePath.Login },
@@ -17,14 +18,14 @@ const tabs = [
 export const AuthLayout = () => {
     const navigate = useNavigate();
     const isModalOpen = useAppSelector(selectIsModalOpen);
-    const isHeroVisible = useBreakpointValue({ base: false, lg: true });
-    const referenceRef = usePositionErrorLogger(!!isHeroVisible && !isModalOpen);
+    const referenceRef = usePositionErrorLogger(!isModalOpen);
 
     useHandleEmailVerification();
 
     return (
         <Flex minH='100dvh' bgGradient='linear(237deg, lime.100 30.27%, #29813F 136.1%)'>
             <Flex
+                ref={referenceRef}
                 pt={{ base: '72px', md: '140px', lg: '170px' }}
                 pb={{ base: 4, md: 5 }}
                 direction='column'
@@ -74,7 +75,7 @@ export const AuthLayout = () => {
     );
 };
 
-const Hero = (props: BoxProps) => (
+const Hero = (props: BoxProps & { ref?: React.Ref<HTMLDivElement> }) => (
     <Box
         pos='relative'
         bgSize='cover'

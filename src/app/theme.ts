@@ -27,7 +27,6 @@ const themeOverride = {
         global: {
             '#chakra-toast-manager-bottom': {
                 width: '100vw',
-                pb: 8,
             },
         },
     },
@@ -174,6 +173,7 @@ const themeOverride = {
         '6.5': '1.625rem',
         '7.5': '1.875rem',
         '9.5': '2.375rem',
+        25: '6.25rem',
     },
     sizes: {
         '4.5': '1.125rem',
@@ -181,6 +181,7 @@ const themeOverride = {
         '6.5': '1.625rem',
         '7.5': '1.875rem',
         '9.5': '2.375rem',
+        25: '6.25rem',
     },
     colors: {
         lime: {
