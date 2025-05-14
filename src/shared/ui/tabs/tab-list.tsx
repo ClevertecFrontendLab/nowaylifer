@@ -1,7 +1,6 @@
 import {
     Box,
     BoxProps,
-    TabIndicator,
     TabIndicatorProps,
     TabList as BaseTabList,
     TabListProps as BaseTabListProps,
@@ -12,6 +11,7 @@ import {
 import { useRef } from 'react';
 
 import { scrollTabIntoView } from './scroll-tab-into-view';
+import { TabIndicator } from './tab-indicator';
 
 export interface TabListProps extends BoxProps {
     children?: React.ReactNode;
