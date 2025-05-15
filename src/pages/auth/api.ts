@@ -1,7 +1,7 @@
-import { HTTPMethod } from 'http-method-enum';
-
 import { ApiEndpoints, apiSlice, isQueryApiError } from '~/shared/api';
+import { ACCESS_TOKEN_HEADER } from '~/shared/config';
 import { setToken } from '~/shared/session';
+import { HttpMethod, HttpStatusCode } from '~/shared/util';
 
 export interface LoginRequestBody {
     login: string;
@@ -34,12 +34,12 @@ export const authApi = apiSlice.injectEndpoints({
         login: build.mutation<void, LoginRequestBody>({
             query: (body) => ({
                 url: ApiEndpoints.AUTH_LOGIN,
-                method: HTTPMethod.POST,
+                method: HttpMethod.POST,
                 body,
             }),
             onQueryStarted: (_, { queryFulfilled, dispatch }) =>
                 queryFulfilled.then((res) => {
-                    const accessToken = res.meta?.response?.headers.get('Authentication-Access');
+                    const accessToken = res.meta?.response?.headers.get(ACCESS_TOKEN_HEADER);
                     if (accessToken) {
                         dispatch(setToken(accessToken));
                     }
@@ -47,8 +47,11 @@ export const authApi = apiSlice.injectEndpoints({
             extraOptions: {
                 errorMetaByStatus: {
                     default: null,
-                    401: { title: 'Неверный логин или пароль', description: 'Попробуйте снова' },
-                    403: {
+                    [HttpStatusCode.UNAUTHORIZED]: {
+                        title: 'Неверный логин или пароль',
+                        description: 'Попробуйте снова',
+                    },
+                    [HttpStatusCode.FORBIDDEN]: {
                         title: 'E-mail не верифицирован',
                         description: 'Проверьте почту и перейдите по ссылке',
                     },
@@ -58,24 +61,25 @@ export const authApi = apiSlice.injectEndpoints({
         signup: build.mutation<void, SignupRequestBody>({
             query: (body) => ({
                 url: ApiEndpoints.AUTH_SIGNUP,
-                method: HTTPMethod.POST,
+                method: HttpMethod.POST,
                 body,
             }),
             extraOptions: {
                 errorMetaByStatus: {
-                    400: (error) => (isQueryApiError(error) ? { title: error.data.message } : null),
+                    [HttpStatusCode.BAD_REQUEST]: (error) =>
+                        isQueryApiError(error) ? { title: error.data.message } : null,
                 },
             },
         }),
         recoverPassword: build.mutation<void, RecoverPasswordRequestBody>({
             query: (body) => ({
                 url: ApiEndpoints.AUTH_FORGOT_PASSWORD,
-                method: HTTPMethod.POST,
+                method: HttpMethod.POST,
                 body,
             }),
             extraOptions: {
                 errorMetaByStatus: {
-                    403: {
+                    [HttpStatusCode.FORBIDDEN]: {
                         title: 'Такого e-mail нет',
                         description:
                             'Попробуйте другой e-mail или проверьте правильность его написания',
@@ -86,14 +90,14 @@ export const authApi = apiSlice.injectEndpoints({
         verifyOtp: build.mutation<void, VerifyOtpRequestBody>({
             query: (body) => ({
                 url: ApiEndpoints.AUTH_VERIFY_OTP,
-                method: HTTPMethod.POST,
+                method: HttpMethod.POST,
                 body,
             }),
         }),
         resetPassword: build.mutation<void, ResetPasswordRequestBody>({
             query: (body) => ({
                 url: ApiEndpoints.AUTH_RESET_PASSWORD,
-                method: HTTPMethod.POST,
+                method: HttpMethod.POST,
                 body,
             }),
         }),

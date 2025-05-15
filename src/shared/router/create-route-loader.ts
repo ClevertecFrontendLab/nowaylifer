@@ -1,3 +1,4 @@
+import { isFunction } from 'lodash-es';
 import { LoaderFunction, LoaderFunctionArgs, replace } from 'react-router';
 
 const defaultShouldNavigateFn = (_error: unknown, args: LoaderFunctionArgs) =>
@@ -20,10 +21,9 @@ export const createRouteLoader =
         try {
             return await loader(args);
         } catch (error) {
-            const shouldNavigate =
-                typeof shouldNavigateOnError === 'function'
-                    ? shouldNavigateOnError(error, args, defaultShouldNavigateFn)
-                    : shouldNavigateOnError;
+            const shouldNavigate = isFunction(shouldNavigateOnError)
+                ? shouldNavigateOnError(error, args, defaultShouldNavigateFn)
+                : shouldNavigateOnError;
 
             if (shouldNavigate) throw error;
             return replace(window.location.href);

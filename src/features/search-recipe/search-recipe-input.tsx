@@ -3,7 +3,7 @@ import { useRef } from 'react';
 
 import { useAppDispatch, useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
-import { SearchIcon } from '~/shared/ui/search-icon';
+import { SearchIcon } from '~/shared/ui/icons/search';
 
 import {
     applySearchString,

@@ -1,9 +1,10 @@
+import { isString } from 'lodash-es';
 import { Params } from 'react-router';
 
 import { Category, RootCategory, SubCategory } from '../interface';
 
 export const isSubCategory = (value: Category | SubCategory): value is SubCategory =>
-    'rootCategoryId' in value && typeof value.rootCategoryId === 'string';
+    'rootCategoryId' in value && isString(value.rootCategoryId);
 
 export const isRootCategory = (value: Category | SubCategory): value is RootCategory =>
     !isSubCategory(value);

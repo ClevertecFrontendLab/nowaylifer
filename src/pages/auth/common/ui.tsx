@@ -9,7 +9,7 @@ import {
     InputProps,
 } from '@chakra-ui/react';
 
-import { PasswordInput, PasswordInputProps } from './password-input';
+import { PasswordInput, PasswordInputProps } from '~/shared/ui/password-input';
 
 export const Label = chakra(FormLabel, { baseStyle: { fontWeight: 'normal', mb: 1 } });
 

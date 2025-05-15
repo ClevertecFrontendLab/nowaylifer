@@ -1,8 +1,8 @@
 import { Box, Button, HStack } from '@chakra-ui/react';
 
-import { BookmarkIcon } from '~/shared/ui/bookmark-icon';
-import { ClockIcon } from '~/shared/ui/clock-icon';
-import { EmojiHeartEyesIcon } from '~/shared/ui/emoji-heart-eyes-icon';
+import { BookmarkIcon } from '~/shared/ui/icons/bookmark';
+import { ClockIcon } from '~/shared/ui/icons/clock';
+import { EmojiHeartEyesIcon } from '~/shared/ui/icons/emoji-heart-eyes';
 
 import { RecipeCardBadge } from './parts/badge';
 import { RecipeCardBody } from './parts/body';

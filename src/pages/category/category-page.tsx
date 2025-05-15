@@ -112,27 +112,27 @@ export function CategoryPage() {
                             <TabPanel key={sub._id}>
                                 <RecipeCardsGrid mb={4}>
                                     {recipes
-                                        ?.filter((r) =>
-                                            isE2E() ? true : r.categoriesIds.includes(sub._id),
+                                        ?.filter((recipe) =>
+                                            isE2E() ? true : recipe.categoriesIds.includes(sub._id),
                                         )
-                                        .map((r, idx) => (
+                                        .map((recipe, idx) => (
                                             <RecipeCard
-                                                key={r._id}
-                                                recipe={r}
+                                                key={recipe._id}
+                                                recipe={recipe}
                                                 variant='horizontal'
                                                 recipeLink={buildRecipePath(
-                                                    r,
+                                                    recipe,
                                                     categoryById,
                                                     activeCategories,
                                                 )}
                                                 categories={getRecipeRootCategories(
-                                                    r,
+                                                    recipe,
                                                     categoryById,
                                                 )}
                                                 renderTitle={(styleProps) => (
                                                     <Heading {...styleProps}>
                                                         <HighlightSearchMatch query={searchString}>
-                                                            {r.title}
+                                                            {recipe.title}
                                                         </HighlightSearchMatch>
                                                     </Heading>
                                                 )}

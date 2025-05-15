@@ -75,18 +75,18 @@ export function MainPage() {
             {showAllRecipes && (
                 <Box>
                     <RecipeCardsGrid mb={4}>
-                        {recipes?.map((r, idx) => (
+                        {recipes?.map((recipe, idx) => (
                             <RecipeCard
-                                key={r._id}
-                                recipe={r}
+                                key={recipe._id}
+                                recipe={recipe}
                                 variant='horizontal'
-                                categories={getRecipeRootCategories(r, categoryById)}
-                                recipeLink={buildRecipePath(r, categoryById)}
+                                categories={getRecipeRootCategories(recipe, categoryById)}
+                                recipeLink={buildRecipePath(recipe, categoryById)}
                                 testId={{ root: TestId.recipeCard(idx) }}
                                 renderTitle={(styleProps) => (
                                     <Heading {...styleProps}>
                                         <HighlightSearchMatch query={searchString}>
-                                            {r.title}
+                                            {recipe.title}
                                         </HighlightSearchMatch>
                                     </Heading>
                                 )}

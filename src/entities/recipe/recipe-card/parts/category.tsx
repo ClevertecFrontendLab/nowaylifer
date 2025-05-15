@@ -8,6 +8,7 @@ import {
     WrapProps,
 } from '@chakra-ui/react';
 import { isObject } from '@chakra-ui/utils';
+import { isBoolean } from 'lodash-es';
 
 import { buildImageSrc } from '~/shared/util';
 
@@ -32,7 +33,7 @@ export const RecipeCardCategoryList = ({ onlyFirst }: RecipeCardCategoryListProp
 
     if (Array.isArray(value)) {
         itemDisplay = value.map(getDisplayValue);
-    } else if (typeof value === 'boolean') {
+    } else if (isBoolean(value)) {
         itemDisplay = getDisplayValue(value) ?? undefined;
     }
 

@@ -3,6 +3,7 @@ import { Mutex } from 'async-mutex';
 
 import { ACCESS_TOKEN_HEADER } from '../config';
 import { logout, setToken } from '../session/slice';
+import { HttpStatusCode } from '../util';
 import { ApiEndpoints } from './endpoints';
 import { TypedQueryReturnValue } from './query';
 
@@ -19,7 +20,7 @@ export const withRefreshToken: BaseQueryEnhancer<unknown, unknown, void> =
         const result = (await baseQuery(args, api, extraOptions)) as QueryResult;
 
         if (
-            !(result.error && result.error.status === 403) ||
+            !(result.error && result.error.status === HttpStatusCode.FORBIDDEN) ||
             excludedEndpoints.includes(api.endpoint)
         ) {
             return result;

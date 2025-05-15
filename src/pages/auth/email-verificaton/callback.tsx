@@ -1,3 +1,4 @@
+import { isBoolean } from 'lodash-es';
 import { Navigate, useSearchParams } from 'react-router';
 
 import { RoutePath } from '~/shared/router';
@@ -5,13 +6,11 @@ import { RoutePath } from '~/shared/router';
 import { EmailVerificationHistoryState } from './history-state';
 
 const parseBoolean = (string: string) => {
-    switch (string) {
-        case 'true':
-            return true;
-        case 'false':
-            return false;
-        default:
-            return null;
+    try {
+        const parsed = JSON.parse(string);
+        return isBoolean(parsed) ? parsed : null;
+    } catch {
+        return null;
     }
 };
 
