@@ -1,8 +1,8 @@
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import { AccordionButton, AccordionButtonProps, AccordionIcon, Box, Image } from '@chakra-ui/react';
 import { memo } from 'react';
 
 import { RootCategory } from '~/entities/category';
+import { ChevronDownIcon } from '~/shared/ui/icons/chevron-down';
 import { buildImageSrc } from '~/shared/util';
 
 export interface RootCategoryItemProps extends AccordionButtonProps {

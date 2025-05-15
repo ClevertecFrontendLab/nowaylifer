@@ -2,6 +2,7 @@ import { Button } from '@chakra-ui/react';
 
 import { TestId } from '~/shared/test-ids';
 
+import imageUrl from '../assets/breakfast.png';
 import {
     AuthModalBody,
     AuthModalCloseButton,
@@ -15,7 +16,7 @@ export const RetryLoginModalContent = ({ onRetry }: { onRetry?: () => void }) =>
     <AuthModalContent data-test-id={TestId.SIGN_IN_ERROR_MODAL}>
         <AuthModalCloseButton data-test-id={TestId.MODAL_CLOSE_BUTTON} />
         <AuthModalBody>
-            <AuthModalImage src='/images/american-breakfast.png' />
+            <AuthModalImage src={imageUrl} />
             <AuthModalTitle>Вход не выполнен</AuthModalTitle>
             <AuthModalDescription color='blackAlpha.700'>
                 Что-то пошло не так.

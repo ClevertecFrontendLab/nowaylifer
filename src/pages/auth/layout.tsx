@@ -19,6 +19,7 @@ import { useAppSelector } from '~/shared/store';
 import { Logo } from '~/shared/ui/logo';
 import { Tab, TabList, Tabs } from '~/shared/ui/tabs';
 
+import imageUrl from './assets/hero.jpg';
 import { AuthToastProvider } from './context';
 import { EmailVerificationResultHandler } from './email-verificaton';
 
@@ -96,7 +97,7 @@ const Hero = (props: BoxProps & { ref?: React.Ref<HTMLDivElement> }) => (
         bgSize='cover'
         bgPos='bottom 25% right'
         bgRepeat='no-repeat'
-        backgroundImage='/images/auth-hero.png'
+        backgroundImage={imageUrl}
         {...props}
     >
         <Text pos='absolute' bottom={7.5} right={7.5} fontWeight='semibold' fontSize='xs'>

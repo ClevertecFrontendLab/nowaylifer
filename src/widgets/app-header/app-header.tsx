@@ -2,6 +2,7 @@ import { Avatar, Box, Flex, HStack, Text, useBreakpointValue } from '@chakra-ui/
 import { useEffect, useRef } from 'react';
 
 import { Breadcrumbs } from '~/features/breadcrumbs';
+import userAvatarUrl from '~/shared/assets/user.png';
 import { TestId } from '~/shared/test-ids';
 import { Logo } from '~/shared/ui/logo';
 import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/stats';
@@ -36,7 +37,7 @@ export const AppHeader = () => {
             <AppHeaderLogo />
             {lg && <Breadcrumbs ml={{ base: 16, xl: 32 }} />}
             <HStack hideBelow='lg' ml='auto' mr={{ base: 8, xl: 16 }} gap={3}>
-                <Avatar size='md' name='bake_and_pie' src='/images/user.png' />
+                <Avatar size='md' name='bake_and_pie' src={userAvatarUrl} />
                 <Box>
                     <Text fontSize='lg' fontWeight='medium'>
                         Екатерина Константинопольская

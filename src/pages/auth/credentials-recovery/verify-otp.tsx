@@ -6,6 +6,7 @@ import { useShowAppLoader } from '~/shared/infra/app-loader';
 import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
+import imageUrl from '../assets/gaming-on-portable-console.png';
 import {
     AuthModalBody,
     AuthModalDescription,
@@ -34,7 +35,7 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
     return (
         <SlideFade in={true} offsetY={0} offsetX={64}>
             <AuthModalBody>
-                <AuthModalImage src='/images/laptop-breakfast.png' />
+                <AuthModalImage src={imageUrl} />
                 {isInvalid && <AuthModalTitle>Неверный код</AuthModalTitle>}
                 <AuthModalDescription mb={4}>
                     Мы отправили вам на e-mail

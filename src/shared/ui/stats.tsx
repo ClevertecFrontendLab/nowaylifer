@@ -10,7 +10,7 @@ import React, { cloneElement } from 'react';
 
 import { BookmarkIcon } from './icons/bookmark';
 import { EmojiHeartEyesIcon } from './icons/emoji-heart-eyes';
-import { PeopleIcon } from './icons/people-icon';
+import { PeopleIcon } from './icons/people';
 import { PeopleIconOutline } from './icons/people-outline';
 
 export const BookmarksStat = (props: Omit<BaseStatProps, 'label' | 'icon'>) => (

@@ -1,5 +1,6 @@
 import { Avatar, Box, BoxProps, Circle, HStack, Square } from '@chakra-ui/react';
 
+import userAvatarUrl from '~/shared/assets/user.png';
 import { TestId } from '~/shared/test-ids';
 import { Button } from '~/shared/ui/button';
 import { HomeIcon } from '~/shared/ui/icons/home';
@@ -76,7 +77,7 @@ export const BottomMenu = (props: BoxProps) => (
                 iconSpacing={1}
                 fontWeight='normal'
                 color='blackAlpha.700'
-                topIcon={<Avatar boxSize={10} src='/images/user.png' />}
+                topIcon={<Avatar boxSize={10} src={userAvatarUrl} />}
             >
                 Мой профиль
             </Button>

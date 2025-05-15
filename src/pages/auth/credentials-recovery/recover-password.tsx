@@ -7,6 +7,7 @@ import { useShowAppLoader } from '~/shared/infra/app-loader';
 import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
+import imageUrl from '../assets/breakfast.png';
 import {
     AuthModalBody,
     AuthModalDescription,
@@ -45,7 +46,7 @@ export const RecoverPassword = ({ next }: { next: (email: string) => void }) => 
 
     return (
         <AuthModalBody>
-            <AuthModalImage src='/images/american-breakfast.png' />
+            <AuthModalImage src={imageUrl} />
             <AuthModalDescription mb={4}>
                 Для восстановления входа введите ваш e-mail, куда можно отправить уникальный код
             </AuthModalDescription>
