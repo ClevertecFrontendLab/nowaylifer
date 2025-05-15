@@ -4,6 +4,7 @@ import { merge } from 'lodash';
 
 import { QueryHttpError, TypedQueryReturnValue } from '~/shared/api';
 import { isQueryHttpError, isServerError } from '~/shared/api/util';
+import { HttpStatusCode } from '~/shared/util';
 
 import { ErrorMeta, setLoggableError } from './slice';
 
@@ -20,6 +21,10 @@ export interface QueryErrorLoggerOptions<T = unknown> {
 const defaultOptions: QueryErrorLoggerOptions = {
     shouldLogError: true,
     errorMetaByStatus: {
+        [HttpStatusCode.TOO_MANY_REQUESTS]: {
+            title: 'Превышен лимит запросов',
+            description: 'Попробуйте немного позже',
+        },
         default: (error) =>
             isServerError(error)
                 ? { title: 'Ошибка сервера', description: 'Попробуйте немного позже' }
