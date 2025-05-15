@@ -8,10 +8,11 @@ import { enableMapSet } from 'immer';
 import { filterRecipeSlice } from '~/features/filter-recipe';
 import { searchRecipeSlice } from '~/features/search-recipe';
 import { apiSlice } from '~/shared/api';
+import { appLoaderSlice } from '~/shared/infra/app-loader';
+import { errorLoggerSlice } from '~/shared/infra/error-logger';
+import { modalsSlice } from '~/shared/infra/modals-manager';
+import { sessionSlice } from '~/shared/session';
 import { listenerMiddleware } from '~/shared/store';
-import { appLoaderSlice } from '~/widgets/app-loader';
-
-import { rtkQueryErrorLogger } from './error-logger.middleware';
 
 enableMapSet();
 
@@ -20,6 +21,9 @@ const rootReducer = combineReducers({
     [filterRecipeSlice.name]: filterRecipeSlice.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
     [appLoaderSlice.name]: appLoaderSlice.reducer,
+    [sessionSlice.name]: sessionSlice.reducer,
+    [errorLoggerSlice.name]: errorLoggerSlice.reducer,
+    [modalsSlice.name]: modalsSlice.reducer,
 });
 
 export const store = configureStore({
@@ -29,11 +33,11 @@ export const store = configureStore({
         getDefaultMiddleware({
             serializableCheck: {
                 ignoredPaths: ['appLoader.subsribers'],
+                ignoredActions: ['errorLogger/getOptions'],
             } satisfies SerializableStateInvariantMiddlewareOptions,
         })
             .prepend(listenerMiddleware.middleware)
-            .concat(apiSlice.middleware)
-            .concat(rtkQueryErrorLogger),
+            .concat(apiSlice.middleware),
 });
 
 declare global {

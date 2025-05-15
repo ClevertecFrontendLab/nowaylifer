@@ -2,11 +2,11 @@ import { Circle, Grid, GridItem, HStack, useBreakpointValue, VStack } from '@cha
 import { Outlet } from 'react-router';
 
 import { Button } from '~/shared/ui/button';
-import { PenIcon } from '~/shared/ui/pen-icon';
+import { PenIcon } from '~/shared/ui/icons/pen';
 import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/stats';
 import { AppHeader } from '~/widgets/app-header';
 import { BottomMenu } from '~/widgets/bottom-menu';
-import { SidebarMenu } from '~/widgets/sidebar-menu';
+import { SidebarMenu } from '~/widgets/side-bar-menu';
 
 export default function RootLayout() {
     const xl = useBreakpointValue({ base: false, xl: true });
@@ -17,7 +17,9 @@ export default function RootLayout() {
                             "bottom-menu bottom-menu bottom-menu"`}
             gridTemplateRows='auto 1fr auto'
             gridTemplateColumns='auto 1fr auto'
-            minH='100vh'
+            minH='100dvh'
+            maxW='1920px'
+            mx='auto'
         >
             <GridItem area='header' zIndex='sticky' position='sticky' top={0} minW={0}>
                 <AppHeader />

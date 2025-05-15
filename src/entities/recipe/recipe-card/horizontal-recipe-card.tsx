@@ -8,7 +8,7 @@ import {
     useBreakpointValue,
 } from '@chakra-ui/react';
 
-import { BookmarkIcon } from '~/shared/ui/bookmark-icon';
+import { BookmarkIcon } from '~/shared/ui/icons/bookmark';
 import { Link } from '~/shared/ui/link';
 
 import { useRecipeContext } from './context';

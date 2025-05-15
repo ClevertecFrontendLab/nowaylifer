@@ -3,20 +3,20 @@ import 'swiper/css';
 
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, IconButton, IconButtonProps } from '@chakra-ui/react';
-import React, { useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 import { selectCategoriesInvariant } from '~/entities/category/selectors';
 import { RecipeCard } from '~/entities/recipe';
 import { recipeApi } from '~/entities/recipe/api';
-import { buildRecipeLink, getRecipeRootCategories } from '~/entities/recipe/util';
+import { buildRecipePath, getRecipeRootCategories } from '~/entities/recipe/util';
 import { useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { isE2E } from '~/shared/util';
 
-import { useShowAppLoader } from './app-loader';
+import { useShowAppLoader } from '../shared/infra/app-loader';
 
-export const NewRecipesSlider = () => {
+export const NewRecipesSlider = memo(() => {
     const { data: recipes, isLoading } = recipeApi.useRecipesQuery({
         sortBy: 'createdAt',
         sortOrder: 'desc',
@@ -47,7 +47,7 @@ export const NewRecipesSlider = () => {
                             variant='vertical'
                             recipe={r}
                             categories={getRecipeRootCategories(r, categoryById)}
-                            recipeLink={buildRecipeLink(r, categoryById)}
+                            recipeLink={buildRecipePath(r, categoryById)}
                         />
                     </SwiperSlide>
                 ))}
@@ -70,7 +70,7 @@ export const NewRecipesSlider = () => {
             />
         </Box>
     );
-};
+});
 
 interface SliderNavButtonProps extends Omit<IconButtonProps, 'aria-label'> {
     ref?: React.Ref<HTMLButtonElement>;

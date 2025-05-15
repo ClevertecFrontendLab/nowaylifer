@@ -1,3 +1,4 @@
+import { isFunction, isString } from 'lodash-es';
 import { UIMatch, useLocation, useMatches } from 'react-router';
 
 import { BreadcrumbData, RouteBreadcrumb } from './types';
@@ -8,12 +9,16 @@ export function useBreadcrumbs<ExtraArg>(extraArg?: ExtraArg): BreadcrumbData[] 
     const matches = useMatches() as UIMatch<unknown, RouteBreadcrumb<ExtraArg, unknown>>[];
     const location = useLocation();
     return matches
-        .filter((m) => m.handle?.crumb)
-        .flatMap((m) => {
-            const crumb = m.handle!.crumb!;
-            const resolved =
-                typeof crumb === 'function' ? crumb(m, location, extraArg as ExtraArg) : crumb;
-            const arr = Array.isArray(resolved) ? resolved : [resolved];
-            return arr.map((v) => (typeof v === 'string' ? { label: v, href: m.pathname } : v));
+        .filter((match) => match.handle?.crumb)
+        .flatMap((match) => {
+            const crumb = match.handle.crumb;
+            const crumbData = isFunction(crumb)
+                ? crumb(match, location, extraArg as ExtraArg)
+                : crumb;
+
+            const arr = Array.isArray(crumbData) ? crumbData : [crumbData];
+            return arr
+                .map((v) => (isString(v) ? { label: v, href: match.pathname } : v))
+                .filter((v) => !!v);
         });
 }

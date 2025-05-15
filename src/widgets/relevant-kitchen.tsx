@@ -1,21 +1,21 @@
 import { chakra, Stack, Text, useConst } from '@chakra-ui/react';
-import { sample } from 'lodash';
+import { sample } from 'lodash-es';
 import { memo } from 'react';
 
 import { selectCategoriesInvariant } from '~/entities/category/selectors';
 import { RecipeCard } from '~/entities/recipe';
 import { recipeApi } from '~/entities/recipe/api';
-import { buildRecipeLink, getRecipeRootCategories } from '~/entities/recipe/util';
+import { buildRecipePath, getRecipeRootCategories } from '~/entities/recipe/util';
 import { useAppSelector } from '~/shared/store';
 import { Section, SectionHeading } from '~/shared/ui/section';
 
-import { useShowAppLoader } from './app-loader';
+import { useShowAppLoader } from '../shared/infra/app-loader';
 
 export const RelevantKitchen = memo(() => {
     const { categoryById, rootCategories } = useAppSelector(selectCategoriesInvariant);
-    const rootCategory = useConst(() => sample(rootCategories)!);
+    const rootCategory = useConst(() => sample(rootCategories));
     const { data: recipes, isLoading } = recipeApi.useRelevantRecipesQuery({
-        subCategoriesIds: rootCategory.subCategories!.map((s) => s._id),
+        subCategoriesIds: rootCategory?.subCategories!.map((s) => s._id) ?? [],
         maxRecipes: 5,
     });
 
@@ -32,14 +32,14 @@ export const RelevantKitchen = memo(() => {
                 borderTopWidth='1px'
                 direction={{ base: 'column', lg: 'row' }}
             >
-                <SectionHeading flex={1}>{rootCategory.title}</SectionHeading>
+                <SectionHeading flex={1}>{rootCategory?.title}</SectionHeading>
                 <Text
                     flex={{ base: 2, '2xl': 1 }}
                     fontWeight='medium'
                     color='blackAlpha.700'
                     fontSize={{ base: 'sm', lg: 'md' }}
                 >
-                    {rootCategory.description}
+                    {rootCategory?.description}
                 </Text>
             </Stack>
             <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
@@ -51,7 +51,7 @@ export const RelevantKitchen = memo(() => {
                             variant='no-image'
                             recipe={r}
                             categories={getRecipeRootCategories(r, categoryById)}
-                            recipeLink={buildRecipeLink(r, categoryById)}
+                            recipeLink={buildRecipePath(r, categoryById)}
                         />
                     ))}
                 <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
@@ -63,7 +63,7 @@ export const RelevantKitchen = memo(() => {
                                 recipe={r}
                                 variant='compact'
                                 categories={getRecipeRootCategories(r, categoryById)}
-                                recipeLink={buildRecipeLink(r, categoryById)}
+                                recipeLink={buildRecipePath(r, categoryById)}
                             />
                         ))}
                 </Stack>

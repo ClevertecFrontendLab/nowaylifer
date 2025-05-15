@@ -1,15 +1,19 @@
-import React, { useLayoutEffect } from 'react';
+import { useResizeObserver } from '@react-hookz/web';
+import React, { useRef } from 'react';
 
-export const useWrappingSeperator = (containerRef: React.RefObject<HTMLElement | null>) => {
-    useLayoutEffect(() => {
-        if (!containerRef.current) return;
+export const useWrappingSeperator = (
+    containerRef: React.RefObject<HTMLElement | null>,
+    offset = 8,
+    enabled = true,
+) => {
+    const prevHeightRef = useRef<number>(undefined);
 
-        let prevHeight: number | null = null;
-
-        const observer = new ResizeObserver(([entry]) => {
+    useResizeObserver(
+        containerRef,
+        (entry) => {
             const height = entry.borderBoxSize?.[0].blockSize;
-            if (height === prevHeight) return;
-            prevHeight = height;
+            if (height === prevHeightRef.current) return;
+            prevHeightRef.current = height;
 
             const liElements = entry.target.firstElementChild!.children;
             const seperatorsToHide: HTMLElement[] = [];
@@ -27,20 +31,16 @@ export const useWrappingSeperator = (containerRef: React.RefObject<HTMLElement |
                 el.style.display = 'none';
             }
 
-            for (const el of seperatorsToShow) {
-                el.style.display = 'revert';
+            for (let i = 0; i < seperatorsToShow.length; i++) {
+                seperatorsToShow[i].style.display = 'revert';
+                seperatorsToShow[i].style.marginLeft = `${i * offset}px`;
             }
-        });
-
-        observer.observe(containerRef.current);
-
-        return () => {
-            observer.disconnect();
-        };
-    }, [containerRef]);
+        },
+        enabled,
+    );
 };
-
-const getTop = (el: Element) => Math.round(el.getBoundingClientRect().top);
 
 const isWrapping = (el: Element) =>
     el.previousElementSibling && getTop(el) > getTop(el.previousElementSibling);
+
+const getTop = (el: Element) => Math.round(el.getBoundingClientRect().top);

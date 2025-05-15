@@ -1,27 +1,18 @@
-import {
-    Box,
-    Center,
-    Heading,
-    SimpleGrid,
-    Tab,
-    TabIndicator,
-    TabList,
-    TabPanel,
-    TabPanels,
-    Tabs,
-    Text,
-    useBreakpointValue,
-    VStack,
-} from '@chakra-ui/react';
-import { useEffect, useMemo, useRef } from 'react';
+import { Center, Heading, Spacer, Text, useBreakpointValue, VStack } from '@chakra-ui/react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
-import { selectCategoriesInvariant, useActiveCategories } from '~/entities/category';
 import {
-    buildRecipeLink,
+    buildCategoryPath,
+    selectCategoriesInvariant,
+    useActiveCategories,
+} from '~/entities/category';
+import {
+    buildRecipePath,
     getRecipeRootCategories,
     recipeApi,
     RecipeCard,
+    RecipeCardsGrid,
     selectFromRecipeInfiniteQueryResult,
 } from '~/entities/recipe';
 import {
@@ -34,16 +25,16 @@ import {
     selectAppliedSearchString,
     useUpdateLastSearchResult,
 } from '~/features/search-recipe';
+import { useAppLoader, useShowAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
-import { Button } from '~/shared/ui/button';
+import { LoadMoreButton } from '~/shared/ui/load-more-button';
+import { Main } from '~/shared/ui/main';
 import { Section } from '~/shared/ui/section';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '~/shared/ui/tabs';
 import { isE2E } from '~/shared/util';
-import { useAppLoader, useShowAppLoader } from '~/widgets/app-loader';
 import { RelevantKitchen } from '~/widgets/relevant-kitchen';
 import { SearchBar } from '~/widgets/search-bar';
-
-import { scrollTabIntoView } from './scroll-tab-into-view';
 
 export function CategoryPage() {
     const activeCategories = useActiveCategories(true);
@@ -52,7 +43,6 @@ export function CategoryPage() {
     const searchString = useAppSelector(selectAppliedSearchString);
     const filtersByGroup = useAppSelector(selectAppliedFiltersByGroup);
     const { categoryById } = useAppSelector(selectCategoriesInvariant);
-    const scrollableRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
     const queryArg = {
@@ -80,23 +70,8 @@ export function CategoryPage() {
         [rootCategory, subCategory],
     );
 
-    useEffect(() => {
-        const tab = scrollableRef.current?.querySelector<HTMLElement>(
-            `[data-index="${subCategoryIndex}"]`,
-        );
-
-        if (!tab || !scrollableRef.current) return;
-
-        scrollTabIntoView({
-            scrollable: scrollableRef.current,
-            tab,
-            offset: 300,
-            behavior: 'smooth',
-        });
-    }, [subCategoryIndex]);
-
     return (
-        <Box as='main' py={{ base: 4, lg: 8 }}>
+        <Main>
             <VStack justify='center' mb={8} px={{ base: 4, md: 5, lg: 6 }}>
                 <Heading fontSize={{ base: '2xl', lg: '5xl' }} mb={4}>
                     {rootCategory.title}
@@ -118,83 +93,59 @@ export function CategoryPage() {
                     isLazy
                     index={subCategoryIndex}
                     onChange={(index) => {
-                        const subcategory = rootCategory.subCategories[index];
-                        navigate(`/${rootCategory.category}/${subcategory.category}`);
+                        const subCategory = rootCategory.subCategories[index];
+                        navigate(buildCategoryPath(rootCategory, subCategory));
                     }}
                 >
-                    <Box
-                        ref={scrollableRef}
-                        pos='relative'
-                        overflowX='auto'
-                        sx={{ scrollbarWidth: 'none' }}
-                    >
-                        <TabList minW='full' w='max-content' border='none'>
-                            {rootCategory.subCategories.map((subcategory, i) => (
-                                <Tab
-                                    key={subcategory._id}
-                                    marginBottom={0}
-                                    borderBottom='2px solid'
-                                    borderColor='chakra-border-color'
-                                    data-test-id={`tab-${subcategory.category}-${i}`}
-                                >
-                                    {subcategory.title}
-                                </Tab>
-                            ))}
-                        </TabList>
-                        <TabIndicator key={rootCategory._id} />
-                    </Box>
+                    <TabList centered scrollable indicatorKey={rootCategory._id}>
+                        {rootCategory.subCategories.map((sub, idx) => (
+                            <Tab
+                                key={sub._id}
+                                data-test-id={TestId.subCategoryTab(sub.category, idx)}
+                            >
+                                {sub.title}
+                            </Tab>
+                        ))}
+                    </TabList>
                     <TabPanels>
-                        {rootCategory.subCategories.map((subcategory) => (
-                            <TabPanel key={subcategory._id}>
-                                <SimpleGrid
-                                    mb={4}
-                                    spacing={{ base: 3, md: 4, '2xl': 6 }}
-                                    minChildWidth={{ base: '328px', lg: '668px' }}
-                                    autoRows='1fr'
-                                >
+                        {rootCategory.subCategories.map((sub) => (
+                            <TabPanel key={sub._id}>
+                                <RecipeCardsGrid mb={4}>
                                     {recipes
-                                        ?.filter((r) =>
-                                            isE2E()
-                                                ? true
-                                                : r.categoriesIds.includes(subcategory._id),
+                                        ?.filter((recipe) =>
+                                            isE2E() ? true : recipe.categoriesIds.includes(sub._id),
                                         )
-                                        .map((r, idx) => (
+                                        .map((recipe, idx) => (
                                             <RecipeCard
-                                                key={r._id}
-                                                recipe={r}
+                                                key={recipe._id}
+                                                recipe={recipe}
                                                 variant='horizontal'
-                                                recipeLink={buildRecipeLink(
-                                                    r,
+                                                recipeLink={buildRecipePath(
+                                                    recipe,
                                                     categoryById,
                                                     activeCategories,
                                                 )}
                                                 categories={getRecipeRootCategories(
-                                                    r,
+                                                    recipe,
                                                     categoryById,
                                                 )}
                                                 renderTitle={(styleProps) => (
                                                     <Heading {...styleProps}>
                                                         <HighlightSearchMatch query={searchString}>
-                                                            {r.title}
+                                                            {recipe.title}
                                                         </HighlightSearchMatch>
                                                     </Heading>
                                                 )}
                                                 data-test-id={TestId.recipeCard(idx)}
                                             />
                                         ))}
-                                </SimpleGrid>
+                                </RecipeCardsGrid>
                                 <Center>
                                     {hasNextPage && (
-                                        <Button
-                                            variant='solid'
-                                            bg='lime.400'
-                                            size={{ base: 'md', '2xl': 'lg' }}
+                                        <LoadMoreButton
+                                            isLoading={isFetchingNextPage}
                                             onClick={fetchNextPage}
-                                            data-test-id={TestId.LOAD_MORE_BUTTON}
-                                            disabled={isFetchingNextPage}
-                                        >
-                                            {isFetchingNextPage ? 'Загрузка...' : 'Загрузить еще'}
-                                        </Button>
+                                        />
                                     )}
                                 </Center>
                             </TabPanel>
@@ -202,7 +153,8 @@ export function CategoryPage() {
                     </TabPanels>
                 </Tabs>
             </Section>
+            <Spacer />
             <RelevantKitchen key={rootCategory._id} />
-        </Box>
+        </Main>
     );
 }

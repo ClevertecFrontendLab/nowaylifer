@@ -2,8 +2,8 @@ import { Avatar, Box, Card, CardBody, CardProps, HStack, VStack } from '@chakra-
 
 import { Author } from '~/entities/recipe/interface';
 import { Button } from '~/shared/ui/button';
+import { SubscribeIcon } from '~/shared/ui/icons/subscribe';
 import { FriendsStat } from '~/shared/ui/stats';
-import { SubscribeIcon } from '~/shared/ui/subscribe-icon';
 
 export interface AuthorCardProps extends CardProps {
     author: Author;

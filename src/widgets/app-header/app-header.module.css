@@ -1,12 +1,22 @@
 .header {
-    background-color: var(--chakra-colors-lime-50);
+    --bg: var(--chakra-colors-lime-50);
+    background-color: var(--bg);
     position: static !important;
 }
 
 .header[data-menu-open] {
-    background-color: white;
+    --bg: white;
 }
 
 .header[data-menu-open] .stats {
     visibility: hidden;
+}
+
+.header:before {
+    content: '';
+    position: fixed;
+    inset: auto 0;
+    z-index: -1;
+    height: var(--app-header-height);
+    background: var(--bg);
 }

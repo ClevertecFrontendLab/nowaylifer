@@ -1,6 +1,6 @@
 import { chakra, HTMLChakraProps, Portal, PortalProps } from '@chakra-ui/react';
 import { cx, lazyDisclosure, LazyMode, MaybeRenderProp, runIfFn } from '@chakra-ui/utils';
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 import { useRef } from 'react';
 
 import { multiSelectClassNames } from './anatomy';

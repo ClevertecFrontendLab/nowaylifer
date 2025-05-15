@@ -1,14 +1,10 @@
 import invariant from 'invariant';
-import { LoaderFunction, replace, unstable_RouterContextProvider } from 'react-router';
+import { replace } from 'react-router';
 
 import { recipeApi } from '~/entities/recipe';
-import { storeContext } from '~/shared/router';
+import { createRouteLoader, storeContext } from '~/shared/router';
 
-export const loader: LoaderFunction<unstable_RouterContextProvider> = async ({
-    context,
-    request,
-    params,
-}) => {
+export const loader = createRouteLoader(async ({ context, params, request }) => {
     const { dispatch } = context.get(storeContext);
 
     invariant(params.id, 'Recipe param id is empty string or undefined');
@@ -22,4 +18,4 @@ export const loader: LoaderFunction<unstable_RouterContextProvider> = async ({
     }
 
     return recipe;
-};
+});

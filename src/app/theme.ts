@@ -3,6 +3,8 @@ import {
     cardAnatomy,
     checkboxAnatomy,
     inputAnatomy,
+    modalAnatomy,
+    progressAnatomy,
     switchAnatomy,
     tabsAnatomy,
 } from '@chakra-ui/anatomy';
@@ -19,15 +21,25 @@ import { loaderTheme } from '~/shared/ui/loader.theme';
 import { multiSelectTheme } from '~/shared/ui/multi-select';
 
 const themeOverride = {
+    zIndices: {
+        appLoader: 1650,
+    },
     styles: {
         global: {
             '#chakra-toast-manager-bottom': {
                 width: '100vw',
-                pb: 8,
             },
         },
     },
     components: {
+        Modal: createMultiStyleConfigHelpers(modalAnatomy.keys).defineMultiStyleConfig({
+            baseStyle: {
+                overlay: {
+                    bg: 'blackAlpha.300',
+                    backdropFilter: 'blur(2px)',
+                },
+            },
+        }),
         Alert: createMultiStyleConfigHelpers(alertAnatomy.keys).defineMultiStyleConfig({
             variants: {
                 solid: ({ colorScheme: c }) => ({
@@ -35,6 +47,16 @@ const themeOverride = {
                         ['--alert-bg']: `colors.${c}.500`,
                     },
                 }),
+            },
+        }),
+        Progress: createMultiStyleConfigHelpers(progressAnatomy.keys).defineMultiStyleConfig({
+            baseStyle: {
+                track: {
+                    bgColor: 'blackAlpha.100',
+                },
+                filledTrack: {
+                    bgColor: 'lime.300',
+                },
             },
         }),
         Loader: loaderTheme,
@@ -49,21 +71,19 @@ const themeOverride = {
         },
         Tabs: createMultiStyleConfigHelpers(tabsAnatomy.keys).defineMultiStyleConfig({
             defaultProps: { colorScheme: 'lime' },
-            baseStyle: {
+            baseStyle: ({ colorScheme: c }) => ({
                 tab: {
-                    '--tabs-color': `colorPallete.800`,
+                    '--tabs-color': `colors.${c}.800`,
                     fontWeight: 'medium',
                     whiteSpace: 'nowrap',
-                    _first: { marginLeft: 'auto' },
-                    _last: { marginRight: 'auto' },
+                    borderBottomColor: 'transparent !important',
                 },
                 indicator: {
-                    bg: `colorPallete.600`,
-                    h: '2px',
-                    mt: '-1.5px',
+                    bg: `${c}.600`,
                 },
-                tabpanel: { p: 0, pt: 6 },
-            },
+                tabpanels: { mt: 6 },
+                tabpanel: { p: 0 },
+            }),
         }),
         Button: {
             baseStyle: {
@@ -162,12 +182,16 @@ const themeOverride = {
         '5.5': '1.375rem',
         '6.5': '1.625rem',
         '7.5': '1.875rem',
+        '9.5': '2.375rem',
+        25: '6.25rem',
     },
     sizes: {
         '4.5': '1.125rem',
         '5.5': '1.375rem',
         '6.5': '1.625rem',
         '7.5': '1.875rem',
+        '9.5': '2.375rem',
+        25: '6.25rem',
     },
     colors: {
         lime: {
@@ -175,8 +199,8 @@ const themeOverride = {
             100: '#EAFFC7',
             150: '#D7FF94',
             300: '#C4FF61',
-            400: '#B1FF2E',
             '300-rgb': '196, 255, 97',
+            400: '#B1FF2E',
             600: '#2DB100',
             700: '#207E00',
             800: '#134B00',

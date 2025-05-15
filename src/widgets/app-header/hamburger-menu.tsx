@@ -14,8 +14,8 @@ import {
 import React, { cloneElement, isValidElement } from 'react';
 import { RemoveScroll } from 'react-remove-scroll';
 
+import { CategoryNav } from '~/entities/category';
 import { Breadcrumbs } from '~/features/breadcrumbs';
-import { RecipeMenu } from '~/features/recipe-menu';
 import { TestId } from '~/shared/test-ids';
 import { About } from '~/shared/ui/about';
 import { ExitButton } from '~/shared/ui/exit-button';
@@ -62,7 +62,7 @@ export const HamburgerMenu = ({ onOpenChange, isOpen, children }: HamburgerMenuP
                                     px={5}
                                     mb={3}
                                 />
-                                <RecipeMenu mb={3} />
+                                <CategoryNav mb={3} pr={5} />
                                 <Box pt={4} px={6}>
                                     <About />
                                     <ExitButton />

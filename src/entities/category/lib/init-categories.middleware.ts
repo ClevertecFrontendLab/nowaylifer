@@ -1,8 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
 import { unstable_MiddlewareFunction } from 'react-router';
 
+import { showAppLoaderWhilePendingThunk } from '~/shared/infra/app-loader';
 import { storeContext } from '~/shared/router';
-import { showAppLoaderWhilePendingThunk } from '~/widgets/app-loader';
 
 import { categoryApi, CategoryState } from '../api';
 import { selectCategories } from '../selectors';

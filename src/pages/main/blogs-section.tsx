@@ -2,17 +2,20 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, Button, Center, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
 
 import { Author } from '~/entities/recipe';
+import alexAvatarUrl from '~/shared/assets/alex.png';
+import ekaterinaAvatarUrl from '~/shared/assets/ekaterina.png';
+import elenaAvatarUrl from '~/shared/assets/elena.png';
 import { BlogCard } from '~/shared/ui/blog-card';
 import { Section } from '~/shared/ui/section';
 
 const authors: Author[] = [
-    { firstName: 'Елена', lastName: 'Высоцкая', login: 'elenapovar', avatar: '/images/elena.png' },
-    { firstName: 'Alex', lastName: 'Cook', login: 'funtasticooking', avatar: '/images/alex.png' },
+    { firstName: 'Елена', lastName: 'Высоцкая', login: 'elenapovar', avatar: elenaAvatarUrl },
+    { firstName: 'Alex', lastName: 'Cook', login: 'funtasticooking', avatar: alexAvatarUrl },
     {
         firstName: 'Екатерина',
         lastName: 'Константинопольская',
         login: 'bake_and_pie',
-        avatar: '/images/ekaterina.png',
+        avatar: ekaterinaAvatarUrl,
     },
 ];
 

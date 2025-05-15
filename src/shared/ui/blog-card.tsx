@@ -21,12 +21,12 @@ export const BlogCard = ({ author, content, ...rest }: BlogCardProps) => (
             <HStack gap={{ base: 2, lg: 3 }} mb={{ base: 2, '2xl': 4 }}>
                 <Avatar
                     src={author.avatar}
-                    name={author.firstName + '' + author.lastName}
+                    name={author.firstName + ' ' + author.lastName}
                     size={{ base: 'sm', lg: 'md' }}
                 />
                 <Box>
                     <Box noOfLines={1} fontWeight='medium' fontSize={{ base: 'md', lg: 'lg' }}>
-                        {author.firstName + '' + author.lastName}
+                        {author.firstName + ' ' + author.lastName}
                     </Box>
                     <Box noOfLines={1} fontSize='sm' color='blackAlpha.700'>
                         {`@${author.login}`}

@@ -8,10 +8,10 @@ import {
 } from '@chakra-ui/react';
 import React, { cloneElement } from 'react';
 
-import { BookmarkIcon } from './bookmark-icon';
-import { EmojiHeartEyesIcon } from './emoji-heart-eyes-icon';
-import { PeopleIcon } from './people-icon';
-import { PeopleIconOutline } from './people-icon-outline';
+import { BookmarkIcon } from './icons/bookmark';
+import { EmojiHeartEyesIcon } from './icons/emoji-heart-eyes';
+import { PeopleIcon } from './icons/people';
+import { PeopleIconOutline } from './icons/people-outline';
 
 export const BookmarksStat = (props: Omit<BaseStatProps, 'label' | 'icon'>) => (
     <BaseStat label='Количество добавленных в избранное' icon={<BookmarkIcon />} {...props} />

@@ -6,9 +6,9 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { Provider as StoreProvider } from 'react-redux';
 import { RouterProvider as ReactRouterProvider } from 'react-router';
 
-import { AppLoaderProvider } from '~/widgets/app-loader';
+import { AppLoaderProvider } from '~/shared/infra/app-loader';
 
-import { createRouter } from './router/router';
+import { createRouter } from './router';
 import { store } from './store';
 import { theme } from './theme';
 

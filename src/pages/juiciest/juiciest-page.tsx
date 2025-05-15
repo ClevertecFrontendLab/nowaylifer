@@ -1,11 +1,12 @@
-import { Box, Center, Heading, SimpleGrid, useBreakpointValue, VStack } from '@chakra-ui/react';
+import { Center, Heading, useBreakpointValue, VStack } from '@chakra-ui/react';
 
 import { selectCategoriesInvariant } from '~/entities/category';
 import {
-    buildRecipeLink,
+    buildRecipePath,
     getRecipeRootCategories,
     recipeApi,
     RecipeCard,
+    RecipeCardsGrid,
     RecipeRequestParams,
     selectFromRecipeInfiniteQueryResult,
 } from '~/entities/recipe';
@@ -19,11 +20,12 @@ import {
     selectSearchString,
     useUpdateLastSearchResult,
 } from '~/features/search-recipe';
+import { useShowAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
-import { Button } from '~/shared/ui/button';
+import { LoadMoreButton } from '~/shared/ui/load-more-button';
+import { Main } from '~/shared/ui/main';
 import { Section } from '~/shared/ui/section';
-import { useShowAppLoader } from '~/widgets/app-loader';
 import { SearchBar } from '~/widgets/search-bar';
 
 export function JuiciestPage() {
@@ -52,7 +54,7 @@ export function JuiciestPage() {
     useShowAppLoader(appLoaderEnabled);
 
     return (
-        <Box as='main' py={{ base: 4, lg: 8 }}>
+        <Main>
             <VStack justify='center' mb={8} px={{ base: 4, md: 5, lg: 6 }}>
                 <Heading fontSize={{ base: '2xl', lg: '5xl' }} mb={{ base: 4, lg: 8 }}>
                     Самое сочное
@@ -60,44 +62,31 @@ export function JuiciestPage() {
                 <SearchBar isLoading={showLoader && !appLoaderEnabled} />
             </VStack>
             <Section>
-                <SimpleGrid
-                    mb={4}
-                    spacing={{ base: 3, md: 4, '2xl': 6 }}
-                    minChildWidth={{ base: '328px', lg: '668px' }}
-                >
-                    {recipes?.map((r, idx) => (
+                <RecipeCardsGrid mb={4}>
+                    {recipes?.map((recipe, idx) => (
                         <RecipeCard
-                            key={r._id}
-                            recipe={r}
+                            key={recipe._id}
+                            recipe={recipe}
                             variant='horizontal'
-                            categories={getRecipeRootCategories(r, categoryById)}
-                            recipeLink={buildRecipeLink(r, categoryById)}
+                            categories={getRecipeRootCategories(recipe, categoryById)}
+                            recipeLink={buildRecipePath(recipe, categoryById)}
                             data-test-id={TestId.recipeCard(idx)}
                             renderTitle={(styleProps) => (
                                 <Heading {...styleProps}>
                                     <HighlightSearchMatch query={searchString}>
-                                        {r.title}
+                                        {recipe.title}
                                     </HighlightSearchMatch>
                                 </Heading>
                             )}
                         />
                     ))}
-                </SimpleGrid>
+                </RecipeCardsGrid>
                 <Center>
                     {hasNextPage && (
-                        <Button
-                            variant='solid'
-                            bg='lime.400'
-                            size={{ base: 'md', '2xl': 'lg' }}
-                            onClick={fetchNextPage}
-                            disabled={isFetchingNextPage}
-                            data-test-id={TestId.LOAD_MORE_BUTTON}
-                        >
-                            {isFetchingNextPage ? 'Загрузка...' : 'Загрузить еще'}
-                        </Button>
+                        <LoadMoreButton isLoading={isFetchingNextPage} onClick={fetchNextPage} />
                     )}
                 </Center>
             </Section>
-        </Box>
+        </Main>
     );
 }

@@ -4,7 +4,7 @@ import {
     InfiniteQueryConfigOptions,
     TypedUseInfiniteQueryStateResult,
 } from '@reduxjs/toolkit/query/react';
-import { shuffle } from 'lodash';
+import { isNumber, shuffle } from 'lodash-es';
 
 import {
     ApiEndpoints,
@@ -14,6 +14,7 @@ import {
     SortingRequestMeta,
     TypedQueryReturnValue,
 } from '~/shared/api';
+import { HttpStatusCode } from '~/shared/util';
 
 import { Recipe, RecipeWithAuthor } from './interface';
 
@@ -28,7 +29,7 @@ export interface RecipeRequestParams extends PaginationRequestMeta, SortingReque
 const infiniteQueryOptions: InfiniteQueryConfigOptions<PaginatedResponse<Recipe>, number> = {
     initialPageParam: 1,
     getNextPageParam: (lastPage, _, lastPageParam) =>
-        typeof lastPage.meta?.totalPages === 'number' && lastPageParam < lastPage.meta.totalPages
+        isNumber(lastPage.meta?.totalPages) && lastPageParam < lastPage.meta.totalPages
             ? lastPageParam + 1
             : undefined,
 };
@@ -93,6 +94,14 @@ export const recipeApi = apiSlice.injectEndpoints({
                 };
             },
             transformResponse: fixRecipesBySubCategoryResponse,
+            extraOptions: {
+                errorMetaByStatus: {
+                    [HttpStatusCode.NOT_FOUND]: {
+                        title: 'Ошибка сервера',
+                        description: 'Попробуйте поискать снова попозже',
+                    },
+                },
+            },
         }),
         recipesBySubCategory: build.query<
             Recipe[],
@@ -104,13 +113,21 @@ export const recipeApi = apiSlice.injectEndpoints({
             }),
             transformResponse: (raw: PaginatedResponse<Recipe>) =>
                 fixRecipesBySubCategoryResponse(raw).data,
+            extraOptions: {
+                errorMetaByStatus: {
+                    [HttpStatusCode.NOT_FOUND]: {
+                        title: 'Ошибка сервера',
+                        description: 'Попробуйте поискать снова попозже',
+                    },
+                },
+            },
         }),
         relevantRecipes: build.query<Recipe[], { subCategoriesIds: string[]; maxRecipes?: number }>(
             {
                 queryFn: async (
                     { maxRecipes = 5, subCategoriesIds },
                     { dispatch },
-                ): TypedQueryReturnValue<Recipe[]> => {
+                ): Promise<TypedQueryReturnValue<Recipe[]>> => {
                     const promises = subCategoriesIds.map((id) =>
                         dispatch(
                             recipeApi.endpoints.recipesBySubCategory.initiate(

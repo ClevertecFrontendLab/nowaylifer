@@ -1,5 +1,6 @@
 import { Heading, HeadingProps, HTMLChakraProps, LinkOverlay } from '@chakra-ui/react';
 import { MaybeRenderProp } from '@chakra-ui/utils';
+import { isFunction } from 'lodash-es';
 import { Link } from 'react-router';
 
 import { useRecipeCardStyles, useRecipeContext } from '../context';
@@ -13,7 +14,7 @@ export const RecipeCardTitle = ({ children, ...rest }: RecipeCardTitleProps) => 
     const { recipeLink } = useRecipeContext();
     const { recipe } = useRecipeContext();
 
-    return typeof children === 'function' ? (
+    return isFunction(children) ? (
         children(styles.title)
     ) : (
         <LinkOverlay as={Link} to={recipeLink} minW={0}>

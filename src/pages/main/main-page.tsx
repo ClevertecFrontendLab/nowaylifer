@@ -1,21 +1,30 @@
-import { Box, Center, Heading, SimpleGrid, useBreakpointValue, VStack } from '@chakra-ui/react';
+import { Box, Center, Heading, useBreakpointValue, VStack } from '@chakra-ui/react';
 
-import { selectCategoriesInvariant } from '~/entities/category/selectors';
-import { RecipeCard } from '~/entities/recipe';
-import { recipeApi, selectFromRecipeInfiniteQueryResult } from '~/entities/recipe/api';
-import { buildRecipeLink, getRecipeRootCategories } from '~/entities/recipe/util';
-import { filtersToParams } from '~/features/filter-recipe/filters-to-params';
+import { selectCategoriesInvariant } from '~/entities/category';
 import {
+    buildRecipePath,
+    getRecipeRootCategories,
+    recipeApi,
+    RecipeCard,
+    RecipeCardsGrid,
+    selectFromRecipeInfiniteQueryResult,
+} from '~/entities/recipe';
+import {
+    filtersToParams,
     selectAppliedFiltersByGroup,
     selectIsAppliedFromDrawer,
-} from '~/features/filter-recipe/slice';
-import { HighlightSearchMatch, useUpdateLastSearchResult } from '~/features/search-recipe';
-import { selectAppliedSearchString } from '~/features/search-recipe/slice';
+} from '~/features/filter-recipe';
+import {
+    HighlightSearchMatch,
+    selectAppliedSearchString,
+    useUpdateLastSearchResult,
+} from '~/features/search-recipe';
+import { useShowAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
-import { Button } from '~/shared/ui/button';
+import { LoadMoreButton } from '~/shared/ui/load-more-button';
+import { Main } from '~/shared/ui/main';
 import { Section, SectionHeading } from '~/shared/ui/section';
-import { useShowAppLoader } from '~/widgets/app-loader';
 import { NewRecipesSlider } from '~/widgets/new-recipes-slider';
 import { RelevantKitchen } from '~/widgets/relevant-kitchen';
 import { SearchBar } from '~/widgets/search-bar';
@@ -51,7 +60,7 @@ export function MainPage() {
     useShowAppLoader(appLoaderEnabled);
 
     return (
-        <Box as='main' py={{ base: 4, lg: 8 }}>
+        <Main>
             <VStack
                 gap={2.5}
                 justify='center'
@@ -65,42 +74,31 @@ export function MainPage() {
             </VStack>
             {showAllRecipes && (
                 <Box>
-                    <SimpleGrid
-                        mb={4}
-                        spacing={{ base: 3, md: 4, '2xl': 6 }}
-                        minChildWidth={{ base: '328px', lg: '668px' }}
-                        autoRows='1fr'
-                    >
-                        {recipes?.map((r, idx) => (
+                    <RecipeCardsGrid mb={4}>
+                        {recipes?.map((recipe, idx) => (
                             <RecipeCard
-                                key={r._id}
-                                recipe={r}
+                                key={recipe._id}
+                                recipe={recipe}
                                 variant='horizontal'
-                                categories={getRecipeRootCategories(r, categoryById)}
-                                recipeLink={buildRecipeLink(r, categoryById)}
+                                categories={getRecipeRootCategories(recipe, categoryById)}
+                                recipeLink={buildRecipePath(recipe, categoryById)}
                                 testId={{ root: TestId.recipeCard(idx) }}
                                 renderTitle={(styleProps) => (
                                     <Heading {...styleProps}>
                                         <HighlightSearchMatch query={searchString}>
-                                            {r.title}
+                                            {recipe.title}
                                         </HighlightSearchMatch>
                                     </Heading>
                                 )}
                             />
                         ))}
-                    </SimpleGrid>
+                    </RecipeCardsGrid>
                     <Center>
                         {hasNextPage && (
-                            <Button
-                                variant='solid'
-                                bg='lime.400'
-                                size={{ base: 'md', '2xl': 'lg' }}
+                            <LoadMoreButton
+                                isLoading={isFetchingNextPage}
                                 onClick={fetchNextPage}
-                                disabled={isFetchingNextPage}
-                                data-test-id={TestId.LOAD_MORE_BUTTON}
-                            >
-                                {isFetchingNextPage ? 'Загрузка...' : 'Загрузить еще'}
-                            </Button>
+                            />
                         )}
                     </Center>
                 </Box>
@@ -116,6 +114,6 @@ export function MainPage() {
                     <RelevantKitchen />
                 </>
             )}
-        </Box>
+        </Main>
     );
 }

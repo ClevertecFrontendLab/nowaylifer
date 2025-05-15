@@ -22,12 +22,12 @@ export const selectCategoriesInvariant = (state: RootState) => {
 export const selectCategoryBySlug = createAppSelector(
     [
         selectCategories,
-        (_categories, param: string) => param,
-        (_categoreies, _param: string, parentCategory?: Category) => parentCategory,
+        (_categories, slug: string) => slug,
+        (_categoreies, _slug: string, parentCategory?: Category) => parentCategory,
     ],
-    (categories, param, parentCategory) => {
+    (categories, slug, parentCategory) => {
         const arr = parentCategory ? parentCategory.subCategories : categories?.rootCategories;
-        return arr?.find((c) => c.category === param);
+        return arr?.find((c) => c.category === slug);
     },
 );
 
