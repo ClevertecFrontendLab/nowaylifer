@@ -18,6 +18,8 @@ export default function RootLayout() {
             gridTemplateRows='auto 1fr auto'
             gridTemplateColumns='auto 1fr auto'
             minH='100dvh'
+            maxW='1920px'
+            mx='auto'
         >
             <GridItem area='header' zIndex='sticky' position='sticky' top={0} minW={0}>
                 <AppHeader />

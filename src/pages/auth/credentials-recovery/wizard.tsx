@@ -16,7 +16,7 @@ const steps = [
 
 export const CredentialsRecoveryWizard = memo(({ onComplete }: { onComplete?: () => void }) => {
     const [stepIndex, setStepIndex] = useState(0);
-    const [email, setEmail] = useState<string>('ekaterinabaker@gmail.ru');
+    const [email, setEmail] = useState('');
 
     const next = useCallbackRef((email?: string) => {
         if (stepIndex === steps.length - 1) {

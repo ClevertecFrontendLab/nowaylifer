@@ -66,6 +66,7 @@ export const LoginForm = () => {
                     <Label>Логин для входа на сайт</Label>
                     <TextField
                         placeholder='Введите логин'
+                        autoComplete='username'
                         {...register('login')}
                         data-test-id={TestId.LOGIN_INPUT}
                     />
@@ -75,6 +76,7 @@ export const LoginForm = () => {
                     <Label>Пароль</Label>
                     <PasswordField
                         placeholder='Пароль для сайта'
+                        autoComplete='current-password'
                         {...register('password')}
                         data-test-id={TestId.PASSWORD_INPUT}
                         visibilityButtonProps={{

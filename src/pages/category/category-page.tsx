@@ -1,4 +1,4 @@
-import { Center, Heading, Text, useBreakpointValue, VStack } from '@chakra-ui/react';
+import { Center, Heading, Spacer, Text, useBreakpointValue, VStack } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -153,6 +153,7 @@ export function CategoryPage() {
                     </TabPanels>
                 </Tabs>
             </Section>
+            <Spacer />
             <RelevantKitchen key={rootCategory._id} />
         </Main>
     );
