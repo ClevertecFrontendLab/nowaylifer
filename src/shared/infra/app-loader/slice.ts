@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { uniqueId } from 'lodash-es';
 
 const defaultId = 'DEFAULT_SUBSCRIBER';
 
@@ -27,13 +26,6 @@ export const slice = createSlice({
             id ? state.subsribers.has(id) : state.isRunning,
     },
 });
-
-export const showAppLoaderWhilePendingThunk =
-    (promise: Promise<unknown>, id = uniqueId('loader')) =>
-    (dispatch: AppDispatch) => {
-        promise.finally(() => dispatch(stopAppLoader(id)));
-        dispatch(startAppLoader(id));
-    };
 
 export const { start: startAppLoader, stop: stopAppLoader } = slice.actions;
 export const { selectIsAppLoaderRunning } = slice.getSelectors(slice.selectSlice);

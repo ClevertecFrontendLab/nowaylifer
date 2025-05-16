@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useAppDispatch, useAppSelector, useAppStore } from '~/shared/store';
 
@@ -8,12 +8,16 @@ import { selectIsAppLoaderRunning, slice } from './slice';
 
 export const AppLoaderProvider = ({ children }: React.PropsWithChildren) => {
     const isRunning = useAppSelector(selectIsAppLoaderRunning);
+    const [withOverlay, setWithOverlay] = useState(true);
     const dispatch = useAppDispatch();
     const store = useAppStore();
 
     const ctx: AppLoaderContext = useMemo(
         () => ({
-            start: (id) => dispatch(slice.actions.start(id)),
+            start: (id, withOverlay = true) => {
+                setWithOverlay(withOverlay);
+                dispatch(slice.actions.start(id));
+            },
             stop: (id) => dispatch(slice.actions.stop(id)),
             stopAll: () => dispatch(slice.actions.stopAll()),
             isRunning: (id) => selectIsAppLoaderRunning(store.getState(), id),
@@ -23,7 +27,7 @@ export const AppLoaderProvider = ({ children }: React.PropsWithChildren) => {
 
     return (
         <AppLoaderContextProvider value={ctx}>
-            {isRunning && <AppLoaderSpinner />}
+            {isRunning && <AppLoaderSpinner withOverlay={withOverlay} />}
             {children}
         </AppLoaderContextProvider>
     );

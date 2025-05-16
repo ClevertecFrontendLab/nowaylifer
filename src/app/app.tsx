@@ -8,7 +8,7 @@ import { RouterProvider as ReactRouterProvider } from 'react-router';
 
 import { AppLoaderProvider } from '~/shared/infra/app-loader';
 
-import { createRouter } from './router';
+import { createRouter } from './router/router';
 import { store } from './store';
 import { theme } from './theme';
 

@@ -18,6 +18,7 @@ export const slice = createSlice({
     }),
     selectors: {
         selectToken: (state) => state.token,
+        selectIsAuthenticated: (state) => !!state.token,
     },
 });
 
@@ -30,4 +31,4 @@ export const logout = () => (dispatch: AppDispatch) => {
 
 export const { setToken } = slice.actions;
 
-export const { selectToken } = slice.getSelectors(slice.selectSlice);
+export const { selectToken, selectIsAuthenticated } = slice.getSelectors(slice.selectSlice);

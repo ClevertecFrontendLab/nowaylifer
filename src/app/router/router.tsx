@@ -16,22 +16,22 @@ import { CategoryPage, categoryPageLoader } from '~/pages/category';
 import { JuiciestPage, juiciestPageLoader } from '~/pages/juiciest';
 import { MainPage } from '~/pages/main';
 import { RecipePage, recipePageLoader } from '~/pages/recipe';
-import { AppLoaderSpinner } from '~/shared/infra/app-loader';
 import { RoutePath, storeContext } from '~/shared/router';
-import { checkAuthMiddleware } from '~/shared/session';
 import {
+    checkAuthMiddleware,
     hideRouteIfAuthenticatedMiddleware,
     privateRouteMiddleware,
-} from '~/shared/session/router-middlewares';
+} from '~/shared/session';
 import { PageNotFound } from '~/widgets/page-not-found';
 
-import RootLayout from './root-layout';
+import RootLayout from '../root-layout';
+import { HydrateFallback } from './HydrateFallback';
 import { RouterProviders } from './router-providers';
 
 const routerConfig: RouteObject[] = [
     {
         Component: RouterProviders,
-        hydrateFallbackElement: <AppLoaderSpinner bg='transparent' />,
+        HydrateFallback,
         unstable_middleware: [checkAuthMiddleware],
         loader: noop, // stub loader to always run middleware
         children: [
@@ -58,6 +58,7 @@ const routerConfig: RouteObject[] = [
                         pathname === RoutePath.NotFound ? undefined : 'Главная',
                 } satisfies RouteBreadcrumb,
                 loader: noop,
+                HydrateFallback,
                 unstable_middleware: [
                     privateRouteMiddleware,
                     initCategoriesMiddleware,

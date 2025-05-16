@@ -5,7 +5,6 @@ export { AppLoaderProvider } from './provider';
 export {
     slice as appLoaderSlice,
     selectIsAppLoaderRunning,
-    showAppLoaderWhilePendingThunk,
     startAppLoader,
     stopAppLoader,
 } from './slice';

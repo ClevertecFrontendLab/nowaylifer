@@ -3,7 +3,10 @@ import { Box, BoxProps, Portal } from '@chakra-ui/react';
 import { TestId } from '~/shared/test-ids';
 import { Loader } from '~/shared/ui/loader';
 
-export const AppLoaderSpinner = (props: BoxProps) => (
+export const AppLoaderSpinner = ({
+    withOverlay = true,
+    ...props
+}: BoxProps & { withOverlay?: boolean }) => (
     <Portal>
         <Box
             inset={0}
@@ -13,14 +16,16 @@ export const AppLoaderSpinner = (props: BoxProps) => (
             alignItems='center'
             justifyContent='center'
             zIndex='appLoader'
-            bg='blackAlpha.300'
-            backdropFilter='auto'
-            backdropBlur='1px'
             transitionProperty='opacity'
             transitionDuration='fast'
             {...props}
         >
-            <Loader size={{ base: 'sm', lg: 'md' }} data-test-id={TestId.APP_LOADER} />
+            {withOverlay && <AppLoaderOverlay />}
+            <Loader zIndex={1} size={{ base: 'sm', lg: 'md' }} data-test-id={TestId.APP_LOADER} />
         </Box>
     </Portal>
+);
+
+const AppLoaderOverlay = (props: BoxProps) => (
+    <Box pos='absolute' inset={0} bg='blackAlpha.300' backdropFilter='blur(2px)' {...props} />
 );
