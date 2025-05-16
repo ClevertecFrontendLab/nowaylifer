@@ -60,11 +60,7 @@ export default function RootLayout() {
                         <FriendsStat fontSize='md' value={589} />
                         <LikesStat fontSize='md' value={587} />
                     </VStack>
-                    <HStack
-                        justify='center'
-                        boxSize='208px'
-                        bgGradient='radial(50% 50% at center, rgba(var(--chakra-colors-lime-300-rgb), 0.7), transparent)'
-                    >
+                    <HStack justify='center' boxSize='208px' className='glow-circle'>
                         <Button
                             _hover={{ bg: 'transparent' }}
                             fontWeight='normal'

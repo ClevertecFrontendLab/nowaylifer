@@ -26,6 +26,9 @@ const themeOverride = {
     },
     styles: {
         global: {
+            ':root': {
+                overflowY: 'scroll',
+            },
             '#chakra-toast-manager-bottom': {
                 width: '100vw',
             },
