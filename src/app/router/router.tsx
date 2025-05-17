@@ -25,7 +25,7 @@ import {
 import { PageNotFound } from '~/widgets/page-not-found';
 
 import RootLayout from '../root-layout';
-import { HydrateFallback } from './HydrateFallback';
+import { HydrateFallback } from './hydrate-fallback';
 import { RouterProviders } from './router-providers';
 
 const routerConfig: RouteObject[] = [

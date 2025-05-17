@@ -62,7 +62,13 @@ export const TabList = ({
                 {children}
             </BaseTabList>
             {withIndicator && (
-                <TabIndicator key={indicatorKey} height='2px' mt='-1.5px' {...indicatorProps} />
+                <TabIndicator
+                    scrollRef={scrollRef}
+                    key={indicatorKey}
+                    height='2px'
+                    mt='-1.5px'
+                    {...indicatorProps}
+                />
             )}
         </Box>
     );
