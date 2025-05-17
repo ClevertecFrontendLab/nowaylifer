@@ -6,8 +6,6 @@ import {
     TagLabel,
     UnorderedList,
 } from '@chakra-ui/react';
-import { type Comparator } from 'lodash';
-import { eq, intersectionWith, unionWith } from 'lodash-es';
 import { useMemo, useRef } from 'react';
 
 import { useAppDispatch, useAppSelector } from '~/shared/store';
@@ -53,10 +51,10 @@ const usePreviousFilterOrder = (filters: Filter[]) => {
 
     const sortedFilters = useMemo(
         () =>
-            toSortedUniqByArray(
+            toSortedUniqByReference(
                 filters,
                 prevFiltersRef.current,
-                (a, b) => a.type === b.type && a.value === b.value,
+                (item) => item.type + item.value,
             ),
         [filters],
     );
@@ -67,10 +65,16 @@ const usePreviousFilterOrder = (filters: Filter[]) => {
 };
 
 /**
- * Creates an array of unique values from `array` sorted according to the order defined by `byArray`.
- * Elements not present in `byArray` are appended at the end of result array without changing their relative order.
+ * Returns a new array of unique items from `array`, sorted according to the order defined by `referenceArray`.
+ * Items not present in `referenceArray` are appended in original order.
  */
-const toSortedUniqByArray = <T,>(array: T[], byArray: T[], comparator: Comparator<T> = eq) => {
-    const union = unionWith(byArray, array, comparator);
-    return intersectionWith(union, array, comparator);
+const toSortedUniqByReference = <T,>(
+    array: T[],
+    referenceArray: T[],
+    keyFn: (item: T) => string,
+) => {
+    const map = new Map(array.map((item) => [keyFn(item), item]));
+    const ordered = referenceArray.map((item) => map.get(keyFn(item))).filter(Boolean) as T[];
+    ordered.forEach((item) => map.delete(keyFn(item)));
+    return [...ordered, ...map.values()];
 };
