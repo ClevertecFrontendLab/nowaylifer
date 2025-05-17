@@ -2,14 +2,11 @@ import { chakra, Stack, Text, useConst } from '@chakra-ui/react';
 import { sample } from 'lodash-es';
 import { memo } from 'react';
 
-import { selectCategoriesInvariant } from '~/entities/category/selectors';
-import { RecipeCard } from '~/entities/recipe';
-import { recipeApi } from '~/entities/recipe/api';
-import { buildRecipePath, getRecipeRootCategories } from '~/entities/recipe/util';
+import { selectCategoriesInvariant } from '~/entities/category';
+import { buildRecipePath, getRecipeRootCategories, recipeApi, RecipeCard } from '~/entities/recipe';
+import { useAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector } from '~/shared/store';
 import { Section, SectionHeading } from '~/shared/ui/section';
-
-import { useAppLoader } from '../shared/infra/app-loader';
 
 export const RelevantKitchen = memo(() => {
     const { categoryById, rootCategories } = useAppSelector(selectCategoriesInvariant);

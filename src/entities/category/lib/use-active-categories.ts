@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 
 import { useAppSelector } from '~/shared/store';
 
-import { selectActiveCategories, selectActiveCategoriesInvariant } from '../selectors';
+import { selectActiveCategories, selectActiveCategoriesInvariant } from './selectors';
 import { ActiveCategories, MaybeActiveCategories } from './util';
 
 export function useActiveCategories(isInvariant?: false): MaybeActiveCategories;

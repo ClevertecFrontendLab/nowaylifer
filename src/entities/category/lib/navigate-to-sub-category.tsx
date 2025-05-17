@@ -1,8 +1,8 @@
 import invariant from 'invariant';
 import { Navigate, Outlet } from 'react-router';
 
-import { useActiveCategories } from './lib/use-active-categories';
-import { buildCategoryPath } from './lib/util';
+import { useActiveCategories } from './use-active-categories';
+import { buildCategoryPath } from './util';
 
 export const NavigateToSubCategory = () => {
     const [rootCategory, subCategory] = useActiveCategories();

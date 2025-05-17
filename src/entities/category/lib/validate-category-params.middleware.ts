@@ -2,7 +2,7 @@ import { redirect, unstable_MiddlewareFunction } from 'react-router';
 
 import { RoutePath, storeContext } from '~/shared/router';
 
-import { selectActiveCategories } from '../selectors';
+import { selectActiveCategories } from './selectors';
 import { CategoryParams } from './util';
 
 const paramsSet = new Set(CategoryParams.order);

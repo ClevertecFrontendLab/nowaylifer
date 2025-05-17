@@ -4,9 +4,9 @@ import { Params } from 'react-router';
 
 import { createAppSelector } from '~/shared/store';
 
-import { categoryApi } from './api';
-import { Category } from './interface';
-import { ActiveCategories, CategoryParams, MaybeActiveCategories } from './lib/util';
+import { categoryApi } from '../api';
+import { Category } from '../interface';
+import { ActiveCategories, CategoryParams, MaybeActiveCategories } from '../lib/util';
 
 export const selectCategories = createAppSelector(
     categoryApi.endpoints.categories.select(),

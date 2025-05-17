@@ -6,15 +6,12 @@ import { Box, IconButton, IconButtonProps } from '@chakra-ui/react';
 import React, { memo, useRef } from 'react';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
-import { selectCategoriesInvariant } from '~/entities/category/selectors';
-import { RecipeCard } from '~/entities/recipe';
-import { recipeApi } from '~/entities/recipe/api';
-import { buildRecipePath, getRecipeRootCategories } from '~/entities/recipe/util';
+import { selectCategoriesInvariant } from '~/entities/category';
+import { buildRecipePath, getRecipeRootCategories, recipeApi, RecipeCard } from '~/entities/recipe';
+import { useAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { isE2E } from '~/shared/util';
-
-import { useAppLoader } from '../shared/infra/app-loader';
 
 export const NewRecipesSlider = memo(() => {
     const { data: recipes, isLoading } = recipeApi.useRecipesQuery({

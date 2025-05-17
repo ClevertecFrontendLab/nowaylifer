@@ -1,7 +1,7 @@
 import { Box, Container, Heading, ListItem, OrderedList, Stack } from '@chakra-ui/react';
 import { useLoaderData } from 'react-router';
 
-import { selectCategoriesInvariant } from '~/entities/category/selectors';
+import { selectCategoriesInvariant } from '~/entities/category';
 import { RecipeCard } from '~/entities/recipe';
 import { recipeApi } from '~/entities/recipe/api';
 import { RecipeWithAuthor } from '~/entities/recipe/interface';

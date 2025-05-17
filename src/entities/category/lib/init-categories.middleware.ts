@@ -4,7 +4,7 @@ import { unstable_MiddlewareFunction } from 'react-router';
 import { storeContext } from '~/shared/router';
 
 import { categoryApi, CategoryState } from '../api';
-import { selectCategories } from '../selectors';
+import { selectCategories } from './selectors';
 import { CATEGORY_STORAGE_KEY } from './util';
 
 export const initCategoriesMiddleware: unstable_MiddlewareFunction = async ({ context }, next) => {
