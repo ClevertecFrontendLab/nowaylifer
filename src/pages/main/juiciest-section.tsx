@@ -10,7 +10,7 @@ import {
     RecipeCard,
     RecipeCardsGrid,
 } from '~/entities/recipe';
-import { useShowAppLoader } from '~/shared/infra/app-loader';
+import { useAppLoader } from '~/shared/infra/app-loader';
 import { RoutePath } from '~/shared/router';
 import { useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
@@ -25,7 +25,7 @@ export const JuiciestSection = () => {
         limit: 4,
     });
 
-    useShowAppLoader(isLoading);
+    useAppLoader(isLoading);
 
     return (
         <Box as='main' py={{ base: 4, lg: 8 }}>

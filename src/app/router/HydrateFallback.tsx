@@ -1,6 +1,6 @@
-import { useShowAppLoader } from '~/shared/infra/app-loader';
+import { useAppLoader } from '~/shared/infra/app-loader';
 
 export const HydrateFallback = () => {
-    useShowAppLoader(true, false);
+    useAppLoader(true, false);
     return null;
 };

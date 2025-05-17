@@ -2,7 +2,7 @@ import { chakra, HStack, PinInput, PinInputField, SlideFade } from '@chakra-ui/r
 import { useState } from 'react';
 
 import { isClientError } from '~/shared/api/util';
-import { useShowAppLoader } from '~/shared/infra/app-loader';
+import { useAppLoader } from '~/shared/infra/app-loader';
 import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
@@ -22,7 +22,7 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
     const [isInvalid, setIsInvalid] = useState(false);
     const [otp, setOtp] = useState('');
 
-    useShowAppLoader(isLoading);
+    useAppLoader(isLoading);
 
     const handleOtpComplete = async (otpToken: string) => {
         setIsInvalid(false);

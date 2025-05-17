@@ -9,7 +9,7 @@ import { buildRecipePath, getRecipeRootCategories } from '~/entities/recipe/util
 import { useAppSelector } from '~/shared/store';
 import { Section, SectionHeading } from '~/shared/ui/section';
 
-import { useShowAppLoader } from '../shared/infra/app-loader';
+import { useAppLoader } from '../shared/infra/app-loader';
 
 export const RelevantKitchen = memo(() => {
     const { categoryById, rootCategories } = useAppSelector(selectCategoriesInvariant);
@@ -19,7 +19,7 @@ export const RelevantKitchen = memo(() => {
         maxRecipes: 5,
     });
 
-    useShowAppLoader(isLoading);
+    useAppLoader(isLoading);
 
     return (
         <Section>

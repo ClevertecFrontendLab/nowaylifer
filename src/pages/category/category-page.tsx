@@ -25,7 +25,7 @@ import {
     selectAppliedSearchString,
     useUpdateLastSearchResult,
 } from '~/features/search-recipe';
-import { useAppLoader, useShowAppLoader } from '~/shared/infra/app-loader';
+import { selectIsAppLoaderRunning, useAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { LoadMoreButton } from '~/shared/ui/load-more-button';
@@ -58,12 +58,12 @@ export function CategoryPage() {
         });
 
     const lg = useBreakpointValue({ base: false, lg: true });
-    const loader = useAppLoader();
-    const showLoader = !loader.isRunning() && isFetching && !isFetchingNextPage;
+    const isAppLoaderRunningRef = useAppSelectorRef(selectIsAppLoaderRunning);
+    const showLoader = !isAppLoaderRunningRef.current && isFetching && !isFetchingNextPage;
     const appLoaderEnabled = showLoader && (!lg || isAppliedFromDrawerRef.current);
 
     useUpdateLastSearchResult(recipes);
-    useShowAppLoader(appLoaderEnabled);
+    useAppLoader(appLoaderEnabled);
 
     const subCategoryIndex = useMemo(
         () => rootCategory.subCategories.indexOf(subCategory),

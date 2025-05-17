@@ -6,7 +6,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { Provider as StoreProvider } from 'react-redux';
 import { RouterProvider as ReactRouterProvider } from 'react-router';
 
-import { AppLoaderProvider } from '~/shared/infra/app-loader';
+import { AppLoaderContainer } from '~/shared/infra/app-loader';
 
 import { createRouter } from './router/router';
 import { store } from './store';
@@ -16,9 +16,8 @@ export default function App() {
     return (
         <ChakraProvider theme={theme}>
             <StoreProvider store={store}>
-                <AppLoaderProvider>
-                    <ReactRouterProvider router={createRouter(store)} />
-                </AppLoaderProvider>
+                <AppLoaderContainer />
+                <ReactRouterProvider router={createRouter(store)} />
             </StoreProvider>
         </ChakraProvider>
     );

@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { isQueryHttpError } from '~/shared/api/util';
-import { useShowAppLoader } from '~/shared/infra/app-loader';
+import { useAppLoader } from '~/shared/infra/app-loader';
 import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
@@ -33,7 +33,7 @@ export const RecoverPassword = ({ next }: { next: (email: string) => void }) => 
 
     const [recoverPassword, { isLoading }] = authApi.useRecoverPasswordMutation();
 
-    useShowAppLoader(isLoading);
+    useAppLoader(isLoading);
 
     const handleFormValid = async (values: RecoverPasswordSchema) => {
         const res = await recoverPassword(values);

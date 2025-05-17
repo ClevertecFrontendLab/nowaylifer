@@ -1,11 +1,9 @@
-export { AppLoaderOnNavigation } from './app-loader-on-navigation';
-export { AppLoaderSpinner } from './app-loader-spinner';
-export { useAppLoader } from './context';
-export { AppLoaderProvider } from './provider';
+export { AppLoaderContainer } from './container';
 export {
     slice as appLoaderSlice,
     selectIsAppLoaderRunning,
     startAppLoader,
     stopAppLoader,
 } from './slice';
-export { useShowAppLoader } from './use-show-app-loader';
+export { useAppLoader } from './use-app-loader';
+export { AppLoaderWhileNavigating } from './while-navigating';

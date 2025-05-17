@@ -26,7 +26,7 @@ const themeOverride = {
     },
     styles: {
         global: {
-            ':root': {
+            body: {
                 overflowY: 'scroll',
             },
             '#chakra-toast-manager-bottom': {
@@ -39,7 +39,7 @@ const themeOverride = {
             baseStyle: {
                 overlay: {
                     bg: 'blackAlpha.300',
-                    backdropFilter: 'blur(2px)',
+                    backdropFilter: 'blur(1.5px)',
                 },
             },
         }),

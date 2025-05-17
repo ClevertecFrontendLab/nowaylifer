@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
-import { useShowAppLoader } from '~/shared/infra/app-loader';
+import { useAppLoader } from '~/shared/infra/app-loader';
 import { useModal } from '~/shared/infra/modals-manager';
 import { RoutePath } from '~/shared/router';
 import { TestId } from '~/shared/test-ids';
@@ -50,7 +50,7 @@ export const SignupForm = () => {
 
     const [signup, { isLoading }] = authApi.useSignupMutation();
 
-    useShowAppLoader(isLoading);
+    useAppLoader(isLoading);
 
     const next = useCallbackRef(async () => {
         if (stepIndex === steps.length - 1) {

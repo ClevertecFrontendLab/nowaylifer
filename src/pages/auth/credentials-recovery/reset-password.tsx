@@ -2,7 +2,7 @@ import { chakra, FormControl, SlideFade, VStack } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { useShowAppLoader } from '~/shared/infra/app-loader';
+import { useAppLoader } from '~/shared/infra/app-loader';
 import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
@@ -32,7 +32,7 @@ export const ResetPassword = ({ email, next }: { email: string; next: () => void
 
     const [resetPassword, { isLoading }] = authApi.useResetPasswordMutation();
 
-    useShowAppLoader(isLoading);
+    useAppLoader(isLoading);
 
     const handleFormValid = async (values: ResetPasswordSchema) => {
         const body = { ...values, email };

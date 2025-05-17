@@ -20,7 +20,7 @@ import {
     selectSearchString,
     useUpdateLastSearchResult,
 } from '~/features/search-recipe';
-import { useShowAppLoader } from '~/shared/infra/app-loader';
+import { useAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { LoadMoreButton } from '~/shared/ui/load-more-button';
@@ -51,7 +51,7 @@ export function JuiciestPage() {
     const appLoaderEnabled = showLoader && (!lg || isAppliedFromDrawerRef.current);
 
     useUpdateLastSearchResult(recipes);
-    useShowAppLoader(appLoaderEnabled);
+    useAppLoader(appLoaderEnabled);
 
     return (
         <Main>

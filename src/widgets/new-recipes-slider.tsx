@@ -14,7 +14,7 @@ import { useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { isE2E } from '~/shared/util';
 
-import { useShowAppLoader } from '../shared/infra/app-loader';
+import { useAppLoader } from '../shared/infra/app-loader';
 
 export const NewRecipesSlider = memo(() => {
     const { data: recipes, isLoading } = recipeApi.useRecipesQuery({
@@ -25,7 +25,7 @@ export const NewRecipesSlider = memo(() => {
     const { categoryById } = useAppSelector(selectCategoriesInvariant);
     const swiperRef = useRef<SwiperRef>(null);
 
-    useShowAppLoader(isLoading);
+    useAppLoader(isLoading);
 
     return (
         <Box pos='relative' data-test-id={TestId.CAROUSEL}>
