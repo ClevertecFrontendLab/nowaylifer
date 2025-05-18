@@ -7,7 +7,7 @@ import { EmailVerificationHistoryState } from './history-state';
 
 const parseBoolean = (string: string) => {
     try {
-        const parsed = JSON.parse(string);
+        const parsed = JSON.parse(string.toLowerCase());
         return isBoolean(parsed) ? parsed : null;
     } catch {
         return null;
