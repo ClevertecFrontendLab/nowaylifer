@@ -2,14 +2,18 @@ import { BaseQueryEnhancer, BaseQueryResult } from '@reduxjs/toolkit/query';
 import { Mutex } from 'async-mutex';
 
 import { ACCESS_TOKEN_HEADER } from '../config';
+import { SessionEndpointName } from '../session/endpoint-name';
 import { logout, setToken } from '../session/slice';
 import { HttpStatusCode } from '../util';
-import { ApiEndpoints } from './endpoints';
+import { ApiEndpoint } from './endpoints';
 import { TypedQueryReturnValue } from './query';
 
 const mutex = new Mutex();
 
-const excludedEndpoints = ['checkAuth', 'refreshToken'];
+const excludedEndpoints: string[] = [
+    SessionEndpointName.CheckAuth,
+    SessionEndpointName.RefreshToken,
+];
 
 export const withRefreshToken: BaseQueryEnhancer<unknown, unknown, void> =
     (baseQuery) => async (args, api, extraOptions) => {
@@ -31,7 +35,7 @@ export const withRefreshToken: BaseQueryEnhancer<unknown, unknown, void> =
 
             try {
                 const refreshResult = (await baseQuery(
-                    ApiEndpoints.AUTH_REFRESH_TOKEN,
+                    ApiEndpoint.AUTH_REFRESH_TOKEN,
                     api,
                     extraOptions,
                 )) as QueryResult;

@@ -1,3 +1,5 @@
+export { sessionApi } from './api';
+export { SessionEndpointName } from './endpoint-name';
 export {
     checkAuthMiddleware,
     hideRouteIfAuthenticatedMiddleware,

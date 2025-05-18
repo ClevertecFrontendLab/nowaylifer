@@ -4,7 +4,6 @@ import { createBrowserRouter, RouteObject } from 'react-router';
 import {
     ActiveCategories,
     buildCategoryPath,
-    CategoryParams,
     initCategoriesMiddleware,
     NavigateToSubCategory,
     validateCategoryParamsMiddleware,
@@ -16,7 +15,7 @@ import { CategoryPage, categoryPageLoader } from '~/pages/category';
 import { JuiciestPage, juiciestPageLoader } from '~/pages/juiciest';
 import { MainPage } from '~/pages/main';
 import { RecipePage, recipePageLoader } from '~/pages/recipe';
-import { RoutePath, storeContext } from '~/shared/router';
+import { paramPattern, RouteParam, RoutePath, storeContext } from '~/shared/router';
 import {
     checkAuthMiddleware,
     hideRouteIfAuthenticatedMiddleware,
@@ -74,7 +73,7 @@ const routerConfig: RouteObject[] = [
                         loader: juiciestPageLoader,
                     },
                     {
-                        path: CategoryParams.RootCategory.pattern,
+                        path: paramPattern(RouteParam.RootCategory),
                         handle: {
                             crumb: (_m, _l, [root]) => ({
                                 label: root.title,
@@ -85,7 +84,7 @@ const routerConfig: RouteObject[] = [
                         Component: NavigateToSubCategory,
                         children: [
                             {
-                                path: CategoryParams.SubCategory.pattern,
+                                path: paramPattern(RouteParam.SubCategory),
                                 handle: {
                                     crumb: (_m, _l, [_root, sub]) => sub.title,
                                 } satisfies RouteBreadcrumb<ActiveCategories>,
@@ -96,7 +95,7 @@ const routerConfig: RouteObject[] = [
                                         loader: categoryPageLoader,
                                     },
                                     {
-                                        path: ':id',
+                                        path: paramPattern(RouteParam.RecipeId),
                                         Component: RecipePage,
                                         loader: recipePageLoader,
                                         handle: {

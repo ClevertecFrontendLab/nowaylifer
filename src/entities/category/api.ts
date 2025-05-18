@@ -1,23 +1,16 @@
 import { isEmpty, keyBy } from 'lodash-es';
 
-import { ApiEndpoints, apiSlice } from '~/shared/api';
+import { ApiEndpoint, apiSlice } from '~/shared/api';
 import { isE2E } from '~/shared/util';
 
-import { Category, RootCategory } from './interface';
 import { CATEGORY_STORAGE_KEY, isRootCategory } from './lib/util';
-
-export type CategoryById = Record<string, Category>;
-
-export interface CategoryState {
-    rootCategories: RootCategory[];
-    categoryById: CategoryById;
-}
+import { Category, CategoryState } from './types';
 
 export const categoryApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
         categories: build.query<CategoryState, void>({
             keepUnusedDataFor: Infinity,
-            query: () => ({ url: ApiEndpoints.CATEGORY }),
+            query: () => ({ url: ApiEndpoint.CATEGORY }),
             transformResponse: (rawResult: Category[]) => {
                 if (isE2E() && isEmpty(rawResult)) {
                     rawResult = [];

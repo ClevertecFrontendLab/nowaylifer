@@ -7,7 +7,7 @@ import {
 import { isNumber, shuffle } from 'lodash-es';
 
 import {
-    ApiEndpoints,
+    ApiEndpoint,
     apiSlice,
     PaginatedResponse,
     PaginationRequestMeta,
@@ -52,7 +52,7 @@ const fixRecipesBySubCategoryResponse = (
 export const recipeApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
         recipeById: build.query<RecipeWithAuthor, string>({
-            query: (id) => ({ url: `${ApiEndpoints.RECIPE}/${id}` }),
+            query: (id) => ({ url: `${ApiEndpoint.RECIPE}/${id}` }),
         }),
         paginatedRecipes: build.infiniteQuery<
             PaginatedResponse<Recipe>,
@@ -61,7 +61,7 @@ export const recipeApi = apiSlice.injectEndpoints({
         >({
             infiniteQueryOptions,
             query: ({ queryArg: params, pageParam }) => ({
-                url: ApiEndpoints.RECIPE,
+                url: ApiEndpoint.RECIPE,
                 params: {
                     ...defaultRecipeRequestParams,
                     ...params,
@@ -70,7 +70,7 @@ export const recipeApi = apiSlice.injectEndpoints({
             }),
         }),
         recipes: build.query<Recipe[], RecipeRequestParams>({
-            query: (params) => ({ url: ApiEndpoints.RECIPE, params }),
+            query: (params) => ({ url: ApiEndpoint.RECIPE, params }),
             transformResponse: (rawResult: PaginatedResponse<Recipe>) => rawResult.data,
         }),
         paginatedRecipesBySubCategory: build.infiniteQuery<
@@ -83,8 +83,8 @@ export const recipeApi = apiSlice.injectEndpoints({
                 const hasParams = Object.values(params).filter(Boolean).length;
                 return {
                     url: hasParams
-                        ? ApiEndpoints.RECIPE
-                        : `${ApiEndpoints.RECIPE_SUBCATEGORY}/${subCategoryId}`,
+                        ? ApiEndpoint.RECIPE
+                        : `${ApiEndpoint.RECIPE_SUBCATEGORY}/${subCategoryId}`,
                     params: {
                         ...defaultRecipeRequestParams,
                         ...params,
@@ -108,7 +108,7 @@ export const recipeApi = apiSlice.injectEndpoints({
             { subCategoryId: string } & RecipeRequestParams
         >({
             query: ({ subCategoryId, ...params }) => ({
-                url: `${ApiEndpoints.RECIPE_SUBCATEGORY}/${subCategoryId}`,
+                url: `${ApiEndpoint.RECIPE_SUBCATEGORY}/${subCategoryId}`,
                 params,
             }),
             transformResponse: (raw: PaginatedResponse<Recipe>) =>

@@ -1,5 +1,3 @@
-export type { CategoryById } from '../api';
-export type { Category, RootCategory, SubCategory } from '../interface';
 export {
     type ActiveCategories,
     buildCategoryPath,
@@ -7,3 +5,4 @@ export {
     isSubCategory,
     type MaybeActiveCategories,
 } from '../lib/util';
+export type { Category, CategoryById, RootCategory, SubCategory } from '../types';

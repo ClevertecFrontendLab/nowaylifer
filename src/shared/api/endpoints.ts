@@ -1,4 +1,4 @@
-export enum ApiEndpoints {
+export enum ApiEndpoint {
     CATEGORY = '/category',
     RECIPE = '/recipe',
     RECIPE_SUBCATEGORY = '/recipe/category',

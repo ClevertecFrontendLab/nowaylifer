@@ -6,8 +6,12 @@ import { buildCategoryPath } from './util';
 
 export const NavigateToSubCategory = () => {
     const [rootCategory, subCategory] = useActiveCategories();
+
     if (subCategory) return <Outlet />;
+
     invariant(!!rootCategory, 'Root category is undefined');
+
     const firstSubCategory = rootCategory.subCategories[0];
+
     return <Navigate to={buildCategoryPath(rootCategory, firstSubCategory)} />;
 };

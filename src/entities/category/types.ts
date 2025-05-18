@@ -19,3 +19,10 @@ export interface SubCategory {
 }
 
 export type Category = RootCategory | SubCategory;
+
+export type CategoryById = Record<string, Category>;
+
+export interface CategoryState {
+    rootCategories: RootCategory[];
+    categoryById: CategoryById;
+}

@@ -8,14 +8,13 @@ import { HttpStatusCode } from '~/shared/util';
 
 import { ErrorMeta, setLoggableError } from './slice';
 
+export type ErrorMetaByStatus<T = unknown> = Partial<
+    Record<number | 'default', ErrorMeta | ((error: QueryHttpError<T>) => ErrorMeta | null) | null>
+>;
+
 export interface QueryErrorLoggerOptions<T = unknown> {
     shouldLogError?: boolean | ((error: QueryHttpError<T>) => boolean);
-    errorMetaByStatus?: Partial<
-        Record<
-            number | 'default',
-            ErrorMeta | ((error: QueryHttpError<T>) => ErrorMeta | null) | null
-        >
-    >;
+    errorMetaByStatus?: ErrorMetaByStatus;
 }
 
 const defaultOptions: QueryErrorLoggerOptions = {

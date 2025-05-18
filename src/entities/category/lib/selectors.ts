@@ -5,8 +5,8 @@ import { Params } from 'react-router';
 import { createAppSelector } from '~/shared/store';
 
 import { categoryApi } from '../api';
-import { Category } from '../interface';
-import { ActiveCategories, CategoryParams, MaybeActiveCategories } from '../lib/util';
+import { ActiveCategories, getSortedCategorySlugs, MaybeActiveCategories } from '../lib/util';
+import { Category } from '../types';
 
 export const selectCategories = createAppSelector(
     categoryApi.endpoints.categories.select(),
@@ -20,31 +20,25 @@ export const selectCategoriesInvariant = (state: RootState) => {
 };
 
 export const selectCategoryBySlug = createAppSelector(
-    [
-        selectCategories,
-        (_categories, slug: string) => slug,
-        (_categoreies, _slug: string, parentCategory?: Category) => parentCategory,
-    ],
-    (categories, slug, parentCategory) => {
-        const arr = parentCategory ? parentCategory.subCategories : categories?.rootCategories;
+    [selectCategories, (_, slug: string) => slug, (_, __, parent?: Category) => parent],
+    (categories, slug, parent) => {
+        const arr = parent ? parent.subCategories : categories?.rootCategories;
         return arr?.find((c) => c.category === slug);
     },
 );
 
 export const selectActiveCategories = createAppSelector(
-    [(state) => state, (_, params: Params<string>) => CategoryParams.getSortedSlugs(params)],
+    [(state) => state, (_, params: Params) => getSortedCategorySlugs(params)],
     (state, slugs): MaybeActiveCategories => {
-        if (!slugs.length) return [];
-
-        const categories: MaybeActiveCategories = [];
+        const result: MaybeActiveCategories = [];
 
         for (const slug of slugs) {
-            const category = selectCategoryBySlug(state, slug, categories.at(-1));
+            const category = selectCategoryBySlug(state, slug, result.at(-1));
             if (!category) break;
-            categories.push(category);
+            result.push(category);
         }
 
-        return categories;
+        return result;
     },
     { memoizeOptions: { resultEqualityCheck: shallowEqual } },
 );
