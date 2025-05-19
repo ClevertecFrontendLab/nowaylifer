@@ -61,6 +61,7 @@ export const HamburgerMenu = ({ onOpenChange, isOpen, children }: HamburgerMenuP
                                     onBreadcrumbClick={(_, isActive) => !isActive && onClose()}
                                     px={5}
                                     mb={3}
+                                    wrap
                                 />
                                 <CategoryNav mb={3} pr={5} />
                                 <Box pt={4} px={6}>

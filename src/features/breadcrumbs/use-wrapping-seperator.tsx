@@ -1,11 +1,8 @@
 import { useResizeObserver } from '@react-hookz/web';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
-export const useWrappingSeperator = (
-    containerRef: React.RefObject<HTMLElement | null>,
-    offset = 8,
-    enabled = true,
-) => {
+export const useWrappingSeperator = (offset = 8, enabled = true) => {
+    const containerRef = useRef<HTMLElement>(null);
     const prevHeightRef = useRef<number>(undefined);
 
     useResizeObserver(
@@ -38,6 +35,8 @@ export const useWrappingSeperator = (
         },
         enabled,
     );
+
+    return { containerRef };
 };
 
 const isWrapping = (el: Element) =>

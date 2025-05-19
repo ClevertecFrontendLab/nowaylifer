@@ -12,6 +12,7 @@ export const categoryApi = apiSlice.injectEndpoints({
             keepUnusedDataFor: Infinity,
             query: () => ({ url: ApiEndpoint.CATEGORY }),
             transformResponse: (rawResult: Category[]) => {
+                // HACK: sometimes tests don't return categories
                 if (isE2E() && isEmpty(rawResult)) {
                     rawResult = [];
                 }

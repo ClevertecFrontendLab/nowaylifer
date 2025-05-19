@@ -53,8 +53,8 @@ const routerConfig: RouteObject[] = [
             {
                 Component: RootLayout,
                 handle: {
-                    crumb: (_, { pathname }) =>
-                        pathname === RoutePath.NotFound ? undefined : 'Главная',
+                    crumb: ({ location }) =>
+                        location.pathname === RoutePath.NotFound ? undefined : 'Главная',
                 } satisfies RouteBreadcrumb,
                 loader: noop,
                 HydrateFallback,
@@ -75,7 +75,7 @@ const routerConfig: RouteObject[] = [
                     {
                         path: paramPattern(RouteParam.RootCategory),
                         handle: {
-                            crumb: (_m, _l, [root]) => ({
+                            crumb: ({ extraArg: [root] }) => ({
                                 label: root.title,
                                 href: buildCategoryPath(root, root.subCategories[0]),
                             }),
@@ -86,7 +86,7 @@ const routerConfig: RouteObject[] = [
                             {
                                 path: paramPattern(RouteParam.SubCategory),
                                 handle: {
-                                    crumb: (_m, _l, [_root, sub]) => sub.title,
+                                    crumb: ({ extraArg: [_, sub] }) => sub.title,
                                 } satisfies RouteBreadcrumb<ActiveCategories>,
                                 children: [
                                     {
@@ -99,7 +99,7 @@ const routerConfig: RouteObject[] = [
                                         Component: RecipePage,
                                         loader: recipePageLoader,
                                         handle: {
-                                            crumb: (match) => match.data?.title,
+                                            crumb: ({ match }) => ({ label: match.data?.title }),
                                         } satisfies RouteBreadcrumb<
                                             ActiveCategories,
                                             RecipeWithAuthor

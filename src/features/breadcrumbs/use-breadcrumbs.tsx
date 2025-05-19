@@ -1,24 +1,22 @@
-import { isFunction, isString } from 'lodash-es';
+import { runIfFn } from '@chakra-ui/utils';
+import { castArray, isString } from 'lodash-es';
 import { UIMatch, useLocation, useMatches } from 'react-router';
 
-import { BreadcrumbData, RouteBreadcrumb } from './types';
+import { BreadcrumbData, BreadcrumbDefinition, RouteBreadcrumb } from './types';
 
-export function useBreadcrumbs(): BreadcrumbData[];
-export function useBreadcrumbs<ExtraArg>(extraArg: ExtraArg): BreadcrumbData[];
-export function useBreadcrumbs<ExtraArg>(extraArg?: ExtraArg): BreadcrumbData[] {
-    const matches = useMatches() as UIMatch<unknown, RouteBreadcrumb<ExtraArg, unknown>>[];
+export function useBreadcrumbs(extraArg?: unknown): BreadcrumbData[] {
+    const matches = useMatches() as UIMatch<unknown, RouteBreadcrumb<unknown, unknown>>[];
     const location = useLocation();
     return matches
         .filter((match) => match.handle?.crumb)
         .flatMap((match) => {
-            const crumb = match.handle.crumb;
-            const crumbData = isFunction(crumb)
-                ? crumb(match, location, extraArg as ExtraArg)
-                : crumb;
-
-            const arr = Array.isArray(crumbData) ? crumbData : [crumbData];
-            return arr
-                .map((v) => (isString(v) ? { label: v, href: match.pathname } : v))
-                .filter((v) => !!v);
+            const crumbDefinition = runIfFn(match.handle.crumb, { match, location, extraArg });
+            const definitions = castArray(crumbDefinition).filter(Boolean);
+            return definitions.map((def) => getBreadcrumbDataFromDefinition(def, match));
         });
 }
+
+const getBreadcrumbDataFromDefinition = (definition: BreadcrumbDefinition, match: UIMatch) =>
+    isString(definition)
+        ? { label: definition, href: match.pathname }
+        : { ...definition, href: definition.href ?? match.pathname };
