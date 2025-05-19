@@ -17,13 +17,13 @@ const AppHeaderLogo = () => {
 
 export const AppHeader = () => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const lg = useBreakpointValue({ base: false, lg: true });
+    const xl = useBreakpointValue({ base: false, xl: true });
 
     useEffect(() => {
-        if (lg) {
+        if (xl) {
             containerRef.current?.removeAttribute('data-menu-open');
         }
-    }, [lg]);
+    }, [xl]);
 
     return (
         <Flex
@@ -35,8 +35,8 @@ export const AppHeader = () => {
             data-test-id={TestId.HEADER}
         >
             <AppHeaderLogo />
-            {lg && <Breadcrumbs ml={{ base: 16, xl: 32 }} />}
-            <HStack hideBelow='lg' ml='auto' mr={{ base: 8, xl: 16 }} gap={3}>
+            {xl && <Breadcrumbs ml={{ base: 16, xl: 32 }} />}
+            <HStack hideBelow='xl' ml='auto' mr={{ base: 8, xl: 16 }} gap={3}>
                 <Avatar size='md' name='bake_and_pie' src={userAvatarUrl} />
                 <Box>
                     <Text fontSize='lg' fontWeight='medium'>
@@ -47,7 +47,7 @@ export const AppHeader = () => {
                     </Text>
                 </Box>
             </HStack>
-            <HStack hideFrom='lg' ml='auto' fontSize='xs' className={classes.stats}>
+            <HStack hideFrom='xl' ml='auto' fontSize='xs' className={classes.stats}>
                 <BookmarksStat px={2} value={185} />
                 <FriendsStat px={2} value={589} />
                 <LikesStat px={2} value={587} />
@@ -61,7 +61,7 @@ export const AppHeader = () => {
                     }
                 }}
             >
-                <HamburgerMenuButton hideFrom='lg' />
+                <HamburgerMenuButton hideFrom='xl' />
                 <HamburgerMenuOverlay />
             </HamburgerMenu>
         </Flex>
