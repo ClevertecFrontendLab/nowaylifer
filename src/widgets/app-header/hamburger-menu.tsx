@@ -1,17 +1,23 @@
-import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { CloseIcon } from '@chakra-ui/icons';
 import {
     Box,
     BoxProps,
     forwardRef,
+    Icon,
     IconButton,
     IconButtonProps,
+    IconProps,
     Menu,
     MenuButton,
     MenuButtonProps,
     MenuList,
+    MenuProps,
     Portal,
+    Spacer,
+    useControllableState,
+    useOutsideClick,
 } from '@chakra-ui/react';
-import React, { cloneElement, isValidElement } from 'react';
+import React, { cloneElement, isValidElement, useRef } from 'react';
 import { RemoveScroll } from 'react-remove-scroll';
 
 import { CategoryNav } from '~/entities/category';
@@ -22,60 +28,100 @@ import { ExitButton } from '~/shared/ui/exit-button';
 
 import classes from './hamburger-menu.module.css';
 
-export interface HamburgerMenuProps {
+export interface HamburgerMenuProps
+    extends Omit<MenuProps, 'onOpen' | 'onClose' | 'children' | 'closeOnBlur'> {
     onOpenChange?: (isOpen: boolean) => void;
     isOpen?: boolean;
     children?: React.ReactNode;
+    closeOnBlur?: (event: Event) => boolean;
 }
 
-export const HamburgerMenu = ({ onOpenChange, isOpen, children }: HamburgerMenuProps) => (
-    <Menu
-        strategy='fixed'
-        placement='bottom-end'
-        offset={[8, 16]}
-        isOpen={isOpen}
-        onOpen={() => onOpenChange?.(true)}
-        onClose={() => onOpenChange?.(false)}
-        isLazy
-    >
-        {({ isOpen, onClose }) => (
-            <>
-                {React.Children.map(children, (child) =>
-                    isValidElement<{ isOpen?: boolean }>(child)
-                        ? cloneElement<{ isOpen?: boolean }>(child, { isOpen })
-                        : child,
-                )}
-                <Portal>
-                    <RemoveScroll enabled={isOpen}>
-                        <MenuList
-                            className={classes.container}
-                            justifyContent='space-between'
-                            flexDir='column'
-                            display='flex'
-                            border='none'
-                            pb={8}
-                            pt={4}
-                        >
-                            <Box display='flex' flexDir='column' minH={0} data-test-id={TestId.NAV}>
-                                <Breadcrumbs
-                                    onBreadcrumbClick={(_, isActive) => !isActive && onClose()}
-                                    px={5}
-                                    mb={3}
-                                    wrap
-                                />
-                                <CategoryNav mb={3} pr={5} />
-                                <Box pt={4} px={6}>
-                                    <About />
-                                    <ExitButton />
+export const HamburgerMenu = ({
+    onOpenChange,
+    closeOnBlur,
+    isOpen,
+    children,
+    ...props
+}: HamburgerMenuProps) => {
+    const menuListRef = useRef<HTMLDivElement>(null);
+    const [isMenuOpen, setIsMenuOpen] = useControllableState({
+        value: isOpen,
+        onChange: onOpenChange,
+        defaultValue: false,
+    });
+
+    useOutsideClick({
+        ref: menuListRef,
+        handler: (e) => {
+            if (!closeOnBlur || closeOnBlur(e)) {
+                setIsMenuOpen(false);
+            }
+        },
+    });
+
+    return (
+        <Menu
+            strategy='fixed'
+            placement='bottom-end'
+            offset={[8, 16]}
+            closeOnBlur={false}
+            isOpen={isMenuOpen}
+            onOpen={() => setIsMenuOpen(true)}
+            onClose={() => setIsMenuOpen(false)}
+            // isLazy
+            {...props}
+        >
+            {({ isOpen, onClose }) => (
+                <>
+                    {React.Children.map(children, (child) =>
+                        isValidElement<{ isOpen?: boolean }>(child)
+                            ? cloneElement<{ isOpen?: boolean }>(child, { isOpen })
+                            : child,
+                    )}
+                    <Portal>
+                        <RemoveScroll enabled={isOpen}>
+                            <MenuList
+                                ref={menuListRef}
+                                rootProps={{ className: classes.containerMenu }}
+                                className={classes.menu}
+                                display='flex'
+                                flexDir='column'
+                                justifyContent='space-between'
+                                w='344px'
+                                border='none'
+                                borderTopRadius='none'
+                                borderBottomRadius='xl'
+                                pb={8}
+                                pt={4}
+                            >
+                                <Box
+                                    display='flex'
+                                    flexDir='column'
+                                    minH={0}
+                                    h='full'
+                                    data-test-id={TestId.NAV}
+                                >
+                                    <Breadcrumbs
+                                        onBreadcrumbClick={(_, isActive) => !isActive && onClose()}
+                                        px={5}
+                                        mb={3}
+                                        wrap
+                                    />
+                                    <CategoryNav pr={5} />
+                                    <Spacer />
+                                    <Box pt={4} px={6}>
+                                        <About />
+                                        <ExitButton />
+                                    </Box>
                                 </Box>
-                            </Box>
-                        </MenuList>
-                    </RemoveScroll>
-                </Portal>
-            </>
-        )}
-    </Menu>
-);
+                            </MenuList>
+                        </RemoveScroll>
+                    </Portal>
+                </>
+            )}
+        </Menu>
+    );
+};
 
 export const HamburgerMenuOverlay = ({ isOpen, ...rest }: { isOpen?: boolean } & BoxProps) => (
     <Portal>
@@ -86,8 +132,7 @@ export const HamburgerMenuOverlay = ({ isOpen, ...rest }: { isOpen?: boolean } &
             zIndex='docked'
             pointerEvents='none'
             bg='blackAlpha.300'
-            backdropFilter='auto'
-            backdropBlur='2px'
+            backdropFilter='blur(1.5px)'
             transitionProperty='opacity'
             transitionDuration='fast'
             {...rest}
@@ -98,7 +143,7 @@ export const HamburgerMenuOverlay = ({ isOpen, ...rest }: { isOpen?: boolean } &
 export const HamburgerMenuButton = (props: { isOpen?: boolean } & MenuButtonProps) => (
     <MenuButton
         as={HamburgerMenuIcon}
-        data-test-id={props.isOpen ? 'close-icon' : 'hamburger-icon'}
+        data-test-id={props.isOpen ? TestId.CLOSE_ICON : TestId.HAMBURGER_ICON}
         {...props}
     />
 );
@@ -109,11 +154,17 @@ const HamburgerMenuIcon = forwardRef<{ isOpen: boolean } & IconButtonProps, 'but
             ref={ref}
             display='flex'
             variant='unstyled'
-            boxSize={6}
             ml={4}
-            icon={isOpen ? <CloseIcon boxSize={3} /> : <HamburgerIcon />}
+            size='sm'
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon boxSize={6} />}
             {...rest}
             aria-label={isOpen ? 'Закрыть меню' : 'Открыть меню'}
         />
     ),
+);
+
+const HamburgerIcon = (props: IconProps) => (
+    <Icon viewBox='0 0 24 24' boxSize='1em' {...props}>
+        <path d='M4 6H20V8H4V6ZM4 11H20V13H4V11ZM4 16H20V18H4V16Z' fill='currentColor' />
+    </Icon>
 );

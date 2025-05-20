@@ -1,4 +1,6 @@
 export const TestId = {
+    CLOSE_ICON: 'close-icon',
+    HAMBURGER_ICON: 'hamburger-icon',
     APP_LOADER: 'app-loader',
     ERROR_ALERT: 'error-notification',
     ERROR_ALERT_CLOSE: 'close-alert-button',

@@ -1,24 +1,14 @@
-.container {
-    height: calc(100vh - var(--app-header-height));
-    max-height: 652px;
-    width: 344px;
+.containerMenu[data-popper-reference-hidden] {
+    visibility: hidden;
 }
 
-@media screen and (height >= 652px) {
-    .container {
-        max-height: 85vh;
-        min-height: min(652px, calc(100vh - var(--app-header-height)));
-    }
+.menu {
+    height: var(--chakra-vh);
+    max-height: min(636px, calc(var(--chakra-vh) - var(--app-header-height) - 16px));
 }
 
-@media screen and (height >= 1024px) {
-    .container {
-        max-height: 876px;
-    }
-}
-
-@media screen and (height >= 1120px) {
-    .container {
-        max-height: 896px;
+@media screen and (height > 800px) {
+    .menu {
+        max-height: min(880px, 80vh);
     }
 }

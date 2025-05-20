@@ -10,10 +10,8 @@ import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/stats';
 import classes from './app-header.module.css';
 import { HamburgerMenu, HamburgerMenuButton, HamburgerMenuOverlay } from './hamburger-menu';
 
-const AppHeaderLogo = () => {
-    const variant = useBreakpointValue({ base: 'short', md: 'normal' } as const);
-    return <Logo h={8} w='auto' variant={variant} />;
-};
+// should match the data attribute selector in css module file
+const DATA_MENU_OPEN = 'data-menu-open';
 
 export const AppHeader = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -21,7 +19,7 @@ export const AppHeader = () => {
 
     useEffect(() => {
         if (xl) {
-            containerRef.current?.removeAttribute('data-menu-open');
+            containerRef.current?.removeAttribute(DATA_MENU_OPEN);
         }
     }, [xl]);
 
@@ -30,6 +28,7 @@ export const AppHeader = () => {
             ref={containerRef}
             as='header'
             align='center'
+            data-group
             p={4}
             className={classes.header}
             data-test-id={TestId.HEADER}
@@ -53,12 +52,11 @@ export const AppHeader = () => {
                 <LikesStat px={2} value={587} />
             </HStack>
             <HamburgerMenu
+                closeOnBlur={(e) =>
+                    !(e.target instanceof Node && containerRef.current?.contains(e.target))
+                }
                 onOpenChange={(isOpen) => {
-                    if (isOpen) {
-                        containerRef.current?.setAttribute('data-menu-open', '');
-                    } else {
-                        containerRef.current?.removeAttribute('data-menu-open');
-                    }
+                    containerRef.current?.toggleAttribute(DATA_MENU_OPEN, isOpen);
                 }}
             >
                 <HamburgerMenuButton hideFrom='xl' />
@@ -66,4 +64,9 @@ export const AppHeader = () => {
             </HamburgerMenu>
         </Flex>
     );
+};
+
+const AppHeaderLogo = () => {
+    const variant = useBreakpointValue({ base: 'short', md: 'normal' } as const);
+    return <Logo h={8} w='auto' variant={variant} />;
 };
