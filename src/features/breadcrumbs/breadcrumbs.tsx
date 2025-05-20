@@ -14,7 +14,7 @@ import { TestId } from '~/shared/test-ids';
 
 import { BreadcrumbData } from './types';
 import { useBreadcrumbs } from './use-breadcrumbs';
-import { useWrappingSeperator } from './use-wrapping-seperator';
+import { useWrappingSeparator } from './use-wrapping-seperator';
 
 export interface BreadcrumbsProps extends Omit<BreadcrumbProps, 'isTruncated'> {
     onBreadcrumbClick?: (breadcrumb: BreadcrumbData, isActive: boolean) => void;
@@ -30,7 +30,11 @@ export const Breadcrumbs = ({
 }: BreadcrumbsProps) => {
     const activeCategories = useActiveCategories();
     const breadcrumbs = useBreadcrumbs(activeCategories);
-    const { containerRef } = useWrappingSeperator(wrappingSeperatorOffset, wrap);
+    const { containerRef, setItemRef, setSeparatorRef } = useWrappingSeparator(
+        wrappingSeperatorOffset,
+        [breadcrumbs],
+        wrap,
+    );
 
     return (
         <Breadcrumb
@@ -45,8 +49,9 @@ export const Breadcrumbs = ({
                 <BreadcrumbItem
                     key={idx + breadcrumb.label}
                     isCurrentPage={idx === breadcrumbs.length - 1}
+                    ref={setItemRef(idx)}
                 >
-                    <chakra.span role='presentation' display='none'>
+                    <chakra.span ref={setSeparatorRef(idx)} role='presentation' display='none'>
                         <BreadcrumbSeparator />
                     </chakra.span>
                     <BreadcrumbLink

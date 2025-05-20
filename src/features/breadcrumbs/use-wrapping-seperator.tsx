@@ -1,45 +1,72 @@
 import { useResizeObserver } from '@react-hookz/web';
-import { useRef } from 'react';
+import { useCallback, useLayoutEffect, useRef } from 'react';
 
-export const useWrappingSeperator = (offset = 8, enabled = true) => {
-    const containerRef = useRef<HTMLElement>(null);
-    const prevHeightRef = useRef<number>(undefined);
+export const useWrappingSeparator = <
+    ContainerEl extends HTMLElement = HTMLElement,
+    ItemEl extends HTMLElement = HTMLElement,
+    SeparatorEl extends HTMLElement = HTMLElement,
+>(
+    offset = 8,
+    deps: unknown[] = [],
+    enabled = true,
+) => {
+    const itemRefs = useRef<(ItemEl | null)[]>([]);
+    const separatorRefs = useRef<(SeparatorEl | null)[]>([]);
+    const containerRef = useRef<ContainerEl | null>(null);
 
-    useResizeObserver(
+    const setItemRef = (index: number) => (el: ItemEl | null) => {
+        itemRefs.current[index] = el;
+    };
+
+    const setSeparatorRef = (index: number) => (el: SeparatorEl | null) => {
+        separatorRefs.current[index] = el;
+    };
+
+    const updateSeparators = useCallback(() => {
+        const items = itemRefs.current;
+        const separators = separatorRefs.current;
+
+        const hide: SeparatorEl[] = [];
+        const show: SeparatorEl[] = [];
+
+        let lastTop: number | null = null;
+
+        items.forEach((item, i) => {
+            const top = item?.offsetTop;
+            const separator = separators[i];
+
+            if (!item || !separator || top == null) return;
+
+            if (lastTop !== null && top > lastTop) {
+                show.push(separator);
+            } else {
+                hide.push(separator);
+            }
+
+            lastTop = top;
+        });
+
+        hide.forEach((el) => {
+            el.style.display = 'none';
+            el.style.marginLeft = '0px';
+        });
+
+        show.forEach((el, i) => {
+            el.style.display = 'revert';
+            el.style.marginLeft = `${i * offset}px`;
+        });
+    }, [offset]);
+
+    useLayoutEffect(() => {
+        if (enabled) updateSeparators();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [enabled, updateSeparators, ...deps]);
+
+    useResizeObserver(containerRef, updateSeparators, enabled);
+
+    return {
         containerRef,
-        (entry) => {
-            const height = entry.borderBoxSize?.[0].blockSize;
-            if (height === prevHeightRef.current) return;
-            prevHeightRef.current = height;
-
-            const liElements = entry.target.firstElementChild!.children;
-            const seperatorsToHide: HTMLElement[] = [];
-            const seperatorsToShow: HTMLElement[] = [];
-
-            for (const li of liElements) {
-                if (isWrapping(li)) {
-                    seperatorsToShow.push(li.firstElementChild as HTMLElement);
-                } else {
-                    seperatorsToHide.push(li.firstElementChild as HTMLElement);
-                }
-            }
-
-            for (const el of seperatorsToHide) {
-                el.style.display = 'none';
-            }
-
-            for (let i = 0; i < seperatorsToShow.length; i++) {
-                seperatorsToShow[i].style.display = 'revert';
-                seperatorsToShow[i].style.marginLeft = `${i * offset}px`;
-            }
-        },
-        enabled,
-    );
-
-    return { containerRef };
+        setItemRef,
+        setSeparatorRef,
+    };
 };
-
-const isWrapping = (el: Element) =>
-    el.previousElementSibling && getTop(el) > getTop(el.previousElementSibling);
-
-const getTop = (el: Element) => Math.round(el.getBoundingClientRect().top);
