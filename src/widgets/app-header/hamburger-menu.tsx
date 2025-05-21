@@ -68,7 +68,7 @@ export const HamburgerMenu = ({
             isOpen={isMenuOpen}
             onOpen={() => setIsMenuOpen(true)}
             onClose={() => setIsMenuOpen(false)}
-            // isLazy
+            isLazy
             {...props}
         >
             {({ isOpen, onClose }) => (
