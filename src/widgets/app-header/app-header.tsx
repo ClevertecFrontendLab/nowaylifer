@@ -1,5 +1,14 @@
-import { Avatar, Box, Flex, HStack, Text, useBreakpointValue } from '@chakra-ui/react';
-import { useEffect, useRef } from 'react';
+import {
+    Avatar,
+    Box,
+    cssVar,
+    defineStyle,
+    Flex,
+    HStack,
+    Text,
+    useBreakpointValue,
+} from '@chakra-ui/react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Breadcrumbs } from '~/features/breadcrumbs';
 import userAvatarUrl from '~/shared/assets/user.png';
@@ -7,19 +16,27 @@ import { TestId } from '~/shared/test-ids';
 import { Logo } from '~/shared/ui/logo';
 import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/stats';
 
-import classes from './app-header.module.css';
 import { HamburgerMenu, HamburgerMenuButton, HamburgerMenuOverlay } from './hamburger-menu';
 
-// should match the data attribute selector in css module file
-const DATA_MENU_OPEN = 'data-menu-open';
+const $bg = cssVar('bg');
+
+const headerBefore = defineStyle({
+    content: "''",
+    pos: 'fixed',
+    inset: 'auto 0',
+    zIndex: -1,
+    height: 'var(--app-header-height)',
+    background: $bg.reference,
+});
 
 export const AppHeader = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const xl = useBreakpointValue({ base: false, xl: true });
+    const [menuIsOpen, setMenuIsOpen] = useState(false);
 
     useEffect(() => {
         if (xl) {
-            containerRef.current?.removeAttribute(DATA_MENU_OPEN);
+            setMenuIsOpen(false);
         }
     }, [xl]);
 
@@ -30,7 +47,12 @@ export const AppHeader = () => {
             align='center'
             data-group
             p={4}
-            className={classes.header}
+            sx={{
+                [$bg.variable]: menuIsOpen ? 'white' : 'colors.lime.50',
+                bg: $bg.reference,
+                pos: 'static !important',
+            }}
+            _before={headerBefore}
             data-test-id={TestId.HEADER}
         >
             <AppHeaderLogo />
@@ -46,18 +68,22 @@ export const AppHeader = () => {
                     </Text>
                 </Box>
             </HStack>
-            <HStack hideFrom='xl' ml='auto' fontSize='xs' className={classes.stats}>
+            <HStack
+                visibility={menuIsOpen ? 'hidden' : 'visible'}
+                hideFrom='xl'
+                fontSize='xs'
+                ml='auto'
+            >
                 <BookmarksStat px={2} value={185} />
                 <FriendsStat px={2} value={589} />
                 <LikesStat px={2} value={587} />
             </HStack>
             <HamburgerMenu
+                isOpen={menuIsOpen}
+                onOpenChange={setMenuIsOpen}
                 closeOnBlur={(e) =>
                     !(e.target instanceof Node && containerRef.current?.contains(e.target))
                 }
-                onOpenChange={(isOpen) => {
-                    containerRef.current?.toggleAttribute(DATA_MENU_OPEN, isOpen);
-                }}
             >
                 <HamburgerMenuButton hideFrom='xl' />
                 <HamburgerMenuOverlay />
