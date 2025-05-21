@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { cx } from '@chakra-ui/utils';
 import { useResizeObserver } from '@react-hookz/web';
-import { useRef, useState } from 'react';
+import { useReducer, useRef, useState } from 'react';
 
 // mostly copied from chakra's repo to fix issue with indicator not adapting to resize of parent container
 export const TabIndicator = forwardRef<TabIndicatorProps & UseTabIndicatorProps, 'div'>(
@@ -76,19 +76,22 @@ function useTabIndicator({ scrollRef }: UseTabIndicatorProps): React.CSSProperti
         }
     };
 
+    const [trigger, triggerMeasure] = useReducer((x) => x + 1, 0);
+
     useSafeLayoutEffect(() => {
         measure();
         const id = requestAnimationFrame(() => {
             setHasMeasured(true);
         });
         return () => {
-            if (id) {
-                cancelAnimationFrame(id);
-            }
+            cancelAnimationFrame(id);
         };
-    }, [selectedIndex, isHorizontal, isVertical, descendants]);
+    }, [selectedIndex, trigger, isHorizontal, isVertical, descendants]);
 
-    useResizeObserver(scrollRef, measure);
+    useResizeObserver(scrollRef, () => {
+        setHasMeasured(false);
+        triggerMeasure();
+    });
 
     return {
         position: 'absolute',
