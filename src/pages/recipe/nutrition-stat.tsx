@@ -28,18 +28,26 @@ export const NutritionStat = ({
         }}
         {...rest}
     >
-        <StatLabel fontSize='sm' color='blackAlpha.600'>
+        <StatLabel fontSize='sm' color='blackAlpha.600' lineHeight={5}>
             {name}
         </StatLabel>
         <StatNumber
             justifySelf='center'
-            lineHeight={{ base: 'short', md: 1.11 }}
+            lineHeight={{ base: 8, md: 10 }}
             color='lime.800'
             fontSize={{ base: '2xl', md: '4xl' }}
         >
             {value}
         </StatNumber>
-        <StatHelpText m={0} textTransform='uppercase' color='blackAlpha.900'>
+        <StatHelpText
+            m={0}
+            opacity={1}
+            fontSize={{ base: 'xs', md: 'sm' }}
+            lineHeight={{ base: 4, md: 5 }}
+            textTransform='uppercase'
+            fontWeight='semibold'
+            color='blackAlpha.900'
+        >
             {measureUnit}
         </StatHelpText>
     </Stat>

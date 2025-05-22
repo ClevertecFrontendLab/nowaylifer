@@ -35,6 +35,7 @@ export const IngridientTable = ({
         <TableContainer {...rest}>
             <Table
                 variant='striped'
+                whiteSpace='wrap'
                 colorScheme='blackAlpha'
                 sx={{
                     '& :is(th, td)': { borderWidth: '0 !important' },
@@ -65,6 +66,7 @@ export const IngridientTable = ({
                                     Порций
                                 </FormLabel>
                                 <NumberInput
+                                    focusBorderColor='lime.300'
                                     min={1}
                                     w='90px'
                                     max={99999}
@@ -94,7 +96,7 @@ export const IngridientTable = ({
                                     ingridient.count,
                                     portions,
                                     defaultPortions,
-                                )}
+                                )}{' '}
                                 {ingridient.measureUnit}
                             </Td>
                         </Tr>
@@ -109,4 +111,4 @@ const calcIngredientQuantity = (
     count: string | number,
     portions: number,
     defaultPortions: number,
-) => Number((portions / defaultPortions) * Number(count)).toFixed(2);
+) => Number(((portions / defaultPortions) * Number(count)).toFixed(2));
