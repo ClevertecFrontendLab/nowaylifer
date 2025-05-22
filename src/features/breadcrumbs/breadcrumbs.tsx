@@ -19,6 +19,7 @@ import { useDetectWrap } from './use-detect-wrap';
 export interface BreadcrumbsProps extends Omit<BreadcrumbProps, 'isTruncated'> {
     onBreadcrumbClick?: (breadcrumb: BreadcrumbData, isActive: boolean) => void;
     wrapSeparatorOffset?: number;
+    truncateAfterChars?: number;
     wrap?: boolean;
 }
 
@@ -26,6 +27,7 @@ export const Breadcrumbs = ({
     onBreadcrumbClick,
     wrap = false,
     wrapSeparatorOffset = 8,
+    truncateAfterChars = 7,
     ...props
 }: BreadcrumbsProps) => {
     const activeCategories = useActiveCategories();
@@ -36,6 +38,7 @@ export const Breadcrumbs = ({
         <Breadcrumb
             ref={containerRef}
             separator={<BreadcrumbSeparator />}
+            overflow={wrap ? undefined : 'hidden'}
             listProps={{ w: 'full', ...(wrap && { flexWrap: 'wrap', rowGap: 1 }) }}
             spacing={0}
             data-test-id={TestId.BREADCRUMBS}
@@ -44,12 +47,13 @@ export const Breadcrumbs = ({
             {breadcrumbs.map((breadcrumb, idx) => {
                 const isCurrent = idx === breadcrumbs.length - 1;
                 const { isWrapped, wrapOrder } = wrapInfo(idx);
+                const isTruncated = isWrapped || breadcrumb.label.length > truncateAfterChars;
                 return (
                     <BreadcrumbItem
                         key={idx + breadcrumb.label}
                         isCurrentPage={isCurrent}
                         ref={setItemRef(idx)}
-                        overflow='hidden'
+                        overflow={isTruncated ? 'hidden' : undefined}
                     >
                         {isWrapped && (
                             <chakra.span
@@ -62,7 +66,8 @@ export const Breadcrumbs = ({
                         <BreadcrumbLink
                             as={ReactRouterLink}
                             to={breadcrumb.href}
-                            isTruncated={isWrapped}
+                            whiteSpace='nowrap'
+                            isTruncated={isTruncated}
                             color='blackAlpha.700'
                             _activeLink={{ color: 'black' }}
                             onClick={() => onBreadcrumbClick?.(breadcrumb, isCurrent)}
