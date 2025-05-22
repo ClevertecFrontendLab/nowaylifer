@@ -2,6 +2,7 @@ import { CloseIcon } from '@chakra-ui/icons';
 import {
     Box,
     BoxProps,
+    defineStyle,
     forwardRef,
     Icon,
     IconButton,
@@ -26,7 +27,28 @@ import { TestId } from '~/shared/test-ids';
 import { About } from '~/shared/ui/about';
 import { ExitButton } from '~/shared/ui/exit-button';
 
-import classes from './hamburger-menu.module.css';
+const menuStyles = defineStyle({
+    h: 'var(--chakra-vh)',
+    maxH: 'min(636px, calc(var(--chakra-vh) - var(--app-header-height) - 16px))',
+    '@media screen and (height > 800px)': {
+        maxH: 'min(880px, 80vh)',
+    },
+    display: 'flex',
+    flexDir: 'column',
+    justifyContent: 'space-between',
+    w: '344px',
+    border: 'none',
+    borderTopRadius: 'none',
+    borderBottomRadius: 'xl',
+    pb: 8,
+    pt: 4,
+});
+
+const containerMenuStyles = defineStyle({
+    '$[data-popper-reference-hidden]': {
+        visibility: 'hidden',
+    },
+});
 
 export interface HamburgerMenuProps
     extends Omit<MenuProps, 'onOpen' | 'onClose' | 'children' | 'closeOnBlur'> {
@@ -82,17 +104,8 @@ export const HamburgerMenu = ({
                         <RemoveScroll enabled={isOpen}>
                             <MenuList
                                 ref={menuListRef}
-                                rootProps={{ className: classes.containerMenu }}
-                                className={classes.menu}
-                                display='flex'
-                                flexDir='column'
-                                justifyContent='space-between'
-                                w='344px'
-                                border='none'
-                                borderTopRadius='none'
-                                borderBottomRadius='xl'
-                                pb={8}
-                                pt={4}
+                                rootProps={{ sx: containerMenuStyles }}
+                                sx={menuStyles}
                             >
                                 <Box
                                     display='flex'
