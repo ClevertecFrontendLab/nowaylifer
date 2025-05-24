@@ -39,6 +39,7 @@
         "http-status-codes": "^2.3.0",
         "immer": "^10.0.3",
         "invariant": "^2.2.4",
+        "jwt-decode": "^4.0.0",
         "lefthook": "1.10.10",
         "lodash-es": "^4.17.21",
         "react": "19.0.0",

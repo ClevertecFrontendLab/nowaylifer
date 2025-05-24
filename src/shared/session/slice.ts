@@ -1,4 +1,5 @@
-import { createAction, createSlice } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
+import { jwtDecode } from 'jwt-decode';
 
 export interface SessionState {
     token: string | null;
@@ -7,6 +8,11 @@ export interface SessionState {
 const initialState: SessionState = {
     token: null,
 };
+
+export interface SessionData {
+    login: string;
+    userId: string;
+}
 
 export const slice = createSlice({
     name: 'session',
@@ -19,6 +25,18 @@ export const slice = createSlice({
     selectors: {
         selectToken: (state) => state.token,
         selectIsAuthenticated: (state) => !!state.token,
+        selectSessionData: createSelector(
+            (state: SessionState) => state.token,
+            (token) => {
+                if (!token) return null;
+                try {
+                    return jwtDecode<SessionData>(token);
+                } catch (error) {
+                    console.error('Failed to decode token:', error);
+                    return null;
+                }
+            },
+        ),
     },
 });
 
@@ -31,4 +49,6 @@ export const logout = () => (dispatch: AppDispatch) => {
 
 export const { setToken } = slice.actions;
 
-export const { selectToken, selectIsAuthenticated } = slice.getSelectors(slice.selectSlice);
+export const { selectToken, selectIsAuthenticated, selectSessionData } = slice.getSelectors(
+    slice.selectSlice,
+);
