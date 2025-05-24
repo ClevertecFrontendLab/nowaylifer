@@ -53,7 +53,9 @@ export const MultiSelectMenu = ({
     return withinPortal ? <Portal {...portalProps}>{element}</Portal> : element;
 };
 
-export const MultiSelectMenuList = ({ className, ...props }: HTMLChakraProps<'ul'>) => {
+export interface MultiSelectMenuListProps extends HTMLChakraProps<'ul'> {}
+
+export const MultiSelectMenuList = ({ className, ...props }: MultiSelectMenuListProps) => {
     const styles = useMultiSelectStyles();
     return (
         <chakra.ul

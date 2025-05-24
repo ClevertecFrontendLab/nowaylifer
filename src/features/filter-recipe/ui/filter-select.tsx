@@ -1,5 +1,4 @@
 import {
-    Checkbox,
     HStack,
     Icon,
     IconButton,
@@ -80,12 +79,12 @@ export const FilterSelect = ({
     const filterState = useAppSelector((state) => selector(state, filterType));
     const options = useAppSelector((state) => selectFilterOptions(state, filterType));
     const dispatch = useAppDispatch();
+
     return (
         <MultiSelect
-            containerProps={{ _disabled: {}, ...containerProps }}
-            focusBorderColor='lime.300'
+            containerProps={containerProps}
             disabled={disabled}
-            popperConfig={{ ...popperConfig, offset: [0, 0] }}
+            popperConfig={popperConfig}
             itemToString={(item) => (item ? item.label : '')}
             items={options}
             value={filterState}
@@ -104,15 +103,9 @@ export const FilterSelect = ({
                     <MultiSelectTagList>
                         {selectedItems.map((selectedItem, index) => (
                             <MultiSelectTag
-                                variant='outline'
-                                boxShadow='none'
-                                border='1px'
-                                color='lime.600'
-                                borderColor='lime.400'
                                 key={selectedItem.value + index}
                                 item={selectedItem}
                                 index={index}
-                                closeButtonProps={{ display: 'none' }}
                             >
                                 {selectedItem.label}
                             </MultiSelectTag>
@@ -121,33 +114,19 @@ export const FilterSelect = ({
                     <MultiSelectClearButton />
                     <MultiSelectIcon />
                     <MultiSelectMenu
-                        py={1}
-                        isLazy
                         withinPortal={withinPortal}
                         portalProps={portalProps}
                         data-test-id={testId?.menu}
                     >
-                        <MultiSelectMenuList className='custom-scrollbar' maxH='328px'>
+                        <MultiSelectMenuList>
                             {items.map((item, index) => (
                                 <MultiSelectItem
                                     key={item.value + index}
                                     item={item}
                                     index={index}
-                                    _focus={{}}
-                                    _selected={{}}
-                                    _active={{}}
-                                    _odd={{ bg: 'blackAlpha.100' }}
                                     data-test-id={testId?.option?.(item, index)}
                                 >
-                                    {({ isSelected }) => (
-                                        <Checkbox
-                                            size='sm'
-                                            pointerEvents='none'
-                                            isChecked={isSelected}
-                                        >
-                                            {item.label}
-                                        </Checkbox>
-                                    )}
+                                    {item.label}
                                 </MultiSelectItem>
                             ))}
                         </MultiSelectMenuList>
