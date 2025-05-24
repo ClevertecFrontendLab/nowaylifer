@@ -17,7 +17,7 @@
         "cy:run-e2e": "cypress run --e2e --browser electron",
         "cy:run-unit": "cypress run --component",
         "cy:e2e": "start-server-and-test start http-get://localhost:3000 cy:open-e2e",
-        "gen:theme-typings": "chakra-cli tokens ./src/app/theme.ts"
+        "gen:theme-typings": "chakra-cli tokens ./src/app/theme/index.ts"
     },
     "dependencies": {
         "@chakra-ui/anatomy": "^2.3.4",
