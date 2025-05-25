@@ -8,12 +8,15 @@ import {
     UsePopperProps,
 } from '@chakra-ui/react';
 import { cx, MaybeRenderProp, runIfFn } from '@chakra-ui/utils';
+import { useMemo } from 'react';
 
 import { multiSelectClassNames } from './anatomy';
 import {
-    MultiSelectProvider,
+    MultiSelectContext,
+    MultiSelectDescendantsProvider,
     MultiSelectStylesProvider,
     useMultiSelectContext,
+    useMultiSelectDescendants,
     useMultiSelectStyles,
 } from './context';
 import { MultiSelectState, useMultiSelect, UseMultiSelectProps } from './use-multi-select';
@@ -39,15 +42,21 @@ export const MultiSelect = <Item,>({
     const styles = useMultiStyleConfig('MultiSelect', props);
     const { popperConfig, ...ownProps } = omitThemingProps(props);
     const popper = usePopper({ enabled: true, matchWidth: true, gutter: 0, ...popperConfig });
-    const ctx = useMultiSelect(ownProps);
+    const descendants = useMultiSelectDescendants();
+    const multiSelect = useMultiSelect(ownProps);
+
+    const ctx = useMemo(() => ({ ...multiSelect, popper }), [multiSelect, popper]);
+
     return (
-        <MultiSelectProvider value={{ ...ctx, popper }}>
+        <MultiSelectContext.Provider value={ctx}>
             <MultiSelectStylesProvider value={styles}>
-                <MultiSelectContainer {...containerProps}>
-                    {runIfFn(children, ctx.state)}
-                </MultiSelectContainer>
+                <MultiSelectDescendantsProvider value={descendants}>
+                    <MultiSelectContainer {...containerProps}>
+                        {runIfFn(children, ctx.state)}
+                    </MultiSelectContainer>
+                </MultiSelectDescendantsProvider>
             </MultiSelectStylesProvider>
-        </MultiSelectProvider>
+        </MultiSelectContext.Provider>
     );
 };
 

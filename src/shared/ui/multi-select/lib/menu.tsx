@@ -5,7 +5,6 @@ import { useRef } from 'react';
 
 import { multiSelectClassNames } from './anatomy';
 import { useMultiSelectContext, useMultiSelectStyles } from './context';
-import { MultiSelectState } from './use-multi-select';
 
 export interface MultiSelectMenuProps extends HTMLChakraProps<'div'> {
     isLazy?: boolean;
@@ -69,26 +68,26 @@ export const MultiSelectMenuList = ({ className, ...props }: MultiSelectMenuList
 export interface MultiSelectItemProps<Item> extends Omit<HTMLChakraProps<'li'>, 'children'> {
     item: Item;
     index?: number;
-    children?: MaybeRenderProp<MultiSelectState<Item> & { isSelected: boolean }>;
+    children?: MaybeRenderProp<{ isSelected: boolean; isHighlighted: boolean }>;
 }
 
 export const MultiSelectItem = <Item,>({
     item,
-    index,
     className,
     children,
+    index,
     ...props
 }: MultiSelectItemProps<Item>) => {
     const styles = useMultiSelectStyles();
-    const { state, getItemProps, itemToKey } = useMultiSelectContext<Item>();
-    const isSelected = state.selectedItems.some(
-        (selectedItem) => itemToKey(item) === itemToKey(selectedItem),
-    );
+    const isSelected = useMultiSelectContext((ctx) => ctx.isItemSelected(item));
+    const isHighlighted = useMultiSelectContext((ctx) => ctx.state.highlightedIndex === index);
+    const getItemProps = useMultiSelectContext((ctx) => ctx.getItemProps);
+
     return (
         <chakra.li
             __css={styles.item}
             className={cx(multiSelectClassNames.item, className)}
-            data-focus={state.highlightedIndex === index || undefined}
+            data-focus={isHighlighted || undefined}
             {...getItemProps({
                 item,
                 index,
@@ -97,7 +96,7 @@ export const MultiSelectItem = <Item,>({
             onMouseDown={noop} // override downshift handler
             {...props}
         >
-            {runIfFn(children, { ...state, isSelected })}
+            {runIfFn(children, { isSelected, isHighlighted })}
         </chakra.li>
     );
 };

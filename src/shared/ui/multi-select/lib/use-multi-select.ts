@@ -1,4 +1,5 @@
 import { useMultipleSelection, useSelect, UseSelectProps } from 'downshift';
+import { useMemo } from 'react';
 
 export interface BaseItem {
     value: string;
@@ -57,6 +58,10 @@ export const useMultiSelect = <Item>({
         },
     });
 
+    const selectedItemsSet = useMemo(() => new Set(selectedItems), [selectedItems]);
+
+    const isItemSelected = (item: Item) => selectedItemsSet.has(item);
+
     const { isOpen, highlightedIndex, getToggleButtonProps, getMenuProps, getItemProps } =
         useSelect({
             selectedItem: null,
@@ -82,11 +87,7 @@ export const useMultiSelect = <Item>({
                 switch (type) {
                     case useSelect.stateChangeTypes.ItemClick: {
                         if (!selectedItem) return;
-                        if (
-                            selectedItems.some(
-                                (item) => itemToKey(item) === itemToKey(selectedItem),
-                            )
-                        ) {
+                        if (isItemSelected(selectedItem)) {
                             removeSelectedItem(selectedItem);
                         } else {
                             addSelectedItem(selectedItem);
@@ -108,6 +109,7 @@ export const useMultiSelect = <Item>({
         getMenuProps,
         getSelectedItemProps,
         getDropdownProps,
+        isItemSelected,
     };
 };
 

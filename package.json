@@ -48,7 +48,9 @@
         "react-redux": "9.2.0",
         "react-remove-scroll": "^2.5.7",
         "react-router": "^7.5.3",
+        "scheduler": "^0.26.0",
         "swiper": "^11.2.6",
+        "use-context-selector": "^2.0.0",
         "zod": "^3.24.4"
     },
     "devDependencies": {

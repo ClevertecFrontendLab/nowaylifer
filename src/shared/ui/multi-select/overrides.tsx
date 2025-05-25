@@ -1,5 +1,6 @@
 import { Checkbox } from '@chakra-ui/react';
 import { runIfFn } from '@chakra-ui/utils';
+import { memo } from 'react';
 
 import {
     MultiSelect as BaseMultiSelect,
@@ -45,7 +46,7 @@ export const MultiSelectMenuList = (props: MultiSelectMenuListProps) => (
     <BaseMultiSelectMenuList className='custom-scrollbar' maxH='328px' {...props} />
 );
 
-export const MultiSelectItem = <Item,>({ children, ...props }: MultiSelectItemProps<Item>) => (
+const _MultiSelectItem = <Item,>({ children, ...props }: MultiSelectItemProps<Item>) => (
     <BaseMultiSelectItem
         _focus={{}}
         _selected={{}}
@@ -60,3 +61,5 @@ export const MultiSelectItem = <Item,>({ children, ...props }: MultiSelectItemPr
         )}
     </BaseMultiSelectItem>
 );
+
+export const MultiSelectItem = memo(_MultiSelectItem) as typeof _MultiSelectItem;

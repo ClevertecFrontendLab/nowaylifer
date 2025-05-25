@@ -22,6 +22,7 @@ export const MultiSelectField = ({
     const { className: placeholderClassName, ...placeholderProps } = _placeholderProps ?? {};
     return (
         <chakra.button
+            type='button'
             __css={styles.field}
             disabled={state.disabled}
             data-focus={state.isOpen || undefined}
