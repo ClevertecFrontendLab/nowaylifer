@@ -10,8 +10,6 @@ import {
 import { isObject } from '@chakra-ui/utils';
 import { isBoolean } from 'lodash-es';
 
-import { buildImageSrc } from '~/shared/util';
-
 import { useRecipeCardStyles, useRecipeContext } from '../context';
 import { RecipeCardBadge } from './badge';
 
@@ -39,9 +37,9 @@ export const RecipeCardCategoryList = ({ onlyFirst }: RecipeCardCategoryListProp
 
     return (
         <Wrap {...styles.categoryList}>
-            {categories.map((c, i) => (
-                <WrapItem key={c._id} display={i > 0 ? itemDisplay : undefined}>
-                    <RecipeCardCategory iconSrc={buildImageSrc(c.icon!)} label={c.title} />
+            {categories.map((category, i) => (
+                <WrapItem key={category._id} display={i > 0 ? itemDisplay : undefined}>
+                    <RecipeCardCategory iconSrc={category.icon!} label={category.title} />
                 </WrapItem>
             ))}
         </Wrap>

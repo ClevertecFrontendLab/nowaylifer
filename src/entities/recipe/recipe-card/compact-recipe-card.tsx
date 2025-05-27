@@ -1,7 +1,6 @@
 import { Button, HStack, Image } from '@chakra-ui/react';
 
 import { Link } from '~/shared/ui/link';
-import { buildImageSrc } from '~/shared/util';
 
 import { RecipeCardBody } from './parts/body';
 import { RecipeCardRoot } from './parts/root';
@@ -12,7 +11,7 @@ export const CompactRecipeCard = ({ categories, ...rootProps }: RecipeCardProps)
     <RecipeCardRoot asLinkBox categories={categories} {...rootProps}>
         <RecipeCardBody>
             <HStack gap={2} minW={0}>
-                <Image boxSize={6} src={buildImageSrc(categories[0].icon!)} />
+                <Image boxSize={6} src={categories[0].icon!} />
                 <RecipeCardTitle />
             </HStack>
             <Button

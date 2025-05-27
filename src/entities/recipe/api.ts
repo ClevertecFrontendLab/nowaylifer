@@ -17,6 +17,7 @@ import {
 import { HttpStatusCode } from '~/shared/util';
 
 import { Recipe, RecipeWithAuthor } from './interface';
+import { normalizeRecipeImages } from './util';
 
 export interface RecipeRequestParams extends PaginationRequestMeta, SortingRequestMeta {
     searchString?: string;
@@ -38,21 +39,11 @@ const defaultRecipeRequestParams: RecipeRequestParams = {
     limit: 8,
 };
 
-const fixRecipesBySubCategoryResponse = (
-    raw:
-        | PaginatedResponse<Recipe>
-        | (Omit<PaginatedResponse<Recipe>, 'data'> & { data: [Recipe[]] }),
-): PaginatedResponse<Recipe> => {
-    if (Array.isArray(raw.data?.[0])) {
-        return { ...raw, data: raw.data[0] };
-    }
-    return raw as PaginatedResponse<Recipe>;
-};
-
 export const recipeApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
         recipeById: build.query<RecipeWithAuthor, string>({
             query: (id) => ({ url: `${ApiEndpoint.RECIPE}/${id}` }),
+            transformResponse: normalizeRecipeImages,
         }),
         paginatedRecipes: build.infiniteQuery<
             PaginatedResponse<Recipe>,
@@ -68,10 +59,15 @@ export const recipeApi = apiSlice.injectEndpoints({
                     page: pageParam,
                 } satisfies RecipeRequestParams,
             }),
+            transformResponse: ({ data: recipes, meta }: PaginatedResponse<Recipe>) => ({
+                meta,
+                data: recipes.map(normalizeRecipeImages),
+            }),
         }),
         recipes: build.query<Recipe[], RecipeRequestParams>({
             query: (params) => ({ url: ApiEndpoint.RECIPE, params }),
-            transformResponse: (rawResult: PaginatedResponse<Recipe>) => rawResult.data,
+            transformResponse: (rawResult: PaginatedResponse<Recipe>) =>
+                rawResult.data.map(normalizeRecipeImages),
         }),
         paginatedRecipesBySubCategory: build.infiniteQuery<
             PaginatedResponse<Recipe>,
@@ -93,7 +89,10 @@ export const recipeApi = apiSlice.injectEndpoints({
                     } satisfies RecipeRequestParams,
                 };
             },
-            transformResponse: fixRecipesBySubCategoryResponse,
+            transformResponse: ({ data: recipes, meta }: PaginatedResponse<Recipe>) => ({
+                meta,
+                data: recipes.map(normalizeRecipeImages),
+            }),
             extraOptions: {
                 errorMetaByStatus: {
                     [HttpStatusCode.NOT_FOUND]: {
@@ -112,7 +111,7 @@ export const recipeApi = apiSlice.injectEndpoints({
                 params,
             }),
             transformResponse: (raw: PaginatedResponse<Recipe>) =>
-                fixRecipesBySubCategoryResponse(raw).data,
+                raw.data.map(normalizeRecipeImages),
             extraOptions: {
                 errorMetaByStatus: {
                     [HttpStatusCode.NOT_FOUND]: {

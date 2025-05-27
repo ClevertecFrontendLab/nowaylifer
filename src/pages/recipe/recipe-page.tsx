@@ -9,7 +9,6 @@ import { getRecipeRootCategories } from '~/entities/recipe/util';
 import { useAppSelector } from '~/shared/store';
 import { Main } from '~/shared/ui/main';
 import { Section, SectionHeading } from '~/shared/ui/section';
-import { buildImageSrc } from '~/shared/util';
 import { NewRecipesSlider } from '~/widgets/new-recipes-slider';
 
 import { AuthorCard } from './author-card';
@@ -66,7 +65,7 @@ export function RecipePage() {
                         {recipe.steps.map((step) => (
                             <ListItem key={step.stepNumber} _notLast={{ mb: 5 }}>
                                 <StepCard
-                                    image={buildImageSrc(step.image)}
+                                    image={step.image}
                                     stepNumber={step.stepNumber}
                                     description={step.description}
                                 />
