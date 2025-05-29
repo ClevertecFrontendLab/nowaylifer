@@ -4,26 +4,28 @@ import { HttpStatusCode } from '~/shared/util';
 
 import { EditRecipeEndpointName } from './endpoint-name';
 
-const conflictError = {
-    title: ErrorMessage.ERROR,
-    description: 'Рецепт с таким названием уже существует',
-};
-
-const serverError = {
-    title: ErrorMessage.SERVER_ERROR,
-    description: 'Попробуйте пока сохранить в черновик',
+const common = {
+    [HttpStatusCode.CONFLICT]: {
+        title: ErrorMessage.ERROR,
+        description: 'Рецепт с таким названием уже существует',
+    },
+    [HttpStatusCode.INTERNAL_SERVER_ERROR]: {
+        title: ErrorMessage.SERVER_ERROR,
+        description: 'Попробуйте пока сохранить в черновик',
+    },
 };
 
 export const errorMeta: Partial<Record<EditRecipeEndpointName | 'uploadImage', ErrorMetaByStatus>> =
     {
-        createRecipe: {
-            [HttpStatusCode.CONFLICT]: conflictError,
-            [HttpStatusCode.INTERNAL_SERVER_ERROR]: serverError,
+        createRecipe: { ...common },
+        updateRecipe: { ...common },
+        deleteRecipe: {
+            [HttpStatusCode.INTERNAL_SERVER_ERROR]: {
+                title: ErrorMessage.SERVER_ERROR,
+                description: 'Не удалось удалить рецепт',
+            },
         },
-        updateRecipe: {
-            [HttpStatusCode.CONFLICT]: conflictError,
-            [HttpStatusCode.INTERNAL_SERVER_ERROR]: serverError,
-        },
+        // TODO: maybe move to somewhere else
         uploadImage: {
             [HttpStatusCode.INTERNAL_SERVER_ERROR]: {
                 title: ErrorMessage.SERVER_ERROR,

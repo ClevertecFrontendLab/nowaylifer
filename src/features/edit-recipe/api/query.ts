@@ -13,9 +13,7 @@ export const editRecipeApi = apiSlice.injectEndpoints({
         [EditRecipeEndpointName.CreateRecipe]: build.mutation<Recipe, RecipeDraft>({
             query: (draft) => ({ url: ApiEndpoint.RECIPE, method: HTTPMethod.POST, body: draft }),
             invalidatesTags: ['Recipe'],
-            extraOptions: {
-                errorMetaByStatus: errorMeta.createRecipe,
-            },
+            extraOptions: { errorMetaByStatus: errorMeta.createRecipe },
         }),
         [EditRecipeEndpointName.UpdateRecipe]: build.mutation<
             Recipe,
@@ -27,9 +25,15 @@ export const editRecipeApi = apiSlice.injectEndpoints({
                 body: updates,
             }),
             invalidatesTags: ['Recipe'],
-            extraOptions: {
-                errorMetaByStatus: errorMeta.updateRecipe,
-            },
+            extraOptions: { errorMetaByStatus: errorMeta.updateRecipe },
+        }),
+        [EditRecipeEndpointName.DeleteRecipe]: build.mutation<void, string>({
+            query: (recipeId) => ({
+                url: `${ApiEndpoint.RECIPE}/${recipeId}`,
+                method: HttpMethod.DELETE,
+            }),
+            invalidatesTags: ['Recipe'],
+            extraOptions: { errorMetaByStatus: errorMeta.deleteRecipe },
         }),
         [EditRecipeEndpointName.MeasureUntis]: build.query<MeasureUnit[], void>({
             query: () => ({ url: ApiEndpoint.MEASURE_UNITS }),

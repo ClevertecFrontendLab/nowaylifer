@@ -15,7 +15,7 @@ import { PlusIcon } from '~/shared/ui/icons/plus';
 import { TrashCanIcon } from '~/shared/ui/icons/trash-can';
 import { XOR } from '~/shared/util';
 
-import { editRecipeApi } from '../api/api';
+import { editRecipeApi } from '../api/query';
 import { IngredientSchema, RecipeDraftSchema } from '../schema';
 
 interface RegisteredIngredientRowProps {

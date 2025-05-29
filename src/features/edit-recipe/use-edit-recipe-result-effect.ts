@@ -16,6 +16,9 @@ export const useEditRecipeResultEffect = () => {
             case 'created':
             case 'updated':
                 toast({ title: 'Рецепт успешно опубликован', status: 'success' });
+                break;
+            case 'deleted':
+                toast({ title: 'Рецепт успешно удален', status: 'success' });
         }
 
         historyStore.delete('editRecipe');

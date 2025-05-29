@@ -2,11 +2,14 @@ import { Box, Container, Heading, ListItem, OrderedList, Stack } from '@chakra-u
 import { useLoaderData } from 'react-router';
 
 import { selectCategoriesInvariant } from '~/entities/category';
-import { RecipeCard } from '~/entities/recipe';
-import { RecipeWithAuthor } from '~/entities/recipe';
+import { RecipeCard, RecipeWithAuthor } from '~/entities/recipe';
 import { recipeApi } from '~/entities/recipe/api/query';
 import { getRecipeRootCategories } from '~/entities/recipe/util';
-import { UpdateRecipeButton, useEditRecipeResultEffect } from '~/features/edit-recipe';
+import {
+    DeleteRecipeButton,
+    UpdateRecipeButton,
+    useEditRecipeResultEffect,
+} from '~/features/edit-recipe';
 import { selectSessionData } from '~/shared/session/slice';
 import { useAppSelector } from '~/shared/store';
 import { Main } from '~/shared/ui/main';
@@ -33,7 +36,10 @@ export function RecipePage() {
                 variant='detailed'
                 actionSlot={
                     recipe.authorId === session?.userId ? (
-                        <UpdateRecipeButton categoryById={categoryById} recipe={recipe} />
+                        <>
+                            <DeleteRecipeButton recipe={recipe} />
+                            <UpdateRecipeButton categoryById={categoryById} recipe={recipe} />
+                        </>
                     ) : undefined
                 }
                 categories={getRecipeRootCategories(recipe, categoryById)}

@@ -9,6 +9,7 @@ import {
     RecipeCardsGrid,
     selectFromRecipeInfiniteQueryResult,
 } from '~/entities/recipe';
+import { useEditRecipeResultEffect } from '~/features/edit-recipe';
 import {
     filtersToParams,
     selectAppliedFiltersByGroup,
@@ -58,6 +59,8 @@ export function MainPage() {
 
     useUpdateLastSearchResult(recipes);
     useAppLoader(appLoaderEnabled);
+
+    useEditRecipeResultEffect();
 
     return (
         <Main>
