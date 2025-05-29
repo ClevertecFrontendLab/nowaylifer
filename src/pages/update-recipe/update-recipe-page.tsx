@@ -24,9 +24,7 @@ export const UpdateRecipePage = () => {
         const updatedRecipe = res.data;
 
         navigate(buildRecipePath(updatedRecipe, categoryById), {
-            state: {
-                editRecipe: { event: 'updated' },
-            } satisfies EditRecipeHistoryState,
+            state: { editRecipe: { event: 'published' } } satisfies EditRecipeHistoryState,
         });
     };
 

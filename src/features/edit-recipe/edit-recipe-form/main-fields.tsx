@@ -1,4 +1,5 @@
 import { Flex, FormLabel, Grid, Input, Textarea } from '@chakra-ui/react';
+import { memo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { ImageUpload } from '../image-upload';
@@ -6,7 +7,7 @@ import { RecipeDraft } from '../types';
 import { NumberInputControl } from './number-input-control';
 import { SubCategorySelect } from './subcategory-select';
 
-export const MainFields = () => {
+export const MainFields = memo(() => {
     const { control } = useFormContext<RecipeDraft>();
 
     return (
@@ -110,4 +111,4 @@ export const MainFields = () => {
             </Flex>
         </Flex>
     );
-};
+});

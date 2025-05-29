@@ -8,7 +8,7 @@ import { getRecipeRootCategories } from '~/entities/recipe/util';
 import {
     DeleteRecipeButton,
     UpdateRecipeButton,
-    useEditRecipeResultEffect,
+    useEditRecipeEventEffect,
 } from '~/features/edit-recipe';
 import { selectSessionData } from '~/shared/session/slice';
 import { useAppSelector } from '~/shared/store';
@@ -28,7 +28,7 @@ export function RecipePage() {
     const { categoryById } = useAppSelector(selectCategoriesInvariant);
     const recipe = data ?? initialRecipe;
 
-    useEditRecipeResultEffect();
+    useEditRecipeEventEffect();
 
     return (
         <Main>

@@ -1,22 +1,20 @@
 import { Button, ButtonProps, Center, chakra, Container, Flex } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DefaultValues, FormProvider, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
 
-import { useAppLoader } from '~/shared/infra/app-loader';
-import { RoutePath } from '~/shared/router';
 import { EditIcon } from '~/shared/ui/icons/edit';
 
-import { editRecipeApi } from '../api/query';
 import { recipeDraftSchema } from '../schema';
-import { EditRecipeHistoryState, RecipeDraft } from '../types';
+import { RecipeDraft } from '../types';
 import { IngredientFields } from './ingredient-fields';
 import { MainFields } from './main-fields';
 import { StepFields } from './step-fields';
+import { useLeaveBlocker } from './use-leave-blocker';
+import { useSaveRecipeDraft } from './use-save-recipe-draft';
 
 export interface EditRecipeFormProps {
     defaultValues?: DefaultValues<RecipeDraft>;
-    onSubmit?: (data: RecipeDraft) => void;
+    onSubmit: (data: RecipeDraft) => void;
 }
 
 const emptyDraft: DefaultValues<RecipeDraft> = {
@@ -28,32 +26,18 @@ const emptyDraft: DefaultValues<RecipeDraft> = {
 };
 
 export const EditRecipeForm = ({ defaultValues = emptyDraft, onSubmit }: EditRecipeFormProps) => {
-    const navigate = useNavigate();
     const form = useForm<RecipeDraft>({
         resolver: zodResolver(recipeDraftSchema),
         defaultValues,
     });
 
-    const { handleSubmit, trigger: triggerValidate } = form;
+    const saveDraft = useSaveRecipeDraft(form);
 
-    const [saveDraft, { isLoading }] = editRecipeApi.useSaveDraftMutation();
-    useAppLoader(isLoading);
-
-    const handleSaveDraft = async () => {
-        const isTitleValid = await triggerValidate('title', { shouldFocus: true });
-        if (!isTitleValid) return;
-
-        const res = await saveDraft(form.getValues());
-        if (res.error) return;
-
-        navigate(RoutePath.Main, {
-            state: { editRecipe: { event: 'draftSaved' } } satisfies EditRecipeHistoryState,
-        });
-    };
+    useLeaveBlocker(form);
 
     return (
         <FormProvider {...form}>
-            <chakra.form onSubmit={handleSubmit((draft) => onSubmit?.(draft))}>
+            <chakra.form onSubmit={form.handleSubmit(onSubmit)}>
                 <MainFields />
                 <Container
                     p={0}
@@ -66,7 +50,7 @@ export const EditRecipeForm = ({ defaultValues = emptyDraft, onSubmit }: EditRec
                 </Container>
                 <Center>
                     <Flex gap={5} direction={{ base: 'column', md: 'row' }}>
-                        <SaveDraftButton onClick={handleSaveDraft} />
+                        <SaveDraftButton onClick={saveDraft} />
                         <PublishRecipeButton />
                     </Flex>
                 </Center>

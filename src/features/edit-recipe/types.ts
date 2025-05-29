@@ -19,6 +19,9 @@ export interface RecipeDraft
         | 'meat'
     > {}
 
+// published is either created or updated
+export type EditRecipeEvent = 'published' | 'deleted' | 'draftSaved';
+
 export interface EditRecipeHistoryState {
-    editRecipe?: { event: 'created' | 'updated' | 'deleted' | 'draftSaved' };
+    editRecipe?: { event: EditRecipeEvent };
 }
