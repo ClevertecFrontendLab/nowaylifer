@@ -3,6 +3,7 @@ import { Box, Button, HStack } from '@chakra-ui/react';
 import { BookmarkIcon } from '~/shared/ui/icons/bookmark';
 import { ClockIcon } from '~/shared/ui/icons/clock';
 import { EmojiHeartEyesIcon } from '~/shared/ui/icons/emoji-heart-eyes';
+import { PluralForms, pluralizeRu } from '~/shared/util';
 
 import { RecipeCardBadge } from './parts/badge';
 import { RecipeCardBody } from './parts/body';
@@ -13,6 +14,16 @@ import { RecipeCardRoot } from './parts/root';
 import { RecipeCardStats } from './parts/stats';
 import { RecipeCardTitle } from './parts/title';
 import { RecipeCardProps } from './props';
+
+const forms: PluralForms = {
+    one: 'минута',
+    few: 'минуты',
+    many: 'минут',
+    other: 'минут',
+};
+
+const formatTime = (timeInMinutes: number) =>
+    `${timeInMinutes} ${pluralizeRu(timeInMinutes, forms)}`;
 
 export const DetailedRecipeCard = ({ recipe, ...rootProps }: RecipeCardProps) => (
     <RecipeCardRoot asLinkBox={false} recipe={recipe} {...rootProps}>
@@ -29,7 +40,7 @@ export const DetailedRecipeCard = ({ recipe, ...rootProps }: RecipeCardProps) =>
             <HStack order={2} alignItems='end' wrap={{ base: 'wrap', md: 'nowrap' }} gap={3}>
                 <RecipeCardBadge bg='blackAlpha.100' mr='auto'>
                     <ClockIcon />
-                    {recipe.time}
+                    {formatTime(recipe.time)}
                 </RecipeCardBadge>
                 <HStack gap={{ base: 3, '2xl': 4 }}>
                     <Button

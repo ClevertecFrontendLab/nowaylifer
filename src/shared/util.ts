@@ -9,3 +9,11 @@ export const isE2E = () => !!window.Cypress;
 
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
 export type XOR<T, U> = (T & Without<U, T>) | (U & Without<T, U>);
+
+export type PluralForms = Partial<Record<Intl.LDMLPluralRule, string>> & { other: string };
+
+export const pluralizeRu = (number: number, forms: PluralForms): string => {
+    const pr = new Intl.PluralRules('ru');
+    const category = pr.select(number);
+    return forms[category] ?? forms.other;
+};
