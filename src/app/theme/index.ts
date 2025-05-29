@@ -9,7 +9,8 @@ import { Badge } from './components/badge';
 import { Button, CloseButton } from './components/button';
 import { Card } from './components/card';
 import { Checkbox } from './components/checkbox';
-import { Input } from './components/input';
+import { Input, NumberInput, Select, Textarea } from './components/input';
+import { FormLabel } from './components/label';
 import { Link } from './components/link';
 import { Modal } from './components/modal';
 import { Progress } from './components/progress';
@@ -41,6 +42,10 @@ const themeOverride = {
         Badge,
         Card,
         Input,
+        FormLabel,
+        Select,
+        NumberInput,
+        Textarea,
         Checkbox,
         Switch,
     },

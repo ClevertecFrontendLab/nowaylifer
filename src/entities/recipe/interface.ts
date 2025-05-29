@@ -1,13 +1,13 @@
-export interface RecipeIngredient {
+export interface Ingredient {
     title: string;
-    count: string;
+    count: string | number;
     measureUnit: string;
 }
 
-export interface RecipeStep {
+export interface Step {
     stepNumber: number;
     description: string;
-    image: string;
+    image?: string;
 }
 
 export interface Recipe {
@@ -20,14 +20,14 @@ export interface Recipe {
     portions: number;
     authorId: string;
     categoriesIds: string[];
-    steps: RecipeStep[];
+    steps: Step[];
     nutritionValue: {
         calories: number;
         protein: number;
         fats: number;
         carbohydrates: number;
     };
-    ingredients: RecipeIngredient[];
+    ingredients: Ingredient[];
     likes: number;
     views: number;
     bookmarks: number;

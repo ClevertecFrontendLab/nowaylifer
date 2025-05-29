@@ -24,7 +24,8 @@ export const MultiSelectField = ({
         <chakra.button
             type='button'
             __css={styles.field}
-            disabled={state.disabled}
+            disabled={state.isDisabled}
+            aria-invalid={state.isInvalid}
             data-focus={state.isOpen || undefined}
             className={cx(multiSelectClassNames.field, className)}
             {...getToggleButtonProps(

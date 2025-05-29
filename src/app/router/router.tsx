@@ -14,6 +14,7 @@ import { AuthLayout, EmailVerificationCallback, LoginForm, SignupForm } from '~/
 import { CategoryPage, categoryPageLoader } from '~/pages/category';
 import { JuiciestPage, juiciestPageLoader } from '~/pages/juiciest';
 import { MainPage } from '~/pages/main';
+import { NewRecipePage } from '~/pages/new-recipe/new-recipe-page';
 import { RecipePage, recipePageLoader } from '~/pages/recipe';
 import { paramPattern, RouteParam, RoutePath, storeContext } from '~/shared/router';
 import {
@@ -71,6 +72,11 @@ const routerConfig: RouteObject[] = [
                         handle: { crumb: 'Самое сочное' },
                         Component: JuiciestPage,
                         loader: juiciestPageLoader,
+                    },
+                    {
+                        path: RoutePath.NewRecipe,
+                        handle: { crumb: 'Новый рецепт' },
+                        Component: NewRecipePage,
                     },
                     {
                         path: paramPattern(RouteParam.RootCategory),

@@ -7,7 +7,7 @@ import {
     RootCategory,
     SubCategory,
 } from '~/entities/category/@x/recipe';
-import { buildImageSrc } from '~/shared/util';
+import { buildMediaSrc } from '~/shared/util';
 
 import { Recipe } from './interface';
 
@@ -51,9 +51,9 @@ const getRecipePath = (recipe: Recipe, root: RootCategory, sub: SubCategory) =>
 
 export const normalizeRecipeImages = <T extends Recipe>(recipe: T): T => ({
     ...recipe,
-    image: buildImageSrc(recipe.image),
+    image: buildMediaSrc(recipe.image),
     steps: recipe.steps.map(({ image, ...rest }) => ({
         ...rest,
-        image: image ? buildImageSrc(image) : image,
+        image: image ? buildMediaSrc(image) : image,
     })),
 });

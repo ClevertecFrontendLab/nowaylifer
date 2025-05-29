@@ -6,6 +6,7 @@ import { RecipeCard } from '~/entities/recipe';
 import { recipeApi } from '~/entities/recipe/api';
 import { RecipeWithAuthor } from '~/entities/recipe/interface';
 import { getRecipeRootCategories } from '~/entities/recipe/util';
+import { useEditRecipeResultEffect } from '~/features/edit-recipe';
 import { useAppSelector } from '~/shared/store';
 import { Main } from '~/shared/ui/main';
 import { Section, SectionHeading } from '~/shared/ui/section';
@@ -21,6 +22,8 @@ export function RecipePage() {
     const { data } = recipeApi.useRecipeByIdQuery(initialRecipe._id);
     const { categoryById } = useAppSelector(selectCategoriesInvariant);
     const recipe = data ?? initialRecipe;
+
+    useEditRecipeResultEffect();
 
     return (
         <Main>

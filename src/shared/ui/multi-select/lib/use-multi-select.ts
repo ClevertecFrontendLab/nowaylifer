@@ -1,3 +1,4 @@
+import { FormControlOptions } from '@chakra-ui/react';
 import { useMultipleSelection, useSelect, UseSelectProps } from 'downshift';
 import { useMemo } from 'react';
 
@@ -6,12 +7,11 @@ export interface BaseItem {
     label: string;
 }
 
-export interface UseMultiSelectProps<Item> {
+export interface UseMultiSelectProps<Item> extends FormControlOptions {
     items: Item[];
-    itemToString: UseSelectProps<Item>['itemToString'];
+    itemToString?: UseSelectProps<Item>['itemToString'];
     itemToKey?: UseSelectProps<Item>['itemToKey'];
     value?: NoInfer<Item>[];
-    disabled?: boolean;
     onChange?: (selectedItems: NoInfer<Item>[]) => void;
     onIsOpenChange?: UseSelectProps<Item>['onIsOpenChange'];
     closeOnSelect?: boolean;
@@ -20,12 +20,12 @@ export interface UseMultiSelectProps<Item> {
 export const useMultiSelect = <Item>({
     items,
     closeOnSelect,
-    itemToString,
+    itemToString = (item) => (item ? String(item) : ''),
     itemToKey = (item) => item,
     value,
-    disabled,
     onChange,
     onIsOpenChange,
+    ...formControlOptions
 }: UseMultiSelectProps<Item>) => {
     const {
         getSelectedItemProps,
@@ -99,7 +99,14 @@ export const useMultiSelect = <Item>({
         });
 
     return {
-        state: { isOpen, items, selectedItems, highlightedIndex, activeIndex, disabled },
+        state: {
+            isOpen,
+            items,
+            selectedItems,
+            highlightedIndex,
+            activeIndex,
+            ...formControlOptions,
+        },
         itemToKey,
         resetSelection,
         addSelectedItem,

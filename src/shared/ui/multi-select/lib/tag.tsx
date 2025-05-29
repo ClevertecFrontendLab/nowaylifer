@@ -63,7 +63,9 @@ export const MultiSelectTag = <Item,>({
             {...getSelectedItemProps({ selectedItem: item, index })}
             {...props}
         >
-            <TagLabel {...labelProps}>{children}</TagLabel>
+            <TagLabel noOfLines={{}} isTruncated {...labelProps}>
+                {children}
+            </TagLabel>
             <TagCloseButton
                 onClick={(e) => {
                     e.stopPropagation();

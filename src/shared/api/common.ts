@@ -36,3 +36,9 @@ export interface QueryHttpError<T = unknown> {
 export type ApiErrorResponse = z.infer<typeof apiErrorResponseSchema>;
 
 export type QueryApiError = QueryHttpError<ApiErrorResponse>;
+
+export interface UploadedFile {
+    _id: string;
+    name: string;
+    url: string;
+}

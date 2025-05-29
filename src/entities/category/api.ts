@@ -1,7 +1,7 @@
 import { isEmpty, keyBy } from 'lodash-es';
 
 import { ApiEndpoint, apiSlice } from '~/shared/api';
-import { buildImageSrc, isE2E } from '~/shared/util';
+import { buildMediaSrc, isE2E } from '~/shared/util';
 
 import { CATEGORY_STORAGE_KEY, isRootCategory } from './lib/util';
 import { Category, CategoryState } from './types';
@@ -9,7 +9,7 @@ import { Category, CategoryState } from './types';
 const normalizeCategoryIcon = ({ icon, ...rest }: Category) =>
     ({
         ...rest,
-        icon: icon ? buildImageSrc(icon) : icon,
+        icon: icon ? buildMediaSrc(icon) : icon,
     }) as Category;
 
 export const categoryApi = apiSlice.injectEndpoints({

@@ -1,6 +1,8 @@
 export enum ApiEndpoint {
     CATEGORY = '/category',
     RECIPE = '/recipe',
+    MEASURE_UNITS = '/measure-units',
+    UPLOAD_FILE = '/file/upload',
     RECIPE_SUBCATEGORY = '/recipe/category',
     AUTH_SIGNUP = '/auth/signup',
     AUTH_LOGIN = '/auth/login',

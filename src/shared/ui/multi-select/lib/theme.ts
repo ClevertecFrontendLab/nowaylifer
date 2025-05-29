@@ -51,13 +51,17 @@ const baseStyleTagList = defineStyle({
     display: 'flex',
     flexWrap: 'wrap',
     pl: 4,
+    pr: 2,
     py: 2.5,
     alignItems: 'center',
     gap: 1,
     rowGap: 1,
     columnGap: 2,
     minH: $height.reference,
+    overflow: 'hidden',
 });
+
+const baseStyleTag = defineStyle({});
 
 const baseStyleMenu = defineStyle({
     [$menuBg.variable]: 'colors.white',
@@ -128,8 +132,6 @@ const baseStyleIcon = defineStyle({
     pointerEvents: 'none',
     color: 'gray.700',
 });
-
-const baseStyleTag = defineStyle({});
 
 const baseStylePlaceholder = defineStyle({
     color: 'chakra-placeholder-color',

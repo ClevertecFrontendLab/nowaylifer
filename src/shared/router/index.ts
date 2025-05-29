@@ -19,4 +19,7 @@ export const RoutePath = {
     Login: '/login',
     Signup: '/signup',
     EmailVerificationCallback: '/verification',
+    NewRecipe: '/new-recipe',
 };
+
+export { createHistoryStore } from './history-store';

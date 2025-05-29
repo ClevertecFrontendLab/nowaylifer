@@ -1,5 +1,6 @@
 import {
     chakra,
+    FormControlOptions,
     HTMLChakraProps,
     omitThemingProps,
     ThemingProps,
@@ -23,8 +24,8 @@ import { MultiSelectState, useMultiSelect, UseMultiSelectProps } from './use-mul
 
 interface MultiSelectOptions<Item> {
     focusBorderColor?: string;
+    errorBorderColor?: string;
     containerProps?: HTMLChakraProps<'div'>;
-    disabled?: boolean;
     popperConfig?: Omit<UsePopperProps, 'enabled'>;
     children?: MaybeRenderProp<MultiSelectState<Item>>;
 }
@@ -32,7 +33,8 @@ interface MultiSelectOptions<Item> {
 export interface MultiSelectProps<Item>
     extends UseMultiSelectProps<Item>,
         ThemingProps<'MultiSelect'>,
-        MultiSelectOptions<Item> {}
+        MultiSelectOptions<Item>,
+        FormControlOptions {}
 
 export const MultiSelect = <Item,>({
     children,
@@ -66,7 +68,8 @@ const MultiSelectContainer = ({ className, ...props }: HTMLChakraProps<'div'>) =
     return (
         <chakra.div
             __css={styles.container}
-            aria-disabled={state.disabled}
+            aria-disabled={state.isDisabled}
+            aria-invalid={state.isInvalid}
             className={cx(multiSelectClassNames.container, className)}
             {...props}
         />
