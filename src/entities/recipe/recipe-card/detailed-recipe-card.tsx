@@ -30,7 +30,7 @@ export const DetailedRecipeCard = ({ recipe, actionSlot, ...rootProps }: RecipeC
         <RecipeCardImage />
         <RecipeCardBody>
             <Box order={1} flexGrow={1}>
-                <RecipeCardTitle />
+                <RecipeCardTitle asLink={false} />
                 <RecipeCardDescription />
             </Box>
             <HStack order={0} justify='space-between' gap={1}>
