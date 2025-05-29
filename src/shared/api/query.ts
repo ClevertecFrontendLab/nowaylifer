@@ -32,6 +32,7 @@ const baseQuery = withErrorLogger(
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery,
+    tagTypes: ['Recipe'],
     endpoints: () => ({}),
 });
 

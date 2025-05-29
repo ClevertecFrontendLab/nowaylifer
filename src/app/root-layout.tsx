@@ -2,7 +2,7 @@ import { Circle, Grid, GridItem, HStack, useBreakpointValue, VStack } from '@cha
 import { Outlet } from 'react-router';
 
 import { Button } from '~/shared/ui/button';
-import { PenIcon } from '~/shared/ui/icons/pen';
+import { PencilIcon } from '~/shared/ui/icons/pencil';
 import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/stats';
 import { AppHeader } from '~/widgets/app-header';
 import { BottomMenu } from '~/widgets/bottom-menu';
@@ -69,7 +69,7 @@ export default function RootLayout() {
                             fontSize='xs'
                             topIcon={
                                 <Circle size={12} bg='black' color='lime.50'>
-                                    <PenIcon boxSize={6} />
+                                    <PencilIcon boxSize={6} />
                                 </Circle>
                             }
                         >

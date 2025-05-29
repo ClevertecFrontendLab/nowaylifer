@@ -7,13 +7,13 @@ import {
     Flex,
     FormLabel,
     Grid,
-    Icon,
-    IconProps,
     Input,
     Textarea,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, DefaultValues, FormProvider, useForm } from 'react-hook-form';
+
+import { EditIcon } from '~/shared/ui/icons/edit';
 
 import { ImageUpload } from '../image-upload';
 import { recipeDraftSchema } from '../schema';
@@ -173,16 +173,7 @@ const PublishRecipeButton = (props: ButtonProps) => (
 );
 
 const SaveDraftButton = (props: ButtonProps) => (
-    <Button size='lg' variant='outline' leftIcon={<PenIcon />} {...props}>
+    <Button size='lg' variant='outline' leftIcon={<EditIcon />} {...props}>
         Сохранить черновик
     </Button>
-);
-
-const PenIcon = (props: IconProps) => (
-    <Icon viewBox='0 0 17 16' boxSize='1em' {...props}>
-        <path
-            d='M13.1967 4.93392C13.4487 4.68192 13.5874 4.34725 13.5874 3.99125C13.5874 3.63525 13.4487 3.30059 13.1967 3.04859L12.1394 1.99125C11.8874 1.73925 11.5527 1.60059 11.1967 1.60059C10.8407 1.60059 10.5061 1.73925 10.2547 1.99059L3.16675 9.05659V11.9999H6.10875L13.1967 4.93392ZM11.1967 2.93392L12.2547 3.99059L11.1947 5.04659L10.1374 3.98992L11.1967 2.93392ZM4.50008 10.6666V9.60992L9.19341 4.93125L10.2507 5.98859L5.55808 10.6666H4.50008ZM3.16675 13.3333H13.8334V14.6666H3.16675V13.3333Z'
-            fill='currentColor'
-        />
-    </Icon>
 );

@@ -1,10 +1,11 @@
 import invariant from 'invariant';
 import { replace } from 'react-router';
 
-import { recipeApi } from '~/entities/recipe';
 import { createRouteLoader, RouteParam, storeContext } from '~/shared/router';
 
-export const loader = createRouteLoader(async ({ context, params, request }) => {
+import { recipeApi } from './query';
+
+export const recipeLoader = createRouteLoader(async ({ context, params, request }) => {
     const { dispatch } = context.get(storeContext);
     const recipeId = params[RouteParam.RecipeId];
 

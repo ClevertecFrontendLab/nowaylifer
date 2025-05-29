@@ -25,7 +25,7 @@ const forms: PluralForms = {
 const formatTime = (timeInMinutes: number) =>
     `${timeInMinutes} ${pluralizeRu(timeInMinutes, forms)}`;
 
-export const DetailedRecipeCard = ({ recipe, ...rootProps }: RecipeCardProps) => (
+export const DetailedRecipeCard = ({ recipe, actionSlot, ...rootProps }: RecipeCardProps) => (
     <RecipeCardRoot asLinkBox={false} recipe={recipe} {...rootProps}>
         <RecipeCardImage />
         <RecipeCardBody>
@@ -43,20 +43,24 @@ export const DetailedRecipeCard = ({ recipe, ...rootProps }: RecipeCardProps) =>
                     {formatTime(recipe.time)}
                 </RecipeCardBadge>
                 <HStack gap={{ base: 3, '2xl': 4 }}>
-                    <Button
-                        variant='outline'
-                        size={{ base: 'xs', lg: 'sm', '2xl': 'lg' }}
-                        leftIcon={<EmojiHeartEyesIcon />}
-                    >
-                        Оценить рецепт
-                    </Button>
-                    <Button
-                        bg='lime.400'
-                        size={{ base: 'xs', lg: 'sm', '2xl': 'lg' }}
-                        leftIcon={<BookmarkIcon />}
-                    >
-                        Сохранить в закладки
-                    </Button>
+                    {actionSlot || (
+                        <>
+                            <Button
+                                variant='outline'
+                                size={{ base: 'xs', lg: 'sm', '2xl': 'lg' }}
+                                leftIcon={<EmojiHeartEyesIcon />}
+                            >
+                                Оценить рецепт
+                            </Button>
+                            <Button
+                                bg='lime.400'
+                                size={{ base: 'xs', lg: 'sm', '2xl': 'lg' }}
+                                leftIcon={<BookmarkIcon />}
+                            >
+                                Сохранить в закладки
+                            </Button>
+                        </>
+                    )}
                 </HStack>
             </HStack>
         </RecipeCardBody>

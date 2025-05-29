@@ -14,6 +14,7 @@ export const useEditRecipeResultEffect = () => {
 
         switch (event) {
             case 'created':
+            case 'updated':
                 toast({ title: 'Рецепт успешно опубликован', status: 'success' });
         }
 

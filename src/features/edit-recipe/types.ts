@@ -20,5 +20,5 @@ export interface RecipeDraft
     > {}
 
 export interface EditRecipeHistoryState {
-    editRecipe?: { event: 'created' };
+    editRecipe?: { event: 'created' | 'updated' };
 }

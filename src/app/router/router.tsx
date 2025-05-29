@@ -2,20 +2,18 @@ import { noop } from 'lodash-es';
 import { createBrowserRouter, RouteObject } from 'react-router';
 
 import {
-    ActiveCategories,
-    buildCategoryPath,
     initCategoriesMiddleware,
     NavigateToSubCategory,
     validateCategoryParamsMiddleware,
 } from '~/entities/category';
-import { RecipeWithAuthor } from '~/entities/recipe';
-import { RouteBreadcrumb } from '~/features/breadcrumbs';
+import { recipeLoader } from '~/entities/recipe';
 import { AuthLayout, EmailVerificationCallback, LoginForm, SignupForm } from '~/pages/auth';
 import { CategoryPage, categoryPageLoader } from '~/pages/category';
+import { CreateRecipePage } from '~/pages/create-recipe/create-recipe-page';
 import { JuiciestPage, juiciestPageLoader } from '~/pages/juiciest';
 import { MainPage } from '~/pages/main';
-import { NewRecipePage } from '~/pages/new-recipe/new-recipe-page';
-import { RecipePage, recipePageLoader } from '~/pages/recipe';
+import { RecipePage } from '~/pages/recipe';
+import { UpdateRecipePage } from '~/pages/update-recipe';
 import { paramPattern, RouteParam, RoutePath, storeContext } from '~/shared/router';
 import {
     checkAuthMiddleware,
@@ -26,6 +24,7 @@ import { PageNotFound } from '~/widgets/page-not-found';
 
 import RootLayout from '../root-layout';
 import { HydrateFallback } from './hydrate-fallback';
+import * as routeCrumb from './route-breadcrumbs';
 import { RouterProviders } from './router-providers';
 
 const routerConfig: RouteObject[] = [
@@ -53,10 +52,7 @@ const routerConfig: RouteObject[] = [
             },
             {
                 Component: RootLayout,
-                handle: {
-                    crumb: ({ location }) =>
-                        location.pathname === RoutePath.NotFound ? undefined : 'Главная',
-                } satisfies RouteBreadcrumb,
+                handle: { crumb: routeCrumb.mainCrumb },
                 loader: noop,
                 HydrateFallback,
                 unstable_middleware: [
@@ -69,31 +65,30 @@ const routerConfig: RouteObject[] = [
                     { path: RoutePath.NotFound, Component: PageNotFound },
                     {
                         path: RoutePath.Juiciest,
-                        handle: { crumb: 'Самое сочное' },
+                        handle: { crumb: routeCrumb.juiciestCrumb },
                         Component: JuiciestPage,
                         loader: juiciestPageLoader,
                     },
                     {
                         path: RoutePath.NewRecipe,
-                        handle: { crumb: 'Новый рецепт' },
-                        Component: NewRecipePage,
+                        handle: { crumb: routeCrumb.newRecipeCrumb },
+                        Component: CreateRecipePage,
+                    },
+                    {
+                        path: `/edit/${paramPattern(RouteParam.RootCategory)}/${paramPattern(RouteParam.SubCategory)}/${paramPattern(RouteParam.RecipeId)}`,
+                        Component: UpdateRecipePage,
+                        loader: recipeLoader,
+                        handle: { crumb: routeCrumb.updateRecipeCrumb },
                     },
                     {
                         path: paramPattern(RouteParam.RootCategory),
-                        handle: {
-                            crumb: ({ extraArg: [root] }) => ({
-                                label: root.title,
-                                href: buildCategoryPath(root, root.subCategories[0]),
-                            }),
-                        } satisfies RouteBreadcrumb<ActiveCategories>,
+                        handle: { crumb: routeCrumb.rootCategoryCrumb },
                         errorElement: <PageNotFound />,
                         Component: NavigateToSubCategory,
                         children: [
                             {
                                 path: paramPattern(RouteParam.SubCategory),
-                                handle: {
-                                    crumb: ({ extraArg: [_, sub] }) => sub.title,
-                                } satisfies RouteBreadcrumb<ActiveCategories>,
+                                handle: { crumb: routeCrumb.subCategoryCrumb },
                                 children: [
                                     {
                                         index: true,
@@ -103,13 +98,8 @@ const routerConfig: RouteObject[] = [
                                     {
                                         path: paramPattern(RouteParam.RecipeId),
                                         Component: RecipePage,
-                                        loader: recipePageLoader,
-                                        handle: {
-                                            crumb: ({ match }) => ({ label: match.data?.title }),
-                                        } satisfies RouteBreadcrumb<
-                                            ActiveCategories,
-                                            RecipeWithAuthor
-                                        >,
+                                        loader: recipeLoader,
+                                        handle: { crumb: routeCrumb.recipeCrumb },
                                     },
                                 ],
                             },

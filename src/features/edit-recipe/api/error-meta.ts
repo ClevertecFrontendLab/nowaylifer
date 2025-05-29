@@ -20,6 +20,10 @@ export const errorMeta: Partial<Record<EditRecipeEndpointName | 'uploadImage', E
             [HttpStatusCode.CONFLICT]: conflictError,
             [HttpStatusCode.INTERNAL_SERVER_ERROR]: serverError,
         },
+        updateRecipe: {
+            [HttpStatusCode.CONFLICT]: conflictError,
+            [HttpStatusCode.INTERNAL_SERVER_ERROR]: serverError,
+        },
         uploadImage: {
             [HttpStatusCode.INTERNAL_SERVER_ERROR]: {
                 title: ErrorMessage.SERVER_ERROR,

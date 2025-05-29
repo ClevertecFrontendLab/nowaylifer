@@ -177,6 +177,7 @@ export const recipeCardTheme = defineMultiStyleConfig({
         },
         detailed: {
             root: {
+                borderRightRadius: 'none',
                 flexDir: { base: 'column', md: 'row' },
                 border: 'none',
                 minH: { base: 'auto', md: '224px', lg: '410px' },

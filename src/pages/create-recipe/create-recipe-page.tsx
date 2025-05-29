@@ -8,7 +8,7 @@ import { useAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector } from '~/shared/store';
 import { Main } from '~/shared/ui/main';
 
-export const NewRecipePage = () => {
+export const CreateRecipePage = () => {
     const { categoryById } = useAppSelector(selectCategoriesInvariant);
     const [createRecipe, { isLoading }] = editRecipeApi.useCreateRecipeMutation();
     const navigate = useNavigate();
