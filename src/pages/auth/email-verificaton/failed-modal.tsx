@@ -1,32 +1,31 @@
+import imageUrl from '~/shared/assets/coffee-tea.png';
+import {
+    AppModalBody,
+    AppModalCloseButton,
+    AppModalContent,
+    AppModalDescription,
+    AppModalImage,
+    AppModalSmallPrint,
+    AppModalTitle,
+} from '~/shared/infra/modals-manager';
 import { TestId } from '~/shared/test-ids';
 import { Link } from '~/shared/ui/link';
 
-import imageUrl from '../assets/coffee-tea.png';
-import {
-    AuthModalBody,
-    AuthModalCloseButton,
-    AuthModalContent,
-    AuthModalDescription,
-    AuthModalImage,
-    AuthModalSmallPrint,
-    AuthModalTitle,
-} from '../common/auth-modal';
-
 export const EmailVerificationFailedModalContent = () => (
-    <AuthModalContent data-test-id={TestId.EMAIL_VERIFICATION_FAILED_MODAL}>
-        <AuthModalCloseButton data-test-id={TestId.MODAL_CLOSE_BUTTON} />
-        <AuthModalBody>
-            <AuthModalImage src={imageUrl} />
-            <AuthModalTitle>Упс! Что-то пошло не так</AuthModalTitle>
-            <AuthModalDescription color='blackAlpha.700'>
+    <AppModalContent data-test-id={TestId.EMAIL_VERIFICATION_FAILED_MODAL}>
+        <AppModalCloseButton data-test-id={TestId.MODAL_CLOSE_BUTTON} />
+        <AppModalBody>
+            <AppModalImage src={imageUrl} />
+            <AppModalTitle>Упс! Что-то пошло не так</AppModalTitle>
+            <AppModalDescription color='blackAlpha.700'>
                 Ваша ссылка для верификации недействительна. Попробуйте зарегистрироваться снова.
-            </AuthModalDescription>
-            <AuthModalSmallPrint>
+            </AppModalDescription>
+            <AppModalSmallPrint>
                 Остались вопросы? Свяжитесь{' '}
                 <Link to='/' textDecoration='underline' whiteSpace='nowrap'>
                     с поддержкой.
                 </Link>
-            </AuthModalSmallPrint>
-        </AuthModalBody>
-    </AuthModalContent>
+            </AppModalSmallPrint>
+        </AppModalBody>
+    </AppModalContent>
 );

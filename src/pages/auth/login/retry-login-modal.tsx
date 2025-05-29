@@ -1,28 +1,27 @@
 import { Button } from '@chakra-ui/react';
 
+import imageUrl from '~/shared/assets/breakfast.png';
+import {
+    AppModalBody,
+    AppModalCloseButton,
+    AppModalContent,
+    AppModalDescription,
+    AppModalImage,
+    AppModalTitle,
+} from '~/shared/infra/modals-manager';
 import { TestId } from '~/shared/test-ids';
 
-import imageUrl from '../assets/breakfast.png';
-import {
-    AuthModalBody,
-    AuthModalCloseButton,
-    AuthModalContent,
-    AuthModalDescription,
-    AuthModalImage,
-    AuthModalTitle,
-} from '../common/auth-modal';
-
 export const RetryLoginModalContent = ({ onRetry }: { onRetry?: () => void }) => (
-    <AuthModalContent data-test-id={TestId.SIGN_IN_ERROR_MODAL}>
-        <AuthModalCloseButton data-test-id={TestId.MODAL_CLOSE_BUTTON} />
-        <AuthModalBody>
-            <AuthModalImage src={imageUrl} />
-            <AuthModalTitle>Вход не выполнен</AuthModalTitle>
-            <AuthModalDescription color='blackAlpha.700'>
+    <AppModalContent data-test-id={TestId.SIGN_IN_ERROR_MODAL}>
+        <AppModalCloseButton data-test-id={TestId.MODAL_CLOSE_BUTTON} />
+        <AppModalBody>
+            <AppModalImage src={imageUrl} />
+            <AppModalTitle>Вход не выполнен</AppModalTitle>
+            <AppModalDescription color='blackAlpha.700'>
                 Что-то пошло не так.
                 <br />
                 Попробуйте еще раз
-            </AuthModalDescription>
+            </AppModalDescription>
             <Button
                 variant='inverted'
                 w='full'
@@ -32,6 +31,6 @@ export const RetryLoginModalContent = ({ onRetry }: { onRetry?: () => void }) =>
             >
                 Повторить
             </Button>
-        </AuthModalBody>
-    </AuthModalContent>
+        </AppModalBody>
+    </AppModalContent>
 );

@@ -3,17 +3,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { isQueryHttpError } from '~/shared/api/util';
+import imageUrl from '~/shared/assets/breakfast.png';
 import { useAppLoader } from '~/shared/infra/app-loader';
+import {
+    AppModalBody,
+    AppModalDescription,
+    AppModalImage,
+    AppModalSmallPrint,
+} from '~/shared/infra/modals-manager';
 import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
-import imageUrl from '../assets/breakfast.png';
-import {
-    AuthModalBody,
-    AuthModalDescription,
-    AuthModalImage,
-    AuthModalSmallPrint,
-} from '../common/auth-modal';
 import { ErrorMessage, FormButton, Label, TextField } from '../common/ui';
 import { RecoverPasswordSchema, recoverPasswordSchema } from './schema';
 
@@ -45,11 +45,11 @@ export const RecoverPassword = ({ next }: { next: (email: string) => void }) => 
     };
 
     return (
-        <AuthModalBody>
-            <AuthModalImage src={imageUrl} />
-            <AuthModalDescription mb={4}>
+        <AppModalBody>
+            <AppModalImage src={imageUrl} />
+            <AppModalDescription mb={4}>
                 Для восстановления входа введите ваш e-mail, куда можно отправить уникальный код
-            </AuthModalDescription>
+            </AppModalDescription>
             <chakra.form mb={6} onSubmit={handleSubmit(handleFormValid)}>
                 <FormControl isInvalid={!!errors.email} mb={6}>
                     <Label>Ваш e-mail</Label>
@@ -64,7 +64,7 @@ export const RecoverPassword = ({ next }: { next: (email: string) => void }) => 
                     Получить код
                 </FormButton>
             </chakra.form>
-            <AuthModalSmallPrint>Не пришло письмо? Проверьте папку Спам.</AuthModalSmallPrint>
-        </AuthModalBody>
+            <AppModalSmallPrint>Не пришло письмо? Проверьте папку Спам.</AppModalSmallPrint>
+        </AppModalBody>
     );
 };

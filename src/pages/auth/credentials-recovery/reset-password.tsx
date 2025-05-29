@@ -3,10 +3,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { useAppLoader } from '~/shared/infra/app-loader';
+import { AppModalBody, AppModalTitle } from '~/shared/infra/modals-manager';
 import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
-import { AuthModalBody, AuthModalTitle } from '../common/auth-modal';
 import { LOGIN_HELPER_TEXT, PASSWORD_HELPER_TEXT } from '../common/text';
 import {
     ErrorMessage,
@@ -42,10 +42,10 @@ export const ResetPassword = ({ email, next }: { email: string; next: () => void
 
     return (
         <SlideFade in={true} offsetY={0} offsetX={64}>
-            <AuthModalBody>
-                <AuthModalTitle w='min-content' mx='auto' mb={6}>
+            <AppModalBody>
+                <AppModalTitle w='min-content' mx='auto' mb={6}>
                     Восстановление аккаунта
-                </AuthModalTitle>
+                </AppModalTitle>
                 <chakra.form onSubmit={handleSubmit(handleFormValid)}>
                     <VStack gap={6} mb={8} textAlign='start'>
                         <FormControl isInvalid={!!errors.login}>
@@ -82,7 +82,7 @@ export const ResetPassword = ({ email, next }: { email: string; next: () => void
                         Зарегистрироваться
                     </FormButton>
                 </chakra.form>
-            </AuthModalBody>
+            </AppModalBody>
         </SlideFade>
     );
 };

@@ -1,9 +1,9 @@
 import { useCallbackRef } from '@chakra-ui/react';
 import { memo, useState } from 'react';
 
+import { AppModalCloseButton, AppModalContent } from '~/shared/infra/modals-manager';
 import { TestId } from '~/shared/test-ids';
 
-import { AuthModalCloseButton, AuthModalContent } from '../common/auth-modal';
 import { RecoverPassword } from './recover-password';
 import { ResetPassword } from './reset-password';
 import { VerifyOtp } from './verify-otp';
@@ -29,9 +29,9 @@ export const CredentialsRecoveryWizard = memo(({ onComplete }: { onComplete?: ()
     const StepComponent = steps[stepIndex].Component;
 
     return (
-        <AuthModalContent data-test-id={steps[stepIndex].testId}>
-            <AuthModalCloseButton data-test-id={TestId.MODAL_CLOSE_BUTTON} />
+        <AppModalContent data-test-id={steps[stepIndex].testId}>
+            <AppModalCloseButton data-test-id={TestId.MODAL_CLOSE_BUTTON} />
             <StepComponent next={next} email={email} />
-        </AuthModalContent>
+        </AppModalContent>
     );
 });
