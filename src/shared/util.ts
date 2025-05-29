@@ -1,3 +1,5 @@
+import { cloneDeepWith, isString } from 'lodash-es';
+
 import { MEDIA_BASE_URL } from './config';
 
 export { HTTPMethod as HttpMethod } from 'http-method-enum';
@@ -17,3 +19,10 @@ export const pluralizeRu = (number: number, forms: PluralForms): string => {
     const category = pr.select(number);
     return forms[category] ?? forms.other;
 };
+
+export const stripEmptyStrings = <T>(value: T): T =>
+    cloneDeepWith(value, (value) => {
+        if (isString(value) && value.trim() === '') {
+            return null;
+        }
+    });

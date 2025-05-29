@@ -25,6 +25,13 @@ export const errorMeta: Partial<Record<EditRecipeEndpointName | 'uploadImage', E
                 description: 'Не удалось удалить рецепт',
             },
         },
+        saveDraft: {
+            ...common,
+            [HttpStatusCode.INTERNAL_SERVER_ERROR]: {
+                title: ErrorMessage.SERVER_ERROR,
+                description: 'Не удалось сохранить черновик рецепта',
+            },
+        },
         // TODO: maybe move to somewhere else
         uploadImage: {
             [HttpStatusCode.INTERNAL_SERVER_ERROR]: {

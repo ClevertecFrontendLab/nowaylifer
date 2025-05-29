@@ -20,5 +20,5 @@ export interface RecipeDraft
     > {}
 
 export interface EditRecipeHistoryState {
-    editRecipe?: { event: 'created' | 'updated' | 'deleted' };
+    editRecipe?: { event: 'created' | 'updated' | 'deleted' | 'draftSaved' };
 }

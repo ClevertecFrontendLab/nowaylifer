@@ -2,7 +2,7 @@ import HTTPMethod from 'http-method-enum';
 
 import { Recipe } from '~/entities/recipe';
 import { ApiEndpoint, apiSlice } from '~/shared/api';
-import { HttpMethod } from '~/shared/util';
+import { HttpMethod, stripEmptyStrings } from '~/shared/util';
 
 import { MeasureUnit, RecipeDraft } from '../types';
 import { EditRecipeEndpointName } from './endpoint-name';
@@ -34,6 +34,14 @@ export const editRecipeApi = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Recipe'],
             extraOptions: { errorMetaByStatus: errorMeta.deleteRecipe },
+        }),
+        [EditRecipeEndpointName.SaveDraft]: build.mutation<void, RecipeDraft>({
+            query: (draft) => ({
+                url: ApiEndpoint.RECIPE_DRAFT,
+                method: HttpMethod.POST,
+                body: stripEmptyStrings(draft),
+            }),
+            extraOptions: { errorMetaByStatus: errorMeta.saveDraft },
         }),
         [EditRecipeEndpointName.MeasureUntis]: build.query<MeasureUnit[], void>({
             query: () => ({ url: ApiEndpoint.MEASURE_UNITS }),
