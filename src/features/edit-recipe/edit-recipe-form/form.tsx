@@ -20,9 +20,12 @@ export interface EditRecipeFormProps {
 const emptyDraft: DefaultValues<RecipeDraft> = {
     title: '',
     description: '',
+    image: undefined,
+    time: undefined,
+    portions: undefined,
     categoriesIds: [],
     ingredients: [],
-    steps: [{ description: '', stepNumber: 1 }],
+    steps: [{ description: '', image: undefined, stepNumber: 1 }],
 };
 
 export const EditRecipeForm = ({ defaultValues = emptyDraft, onSubmit }: EditRecipeFormProps) => {

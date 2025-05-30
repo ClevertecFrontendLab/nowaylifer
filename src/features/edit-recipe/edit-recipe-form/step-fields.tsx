@@ -30,7 +30,10 @@ export const StepFields = (props: BoxProps) => {
     );
 
     const handleAdd = () =>
-        append({ description: '', stepNumber: fields.length + 1 }, { shouldFocus: false });
+        append(
+            { description: '', image: undefined, stepNumber: fields.length + 1 },
+            { shouldFocus: false },
+        );
 
     return (
         <Flex w='full' direction='column' gap={4} {...props}>
