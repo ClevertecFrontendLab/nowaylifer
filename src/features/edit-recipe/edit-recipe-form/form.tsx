@@ -45,8 +45,8 @@ export const EditRecipeForm = ({ defaultValues = emptyDraft, onSubmit }: EditRec
                 <Container
                     p={0}
                     centerContent
-                    maxW={{ base: 'none', md: '604px', lg: '658px', '2xl': '668px' }}
                     mb={{ base: 8, lg: 10 }}
+                    maxW={{ base: 'none', sm: '604px', lg: '658px', '2xl': '668px' }}
                 >
                     <IngredientFields mb={{ base: 8, lg: 10 }} />
                     <StepFields />

@@ -24,7 +24,7 @@ export interface StepRowProps {
 export const StepRow = memo(({ index, isRemovable, onRemove }: StepRowProps) => {
     const { control } = useFormContext<RecipeDraftSchema>();
     return (
-        <Card direction={{ base: 'column', md: 'row' }}>
+        <Card direction={{ base: 'column', sm: 'row' }}>
             <Controller
                 control={control}
                 name={`steps.${index}.image`}
@@ -34,9 +34,10 @@ export const StepRow = memo(({ index, isRemovable, onRemove }: StepRowProps) => 
                         onChange={field.onChange}
                         previewProps={{
                             h: '160px',
-                            border: 'none',
                             w: 'full',
-                            maxW: { base: 'none', md: '346px' },
+                            border: 'none',
+                            flex: { base: 'auto', sm: 1, md: 'auto' },
+                            maxW: { base: 'none', sm: '346px' },
                         }}
                     />
                 )}

@@ -35,18 +35,12 @@ export default function RootLayout() {
                 h='calc(100vh - var(--app-header-height))'
                 alignSelf='start'
                 hideBelow='xl'
-                w='2xs'
                 minW={0}
+                w='2xs'
             >
                 {xl && <SidebarMenu />}
             </GridItem>
-            <GridItem
-                area='main'
-                minW={0}
-                maxW={{ base: 'full', lg: '928px', '2xl': '1408px' }}
-                mx={{ base: 'auto', xl: '0' }}
-                px={{ base: 4, md: 5, lg: 6 }}
-            >
+            <GridItem area='main' minW={0} maxW='full' px={{ base: 4, md: 5, lg: 6 }}>
                 <Outlet />
             </GridItem>
             <GridItem
@@ -58,13 +52,13 @@ export default function RootLayout() {
                 alignSelf='start'
                 hideBelow='xl'
             >
-                {shouldRenderAppAside && <AppAside />}
+                {shouldRenderAppAside && <AppAside ml={12} />}
             </GridItem>
             <GridItem
-                zIndex='docked'
                 area='bottom-menu'
-                hideFrom='lg'
                 position='sticky'
+                zIndex='docked'
+                hideFrom='lg'
                 bottom={0}
                 minW={0}
             >

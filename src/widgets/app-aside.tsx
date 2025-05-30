@@ -1,4 +1,4 @@
-import { Circle, HStack, VStack } from '@chakra-ui/react';
+import { Circle, HStack, Spacer, StackProps, VStack } from '@chakra-ui/react';
 import { memo } from 'react';
 
 import { RoutePath } from '~/shared/router';
@@ -7,13 +7,14 @@ import { PencilIcon } from '~/shared/ui/icons/pencil';
 import { Link } from '~/shared/ui/link';
 import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/stats';
 
-export const AppAside = memo(() => (
-    <VStack as='aside' h='full' justifyContent='space-between' pt={4}>
+export const AppAside = memo((props: StackProps) => (
+    <VStack as='aside' h='full' pt={4} {...props}>
         <VStack gap={6}>
             <BookmarksStat fontSize='md' value={185} />
             <FriendsStat fontSize='md' value={589} />
             <LikesStat fontSize='md' value={587} />
         </VStack>
+        <Spacer />
         <HStack justify='center' boxSize='208px' className='glow-circle'>
             <Button
                 as={Link}

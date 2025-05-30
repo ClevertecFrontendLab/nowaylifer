@@ -38,10 +38,9 @@ export const StepFields = (props: BoxProps) => {
     return (
         <Flex w='full' direction='column' gap={4} {...props}>
             <Box
-                fontSize={{ base: 'sm', lg: 'md' }}
                 fontWeight='semibold'
+                fontSize={{ base: 'sm', lg: 'md' }}
                 lineHeight={{ base: 5, lg: 6 }}
-                mb={{ base: 3, md: 4 }}
             >
                 Добавьте шаги приготовления
             </Box>

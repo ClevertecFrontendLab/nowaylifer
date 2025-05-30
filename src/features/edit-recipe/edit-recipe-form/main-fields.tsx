@@ -11,7 +11,11 @@ export const MainFields = memo(() => {
     const { control } = useFormContext<RecipeDraft>();
 
     return (
-        <Flex gap={{ base: 4, lg: 6 }} mb={{ base: 8, lg: 10 }}>
+        <Flex
+            gap={{ base: 4, lg: 6 }}
+            mb={{ base: 8, lg: 10 }}
+            direction={{ base: 'column', '2sm': 'row' }}
+        >
             <Controller
                 name='image'
                 control={control}
@@ -25,7 +29,7 @@ export const MainFields = memo(() => {
                             h: { base: '224px', lg: '410px' },
                             maxW: {
                                 base: 'none',
-                                md: '232px',
+                                '2sm': '232px',
                                 lg: '353px',
                                 '2xl': '553px',
                             },
@@ -44,7 +48,11 @@ export const MainFields = memo(() => {
                             gap={{ base: 4, lg: 6 }}
                             mb={{ base: 4, lg: 8 }}
                         >
-                            <FormLabel aria-invalid={invalid} m={0} fontWeight='semibold'>
+                            <FormLabel
+                                flexShrink={{ base: 1, md: 0 }}
+                                aria-invalid={invalid}
+                                fontWeight='semibold'
+                            >
                                 Выберите не менее 3-х тегов
                             </FormLabel>
                             <SubCategorySelect
@@ -88,7 +96,7 @@ export const MainFields = memo(() => {
                     alignItems='center'
                     gap={{ base: 4, lg: 6 }}
                 >
-                    <FormLabel htmlFor='portions-number-input'>
+                    <FormLabel htmlFor='portions-number-input' fontWeight='semibold'>
                         На сколько человек ваш рецепт?
                     </FormLabel>
                     <NumberInputControl
@@ -97,7 +105,7 @@ export const MainFields = memo(() => {
                         name='portions'
                         min={1}
                     />
-                    <FormLabel htmlFor='time-number-input'>
+                    <FormLabel htmlFor='time-number-input' fontWeight='semibold'>
                         Сколько времени готовить в минутах?
                     </FormLabel>
                     <NumberInputControl

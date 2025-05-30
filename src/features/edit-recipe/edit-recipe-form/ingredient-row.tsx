@@ -81,11 +81,11 @@ export const IngredientRow = memo(
         return (
             <Flex gap={{ base: 3, '2xl': 4 }} alignItems='center' {...props} wrap='wrap'>
                 <Input
-                    flex={1}
+                    flex={{ base: 'auto', '2sm': 1 }}
+                    w={{ base: 'full', '2sm': 'auto' }}
                     aria-labelledby='ingredient-title-label'
                     placeholder='Ингредиент'
                     _placeholder={{ color: 'blackAlpha.700' }}
-                    w={{ base: 'full', md: 'auto' }}
                     isInvalid={!!fieldError('title')}
                     {...registerOrControlled('title')}
                 />

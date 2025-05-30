@@ -54,6 +54,8 @@ const themeOverride = {
     },
     breakpoints: {
         '1.5xl': '90em',
+        '2sm': '40em',
+        '2md': '54em',
     },
     space: {
         '4.5': '1.125rem',
