@@ -1,5 +1,5 @@
-import { Box, chakra } from '@chakra-ui/react';
-import { useMemo } from 'react';
+import { Box, chakra, useSize } from '@chakra-ui/react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { selectCategoriesInvariant } from '~/entities/category';
 import { useAppSelector } from '~/shared/store';
@@ -31,35 +31,27 @@ export const SubCategorySelect = (props: SubCategorySelectProps) => {
     }, [rootCategories]);
 
     return (
-        <MultiSelect containerProps={{ maxW: '350px' }} items={items} {...props}>
+        <MultiSelect
+            containerProps={{ maxW: '350px', overflow: 'hidden' }}
+            items={items}
+            {...props}
+        >
             {({ selectedItems }) => {
-                const itemsToShow = selectedItems.slice(0, 2);
-                const diff = selectedItems.length - itemsToShow.length;
                 let itemIndex = 0;
                 return (
                     <>
                         <MultiSelectField placeholder='Выберите из списка...' />
-                        <MultiSelectTagList flexWrap='nowrap'>
-                            <>
-                                {itemsToShow.map((selectedItem, index) => (
-                                    <MultiSelectTag
-                                        key={selectedItem}
-                                        item={selectedItem}
-                                        index={index}
-                                    >
-                                        {categoryById[selectedItem].title}
-                                    </MultiSelectTag>
-                                ))}
-                                {diff > 0 && (
-                                    <MultiSelectTag flexShrink={0} item={null}>
-                                        +{diff}
-                                    </MultiSelectTag>
-                                )}
-                            </>
-                        </MultiSelectTagList>
+                        <FittingMultiSelectTagList
+                            items={selectedItems}
+                            renderTag={(id, index) => (
+                                <MultiSelectTag key={id} item={id} index={index}>
+                                    {categoryById[id].title}
+                                </MultiSelectTag>
+                            )}
+                        />
                         <MultiSelectClearButton />
                         <MultiSelectIcon />
-                        <MultiSelectMenu lazyBehavior='keepMounted'>
+                        <MultiSelectMenu lazyBehavior='keepMounted' withinPortal>
                             <MultiSelectMenuList>
                                 {groups.map(({ groupLabel, options, key }) => (
                                     <chakra.li key={key}>
@@ -84,4 +76,77 @@ export const SubCategorySelect = (props: SubCategorySelectProps) => {
             }}
         </MultiSelect>
     );
+};
+
+interface FittingMultiSelectTagListProps<T> {
+    items: T[];
+    renderTag: (item: T, index: number) => React.ReactNode;
+    minVisible?: number;
+}
+
+export function FittingMultiSelectTagList<T extends string | number>({
+    items,
+    renderTag,
+    minVisible = 1,
+}: FittingMultiSelectTagListProps<T>) {
+    const { visibleItems, overflowCount, containerRef, hiddenContainerRef } = useFittingTagItems(
+        items,
+        minVisible,
+    );
+
+    return (
+        <>
+            <MultiSelectTagList ref={containerRef} flexWrap='nowrap' overflow='hidden'>
+                {visibleItems.map(renderTag)}
+                {overflowCount > 0 && (
+                    <MultiSelectTag flexShrink={0} item={null}>
+                        +{overflowCount}
+                    </MultiSelectTag>
+                )}
+            </MultiSelectTagList>
+
+            {/* Hidden measurement container */}
+            <MultiSelectTagList
+                ref={hiddenContainerRef}
+                position='absolute'
+                visibility='hidden'
+                flexWrap='nowrap'
+                height={0}
+            >
+                {items.map(renderTag)}
+            </MultiSelectTagList>
+        </>
+    );
+}
+
+const useFittingTagItems = <T extends string | number>(items: T[], minVisible = 1) => {
+    const [visibleCount, setVisibleCount] = useState(minVisible);
+    const hiddenContainerRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const containerSize = useSize(containerRef);
+
+    useEffect(() => {
+        const hiddenTags = hiddenContainerRef.current?.children;
+        if (!hiddenTags || !containerSize?.width) return;
+
+        let totalWidth = 0;
+        let count = 0;
+
+        for (let i = 0; i < items.length; i++) {
+            const el = hiddenTags[i] as HTMLElement;
+            const width = el?.offsetWidth ?? 0;
+            if (totalWidth + width > containerSize.width) break;
+            totalWidth += width;
+            count++;
+        }
+
+        setVisibleCount(Math.max(count, minVisible));
+    }, [items, containerSize?.width, minVisible]);
+
+    return {
+        visibleItems: items.slice(0, visibleCount),
+        overflowCount: Math.max(0, items.length - visibleCount),
+        containerRef,
+        hiddenContainerRef,
+    };
 };

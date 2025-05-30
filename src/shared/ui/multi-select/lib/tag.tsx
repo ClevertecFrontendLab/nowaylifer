@@ -16,17 +16,20 @@ import { MultiSelectState } from './use-multi-select';
 
 export interface MultiSelectTagListProps<Item> extends Omit<HTMLChakraProps<'div'>, 'children'> {
     children?: MaybeRenderProp<MultiSelectState<Item>>;
+    ref?: React.Ref<HTMLDivElement>;
 }
 
 export const MultiSelectTagList = <Item,>({
     className,
     children,
+    ref,
     ...props
 }: MultiSelectTagListProps<Item>) => {
     const styles = useMultiSelectStyles();
     const { state } = useMultiSelectContext<Item>();
     return (
         <chakra.div
+            ref={ref}
             __css={styles.tagList}
             className={cx(multiSelectClassNames.tagList, className)}
             {...props}
