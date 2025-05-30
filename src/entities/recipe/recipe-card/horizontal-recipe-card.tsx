@@ -1,14 +1,6 @@
-import {
-    Box,
-    Button,
-    HStack,
-    IconButton,
-    LinkOverlay,
-    StackProps,
-    useBreakpointValue,
-} from '@chakra-ui/react';
+import { Box, Button, HStack, LinkOverlay } from '@chakra-ui/react';
+import { LinkProps } from 'react-router';
 
-import { BookmarkIcon } from '~/shared/ui/icons/bookmark';
 import { Link } from '~/shared/ui/link';
 
 import { useRecipeContext } from './context';
@@ -21,7 +13,11 @@ import { RecipeCardStats } from './parts/stats';
 import { RecipeCardTitle } from './parts/title';
 import { RecipeCardProps } from './props';
 
-export const HorizontalRecipeCard = ({ renderTitle, ...rootProps }: RecipeCardProps) => (
+export const HorizontalRecipeCard = ({
+    renderTitle,
+    actionSlot,
+    ...rootProps
+}: RecipeCardProps) => (
     <RecipeCardRoot asLinkBox {...rootProps}>
         <RecipeCardImage />
         <RecipeCardBody>
@@ -33,33 +29,21 @@ export const HorizontalRecipeCard = ({ renderTitle, ...rootProps }: RecipeCardPr
                 <RecipeCardCategoryList />
                 <RecipeCardStats />
             </HStack>
-            <RecipeCardButtons order={2} />
+            <HStack gap={2} justifyContent='end' order={2}>
+                {actionSlot}
+                <CookRecipeLink />
+            </HStack>
         </RecipeCardBody>
     </RecipeCardRoot>
 );
 
-const RecipeCardButtons = (props: StackProps) => {
-    const lg = useBreakpointValue({ base: false, lg: true });
+const CookRecipeLink = (props: Omit<LinkProps, 'to'>) => {
     const { recipeLink, testId } = useRecipeContext();
     return (
-        <HStack gap={2} justifyContent='end' {...props}>
-            {lg ? (
-                <Button variant='outline' size='sm' leftIcon={<BookmarkIcon />}>
-                    Сохранить
-                </Button>
-            ) : (
-                <IconButton
-                    size='xs'
-                    variant='outline'
-                    aria-label='Сохранить'
-                    icon={<BookmarkIcon />}
-                />
-            )}
-            <LinkOverlay as={Link} to={recipeLink} data-test-id={testId?.link}>
-                <Button as={Box} variant='inverted' size={{ base: 'xs', lg: 'sm' }}>
-                    Готовить
-                </Button>
-            </LinkOverlay>
-        </HStack>
+        <LinkOverlay as={Link} to={recipeLink} data-test-id={testId?.link} {...props}>
+            <Button as={Box} variant='inverted' size={{ base: 'xs', lg: 'sm' }}>
+                Готовить
+            </Button>
+        </LinkOverlay>
     );
 };

@@ -1,8 +1,6 @@
-import { Box, Button, HStack } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 
-import { BookmarkIcon } from '~/shared/ui/icons/bookmark';
 import { ClockIcon } from '~/shared/ui/icons/clock';
-import { EmojiHeartEyesIcon } from '~/shared/ui/icons/emoji-heart-eyes';
 import { PluralForms, pluralizeRu } from '~/shared/util';
 
 import { RecipeCardBadge } from './parts/badge';
@@ -42,26 +40,7 @@ export const DetailedRecipeCard = ({ recipe, actionSlot, ...rootProps }: RecipeC
                     <ClockIcon />
                     {formatTime(recipe.time)}
                 </RecipeCardBadge>
-                <HStack gap={{ base: 3, '2xl': 4 }}>
-                    {actionSlot || (
-                        <>
-                            <Button
-                                variant='outline'
-                                size={{ base: 'xs', lg: 'sm', '2xl': 'lg' }}
-                                leftIcon={<EmojiHeartEyesIcon />}
-                            >
-                                Оценить рецепт
-                            </Button>
-                            <Button
-                                bg='lime.400'
-                                size={{ base: 'xs', lg: 'sm', '2xl': 'lg' }}
-                                leftIcon={<BookmarkIcon />}
-                            >
-                                Сохранить в закладки
-                            </Button>
-                        </>
-                    )}
-                </HStack>
+                <HStack gap={{ base: 3, '2xl': 4 }}>{actionSlot}</HStack>
             </HStack>
         </RecipeCardBody>
     </RecipeCardRoot>

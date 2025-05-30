@@ -5,17 +5,14 @@ import { selectCategoriesInvariant } from '~/entities/category';
 import { RecipeCard, RecipeWithAuthor } from '~/entities/recipe';
 import { recipeApi } from '~/entities/recipe/api/query';
 import { getRecipeRootCategories } from '~/entities/recipe/util';
-import {
-    DeleteRecipeButton,
-    UpdateRecipeButton,
-    useEditRecipeEventEffect,
-} from '~/features/edit-recipe';
+import { useEditRecipeEventEffect } from '~/features/edit-recipe';
 import { selectSessionData } from '~/shared/session/slice';
 import { useAppSelector } from '~/shared/store';
 import { Main } from '~/shared/ui/main';
 import { Section, SectionHeading } from '~/shared/ui/section';
 import { NewRecipesSlider } from '~/widgets/new-recipes-slider';
 
+import { OwnRecipeActionButtons, RecipeActionButtons } from './action-buttons';
 import { AuthorCard } from './author-card';
 import { IngridientTable } from './ingredient-table';
 import { NutritionStat } from './nutrition-stat';
@@ -28,20 +25,16 @@ export function RecipePage() {
     const { categoryById } = useAppSelector(selectCategoriesInvariant);
     const recipe = data ?? initialRecipe;
 
+    const isOwnRecipe = recipe.authorId === session?.userId;
+    const ActionSlot = isOwnRecipe ? OwnRecipeActionButtons : RecipeActionButtons;
+
     useEditRecipeEventEffect();
 
     return (
         <Main>
             <RecipeCard
                 variant='detailed'
-                actionSlot={
-                    recipe.authorId === session?.userId ? (
-                        <>
-                            <DeleteRecipeButton recipe={recipe} />
-                            <UpdateRecipeButton categoryById={categoryById} recipe={recipe} />
-                        </>
-                    ) : undefined
-                }
+                actionSlot={<ActionSlot recipe={recipe} />}
                 categories={getRecipeRootCategories(recipe, categoryById)}
                 recipe={recipe}
                 mb={{ base: 6, lg: 10 }}

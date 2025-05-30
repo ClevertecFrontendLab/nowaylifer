@@ -181,7 +181,6 @@ export const recipeCardTheme = defineMultiStyleConfig({
                 flexDir: { base: 'column', md: 'row' },
                 border: 'none',
                 minH: { base: 'auto', md: '224px', lg: '410px' },
-                h: { base: 'auto', lg: 0 },
                 _hover: {
                     boxShadow: 'none',
                 },
