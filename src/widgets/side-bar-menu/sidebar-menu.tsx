@@ -1,6 +1,6 @@
 import { Box, BoxProps, Spacer } from '@chakra-ui/react';
 import { useResizeObserver } from '@react-hookz/web';
-import { useRef } from 'react';
+import { memo, useRef } from 'react';
 
 import { CategoryNav } from '~/entities/category';
 import { TestId } from '~/shared/test-ids';
@@ -9,7 +9,7 @@ import { ExitButton } from '~/shared/ui/exit-button';
 
 import classes from './sidebar-menu.module.css';
 
-export const SidebarMenu = (props: BoxProps) => {
+export const SidebarMenu = memo((props: BoxProps) => {
     const spacerRef = useRef<HTMLDivElement>(null);
     const navRef = useRef<HTMLDivElement>(null);
 
@@ -49,4 +49,4 @@ export const SidebarMenu = (props: BoxProps) => {
             </Box>
         </Box>
     );
-};
+});

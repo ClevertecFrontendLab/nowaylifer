@@ -1,4 +1,5 @@
 import { Avatar, Box, BoxProps, Circle, HStack, Square } from '@chakra-ui/react';
+import { memo } from 'react';
 
 import userAvatarUrl from '~/shared/assets/user.png';
 import { TestId } from '~/shared/test-ids';
@@ -7,7 +8,7 @@ import { HomeIcon } from '~/shared/ui/icons/home';
 import { PencilIcon } from '~/shared/ui/icons/pencil';
 import { SearchIcon } from '~/shared/ui/icons/search';
 
-export const BottomMenu = (props: BoxProps) => (
+export const BottomMenu = memo((props: BoxProps) => (
     <Box
         bg='lime.50'
         height='84px'
@@ -83,4 +84,4 @@ export const BottomMenu = (props: BoxProps) => (
             </Button>
         </HStack>
     </Box>
-);
+));

@@ -8,7 +8,7 @@ import {
     Text,
     useBreakpointValue,
 } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 
 import { Breadcrumbs } from '~/features/breadcrumbs';
 import userAvatarUrl from '~/shared/assets/user.png';
@@ -29,7 +29,7 @@ const headerBefore = defineStyle({
     background: $bg.reference,
 });
 
-export const AppHeader = () => {
+export const AppHeader = memo(() => {
     const containerRef = useRef<HTMLDivElement>(null);
     const xl = useBreakpointValue({ base: false, xl: true });
     const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -90,7 +90,7 @@ export const AppHeader = () => {
             </HamburgerMenu>
         </Flex>
     );
-};
+});
 
 const AppHeaderLogo = () => {
     const variant = useBreakpointValue({ base: 'short', md: 'normal' } as const);
