@@ -30,7 +30,7 @@ export const IngridientTable = ({
     ingridients,
     ...rest
 }: IngridientTableProps) => {
-    const [portions, setPortions] = useState(defaultPortions);
+    const [portions, setPortions] = useState<number | undefined>(defaultPortions);
     return (
         <TableContainer {...rest}>
             <Table
@@ -71,7 +71,12 @@ export const IngridientTable = ({
                                     w='90px'
                                     max={99999}
                                     value={portions}
-                                    onChange={(_, value) => setPortions(value)}
+                                    onBlur={() =>
+                                        portions === undefined && setPortions(defaultPortions)
+                                    }
+                                    onChange={(_, value) =>
+                                        setPortions(isNaN(value) ? undefined : value)
+                                    }
                                 >
                                     <NumberInputField />
                                     <NumberInputStepper>
@@ -94,7 +99,7 @@ export const IngridientTable = ({
                             <Td textAlign='end' data-test-id={TestId.ingredientQuantity(idx)}>
                                 {calcIngredientQuantity(
                                     ingridient.count,
-                                    portions,
+                                    portions || defaultPortions,
                                     defaultPortions,
                                 )}{' '}
                                 {ingridient.measureUnit}

@@ -45,7 +45,7 @@ export const NumberInputControl = <TFieldValues extends FieldValues>({
                     w='90px'
                     value={value}
                     onBlur={onBlur}
-                    onChange={(_, valueAsNumber) => onChange(valueAsNumber)}
+                    onChange={(_, value) => onChange(isNaN(value) ? undefined : value)}
                     {...props}
                 >
                     <NumberInputField ref={ref} />
