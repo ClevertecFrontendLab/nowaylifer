@@ -42,25 +42,25 @@ export const RelevantKitchen = memo(() => {
             <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 3, lg: 4, '2xl': 6 }}>
                 {recipes
                     ?.slice(0, 2)
-                    .map((r) => (
+                    .map((recipe) => (
                         <RecipeCardStyled
-                            key={r._id}
+                            key={recipe._id}
                             variant='no-image'
-                            recipe={r}
-                            categories={getRecipeRootCategories(r, categoryById)}
-                            recipeLink={buildRecipePath(r, categoryById)}
+                            recipe={recipe}
+                            categories={getRecipeRootCategories(recipe, categoryById)}
+                            recipeLink={buildRecipePath(recipe, categoryById)}
                         />
                     ))}
                 <Stack minW={0} flex={{ base: 'auto', md: 1 }} gap={3}>
                     {recipes
                         ?.slice(2)
-                        .map((r) => (
+                        .map((recipe) => (
                             <RecipeCard
-                                key={r._id}
-                                recipe={r}
+                                key={recipe._id}
+                                recipe={recipe}
                                 variant='compact'
-                                categories={getRecipeRootCategories(r, categoryById)}
-                                recipeLink={buildRecipePath(r, categoryById)}
+                                categories={getRecipeRootCategories(recipe, categoryById)}
+                                recipeLink={buildRecipePath(recipe, categoryById)}
                             />
                         ))}
                 </Stack>

@@ -1,12 +1,12 @@
 import {
     ActiveCategories,
-    buildCategoryPath,
     CategoryById,
     isRootCategory,
     isSubCategory,
     RootCategory,
     SubCategory,
 } from '~/entities/category/@x/recipe';
+import { RoutePath } from '~/shared/router';
 
 import { Recipe } from './interface';
 
@@ -27,23 +27,40 @@ export const getRecipeRootCategories = (recipe: Recipe, categoryById: CategoryBy
 export function buildRecipePath(
     recipe: Recipe,
     categoryById: CategoryById,
-    activeCategories?: ActiveCategories,
+    { edit, activeCategories }: { edit?: boolean; activeCategories?: ActiveCategories } = {},
 ) {
     if (activeCategories) {
-        const [rootCategory, subCategory] = activeCategories;
-        return getRecipePath(recipe, rootCategory, subCategory);
+        const [root, sub] = activeCategories;
+        return buildRecipeRoutePath({ recipe, root, sub });
     }
 
     const category = categoryById[recipe.categoriesIds[0]];
     if (!category) return '';
 
-    const rootCategory = isRootCategory(category)
+    const root = isRootCategory(category)
         ? category
         : (categoryById[category.rootCategoryId] as RootCategory);
 
-    const subCategory = rootCategory.subCategories[0];
-    return getRecipePath(recipe, rootCategory, subCategory);
+    const sub = root.subCategories[0];
+
+    return buildRecipeRoutePath({ recipe, root, sub, edit });
 }
 
-const getRecipePath = (recipe: Recipe, root: RootCategory, sub: SubCategory) =>
-    `${buildCategoryPath(root, sub)}/${recipe._id}`;
+const buildRecipeRoutePath = ({
+    recipe,
+    root,
+    sub,
+    edit,
+}: {
+    recipe: Recipe;
+    root: RootCategory;
+    sub: SubCategory;
+    edit?: boolean;
+}) => {
+    const builder = edit ? RoutePath.EditRecipe : RoutePath.Recipe;
+    return builder.build({
+        rootCategory: root.category,
+        subCategory: sub.category,
+        recipeId: recipe._id,
+    });
+};

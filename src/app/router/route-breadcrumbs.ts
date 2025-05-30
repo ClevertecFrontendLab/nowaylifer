@@ -10,21 +10,20 @@ export const juiciestCrumb = 'Самое сочное';
 
 export const newRecipeCrumb = 'Новый рецeпт';
 
-export const rootCategoryCrumb: RouteBreadcrumbDefinition<ActiveCategories> = ({
-    extraArg: [root],
-}) => ({
+const rootCategoryCrumb: RouteBreadcrumbDefinition<ActiveCategories> = ({ extraArg: [root] }) => ({
     label: root.title,
     href: buildCategoryPath(root, root.subCategories[0]),
 });
 
-export const subCategoryCrumb: RouteBreadcrumbDefinition<ActiveCategories> = ({
-    extraArg: [_, sub],
-}) => sub.title;
+const subCategoryCrumb: RouteBreadcrumbDefinition<ActiveCategories> = ({ extraArg: [_, sub] }) =>
+    sub.title;
 
-export const recipeCrumb: RouteBreadcrumbDefinition<ActiveCategories, RecipeWithAuthor> = ({
-    match,
-}) => ({ label: match.data?.title });
+const recipeCrumb: RouteBreadcrumbDefinition<ActiveCategories, RecipeWithAuthor> = ({ match }) => ({
+    label: match.data?.title,
+});
 
-export const updateRecipeCrumb: RouteBreadcrumbDefinition<ActiveCategories, RecipeWithAuthor> = (
-    args,
-) => [rootCategoryCrumb(args), subCategoryCrumb(args), recipeCrumb(args)] as BreadcrumbDefinition[];
+export const categoryCrumbs: RouteBreadcrumbDefinition<ActiveCategories> = (args) =>
+    [rootCategoryCrumb(args), subCategoryCrumb(args)] as BreadcrumbDefinition[];
+
+export const recipeCrumbs: RouteBreadcrumbDefinition<ActiveCategories, RecipeWithAuthor> = (args) =>
+    [rootCategoryCrumb(args), subCategoryCrumb(args), recipeCrumb(args)] as BreadcrumbDefinition[];

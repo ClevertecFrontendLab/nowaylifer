@@ -14,7 +14,7 @@ import { JuiciestPage, juiciestPageLoader } from '~/pages/juiciest';
 import { MainPage } from '~/pages/main';
 import { RecipePage } from '~/pages/recipe';
 import { UpdateRecipePage } from '~/pages/update-recipe';
-import { paramPattern, RouteParam, RoutePath, storeContext } from '~/shared/router';
+import { RouteParam, RoutePath, storeContext } from '~/shared/router';
 import {
     checkAuthMiddleware,
     hideRouteIfAuthenticatedMiddleware,
@@ -65,45 +65,36 @@ const routerConfig: RouteObject[] = [
                     { path: RoutePath.NotFound, Component: PageNotFound },
                     {
                         path: RoutePath.Juiciest,
-                        handle: { crumb: routeCrumb.juiciestCrumb },
                         Component: JuiciestPage,
                         loader: juiciestPageLoader,
+                        handle: { crumb: routeCrumb.juiciestCrumb },
                     },
                     {
                         path: RoutePath.NewRecipe,
-                        handle: { crumb: routeCrumb.newRecipeCrumb },
                         Component: CreateRecipePage,
+                        handle: { crumb: routeCrumb.newRecipeCrumb },
                     },
                     {
-                        path: `/edit/${paramPattern(RouteParam.RootCategory)}/${paramPattern(RouteParam.SubCategory)}/${paramPattern(RouteParam.RecipeId)}`,
+                        path: RoutePath.Category.pattern,
+                        Component: CategoryPage,
+                        loader: categoryPageLoader,
+                        handle: { crumb: routeCrumb.categoryCrumbs },
+                    },
+                    {
+                        path: RoutePath.Recipe.pattern,
+                        Component: RecipePage,
+                        loader: recipeLoader,
+                        handle: { crumb: routeCrumb.recipeCrumbs },
+                    },
+                    {
+                        path: RoutePath.EditRecipe.pattern,
                         Component: UpdateRecipePage,
                         loader: recipeLoader,
-                        handle: { crumb: routeCrumb.updateRecipeCrumb },
+                        handle: { crumb: routeCrumb.recipeCrumbs },
                     },
                     {
-                        path: paramPattern(RouteParam.RootCategory),
-                        handle: { crumb: routeCrumb.rootCategoryCrumb },
-                        errorElement: <PageNotFound />,
+                        path: `:${RouteParam.RootCategory}`,
                         Component: NavigateToSubCategory,
-                        children: [
-                            {
-                                path: paramPattern(RouteParam.SubCategory),
-                                handle: { crumb: routeCrumb.subCategoryCrumb },
-                                children: [
-                                    {
-                                        index: true,
-                                        Component: CategoryPage,
-                                        loader: categoryPageLoader,
-                                    },
-                                    {
-                                        path: paramPattern(RouteParam.RecipeId),
-                                        Component: RecipePage,
-                                        loader: recipeLoader,
-                                        handle: { crumb: routeCrumb.recipeCrumb },
-                                    },
-                                ],
-                            },
-                        ],
                     },
                 ],
             },

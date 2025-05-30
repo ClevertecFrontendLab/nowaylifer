@@ -3,23 +3,5 @@ import { unstable_createContext } from 'react-router';
 export const storeContext = unstable_createContext<AppStore>();
 
 export { createRouteLoader } from './create-route-loader';
-
-export const paramPattern = (param: string) => `:${param}`;
-
-export const RouteParam = {
-    RootCategory: 'rootcategory',
-    SubCategory: 'subcategory',
-    RecipeId: 'recipeId',
-};
-
-export const RoutePath = {
-    Main: '/',
-    Juiciest: '/the-juiciest',
-    NotFound: '/not-found',
-    Login: '/login',
-    Signup: '/signup',
-    EmailVerificationCallback: '/verification',
-    NewRecipe: '/new-recipe',
-};
-
 export { createHistoryStore } from './history-store';
+export { RouteParam, RoutePath } from './route-path';

@@ -18,4 +18,4 @@ export interface BreadcrumbData {
     href?: string;
 }
 
-export type BreadcrumbDefinition = BreadcrumbData | string | undefined;
+export type BreadcrumbDefinition = BreadcrumbData | string;

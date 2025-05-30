@@ -37,7 +37,7 @@ export const RecipeGrid = ({
                     key={recipe._id}
                     recipe={recipe}
                     variant='horizontal'
-                    recipeLink={buildRecipePath(recipe, categoryById, activeCategories)}
+                    recipeLink={buildRecipePath(recipe, categoryById, { activeCategories })}
                     categories={getRecipeRootCategories(recipe, categoryById)}
                     {...(session?.userId !== recipe.authorId && {
                         actionSlot: <BookmarkRecipeButton recipe={recipe} variant='short' />,

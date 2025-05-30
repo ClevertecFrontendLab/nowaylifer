@@ -19,10 +19,10 @@ export const UpdateRecipeButton = ({
 }: UpdateRecipeButtonProps) => (
     <Button
         as={Link}
-        to={`/edit${buildRecipePath(recipe, categoryById, activeCategories)}`}
         variant='outline'
         leftIcon={<EditIcon />}
         size={{ base: 'xs', lg: 'sm', '2xl': 'lg' }}
+        to={buildRecipePath(recipe, categoryById, { edit: true, activeCategories })}
         {...props}
     >
         Редактировать рецепт

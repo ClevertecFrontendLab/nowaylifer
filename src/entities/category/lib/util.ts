@@ -1,7 +1,7 @@
 import { isString } from 'lodash-es';
 import { Params } from 'react-router';
 
-import { RouteParam } from '~/shared/router';
+import { RouteParam, RoutePath } from '~/shared/router';
 
 import { Category, RootCategory, SubCategory } from '../types';
 
@@ -12,7 +12,7 @@ export const isRootCategory = (value: Category | SubCategory): value is RootCate
     !isSubCategory(value);
 
 export const buildCategoryPath = (root: RootCategory, sub: SubCategory) =>
-    `/${root.category}/${sub.category}`;
+    RoutePath.Category.build({ rootCategory: root.category, subCategory: sub.category });
 
 export const categoryParamOrder = [RouteParam.RootCategory, RouteParam.SubCategory];
 

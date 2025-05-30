@@ -1,7 +1,8 @@
 import invariant from 'invariant';
-import { replace } from 'react-router';
+import { redirect, replace } from 'react-router';
 
-import { createRouteLoader, RouteParam, storeContext } from '~/shared/router';
+import { isClientError } from '~/shared/api/util';
+import { createRouteLoader, RouteParam, RoutePath, storeContext } from '~/shared/router';
 
 import { recipeApi } from './query';
 
@@ -11,9 +12,18 @@ export const recipeLoader = createRouteLoader(async ({ context, params, request 
 
     invariant(recipeId, 'RecipeId param is empty string or undefined');
 
-    const recipe = await dispatch(
-        recipeApi.endpoints.recipeById.initiate(recipeId, { subscribe: false }),
-    ).unwrap();
+    let recipe;
+
+    try {
+        recipe = await dispatch(
+            recipeApi.endpoints.recipeById.initiate(recipeId, { subscribe: false }),
+        ).unwrap();
+    } catch (error) {
+        if (isClientError(error)) {
+            return redirect(RoutePath.NotFound);
+        }
+        throw error;
+    }
 
     if (recipe._id !== recipeId) {
         return replace(request.url.replace(recipeId, recipe._id));
