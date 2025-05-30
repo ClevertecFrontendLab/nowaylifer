@@ -2,11 +2,13 @@ import { Avatar, Box, BoxProps, Circle, HStack, Square } from '@chakra-ui/react'
 import { memo } from 'react';
 
 import userAvatarUrl from '~/shared/assets/user.png';
+import { RoutePath } from '~/shared/router';
 import { TestId } from '~/shared/test-ids';
 import { Button } from '~/shared/ui/button';
 import { HomeIcon } from '~/shared/ui/icons/home';
 import { PencilIcon } from '~/shared/ui/icons/pencil';
 import { SearchIcon } from '~/shared/ui/icons/search';
+import { Link } from '~/shared/ui/link';
 
 export const BottomMenu = memo((props: BoxProps) => (
     <Box
@@ -59,6 +61,8 @@ export const BottomMenu = memo((props: BoxProps) => (
                 Поиск
             </Button>
             <Button
+                as={Link}
+                to={RoutePath.NewRecipe}
                 fontSize='xs'
                 variant='ghost'
                 iconSpacing={1}
