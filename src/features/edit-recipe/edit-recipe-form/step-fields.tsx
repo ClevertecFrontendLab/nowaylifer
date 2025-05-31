@@ -48,7 +48,7 @@ export const StepFields = (props: BoxProps) => {
                 <StepRow
                     key={field.id}
                     index={index}
-                    isRemovable={fields.length > 1}
+                    isRemovable={index > 0}
                     onRemove={handleRemove}
                 />
             ))}
