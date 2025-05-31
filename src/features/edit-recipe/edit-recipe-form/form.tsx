@@ -1,22 +1,29 @@
 import { Button, ButtonProps, Center, chakra, Container, Flex } from '@chakra-ui/react';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useRef } from 'react';
 import { DefaultValues, FormProvider, useForm } from 'react-hook-form';
 
+import { Recipe } from '~/entities/recipe';
+import { isQueryHttpError } from '~/shared/api/util';
 import { TestId } from '~/shared/test-ids';
 import { EditIcon } from '~/shared/ui/icons/edit';
+import { HttpStatusCode } from '~/shared/util';
 
-import { recipeDraftSchema } from '../schema';
 import { RecipeDraft } from '../types';
+import { formResolver } from './form-resolver';
 import { IngredientFields } from './ingredient-fields';
 import { MainFields } from './main-fields';
 import { StepFields } from './step-fields';
-import { useLeaveBlocker } from './use-leave-blocker';
+import { useConfirmLeave } from './use-confirm-leave';
+import { useRecipeMutation } from './use-recipe-mutation';
 import { useSaveRecipeDraft } from './use-save-recipe-draft';
 
-export interface EditRecipeFormProps {
-    defaultValues?: DefaultValues<RecipeDraft>;
-    onSubmit: (data: RecipeDraft) => void;
-}
+export type EditRecipeFormProps = { onSuccess: (recipe: Recipe) => void } & (
+    | { mode: 'create'; defaultValues?: DefaultValues<RecipeDraft>; recipeId?: undefined }
+    | { mode: 'update'; defaultValues: DefaultValues<RecipeDraft>; recipeId: string }
+);
+
+const emptyIngredient = { title: '', count: '', measureUnit: '' };
+const emptyStep = { description: '', image: undefined, stepNumber: 1 };
 
 const emptyDraft: DefaultValues<RecipeDraft> = {
     title: '',
@@ -25,24 +32,80 @@ const emptyDraft: DefaultValues<RecipeDraft> = {
     time: undefined,
     portions: undefined,
     categoriesIds: [],
-    ingredients: [],
-    steps: [{ description: '', image: undefined, stepNumber: 1 }],
+    ingredients: [emptyIngredient],
+    steps: [emptyStep],
 };
 
-export const EditRecipeForm = ({ defaultValues = emptyDraft, onSubmit }: EditRecipeFormProps) => {
+export const EditRecipeForm = ({
+    mode,
+    defaultValues,
+    onSuccess,
+    recipeId,
+}: EditRecipeFormProps) => {
     const form = useForm<RecipeDraft>({
-        resolver: zodResolver(recipeDraftSchema),
+        resolver: formResolver,
         shouldFocusError: false,
-        defaultValues,
+        defaultValues: defaultValues
+            ? {
+                  ...defaultValues,
+                  ingredients: [...(defaultValues.ingredients ?? []), emptyIngredient],
+              }
+            : emptyDraft,
     });
 
+    const {
+        formState: { isDirty },
+    } = form;
+
+    const mutateRecipe = useRecipeMutation(mode);
     const saveDraft = useSaveRecipeDraft(form);
 
-    useLeaveBlocker(form);
+    const allowNavigateRef = useRef(false);
+
+    useConfirmLeave({
+        blockLeave: () => isDirty && !allowNavigateRef.current,
+        onSave: async ({ closeModal, blocker }) => {
+            const { success, error } = await saveDraft();
+
+            if (success || error === 'formInvalid') {
+                closeModal();
+            }
+
+            if (success && blocker.state === 'blocked') {
+                blocker.proceed();
+            }
+        },
+    });
+
+    const prepareDraftToSubmit = (draft: RecipeDraft) => {
+        const ingredients =
+            draft.ingredients.length >= 2 ? draft.ingredients.slice(0, -1) : draft.ingredients;
+
+        return { ...draft, ingredients };
+    };
+
+    const handleFormValid = async (data: RecipeDraft) => {
+        const draft = prepareDraftToSubmit(data);
+        const result = await mutateRecipe(draft, recipeId);
+
+        const { error } = result;
+
+        if (!error) {
+            allowNavigateRef.current = true;
+            return onSuccess(result.data);
+        }
+
+        if (isQueryHttpError(error) && error.status === HttpStatusCode.CONFLICT) {
+            form.setError('title', {});
+        }
+    };
 
     return (
         <FormProvider {...form}>
-            <chakra.form onSubmit={form.handleSubmit(onSubmit)} data-test-id={TestId.RECIPE_FORM}>
+            <chakra.form
+                onSubmit={form.handleSubmit(handleFormValid)}
+                data-test-id={TestId.RECIPE_FORM}
+            >
                 <MainFields />
                 <Container
                     p={0}
@@ -67,10 +130,10 @@ export const EditRecipeForm = ({ defaultValues = emptyDraft, onSubmit }: EditRec
 const PublishRecipeButton = (props: ButtonProps) => (
     <Button
         size='lg'
-        variant='inverted'
         type='submit'
-        {...props}
+        variant='inverted'
         data-test-id={TestId.PUBLISH_BUTTON}
+        {...props}
     >
         Опубликовать рецепт
     </Button>

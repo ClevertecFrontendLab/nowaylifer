@@ -8,47 +8,27 @@ import {
     Input,
     Select,
 } from '@chakra-ui/react';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { useFormContext, useFormState } from 'react-hook-form';
 
 import { TestId } from '~/shared/test-ids';
 import { PlusIcon } from '~/shared/ui/icons/plus';
 import { TrashCanIcon } from '~/shared/ui/icons/trash-can';
-import { XOR } from '~/shared/util';
 
 import { editRecipeApi } from '../api/query';
 import { IngredientSchema, RecipeDraftSchema } from '../schema';
 
-interface RegisteredIngredientRowProps {
-    isDraft?: false;
+export interface IngredientRowProps extends FlexProps {
     index: number;
+    isLast?: boolean;
+    onAdd?: () => void;
     onRemove?: (index: number) => void;
 }
 
-interface DraftIngredientRowProps {
-    isDraft: true;
-    index: number;
-    defaultDraft?: IngredientSchema;
-    onAdd?: (values: IngredientSchema) => void;
-}
-
-export type IngredientRowProps = XOR<RegisteredIngredientRowProps, DraftIngredientRowProps> &
-    FlexProps;
-
-const emptyIngredient = { count: '', measureUnit: '', title: '' };
-
 export const IngredientRow = memo(
-    ({
-        index,
-        onRemove,
-        isDraft,
-        onAdd,
-        defaultDraft = emptyIngredient,
-        ...props
-    }: IngredientRowProps) => {
+    ({ index, isLast, onRemove, onAdd, ...props }: IngredientRowProps) => {
         const { register, control } = useFormContext<RecipeDraftSchema>();
         const { data: measureUnits } = editRecipeApi.useMeasureUnitsQuery();
-        const [draft, setDraft] = useState(defaultDraft);
 
         const { errors } = useFormState({
             control,
@@ -59,29 +39,10 @@ export const IngredientRow = memo(
             ],
         });
 
-        const updateDraft =
-            (field: keyof IngredientSchema) =>
-            (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-                const value = e.currentTarget.value;
-                setDraft((prev) => ({ ...prev, [field]: value }));
-            };
-
-        const registerOrControlled = (field: keyof IngredientSchema) => {
-            if (isDraft) {
-                return { value: draft[field], onChange: updateDraft(field) };
-            }
-            return register(`ingredients.${index}.${field}`);
-        };
-
         const fieldError = (field: keyof IngredientSchema) => errors.ingredients?.[index]?.[field];
 
-        const handleAdd = () => {
-            onAdd?.(draft);
-            setDraft(defaultDraft);
-        };
-
         return (
-            <Flex gap={{ base: 3, '2xl': 4 }} alignItems='center' {...props} wrap='wrap'>
+            <Flex gap={{ base: 3, '2xl': 4 }} align='center' wrap='wrap' {...props}>
                 <Input
                     flex={{ base: 'auto', '2sm': 1 }}
                     w={{ base: 'full', '2sm': 'auto' }}
@@ -90,7 +51,7 @@ export const IngredientRow = memo(
                     _placeholder={{ color: 'blackAlpha.700' }}
                     isInvalid={!!fieldError('title')}
                     data-test-id={TestId.ingredientTitle(index)}
-                    {...registerOrControlled('title')}
+                    {...register(`ingredients.${index}.title`)}
                 />
                 <Input
                     type='number'
@@ -100,7 +61,9 @@ export const IngredientRow = memo(
                     aria-labelledby='ingredient-count-label'
                     isInvalid={!!fieldError('count')}
                     data-test-id={TestId.ingredientCount(index)}
-                    {...registerOrControlled('count')}
+                    {...register(`ingredients.${index}.count`, {
+                        setValueAs: (value) => (value === '' ? '' : Number(value)),
+                    })}
                 />
                 <Select
                     w='auto'
@@ -109,7 +72,7 @@ export const IngredientRow = memo(
                     aria-labelledby='ingredient-unit-label'
                     isInvalid={!!fieldError('measureUnit')}
                     data-test-id={TestId.ingredientUnit(index)}
-                    {...registerOrControlled('measureUnit')}
+                    {...register(`ingredients.${index}.measureUnit`)}
                 >
                     <>
                         <chakra.option hidden disabled value=''>
@@ -122,9 +85,9 @@ export const IngredientRow = memo(
                         ))}
                     </>
                 </Select>
-                {isDraft ? (
+                {isLast ? (
                     <AddIngredientButton
-                        onClick={handleAdd}
+                        onClick={onAdd}
                         data-test-id={TestId.INGREDIENT_ADD_BUTTON}
                     />
                 ) : (

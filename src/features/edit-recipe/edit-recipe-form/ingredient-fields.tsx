@@ -2,7 +2,7 @@ import { Box, BoxProps, chakra, FormLabel, Grid, Icon, IconProps } from '@chakra
 import { useCallback } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
-import { IngredientSchema, RecipeDraftSchema } from '../schema';
+import { RecipeDraftSchema } from '../schema';
 import { IngredientRow } from './ingredient-row';
 
 const Label = chakra(FormLabel, {
@@ -24,7 +24,7 @@ export const IngredientFields = (props: BoxProps) => {
     const handleRemove = useCallback((index: number) => remove(index), [remove]);
 
     const handleAdd = useCallback(
-        (values: IngredientSchema) => append(values, { shouldFocus: false }),
+        () => append({ count: '', measureUnit: '', title: '' }, { shouldFocus: false }),
         [append],
     );
 
@@ -57,9 +57,15 @@ export const IngredientFields = (props: BoxProps) => {
                 </Label>
             </Grid>
             {fields.map((field, index) => (
-                <IngredientRow key={field.id} index={index} onRemove={handleRemove} mb={4} />
+                <IngredientRow
+                    key={field.id}
+                    index={index}
+                    isLast={index === fields.length - 1}
+                    onAdd={handleAdd}
+                    onRemove={handleRemove}
+                    mb={4}
+                />
             ))}
-            <IngredientRow isDraft index={fields.length} onAdd={handleAdd} />
         </Box>
     );
 };
