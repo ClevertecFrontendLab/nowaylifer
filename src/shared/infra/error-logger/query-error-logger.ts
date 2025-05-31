@@ -27,15 +27,14 @@ const defaultOptions: QueryErrorLoggerOptions = {
         },
         default: (error) =>
             isServerError(error)
-                ? {
-                      title: ErrorMessage.SERVER_ERROR,
-                      description: ErrorMessage.TRY_AGAIN_LATER,
-                  }
+                ? { title: ErrorMessage.SERVER_ERROR, description: ErrorMessage.TRY_AGAIN_LATER }
                 : null,
     },
 };
 
 export type WithErrorLogMeta<T> = QueryErrorLoggerOptions & T;
+
+const getDefaultErrorId = (error: QueryHttpError) => error.status;
 
 export const withErrorLogger: BaseQueryEnhancer<
     { errorLogMeta?: QueryErrorLoggerOptions },
@@ -58,8 +57,17 @@ export const withErrorLogger: BaseQueryEnhancer<
     if (err && isQueryHttpError(err) && runIfFn(options.shouldLogError, err)) {
         const errorByStatus =
             options.errorMetaByStatus?.[err.status] ?? options.errorMetaByStatus?.default;
+
         const meta = runIfFn(errorByStatus, err) ?? null;
-        api.dispatch(setLoggableError({ error: err, meta, endpoint: api.endpoint }));
+
+        api.dispatch(
+            setLoggableError({
+                id: runIfFn(meta?.errorId, err) ?? getDefaultErrorId(err),
+                meta,
+                error: err,
+                endpoint: api.endpoint,
+            }),
+        );
     }
 
     return res as TypedQueryReturnValue<BaseQueryResult<typeof baseQuery>>;
