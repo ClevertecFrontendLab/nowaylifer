@@ -12,7 +12,9 @@ import { memo, useEffect, useRef, useState } from 'react';
 
 import { Breadcrumbs } from '~/features/breadcrumbs';
 import userAvatarUrl from '~/shared/assets/user.png';
+import { RoutePath } from '~/shared/router';
 import { TestId } from '~/shared/test-ids';
+import { Link } from '~/shared/ui/link';
 import { Logo } from '~/shared/ui/logo';
 import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/stats';
 
@@ -94,5 +96,9 @@ export const AppHeader = memo(() => {
 
 const AppHeaderLogo = () => {
     const variant = useBreakpointValue({ base: 'short', md: 'normal' } as const);
-    return <Logo h={8} w='auto' variant={variant} data-test-id={TestId.HEADER_LOGO} />;
+    return (
+        <Link to={RoutePath.Main}>
+            <Logo h={8} w='auto' variant={variant} data-test-id={TestId.HEADER_LOGO} />
+        </Link>
+    );
 };
