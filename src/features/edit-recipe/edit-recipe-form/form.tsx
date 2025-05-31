@@ -2,6 +2,7 @@ import { Button, ButtonProps, Center, chakra, Container, Flex } from '@chakra-ui
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DefaultValues, FormProvider, useForm } from 'react-hook-form';
 
+import { TestId } from '~/shared/test-ids';
 import { EditIcon } from '~/shared/ui/icons/edit';
 
 import { recipeDraftSchema } from '../schema';
@@ -40,7 +41,7 @@ export const EditRecipeForm = ({ defaultValues = emptyDraft, onSubmit }: EditRec
 
     return (
         <FormProvider {...form}>
-            <chakra.form onSubmit={form.handleSubmit(onSubmit)}>
+            <chakra.form onSubmit={form.handleSubmit(onSubmit)} data-test-id={TestId.RECIPE_FORM}>
                 <MainFields />
                 <Container
                     p={0}
@@ -63,13 +64,25 @@ export const EditRecipeForm = ({ defaultValues = emptyDraft, onSubmit }: EditRec
 };
 
 const PublishRecipeButton = (props: ButtonProps) => (
-    <Button size='lg' variant='inverted' type='submit' {...props}>
+    <Button
+        size='lg'
+        variant='inverted'
+        type='submit'
+        {...props}
+        data-test-id={TestId.PUBLISH_BUTTON}
+    >
         Опубликовать рецепт
     </Button>
 );
 
 const SaveDraftButton = (props: ButtonProps) => (
-    <Button size='lg' variant='outline' leftIcon={<EditIcon />} {...props}>
+    <Button
+        size='lg'
+        variant='outline'
+        leftIcon={<EditIcon />}
+        {...props}
+        data-test-id={TestId.SAVE_DRAFT_BUTTON}
+    >
         Сохранить черновик
     </Button>
 );

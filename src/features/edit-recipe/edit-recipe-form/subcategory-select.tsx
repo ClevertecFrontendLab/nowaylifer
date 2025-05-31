@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { selectCategoriesInvariant } from '~/entities/category';
 import { useAppSelector } from '~/shared/store';
+import { TestId } from '~/shared/test-ids';
 import {
     MultiSelect,
     MultiSelectClearButton,
@@ -36,7 +37,10 @@ export const SubCategorySelect = (props: SubCategorySelectProps) => {
                 let itemIndex = 0;
                 return (
                     <>
-                        <MultiSelectField placeholder='Выберите из списка...' />
+                        <MultiSelectField
+                            data-test-id={TestId.RECIPE_CATEGORY_SELECT}
+                            placeholder='Выберите из списка...'
+                        />
                         <FittingMultiSelectTagList
                             items={selectedItems}
                             renderTag={(id, index) => (

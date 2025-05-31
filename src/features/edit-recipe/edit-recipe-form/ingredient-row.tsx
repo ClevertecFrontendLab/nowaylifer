@@ -11,6 +11,7 @@ import {
 import { memo, useState } from 'react';
 import { useFormContext, useFormState } from 'react-hook-form';
 
+import { TestId } from '~/shared/test-ids';
 import { PlusIcon } from '~/shared/ui/icons/plus';
 import { TrashCanIcon } from '~/shared/ui/icons/trash-can';
 import { XOR } from '~/shared/util';
@@ -26,6 +27,7 @@ interface RegisteredIngredientRowProps {
 
 interface DraftIngredientRowProps {
     isDraft: true;
+    index: number;
     defaultDraft?: IngredientSchema;
     onAdd?: (values: IngredientSchema) => void;
 }
@@ -37,7 +39,7 @@ const emptyIngredient = { count: '', measureUnit: '', title: '' };
 
 export const IngredientRow = memo(
     ({
-        index = -1,
+        index,
         onRemove,
         isDraft,
         onAdd,
@@ -87,6 +89,7 @@ export const IngredientRow = memo(
                     placeholder='Ингредиент'
                     _placeholder={{ color: 'blackAlpha.700' }}
                     isInvalid={!!fieldError('title')}
+                    data-test-id={TestId.ingredientTitle(index)}
                     {...registerOrControlled('title')}
                 />
                 <Input
@@ -96,6 +99,7 @@ export const IngredientRow = memo(
                     _placeholder={{ color: 'blackAlpha.700' }}
                     aria-labelledby='ingredient-count-label'
                     isInvalid={!!fieldError('count')}
+                    data-test-id={TestId.ingredientCount(index)}
                     {...registerOrControlled('count')}
                 />
                 <Select
@@ -104,6 +108,7 @@ export const IngredientRow = memo(
                     maxW='215px'
                     aria-labelledby='ingredient-unit-label'
                     isInvalid={!!fieldError('measureUnit')}
+                    data-test-id={TestId.ingredientUnit(index)}
                     {...registerOrControlled('measureUnit')}
                 >
                     <>
@@ -118,9 +123,15 @@ export const IngredientRow = memo(
                     </>
                 </Select>
                 {isDraft ? (
-                    <AddIngredientButton onClick={handleAdd} />
+                    <AddIngredientButton
+                        onClick={handleAdd}
+                        data-test-id={TestId.INGREDIENT_ADD_BUTTON}
+                    />
                 ) : (
-                    <RemoveIngredientButton onClick={() => onRemove?.(index)} />
+                    <RemoveIngredientButton
+                        onClick={() => onRemove?.(index)}
+                        data-test-id={TestId.ingredientRemove(index)}
+                    />
                 )}
             </Flex>
         );

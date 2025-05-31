@@ -2,6 +2,7 @@ import { Circle, HStack, Spacer, StackProps, VStack } from '@chakra-ui/react';
 import { memo } from 'react';
 
 import { RoutePath } from '~/shared/router';
+import { TestId } from '~/shared/test-ids';
 import { Button } from '~/shared/ui/button';
 import { PencilIcon } from '~/shared/ui/icons/pencil';
 import { Link } from '~/shared/ui/link';
@@ -24,6 +25,7 @@ export const AppAside = memo((props: StackProps) => (
                 iconSpacing={3}
                 variant='ghost'
                 fontSize='xs'
+                data-test-id={TestId.RECIPE_ADD_BUTTON}
                 topIcon={
                     <Circle size={12} bg='black' color='lime.50'>
                         <PencilIcon boxSize={6} />

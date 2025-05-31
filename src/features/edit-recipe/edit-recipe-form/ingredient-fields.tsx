@@ -59,7 +59,7 @@ export const IngredientFields = (props: BoxProps) => {
             {fields.map((field, index) => (
                 <IngredientRow key={field.id} index={index} onRemove={handleRemove} mb={4} />
             ))}
-            <IngredientRow isDraft onAdd={handleAdd} />
+            <IngredientRow isDraft index={fields.length} onAdd={handleAdd} />
         </Box>
     );
 };

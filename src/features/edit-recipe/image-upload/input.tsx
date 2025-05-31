@@ -2,6 +2,12 @@ import { FormLabel, FormLabelProps, Input, VisuallyHidden } from '@chakra-ui/rea
 
 import { ImagePreview } from './preview';
 
+interface ImageFileInputTestId {
+    input: string;
+    imagePreview: string;
+    imageContainer: string;
+}
+
 export interface ImageFileInputProps
     extends Omit<FormLabelProps, 'value' | 'defaultValue' | 'onChange'> {
     accept?: string;
@@ -10,6 +16,7 @@ export interface ImageFileInputProps
     onChange?: (file: File) => void;
     fallback?: React.ReactElement;
     isInvalid?: boolean;
+    testId?: Partial<ImageFileInputTestId>;
 }
 
 export const ImageFileInput = ({
@@ -19,6 +26,7 @@ export const ImageFileInput = ({
     fallback,
     isInvalid,
     accept = 'image/*',
+    testId,
     ...props
 }: ImageFileInputProps) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,8 +37,20 @@ export const ImageFileInput = ({
     return (
         <FormLabel m={0} cursor='pointer' {...props}>
             <VisuallyHidden>Добавить изображение</VisuallyHidden>
-            <Input type='file' display='none' accept={accept} onChange={handleFileChange} />
-            <ImagePreview h='full' image={value} isInvalid={isInvalid} />
+            <Input
+                data-test-id={testId?.input}
+                type='file'
+                display='none'
+                accept={accept}
+                onChange={handleFileChange}
+            />
+            <ImagePreview
+                h='full'
+                image={value}
+                isInvalid={isInvalid}
+                data-test-id={testId?.imageContainer}
+                imageProps={{ 'data-test-id': testId?.imagePreview }}
+            />
         </FormLabel>
     );
 };

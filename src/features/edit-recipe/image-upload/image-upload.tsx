@@ -11,16 +11,27 @@ import { imageFileSchema } from '../schema';
 import { ImageUploadDialog, ImageUploadDialogProps } from './dialog';
 import { ImagePreview, ImagePreviewProps } from './preview';
 
+interface ImageUploadTestId {
+    imageContainer: string;
+    imagePreivew: string;
+    input: string;
+    dialog: string;
+    dialogImageContainer: string;
+    dialogImagePreview: string;
+}
+
 export interface ImageUploadProps {
     value?: string;
     onChange?: (image: string | undefined) => void;
     isInvalid?: boolean;
     previewProps?: ImagePreviewProps;
     modalProps?: Omit<ImageUploadDialogProps, 'isOpen' | 'onClose'>;
+    testId?: Partial<ImageUploadTestId>;
 }
 
 export const ImageUpload = ({
     value,
+    testId,
     isInvalid,
     onChange,
     previewProps,
@@ -84,6 +95,8 @@ export const ImageUpload = ({
                 image={savedImage}
                 onClick={openModal}
                 isInvalid={isInvalid}
+                data-test-id={testId?.imageContainer}
+                imageProps={{ 'data-test-id': testId?.imagePreivew }}
                 {...previewProps}
             />
             {hasBeenOpened && (
@@ -99,6 +112,12 @@ export const ImageUpload = ({
                     onCloseComplete={() => {
                         setImage(savedImage);
                         setImageError(undefined);
+                    }}
+                    testId={{
+                        input: testId?.input,
+                        dialog: testId?.dialog,
+                        imageContainer: testId?.dialogImageContainer,
+                        imagePreview: testId?.dialogImagePreview,
                     }}
                     {...modalProps}
                 />

@@ -2,6 +2,8 @@ import { Flex, FormLabel, Grid, Input, Textarea } from '@chakra-ui/react';
 import { memo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { TestId } from '~/shared/test-ids';
+
 import { ImageUpload } from '../image-upload';
 import { RecipeDraft } from '../types';
 import { NumberInputControl } from './number-input-control';
@@ -27,12 +29,15 @@ export const MainFields = memo(() => {
                         previewProps={{
                             w: 'full',
                             h: { base: '224px', lg: '410px' },
-                            maxW: {
-                                base: 'none',
-                                '2sm': '232px',
-                                lg: '353px',
-                                '2xl': '553px',
-                            },
+                            maxW: { base: 'none', '2sm': '232px', lg: '353px', '2xl': '553px' },
+                        }}
+                        testId={{
+                            input: TestId.RECIPE_IMAGE_INPUT,
+                            imagePreivew: TestId.RECIPE_IMAGE_PREVIEW,
+                            imageContainer: TestId.RECIPE_IMAGE_CONTAINER,
+                            dialog: TestId.RECIPE_IMAGE_MODAL,
+                            dialogImageContainer: TestId.RECIPE_IMAGE_MODAL_IMAGE_CONTAINER,
+                            dialogImagePreview: TestId.RECIPE_IMAGE_MODAL_IMAGE_PREVIEW,
                         }}
                     />
                 )}
@@ -69,6 +74,7 @@ export const MainFields = memo(() => {
                     render={({ field, fieldState: { invalid } }) => (
                         <Input
                             isInvalid={invalid}
+                            data-test-id={TestId.RECIPE_TITLE}
                             _placeholder={{ color: 'blackAlpha.700' }}
                             size='lg'
                             placeholder='Название рецепта'
@@ -83,6 +89,7 @@ export const MainFields = memo(() => {
                     render={({ field, fieldState: { invalid } }) => (
                         <Textarea
                             isInvalid={invalid}
+                            data-test-id={TestId.RECIPE_DESCRIPTION}
                             mb={{ base: 4, lg: 6 }}
                             _placeholder={{ color: 'blackAlpha.700' }}
                             placeholder='Краткое описание рецепта'
@@ -103,6 +110,7 @@ export const MainFields = memo(() => {
                         id='portions-number-input'
                         control={control}
                         name='portions'
+                        testId={{ input: TestId.RECIPE_PORTIONS }}
                         min={1}
                     />
                     <FormLabel htmlFor='time-number-input' fontWeight='semibold'>
@@ -114,6 +122,7 @@ export const MainFields = memo(() => {
                         name='time'
                         min={1}
                         max={10000}
+                        testId={{ input: TestId.RECIPE_TIME }}
                     />
                 </Grid>
             </Flex>

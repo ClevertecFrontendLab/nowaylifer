@@ -14,6 +14,7 @@ export interface NumberInputControlProps<TFieldValues extends FieldValues>
     extends Omit<ControllerProps<TFieldValues>, 'render'>,
         Omit<NumberInputProps, 'children' | 'defaultValue' | 'name'> {
     label?: string;
+    testId?: { contianer?: string; input?: string };
 }
 
 export const NumberInputControl = <TFieldValues extends FieldValues>({
@@ -24,6 +25,7 @@ export const NumberInputControl = <TFieldValues extends FieldValues>({
     disabled,
     rules,
     shouldUnregister,
+    testId,
     ...props
 }: NumberInputControlProps<TFieldValues>) => (
     <Controller
@@ -46,9 +48,10 @@ export const NumberInputControl = <TFieldValues extends FieldValues>({
                     value={value}
                     onBlur={onBlur}
                     onChange={(_, value) => onChange(isNaN(value) ? undefined : value)}
+                    data-test-id={testId?.contianer}
                     {...props}
                 >
-                    <NumberInputField ref={ref} />
+                    <NumberInputField ref={ref} data-test-id={testId?.input} />
                     <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />

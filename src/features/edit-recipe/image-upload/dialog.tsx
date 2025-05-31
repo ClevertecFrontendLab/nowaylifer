@@ -6,8 +6,16 @@ import {
     AppModalContent,
     AppModalTitle,
 } from '~/shared/infra/modals-manager';
+import { TestId } from '~/shared/test-ids';
 
 import { ImageFileInput, ImageFileInputProps } from './input';
+
+interface ImageUploadDialogTestId {
+    dialog: string;
+    input: string;
+    imageContainer: string;
+    imagePreview: string;
+}
 
 export interface ImageUploadDialogProps extends Omit<ModalProps, 'children'> {
     isInvalid?: boolean;
@@ -16,6 +24,7 @@ export interface ImageUploadDialogProps extends Omit<ModalProps, 'children'> {
     onImageChange?: ImageFileInputProps['onChange'];
     onImageSave?: () => void;
     onImageDelete?: () => void;
+    testId?: Partial<ImageUploadDialogTestId>;
 }
 
 export const ImageUploadDialog = ({
@@ -25,12 +34,13 @@ export const ImageUploadDialog = ({
     onImageChange,
     onImageDelete,
     onImageSave,
+    testId,
     ...props
 }: ImageUploadDialogProps) => (
     <Modal isCentered {...props}>
         <ModalOverlay />
-        <AppModalContent>
-            <AppModalCloseButton />
+        <AppModalContent data-test-id={testId?.dialog}>
+            <AppModalCloseButton data-test-id={TestId.MODAL_CLOSE_BUTTON} />
             <AppModalBody pb={image ? 8 : 10}>
                 <AppModalTitle mb={8}>Изображение</AppModalTitle>
                 <Center>
@@ -39,6 +49,7 @@ export const ImageUploadDialog = ({
                         isInvalid={isInvalid}
                         boxSize={{ base: '108px', lg: '206px' }}
                         onChange={onImageChange}
+                        testId={testId}
                     />
                 </Center>
                 {(image || savedImage) && (

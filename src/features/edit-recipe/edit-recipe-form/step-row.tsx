@@ -10,6 +10,7 @@ import {
 import { memo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { TestId } from '~/shared/test-ids';
 import { TrashCanIcon } from '~/shared/ui/icons/trash-can';
 
 import { ImageUpload } from '../image-upload';
@@ -39,6 +40,14 @@ export const StepRow = memo(({ index, isRemovable, onRemove }: StepRowProps) => 
                             flex: { base: 'auto', sm: 1, md: 'auto' },
                             maxW: { base: 'none', sm: '346px' },
                         }}
+                        testId={{
+                            input: TestId.stepImageInput(index),
+                            imageContainer: TestId.stepImageContainer(index),
+                            imagePreivew: TestId.stepImagePreview(index),
+                            dialog: TestId.RECIPE_IMAGE_MODAL,
+                            dialogImageContainer: TestId.RECIPE_IMAGE_MODAL_IMAGE_CONTAINER,
+                            dialogImagePreview: TestId.RECIPE_IMAGE_MODAL_IMAGE_PREVIEW,
+                        }}
                     />
                 )}
             />
@@ -47,7 +56,12 @@ export const StepRow = memo(({ index, isRemovable, onRemove }: StepRowProps) => 
                     <Badge h={6} px={2} bg='blackAlpha.100'>
                         Шаг {index + 1}
                     </Badge>
-                    {isRemovable && <RemoveStepButton onClick={() => onRemove?.(index)} />}
+                    {isRemovable && (
+                        <RemoveStepButton
+                            onClick={() => onRemove?.(index)}
+                            data-test-id={TestId.stepRemove(index)}
+                        />
+                    )}
                 </Flex>
                 <Controller
                     control={control}
@@ -55,6 +69,7 @@ export const StepRow = memo(({ index, isRemovable, onRemove }: StepRowProps) => 
                     render={({ field, fieldState: { invalid } }) => (
                         <Textarea
                             placeholder='Шаг'
+                            data-test-id={TestId.stepDescription(index)}
                             _placeholder={{ color: 'blackAlpha.700' }}
                             isInvalid={invalid}
                             {...field}

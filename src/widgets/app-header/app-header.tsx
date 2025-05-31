@@ -94,5 +94,5 @@ export const AppHeader = memo(() => {
 
 const AppHeaderLogo = () => {
     const variant = useBreakpointValue({ base: 'short', md: 'normal' } as const);
-    return <Logo h={8} w='auto' variant={variant} />;
+    return <Logo h={8} w='auto' variant={variant} data-test-id={TestId.HEADER_LOGO} />;
 };

@@ -9,6 +9,7 @@ import {
     AppModalImage,
     AppModalTitle,
 } from '~/shared/infra/modals-manager';
+import { TestId } from '~/shared/test-ids';
 import { EditIcon } from '~/shared/ui/icons/edit';
 
 export interface LeaveConfirmDialogProps {
@@ -17,8 +18,8 @@ export interface LeaveConfirmDialogProps {
 }
 
 export const LeaveConfirmDialog = ({ onLeave, onSave }: LeaveConfirmDialogProps) => (
-    <AppModalContent>
-        <AppModalCloseButton />
+    <AppModalContent data-test-id={TestId.PREVENTIVE_MODAL}>
+        <AppModalCloseButton data-test-id={TestId.MODAL_CLOSE_BUTTON} />
         <AppModalBody>
             <AppModalImage src={imageUrl} />
             <AppModalTitle>Выйти без сохранения?</AppModalTitle>
