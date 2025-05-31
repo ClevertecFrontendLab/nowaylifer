@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Center, chakra, Container, Flex } from '@chakra-ui/react';
+import { Button, ButtonProps, Center, chakra, Container, cssVar, Flex } from '@chakra-ui/react';
 import { DefaultValues, FormProvider, useForm } from 'react-hook-form';
 
 import { Recipe } from '~/entities/recipe';
@@ -34,6 +34,8 @@ const emptyDraft: DefaultValues<RecipeDraft> = {
     ingredients: [emptyIngredient],
     steps: [emptyStep],
 };
+
+const $inputColor = cssVar('inputColor');
 
 export const EditRecipeForm = ({
     mode,
@@ -89,6 +91,10 @@ export const EditRecipeForm = ({
             <chakra.form
                 onSubmit={form.handleSubmit(handleFormValid)}
                 data-test-id={TestId.RECIPE_FORM}
+                sx={{
+                    [$inputColor.variable]: 'blackAlpha.900',
+                    '& input.chakra-input': { color: $inputColor.reference },
+                }}
             >
                 <MainFields />
                 <Container

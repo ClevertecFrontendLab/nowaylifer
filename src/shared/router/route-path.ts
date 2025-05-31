@@ -28,5 +28,5 @@ export const RoutePath = {
             categoryPattern,
         ),
     Recipe: definePath<RecipeParams>(recipePattern),
-    EditRecipe: definePath<RecipeParams>(joinPath('edit', recipePattern)),
+    EditRecipe: definePath<RecipeParams>(joinPath('edit-recipe', recipePattern)),
 };

@@ -1,4 +1,4 @@
-import { Portal, useSize } from '@chakra-ui/react';
+import { Portal, useBreakpointValue, useSize } from '@chakra-ui/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { selectCategoriesInvariant } from '~/entities/category';
@@ -27,16 +27,20 @@ export const SubCategorySelect = (props: SubCategorySelectProps) => {
         [rootCategories],
     );
 
+    const maxVisibleTags = useBreakpointValue({ base: 1, sm: Infinity });
+
     return (
-        <MultiSelect items={items} containerProps={{ maxW: '350px' }} {...props}>
+        <MultiSelect
+            items={items}
+            containerProps={{ maxW: '350px', 'data-test-id': TestId.RECIPE_CATEGORY_SELECT }}
+            {...props}
+        >
             {({ selectedItems }) => (
                 <>
-                    <MultiSelectField
-                        data-test-id={TestId.RECIPE_CATEGORY_SELECT}
-                        placeholder='Выберите из списка...'
-                    />
+                    <MultiSelectField placeholder='Выберите из списка...' />
                     <FittingMultiSelectTagList
                         items={selectedItems}
+                        maxVisible={maxVisibleTags}
                         renderTag={(id, index) => (
                             <MultiSelectTag key={id} item={id} index={index}>
                                 {categoryById[id].title}
@@ -71,10 +75,11 @@ export function FittingMultiSelectTagList<T extends string | number>({
     minVisible,
     maxVisible,
     gap = 8,
+    innerSpacing = 24,
 }: FittingMultiSelectTagListProps<T>) {
     const { visibleItems, overflowCount, containerRef, hiddenContainerRef } = useFittingTagItems(
         items,
-        { minVisible, maxVisible, gap },
+        { minVisible, maxVisible, gap, innerSpacing },
     );
 
     return (
@@ -113,11 +118,17 @@ interface UseFittingTagItemsOptions {
     minVisible: number;
     maxVisible: number;
     gap: number;
+    innerSpacing: number;
 }
 
 const useFittingTagItems = <T extends string | number>(
     items: T[],
-    { minVisible = 1, maxVisible = Infinity, gap = 0 }: Partial<UseFittingTagItemsOptions>,
+    {
+        minVisible = 1,
+        maxVisible = Infinity,
+        gap = 0,
+        innerSpacing = 0,
+    }: Partial<UseFittingTagItemsOptions>,
 ) => {
     const [visibleCount, setVisibleCount] = useState(minVisible);
     const hiddenContainerRef = useRef<HTMLDivElement>(null);
@@ -141,7 +152,7 @@ const useFittingTagItems = <T extends string | number>(
 
                 totalWidth += elWidth + gapWidth;
 
-                if (totalWidth > containerSize.width) break;
+                if (totalWidth > containerSize.width - innerSpacing) break;
 
                 count++;
             }
@@ -154,7 +165,7 @@ const useFittingTagItems = <T extends string | number>(
         return () => {
             cancelAnimationFrame(rafId);
         };
-    }, [items, containerSize?.width, minVisible, maxVisible, gap]);
+    }, [items, containerSize?.width, minVisible, maxVisible, gap, innerSpacing]);
 
     return {
         visibleItems: items.slice(0, visibleCount),

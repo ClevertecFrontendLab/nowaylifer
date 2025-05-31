@@ -39,7 +39,7 @@ export const MultiSelectTag = <Item,>({
 );
 
 export const MultiSelectMenu = (props: MultiSelectMenuProps) => (
-    <BaseMultiSelectMenu py={1} {...props} />
+    <BaseMultiSelectMenu py={1} isLazy {...props} />
 );
 
 export const MultiSelectMenuList = (props: MultiSelectMenuListProps) => (
