@@ -28,6 +28,7 @@ export const ResetPassword = ({ email, next }: { email: string; next: () => void
         reValidateMode: 'onSubmit',
         resolver: zodResolver(resetPasswordSchema),
         defaultValues: { login: '', password: '', passwordConfirm: '' },
+        shouldFocusError: false,
     });
 
     const [resetPassword, { isLoading }] = authApi.useResetPasswordMutation();

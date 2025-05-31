@@ -15,7 +15,7 @@ export const useSaveRecipeDraft = (form: UseFormReturn<RecipeDraft>) => {
     useAppLoader(isLoading);
 
     return useCallback(async () => {
-        const isTitleValid = await form.trigger('title', { shouldFocus: true });
+        const isTitleValid = await form.trigger('title');
         if (!isTitleValid) return { error: 'formInvalid' } as const;
 
         const res = await saveDraft(form.getValues());

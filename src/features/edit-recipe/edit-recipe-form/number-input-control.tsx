@@ -47,6 +47,7 @@ export const NumberInputControl = <TFieldValues extends FieldValues>({
                     w='90px'
                     value={value}
                     onBlur={onBlur}
+                    clampValueOnBlur={false}
                     onChange={(_, value) => onChange(isNaN(value) ? undefined : value)}
                     data-test-id={testId?.contianer}
                     {...props}

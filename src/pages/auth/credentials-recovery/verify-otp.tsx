@@ -1,5 +1,5 @@
 import { chakra, HStack, PinInput, PinInputField, SlideFade } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { isClientError } from '~/shared/api/util';
 import imageUrl from '~/shared/assets/gaming-on-portable-console.png';
@@ -22,6 +22,8 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
     const [isInvalid, setIsInvalid] = useState(false);
     const [otp, setOtp] = useState('');
 
+    const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
     useAppLoader(isLoading);
 
     const handleOtpComplete = async (otpToken: string) => {
@@ -30,6 +32,7 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
         if (!res.error) return next();
         setIsInvalid(isClientError(res.error));
         setOtp('');
+        inputRefs.current.forEach((el) => el?.blur());
     };
 
     return (
@@ -54,7 +57,13 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
                         onComplete={handleOtpComplete}
                     >
                         {Array.from({ length: OTP_LENGTH }, (_, idx) => (
-                            <PinInputField flexShrink={0} data-test-id={TestId.otpInput(idx)} />
+                            <PinInputField
+                                flexShrink={0}
+                                data-test-id={TestId.otpInput(idx)}
+                                ref={(el) => {
+                                    inputRefs.current[idx] = el;
+                                }}
+                            />
                         ))}
                     </PinInput>
                 </HStack>

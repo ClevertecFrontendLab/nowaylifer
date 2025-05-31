@@ -38,6 +38,7 @@ export const SignupForm = () => {
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
         resolver: zodResolver(signUpSchema),
+        shouldFocusError: false,
         defaultValues: {
             firstName: '',
             lastName: '',

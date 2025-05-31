@@ -28,6 +28,7 @@ export const RecoverPassword = ({ next }: { next: (email: string) => void }) => 
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
         resolver: zodResolver(recoverPasswordSchema),
+        shouldFocusError: false,
         defaultValues: { email: '' },
     });
 

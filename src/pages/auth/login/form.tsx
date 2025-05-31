@@ -28,6 +28,7 @@ export const LoginForm = () => {
         reValidateMode: 'onSubmit',
         resolver: zodResolver(loginSchema),
         defaultValues: { login: '', password: '' },
+        shouldFocusError: false,
     });
 
     const [login, { isLoading }] = authApi.useLoginMutation();

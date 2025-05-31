@@ -32,6 +32,7 @@ const emptyDraft: DefaultValues<RecipeDraft> = {
 export const EditRecipeForm = ({ defaultValues = emptyDraft, onSubmit }: EditRecipeFormProps) => {
     const form = useForm<RecipeDraft>({
         resolver: zodResolver(recipeDraftSchema),
+        shouldFocusError: false,
         defaultValues,
     });
 
