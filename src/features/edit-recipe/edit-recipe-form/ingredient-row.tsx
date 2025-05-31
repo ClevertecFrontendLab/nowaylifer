@@ -9,7 +9,7 @@ import {
     Select,
 } from '@chakra-ui/react';
 import { memo } from 'react';
-import { useFormContext, useFormState } from 'react-hook-form';
+import { Controller, useFormContext, useFormState } from 'react-hook-form';
 
 import { TestId } from '~/shared/test-ids';
 import { PlusIcon } from '~/shared/ui/icons/plus';
@@ -65,26 +65,33 @@ export const IngredientRow = memo(
                         setValueAs: (value) => (value === '' ? '' : Number(value)),
                     })}
                 />
-                <Select
-                    w='auto'
-                    flex={1}
-                    maxW='215px'
-                    aria-labelledby='ingredient-unit-label'
-                    isInvalid={!!fieldError('measureUnit')}
-                    data-test-id={TestId.ingredientUnit(index)}
-                    {...register(`ingredients.${index}.measureUnit`)}
-                >
-                    <>
-                        <chakra.option hidden disabled value=''>
-                            Единица измерения
-                        </chakra.option>
-                        {measureUnits?.map((unit) => (
-                            <chakra.option key={unit._id} value={unit.name}>
-                                {unit.name}
-                            </chakra.option>
-                        ))}
-                    </>
-                </Select>
+                <Controller
+                    control={control}
+                    name={`ingredients.${index}.measureUnit`}
+                    render={({ field }) => (
+                        <Select
+                            w='auto'
+                            flex={1}
+                            maxW='215px'
+                            aria-labelledby='ingredient-unit-label'
+                            isInvalid={!!fieldError('measureUnit')}
+                            data-test-id={TestId.ingredientUnit(index)}
+                            {...field}
+                        >
+                            <>
+                                <chakra.option hidden disabled value=''>
+                                    Единица измерения
+                                </chakra.option>
+                                {measureUnits?.map((unit) => (
+                                    <chakra.option key={unit._id} value={unit.name}>
+                                        {unit.name}
+                                    </chakra.option>
+                                ))}
+                            </>
+                        </Select>
+                    )}
+                />
+
                 {isLast ? (
                     <AddIngredientButton
                         onClick={onAdd}
