@@ -1,7 +1,6 @@
 import HTTPMethod from 'http-method-enum';
 
 import { WithErrorLogMeta } from '~/shared/infra/error-logger';
-import { buildMediaSrc } from '~/shared/util';
 
 import { UploadedFile } from '../common';
 import { ApiEndpoint } from '../endpoints';
@@ -20,7 +19,6 @@ export const fileApi = apiSlice.injectEndpoints({
                     errorLogMeta,
                 };
             },
-            transformResponse: (file: UploadedFile) => ({ ...file, url: buildMediaSrc(file.url) }),
         }),
     }),
 });
