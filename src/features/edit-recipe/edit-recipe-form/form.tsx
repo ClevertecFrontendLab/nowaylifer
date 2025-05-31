@@ -77,16 +77,8 @@ export const EditRecipeForm = ({
         },
     });
 
-    const prepareDraftToSubmit = (draft: RecipeDraft) => {
-        const ingredients =
-            draft.ingredients.length >= 2 ? draft.ingredients.slice(0, -1) : draft.ingredients;
-
-        return { ...draft, ingredients };
-    };
-
     const handleFormValid = async (data: RecipeDraft) => {
-        const draft = prepareDraftToSubmit(data);
-        const result = await mutateRecipe(draft, recipeId);
+        const result = await mutateRecipe(data, recipeId);
 
         const { error } = result;
 
