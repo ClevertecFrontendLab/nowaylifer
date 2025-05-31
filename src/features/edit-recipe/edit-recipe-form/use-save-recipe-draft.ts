@@ -8,7 +8,10 @@ import { RoutePath } from '~/shared/router';
 import { editRecipeApi } from '../api/query';
 import { EditRecipeHistoryState, RecipeDraft } from '../types';
 
-export const useSaveRecipeDraft = (form: UseFormReturn<RecipeDraft>) => {
+export const useSaveRecipeDraft = (
+    form: UseFormReturn<RecipeDraft>,
+    unblockNavigation: () => void,
+) => {
     const [saveDraft, { isLoading }] = editRecipeApi.useSaveDraftMutation();
     const navigate = useNavigate();
 
@@ -21,10 +24,12 @@ export const useSaveRecipeDraft = (form: UseFormReturn<RecipeDraft>) => {
         const res = await saveDraft(form.getValues());
         if (res.error) return { error: 'requestFailed' } as const;
 
+        unblockNavigation();
+
         navigate(RoutePath.Main, {
             state: { editRecipe: { event: 'draftSaved' } } satisfies EditRecipeHistoryState,
         });
 
         return { success: true };
-    }, [navigate, saveDraft, form]);
+    }, [navigate, saveDraft, form, unblockNavigation]);
 };

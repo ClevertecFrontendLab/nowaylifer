@@ -1,5 +1,4 @@
 import { Button, ButtonProps, Center, chakra, Container, Flex } from '@chakra-ui/react';
-import { useRef } from 'react';
 import { DefaultValues, FormProvider, useForm } from 'react-hook-form';
 
 import { Recipe } from '~/entities/recipe';
@@ -42,28 +41,18 @@ export const EditRecipeForm = ({
     onSuccess,
     recipeId,
 }: EditRecipeFormProps) => {
+    defaultValues = defaultValues
+        ? { ...defaultValues, ingredients: [...(defaultValues.ingredients ?? []), emptyIngredient] }
+        : emptyDraft;
+
     const form = useForm<RecipeDraft>({
         resolver: formResolver,
         shouldFocusError: false,
-        defaultValues: defaultValues
-            ? {
-                  ...defaultValues,
-                  ingredients: [...(defaultValues.ingredients ?? []), emptyIngredient],
-              }
-            : emptyDraft,
+        defaultValues,
     });
 
-    const {
-        formState: { isDirty },
-    } = form;
-
-    const mutateRecipe = useRecipeMutation(mode);
-    const saveDraft = useSaveRecipeDraft(form);
-
-    const allowNavigateRef = useRef(false);
-
-    useConfirmLeave({
-        blockLeave: () => isDirty && !allowNavigateRef.current,
+    const { unblockNavigation } = useConfirmLeave({
+        blockLeave: form.formState.isDirty,
         onSave: async ({ closeModal, blocker }) => {
             const { success, error } = await saveDraft();
 
@@ -77,13 +66,16 @@ export const EditRecipeForm = ({
         },
     });
 
+    const saveDraft = useSaveRecipeDraft(form, unblockNavigation);
+    const mutateRecipe = useRecipeMutation(mode);
+
     const handleFormValid = async (data: RecipeDraft) => {
         const result = await mutateRecipe(data, recipeId);
 
         const { error } = result;
 
         if (!error) {
-            allowNavigateRef.current = true;
+            unblockNavigation();
             return onSuccess(result.data);
         }
 

@@ -1,5 +1,6 @@
 import { useCallbackRef } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { runIfFn } from '@chakra-ui/utils';
+import { useCallback, useEffect, useRef } from 'react';
 import { Blocker, BlockerFunction, useBlocker } from 'react-router';
 
 import { useModal } from '~/shared/infra/modals-manager';
@@ -17,8 +18,22 @@ export const useConfirmLeave = ({
     onLeave,
     onSave,
 }: UseConfirmLeaveOptions = {}) => {
+    const unblockRef = useRef(false);
     const { openModal, closeModal } = useModal();
-    const blocker = useBlocker(blockLeave);
+
+    const blockerFn: BlockerFunction = useCallback(
+        (args) => {
+            const isBlocking = runIfFn(blockLeave, args);
+            return isBlocking && !unblockRef.current;
+        },
+        [blockLeave],
+    );
+
+    const blocker = useBlocker(blockerFn);
+
+    const unblockNavigation = useCallback(() => {
+        unblockRef.current = true;
+    }, []);
 
     const stableOnLeave = useCallbackRef(onLeave);
     const stableOnSave = useCallbackRef(onSave);
@@ -42,5 +57,5 @@ export const useConfirmLeave = ({
         });
     }, [blocker, openModal, closeModal, stableOnLeave, stableOnSave]);
 
-    return blocker;
+    return { blocker, unblockNavigation };
 };
