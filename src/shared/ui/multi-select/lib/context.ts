@@ -1,9 +1,4 @@
-import {
-    createDescendantContext,
-    createStylesContext,
-    FormControlOptions,
-    UsePopperReturn,
-} from '@chakra-ui/react';
+import { createStylesContext, FormControlOptions, UsePopperReturn } from '@chakra-ui/react';
 import { Context, createContext, useContextSelector } from 'use-context-selector';
 
 import { MultiSelectStyles } from './anatomy';
@@ -32,10 +27,3 @@ const [StylesProvider, useStyles] = createStylesContext('MultiSelect');
 const useMultiSelectStyles = useStyles as () => MultiSelectStyles;
 
 export { StylesProvider as MultiSelectStylesProvider, useMultiSelectStyles };
-
-export const [
-    MultiSelectDescendantsProvider,
-    useMultiSelectDescendantsContext,
-    useMultiSelectDescendants,
-    useMultiSelectDescendant,
-] = createDescendantContext();

@@ -1,4 +1,4 @@
-import { Box, chakra, useSize } from '@chakra-ui/react';
+import { chakra, useSize } from '@chakra-ui/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { selectCategoriesInvariant } from '~/entities/category';
@@ -31,11 +31,7 @@ export const SubCategorySelect = (props: SubCategorySelectProps) => {
     }, [rootCategories]);
 
     return (
-        <MultiSelect
-            containerProps={{ maxW: '350px', overflow: 'hidden' }}
-            items={items}
-            {...props}
-        >
+        <MultiSelect containerProps={{ maxW: '350px' }} items={items} {...props}>
             {({ selectedItems }) => {
                 let itemIndex = 0;
                 return (
@@ -44,7 +40,7 @@ export const SubCategorySelect = (props: SubCategorySelectProps) => {
                         <FittingMultiSelectTagList
                             items={selectedItems}
                             renderTag={(id, index) => (
-                                <MultiSelectTag key={id} item={id} index={index}>
+                                <MultiSelectTag key={id} item={id} index={index} minW={7}>
                                     {categoryById[id].title}
                                 </MultiSelectTag>
                             )}
@@ -55,7 +51,7 @@ export const SubCategorySelect = (props: SubCategorySelectProps) => {
                             <MultiSelectMenuList>
                                 {groups.map(({ groupLabel, options, key }) => (
                                     <chakra.li key={key}>
-                                        <Box>{groupLabel}</Box>
+                                        <chakra.div>{groupLabel}</chakra.div>
                                         <chakra.ul>
                                             {options.map((item) => (
                                                 <MultiSelectItem
@@ -108,10 +104,11 @@ export function FittingMultiSelectTagList<T extends string | number>({
             {/* Hidden measurement container */}
             <MultiSelectTagList
                 ref={hiddenContainerRef}
-                position='absolute'
+                position='fixed'
+                top={0}
+                left='-99999px'
                 visibility='hidden'
                 flexWrap='nowrap'
-                height={0}
             >
                 {items.map(renderTag)}
             </MultiSelectTagList>

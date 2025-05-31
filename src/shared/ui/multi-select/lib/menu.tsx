@@ -20,6 +20,7 @@ export const MultiSelectMenu = ({
     lazyBehavior = 'unmount',
     children,
     portalProps,
+    style,
     ...props
 }: MultiSelectMenuProps) => {
     const styles = useMultiSelectStyles();
@@ -40,9 +41,8 @@ export const MultiSelectMenu = ({
         <chakra.div
             __css={{ ...styles.menu, visibility: state.isOpen ? 'visible' : 'hidden' }}
             className={cx(multiSelectClassNames.menu, className)}
-            {...popper.getPopperProps()}
             {...getMenuProps(
-                { 'aria-multiselectable': true, ...popper.getPopperProps() },
+                { 'aria-multiselectable': true, ...popper.getPopperProps({ style }) },
                 { suppressRefError: true },
             )}
             children={shouldRenderChildren ? children : null}
