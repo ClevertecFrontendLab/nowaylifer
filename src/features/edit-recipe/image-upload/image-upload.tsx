@@ -21,8 +21,8 @@ interface ImageUploadTestId {
 }
 
 export interface ImageUploadProps {
-    value?: string;
-    onChange?: (image: string | undefined) => void;
+    value?: string | null;
+    onChange?: (image: string | null) => void;
     isInvalid?: boolean;
     previewProps?: ImagePreviewProps;
     modalProps?: Omit<ImageUploadDialogProps, 'isOpen' | 'onClose'>;
@@ -30,15 +30,15 @@ export interface ImageUploadProps {
 }
 
 export const ImageUpload = ({
-    value,
+    value = null,
     testId,
     isInvalid,
     onChange,
     previewProps,
     modalProps,
 }: ImageUploadProps) => {
-    const [localImage, setImage] = useState<File | string | undefined>(value);
-    const [savedImage, setSavedImage] = useState<File | string | undefined>(localImage);
+    const [localImage, setImage] = useState<File | string | null>(value);
+    const [savedImage, setSavedImage] = useState<File | string | null>(localImage);
     const [uploadFile, { isLoading }] = fileApi.useUploadFileMutation();
     const [imageError, setImageError] = useState<ZodError<File>>();
     const [hasBeenOpened, setHasBeenOpened] = useState(false);
@@ -59,7 +59,7 @@ export const ImageUpload = ({
             setImage(imageFile);
             setImageError(undefined);
         } else {
-            setImage(undefined);
+            setImage(null);
             setImageError(error);
         }
     };
@@ -84,8 +84,8 @@ export const ImageUpload = ({
     };
 
     const handleImageDelete = () => {
-        setImage(undefined);
-        setSavedImage(undefined);
+        setImage(null);
+        setSavedImage(null);
         onClose();
     };
 

@@ -11,8 +11,8 @@ interface ImageFileInputTestId {
 export interface ImageFileInputProps
     extends Omit<FormLabelProps, 'value' | 'defaultValue' | 'onChange'> {
     accept?: string;
-    value?: File | string;
-    defaultValue?: File | string;
+    value?: File | string | null;
+    defaultValue?: File | string | null;
     onChange?: (file: File) => void;
     fallback?: React.ReactElement;
     isInvalid?: boolean;

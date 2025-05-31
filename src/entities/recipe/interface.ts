@@ -7,7 +7,7 @@ export interface Ingredient {
 export interface Step {
     stepNumber: number;
     description: string;
-    image?: string;
+    image?: string | null;
 }
 
 export interface Recipe {

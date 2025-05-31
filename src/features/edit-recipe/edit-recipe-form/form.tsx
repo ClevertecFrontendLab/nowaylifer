@@ -23,7 +23,7 @@ export type EditRecipeFormProps = { onSuccess: (recipe: Recipe) => void } & (
 );
 
 const emptyIngredient = { title: '', count: '', measureUnit: '' };
-const emptyStep = { description: '', image: undefined, stepNumber: 1 };
+const emptyStep = { description: '', image: null, stepNumber: 1 };
 
 const emptyDraft: DefaultValues<RecipeDraft> = {
     title: '',

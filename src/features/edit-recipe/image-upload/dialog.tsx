@@ -19,8 +19,8 @@ interface ImageUploadDialogTestId {
 
 export interface ImageUploadDialogProps extends Omit<ModalProps, 'children'> {
     isInvalid?: boolean;
-    image?: File | string;
-    savedImage?: File | string;
+    image?: File | string | null;
+    savedImage?: File | string | null;
     onImageChange?: ImageFileInputProps['onChange'];
     onImageSave?: () => void;
     onImageDelete?: () => void;

@@ -17,7 +17,7 @@ export type IngredientSchema = z.infer<typeof ingredientSchema>;
 const stepSchema = z.object({
     stepNumber: z.number(),
     description: z.string().min(1).max(300),
-    image: z.string().url().optional(),
+    image: z.string().min(1).nullable().optional(),
 });
 export type StepSchema = z.infer<typeof stepSchema>;
 
@@ -25,7 +25,7 @@ export const recipeDraftSchema = z.object({
     title: z.string().min(1).max(50),
     description: z.string().min(1).max(500),
     portions: z.number().positive(),
-    image: z.string().url(),
+    image: z.string().min(1),
     categoriesIds: z.string().array().min(3),
     time: z.number().positive().max(10000),
     ingredients: ingredientSchema.array().min(1),

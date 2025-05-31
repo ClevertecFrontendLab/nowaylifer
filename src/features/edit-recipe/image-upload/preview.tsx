@@ -14,7 +14,7 @@ const PreviewFallback = () => (
 const defaultFallback = <PreviewFallback />;
 
 export interface ImagePreviewProps extends BoxProps {
-    image?: File | string;
+    image?: File | string | null;
     isInvalid?: boolean;
     imageProps?: ImageProps;
     errorBorderColor?: string;
@@ -61,14 +61,14 @@ export const ImagePreview = ({
     );
 };
 
-const useImagePreview = (image?: File | string) => {
-    const [previewUrl, setPreviewUrl] = useState<string | undefined>(() =>
-        isString(image) ? image : undefined,
+const useImagePreview = (image?: File | string | null) => {
+    const [previewUrl, setPreviewUrl] = useState<string | null>(() =>
+        isString(image) ? image : null,
     );
 
     useEffect(() => {
         if (!image) {
-            setPreviewUrl(undefined);
+            setPreviewUrl(null);
             return;
         }
 
@@ -81,7 +81,7 @@ const useImagePreview = (image?: File | string) => {
         setPreviewUrl(url);
 
         return () => {
-            setPreviewUrl(undefined);
+            setPreviewUrl(null);
             URL.revokeObjectURL(url);
         };
     }, [image]);

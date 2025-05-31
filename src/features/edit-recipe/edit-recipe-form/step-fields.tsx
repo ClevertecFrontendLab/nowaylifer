@@ -31,7 +31,7 @@ export const StepFields = (props: BoxProps) => {
 
     const handleAdd = () =>
         append(
-            { description: '', image: undefined, stepNumber: fields.length + 1 },
+            { description: '', image: null, stepNumber: fields.length + 1 },
             { shouldFocus: false },
         );
 
