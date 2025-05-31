@@ -14,6 +14,7 @@ import {
     SortingRequestMeta,
     TypedQueryReturnValue,
 } from '~/shared/api';
+import { joinPath } from '~/shared/router/util';
 import { HttpStatusCode } from '~/shared/util';
 
 import { Recipe, RecipeWithAuthor } from '../interface';
@@ -42,7 +43,7 @@ const defaultRecipeRequestParams: RecipeRequestParams = {
 export const recipeApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
         recipeById: build.query<RecipeWithAuthor, string>({
-            query: (id) => ({ url: `${ApiEndpoint.RECIPE}/${id}` }),
+            query: (id) => ({ url: joinPath(ApiEndpoint.RECIPE, id) }),
             transformResponse: recipeMapper,
             providesTags: ['Recipe'],
         }),
@@ -83,7 +84,7 @@ export const recipeApi = apiSlice.injectEndpoints({
                 return {
                     url: hasParams
                         ? ApiEndpoint.RECIPE
-                        : `${ApiEndpoint.RECIPE_SUBCATEGORY}/${subCategoryId}`,
+                        : joinPath(ApiEndpoint.RECIPE_SUBCATEGORY, subCategoryId),
                     params: {
                         ...defaultRecipeRequestParams,
                         ...params,
@@ -92,7 +93,7 @@ export const recipeApi = apiSlice.injectEndpoints({
                     } satisfies RecipeRequestParams,
                 };
             },
-            transformResponse: ({ data: recipes, meta }: PaginatedResponse<Recipe>) => ({
+            transformResponse: ({ data: recipes = [], meta }: PaginatedResponse<Recipe>) => ({
                 meta,
                 data: recipes.map(recipeMapper),
             }),
@@ -111,7 +112,7 @@ export const recipeApi = apiSlice.injectEndpoints({
             { subCategoryId: string } & RecipeRequestParams
         >({
             query: ({ subCategoryId, ...params }) => ({
-                url: `${ApiEndpoint.RECIPE_SUBCATEGORY}/${subCategoryId}`,
+                url: joinPath(ApiEndpoint.RECIPE_SUBCATEGORY, subCategoryId),
                 params,
             }),
             transformResponse: (raw: PaginatedResponse<Recipe>) => raw.data.map(recipeMapper),

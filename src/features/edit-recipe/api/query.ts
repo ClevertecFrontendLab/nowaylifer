@@ -2,6 +2,7 @@ import HTTPMethod from 'http-method-enum';
 
 import { Recipe } from '~/entities/recipe';
 import { ApiEndpoint, apiSlice } from '~/shared/api';
+import { joinPath } from '~/shared/router/util';
 import { HttpMethod, stripEmptyStrings } from '~/shared/util';
 
 import { MeasureUnit, RecipeDraft } from '../types';
@@ -20,7 +21,7 @@ export const editRecipeApi = apiSlice.injectEndpoints({
             { recipeId: string; updates: Partial<RecipeDraft> }
         >({
             query: ({ recipeId, updates }) => ({
-                url: `${ApiEndpoint.RECIPE}/${recipeId}`,
+                url: joinPath(ApiEndpoint.RECIPE, recipeId),
                 method: HttpMethod.PATCH,
                 body: updates,
             }),
@@ -29,7 +30,7 @@ export const editRecipeApi = apiSlice.injectEndpoints({
         }),
         [EditRecipeEndpointName.DeleteRecipe]: build.mutation<void, string>({
             query: (recipeId) => ({
-                url: `${ApiEndpoint.RECIPE}/${recipeId}`,
+                url: joinPath(ApiEndpoint.RECIPE, recipeId),
                 method: HttpMethod.DELETE,
             }),
             invalidatesTags: ['Recipe'],
