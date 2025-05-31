@@ -49,8 +49,7 @@ export const ImagePreview = ({
             {previewUrl ? (
                 <Image
                     src={previewUrl}
-                    fallback={fallback}
-                    alt='Preview'
+                    alt='Превью'
                     boxSize='full'
                     objectFit='cover'
                     {...imageProps}

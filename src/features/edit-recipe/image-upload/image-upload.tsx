@@ -83,6 +83,12 @@ export const ImageUpload = ({
         onClose();
     };
 
+    const handleImageDelete = () => {
+        setImage(undefined);
+        setSavedImage(undefined);
+        onClose();
+    };
+
     const openModal = () => {
         setHasBeenOpened(true);
         onOpen();
@@ -108,7 +114,7 @@ export const ImageUpload = ({
                     isInvalid={!!imageError}
                     onImageSave={hanldeImageSave}
                     onImageChange={handleImageChange}
-                    onImageDelete={() => setImage(undefined)}
+                    onImageDelete={handleImageDelete}
                     onCloseComplete={() => {
                         setImage(savedImage);
                         setImageError(undefined);
