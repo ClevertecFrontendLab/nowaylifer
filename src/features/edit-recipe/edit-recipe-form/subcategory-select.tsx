@@ -1,4 +1,4 @@
-import { chakra, useSize } from '@chakra-ui/react';
+import { Portal, useSize } from '@chakra-ui/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { selectCategoriesInvariant } from '~/entities/category';
@@ -22,81 +22,69 @@ export interface SubCategorySelectProps
 
 export const SubCategorySelect = (props: SubCategorySelectProps) => {
     const { rootCategories, categoryById } = useAppSelector(selectCategoriesInvariant);
-    const { groups, items } = useMemo(() => {
-        const groups = rootCategories.map((root) => ({
-            key: root._id,
-            groupLabel: root.title,
-            options: root.subCategories.map((sub) => sub._id),
-        }));
-        return { groups, items: groups.flatMap((group) => group.options) };
-    }, [rootCategories]);
+    const items = useMemo(
+        () => rootCategories.flatMap((root) => root.subCategories.map((sub) => sub._id)),
+        [rootCategories],
+    );
 
     return (
-        <MultiSelect containerProps={{ maxW: '350px' }} items={items} {...props}>
-            {({ selectedItems }) => {
-                let itemIndex = 0;
-                return (
-                    <>
-                        <MultiSelectField
-                            data-test-id={TestId.RECIPE_CATEGORY_SELECT}
-                            placeholder='Выберите из списка...'
-                        />
-                        <FittingMultiSelectTagList
-                            items={selectedItems}
-                            renderTag={(id, index) => (
-                                <MultiSelectTag key={id} item={id} index={index} minW={7}>
-                                    {categoryById[id].title}
-                                </MultiSelectTag>
-                            )}
-                        />
-                        <MultiSelectClearButton />
-                        <MultiSelectIcon />
-                        <MultiSelectMenu lazyBehavior='keepMounted' withinPortal>
-                            <MultiSelectMenuList>
-                                {groups.map(({ groupLabel, options, key }) => (
-                                    <chakra.li key={key}>
-                                        <chakra.div>{groupLabel}</chakra.div>
-                                        <chakra.ul>
-                                            {options.map((item) => (
-                                                <MultiSelectItem
-                                                    key={item}
-                                                    item={item}
-                                                    index={itemIndex++}
-                                                >
-                                                    {categoryById[item].title}
-                                                </MultiSelectItem>
-                                            ))}
-                                        </chakra.ul>
-                                    </chakra.li>
-                                ))}
-                            </MultiSelectMenuList>
-                        </MultiSelectMenu>
-                    </>
-                );
-            }}
+        <MultiSelect items={items} containerProps={{ maxW: '350px' }} {...props}>
+            {({ selectedItems }) => (
+                <>
+                    <MultiSelectField
+                        data-test-id={TestId.RECIPE_CATEGORY_SELECT}
+                        placeholder='Выберите из списка...'
+                    />
+                    <FittingMultiSelectTagList
+                        items={selectedItems}
+                        renderTag={(id, index) => (
+                            <MultiSelectTag key={id} item={id} index={index}>
+                                {categoryById[id].title}
+                            </MultiSelectTag>
+                        )}
+                    />
+                    <MultiSelectClearButton />
+                    <MultiSelectIcon />
+                    <MultiSelectMenu isLazy lazyBehavior='keepMounted'>
+                        <MultiSelectMenuList>
+                            {items.map((item, index) => (
+                                <MultiSelectItem key={item} item={item} index={index}>
+                                    {categoryById[item].title}
+                                </MultiSelectItem>
+                            ))}
+                        </MultiSelectMenuList>
+                    </MultiSelectMenu>
+                </>
+            )}
         </MultiSelect>
     );
 };
 
-interface FittingMultiSelectTagListProps<T> {
+interface FittingMultiSelectTagListProps<T> extends Partial<UseFittingTagItemsOptions> {
     items: T[];
     renderTag: (item: T, index: number) => React.ReactNode;
-    minVisible?: number;
 }
 
 export function FittingMultiSelectTagList<T extends string | number>({
     items,
     renderTag,
-    minVisible = 1,
+    minVisible,
+    maxVisible,
+    gap = 8,
 }: FittingMultiSelectTagListProps<T>) {
     const { visibleItems, overflowCount, containerRef, hiddenContainerRef } = useFittingTagItems(
         items,
-        minVisible,
+        { minVisible, maxVisible, gap },
     );
 
     return (
         <>
-            <MultiSelectTagList ref={containerRef} flexWrap='nowrap' overflow='hidden'>
+            <MultiSelectTagList
+                ref={containerRef}
+                flexWrap='nowrap'
+                overflow='hidden'
+                gap={`${gap}px`}
+            >
                 {visibleItems.map(renderTag)}
                 {overflowCount > 0 && (
                     <MultiSelectTag flexShrink={0} item={null}>
@@ -106,21 +94,31 @@ export function FittingMultiSelectTagList<T extends string | number>({
             </MultiSelectTagList>
 
             {/* Hidden measurement container */}
-            <MultiSelectTagList
-                ref={hiddenContainerRef}
-                position='fixed'
-                top={0}
-                left='-99999px'
-                visibility='hidden'
-                flexWrap='nowrap'
-            >
-                {items.map(renderTag)}
-            </MultiSelectTagList>
+            <Portal>
+                <MultiSelectTagList
+                    gap={`${gap}px`}
+                    ref={hiddenContainerRef}
+                    position='fixed'
+                    visibility='hidden'
+                    flexWrap='nowrap'
+                >
+                    {items.map(renderTag)}
+                </MultiSelectTagList>
+            </Portal>
         </>
     );
 }
 
-const useFittingTagItems = <T extends string | number>(items: T[], minVisible = 1) => {
+interface UseFittingTagItemsOptions {
+    minVisible: number;
+    maxVisible: number;
+    gap: number;
+}
+
+const useFittingTagItems = <T extends string | number>(
+    items: T[],
+    { minVisible = 1, maxVisible = Infinity, gap = 0 }: Partial<UseFittingTagItemsOptions>,
+) => {
     const [visibleCount, setVisibleCount] = useState(minVisible);
     const hiddenContainerRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -134,15 +132,21 @@ const useFittingTagItems = <T extends string | number>(items: T[], minVisible = 
         let count = 0;
 
         for (let i = 0; i < items.length; i++) {
+            if (count >= maxVisible) break;
+
             const el = hiddenTags[i] as HTMLElement;
-            const width = el?.offsetWidth ?? 0;
-            if (totalWidth + width > containerSize.width) break;
-            totalWidth += width;
+            const elWidth = el?.offsetWidth ?? 0;
+            const gapWidth = i < items.length - 1 ? gap : 0;
+
+            totalWidth += elWidth + gapWidth;
+
+            if (totalWidth > containerSize.width) break;
+
             count++;
         }
 
-        setVisibleCount(Math.max(count, minVisible));
-    }, [items, containerSize?.width, minVisible]);
+        setVisibleCount(Math.max(Math.min(count, maxVisible), minVisible));
+    }, [items, containerSize?.width, minVisible, maxVisible, gap]);
 
     return {
         visibleItems: items.slice(0, visibleCount),
