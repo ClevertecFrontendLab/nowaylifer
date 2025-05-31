@@ -125,27 +125,35 @@ const useFittingTagItems = <T extends string | number>(
     const containerSize = useSize(containerRef);
 
     useEffect(() => {
-        const hiddenTags = hiddenContainerRef.current?.children;
-        if (!hiddenTags || !containerSize?.width) return;
+        const updateVisibleCount = () => {
+            const hiddenTags = hiddenContainerRef.current?.children;
+            if (!hiddenTags || !containerSize?.width) return;
 
-        let totalWidth = 0;
-        let count = 0;
+            let totalWidth = 0;
+            let count = 0;
 
-        for (let i = 0; i < items.length; i++) {
-            if (count >= maxVisible) break;
+            for (let i = 0; i < items.length; i++) {
+                if (count >= maxVisible) break;
 
-            const el = hiddenTags[i] as HTMLElement;
-            const elWidth = el?.offsetWidth ?? 0;
-            const gapWidth = i < items.length - 1 ? gap : 0;
+                const el = hiddenTags[i] as HTMLElement;
+                const elWidth = el?.offsetWidth ?? 0;
+                const gapWidth = i < items.length - 1 ? gap : 0;
 
-            totalWidth += elWidth + gapWidth;
+                totalWidth += elWidth + gapWidth;
 
-            if (totalWidth > containerSize.width) break;
+                if (totalWidth > containerSize.width) break;
 
-            count++;
-        }
+                count++;
+            }
 
-        setVisibleCount(Math.max(Math.min(count, maxVisible), minVisible));
+            setVisibleCount(Math.max(Math.min(count, maxVisible), minVisible));
+        };
+
+        const rafId = requestAnimationFrame(updateVisibleCount);
+
+        return () => {
+            cancelAnimationFrame(rafId);
+        };
     }, [items, containerSize?.width, minVisible, maxVisible, gap]);
 
     return {
