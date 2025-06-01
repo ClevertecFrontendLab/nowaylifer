@@ -1,4 +1,5 @@
-import { Button, ButtonProps, Center, chakra, Container, cssVar, Flex } from '@chakra-ui/react';
+import { Button, ButtonProps, Center, chakra, Container, Flex } from '@chakra-ui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { DefaultValues, FormProvider, useForm } from 'react-hook-form';
 
 import { Recipe } from '~/entities/recipe';
@@ -7,8 +8,8 @@ import { TestId } from '~/shared/test-ids';
 import { EditIcon } from '~/shared/ui/icons/edit';
 import { HttpStatusCode } from '~/shared/util';
 
+import { recipeDraftSchema } from '../schema';
 import { RecipeDraft } from '../types';
-import { formResolver } from './form-resolver';
 import { IngredientFields } from './ingredient-fields';
 import { MainFields } from './main-fields';
 import { StepFields } from './step-fields';
@@ -35,20 +36,14 @@ const emptyDraft: DefaultValues<RecipeDraft> = {
     steps: [emptyStep],
 };
 
-const $inputColor = cssVar('inputColor');
-
 export const EditRecipeForm = ({
     mode,
-    defaultValues,
+    defaultValues = emptyDraft,
     onSuccess,
     recipeId,
 }: EditRecipeFormProps) => {
-    defaultValues = defaultValues
-        ? { ...defaultValues, ingredients: [...(defaultValues.ingredients ?? []), emptyIngredient] }
-        : emptyDraft;
-
     const form = useForm<RecipeDraft>({
-        resolver: formResolver,
+        resolver: zodResolver(recipeDraftSchema),
         shouldFocusError: false,
         defaultValues,
     });
@@ -90,11 +85,8 @@ export const EditRecipeForm = ({
         <FormProvider {...form}>
             <chakra.form
                 onSubmit={form.handleSubmit(handleFormValid)}
+                sx={{ '& input.chakra-input': { color: 'blackAlpha.900' } }}
                 data-test-id={TestId.RECIPE_FORM}
-                sx={{
-                    [$inputColor.variable]: 'blackAlpha.900',
-                    '& input.chakra-input': { color: $inputColor.reference },
-                }}
             >
                 <MainFields />
                 <Container
