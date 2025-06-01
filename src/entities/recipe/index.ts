@@ -1,3 +1,4 @@
+export { RecipeEndpointName } from './api/endpoint-name';
 export {
     recipeApi,
     type RecipeRequestParams,

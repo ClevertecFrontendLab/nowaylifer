@@ -15,9 +15,10 @@ import {
     TypedQueryReturnValue,
 } from '~/shared/api';
 import { joinPath } from '~/shared/router/util';
-import { HttpStatusCode } from '~/shared/util';
 
 import { Recipe, RecipeWithAuthor } from '../interface';
+import { RecipeEndpointName } from './endpoint-name';
+import { errorMeta } from './error-meta';
 import { recipeMapper } from './mapper';
 
 export interface RecipeRequestParams extends PaginationRequestMeta, SortingRequestMeta {
@@ -42,12 +43,13 @@ const defaultRecipeRequestParams: RecipeRequestParams = {
 
 export const recipeApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
-        recipeById: build.query<RecipeWithAuthor, string>({
+        [RecipeEndpointName.RecipeById]: build.query<RecipeWithAuthor, string>({
             query: (id) => ({ url: joinPath(ApiEndpoint.RECIPE, id) }),
             transformResponse: recipeMapper,
             providesTags: ['Recipe'],
         }),
-        paginatedRecipes: build.infiniteQuery<
+
+        [RecipeEndpointName.PaginatedRecipes]: build.infiniteQuery<
             PaginatedResponse<Recipe>,
             RecipeRequestParams,
             number
@@ -66,14 +68,17 @@ export const recipeApi = apiSlice.injectEndpoints({
                 data: recipes.map(recipeMapper),
             }),
             providesTags: [{ type: 'Recipe', id: 'LIST' }],
+            extraOptions: { errorMetaByStatus: errorMeta.paginatedRecipes },
         }),
-        recipes: build.query<Recipe[], RecipeRequestParams>({
+
+        [RecipeEndpointName.Recipes]: build.query<Recipe[], RecipeRequestParams>({
             query: (params) => ({ url: ApiEndpoint.RECIPE, params }),
             transformResponse: (rawResult: PaginatedResponse<Recipe>) =>
                 rawResult.data.map(recipeMapper),
             providesTags: [{ type: 'Recipe', id: 'LIST' }],
         }),
-        paginatedRecipesBySubCategory: build.infiniteQuery<
+
+        [RecipeEndpointName.PaginatedRecipesBySubCategory]: build.infiniteQuery<
             PaginatedResponse<Recipe>,
             { subCategoryId: string } & RecipeRequestParams,
             number
@@ -98,16 +103,10 @@ export const recipeApi = apiSlice.injectEndpoints({
                 data: recipes.map(recipeMapper),
             }),
             providesTags: [{ type: 'Recipe', id: 'LIST' }],
-            extraOptions: {
-                errorMetaByStatus: {
-                    [HttpStatusCode.NOT_FOUND]: {
-                        title: 'Ошибка сервера',
-                        description: 'Попробуйте поискать снова попозже',
-                    },
-                },
-            },
+            extraOptions: { errorMetaByStatus: errorMeta.paginatedRecipesBySubCategory },
         }),
-        recipesBySubCategory: build.query<
+
+        [RecipeEndpointName.RecipesBySubCategory]: build.query<
             Recipe[],
             { subCategoryId: string } & RecipeRequestParams
         >({
@@ -117,38 +116,35 @@ export const recipeApi = apiSlice.injectEndpoints({
             }),
             transformResponse: (raw: PaginatedResponse<Recipe>) => raw.data.map(recipeMapper),
             providesTags: [{ type: 'Recipe', id: 'LIST' }],
-            extraOptions: {
-                errorMetaByStatus: {
-                    [HttpStatusCode.NOT_FOUND]: {
-                        title: 'Ошибка сервера',
-                        description: 'Попробуйте поискать снова попозже',
-                    },
-                },
-            },
+            extraOptions: { errorMetaByStatus: errorMeta.recipesBySubCategory },
         }),
-        relevantRecipes: build.query<Recipe[], { subCategoriesIds: string[]; maxRecipes?: number }>(
-            {
-                queryFn: async (
-                    { maxRecipes = 5, subCategoriesIds },
-                    { dispatch },
-                ): Promise<TypedQueryReturnValue<Recipe[]>> => {
-                    const promises = subCategoriesIds.map((id) =>
-                        dispatch(
-                            recipeApi.endpoints.recipesBySubCategory.initiate(
-                                { subCategoryId: id, limit: 5 },
-                                { subscribe: false },
-                            ),
-                        ).unwrap(),
-                    );
-                    const result = await Promise.all(promises);
-                    const recipes: Recipe[] = shuffle(
-                        result.flat().filter(Boolean).slice(0, maxRecipes),
-                    );
-                    return { data: recipes };
-                },
-                providesTags: [{ type: 'Recipe', id: 'LIST' }],
+
+        [RecipeEndpointName.RelevantRecipes]: build.query<
+            Recipe[],
+            { subCategoriesIds: string[]; maxRecipes?: number }
+        >({
+            queryFn: async (
+                { maxRecipes = 5, subCategoriesIds },
+                { dispatch },
+            ): Promise<TypedQueryReturnValue<Recipe[]>> => {
+                const promises = subCategoriesIds.map((id) =>
+                    dispatch(
+                        recipeApi.endpoints.recipesBySubCategory.initiate(
+                            { subCategoryId: id, limit: 5 },
+                            { subscribe: false },
+                        ),
+                    ).unwrap(),
+                );
+
+                const result = await Promise.all(promises);
+                const recipes: Recipe[] = shuffle(
+                    result.flat().filter(Boolean).slice(0, maxRecipes),
+                );
+
+                return { data: recipes };
             },
-        ),
+            providesTags: [{ type: 'Recipe', id: 'LIST' }],
+        }),
     }),
 });
 

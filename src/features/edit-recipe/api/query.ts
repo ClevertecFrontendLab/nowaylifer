@@ -1,6 +1,6 @@
 import HTTPMethod from 'http-method-enum';
 
-import { Recipe, recipeApi } from '~/entities/recipe';
+import { Recipe, recipeApi, RecipeEndpointName } from '~/entities/recipe';
 import { ApiEndpoint, apiSlice } from '~/shared/api';
 import { joinPath } from '~/shared/router/util';
 import { HttpMethod, stripEmptyStrings } from '~/shared/util';
@@ -36,12 +36,17 @@ export const editRecipeApi = apiSlice.injectEndpoints({
             onQueryStarted: async (recipeId, { dispatch, queryFulfilled }) => {
                 try {
                     await queryFulfilled;
-                    dispatch(
-                        recipeApi.util.updateQueryData('recipeById', recipeId, () => undefined),
-                    );
-                } catch {
-                    // ignore
+                } catch (error) {
+                    return console.error(error);
                 }
+                // manually delete cache entry for individual recipe
+                dispatch(
+                    recipeApi.util.updateQueryData(
+                        RecipeEndpointName.RecipeById,
+                        recipeId,
+                        () => undefined,
+                    ),
+                );
             },
             invalidatesTags: [{ type: 'Recipe', id: 'LIST' }],
             extraOptions: { errorMetaByStatus: errorMeta.deleteRecipe },
