@@ -34,11 +34,12 @@ const BookmarkRecipeButtonLong = (props: ButtonProps) => (
 const BookmarkRecipeButtonShort = (props: ButtonProps) => {
     const lg = useBreakpointValue({ base: false, lg: true });
     return lg ? (
-        <Button variant='outline' size='sm' leftIcon={<BookmarkIcon />} {...props}>
+        <Button zIndex={1} variant='outline' size='sm' leftIcon={<BookmarkIcon />} {...props}>
             Сохранить
         </Button>
     ) : (
         <IconButton
+            zIndex={1}
             size='xs'
             variant='outline'
             aria-label='Сохранить'
