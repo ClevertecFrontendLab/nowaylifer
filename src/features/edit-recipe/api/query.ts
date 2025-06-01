@@ -1,6 +1,6 @@
 import HTTPMethod from 'http-method-enum';
 
-import { Recipe } from '~/entities/recipe';
+import { Recipe, recipeApi } from '~/entities/recipe';
 import { ApiEndpoint, apiSlice } from '~/shared/api';
 import { joinPath } from '~/shared/router/util';
 import { HttpMethod, stripEmptyStrings } from '~/shared/util';
@@ -33,7 +33,17 @@ export const editRecipeApi = apiSlice.injectEndpoints({
                 url: joinPath(ApiEndpoint.RECIPE, recipeId),
                 method: HttpMethod.DELETE,
             }),
-            invalidatesTags: ['Recipe'],
+            onQueryStarted: async (recipeId, { dispatch, queryFulfilled }) => {
+                try {
+                    await queryFulfilled;
+                    dispatch(
+                        recipeApi.util.updateQueryData('recipeById', recipeId, () => undefined),
+                    );
+                } catch {
+                    // ignore
+                }
+            },
+            invalidatesTags: [{ type: 'Recipe', id: 'LIST' }],
             extraOptions: { errorMetaByStatus: errorMeta.deleteRecipe },
         }),
         [EditRecipeEndpointName.SaveDraft]: build.mutation<void, RecipeDraft>({

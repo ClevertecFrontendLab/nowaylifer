@@ -65,13 +65,13 @@ export const recipeApi = apiSlice.injectEndpoints({
                 meta,
                 data: recipes.map(recipeMapper),
             }),
-            providesTags: ['Recipe'],
+            providesTags: [{ type: 'Recipe', id: 'LIST' }],
         }),
         recipes: build.query<Recipe[], RecipeRequestParams>({
             query: (params) => ({ url: ApiEndpoint.RECIPE, params }),
             transformResponse: (rawResult: PaginatedResponse<Recipe>) =>
                 rawResult.data.map(recipeMapper),
-            providesTags: ['Recipe'],
+            providesTags: [{ type: 'Recipe', id: 'LIST' }],
         }),
         paginatedRecipesBySubCategory: build.infiniteQuery<
             PaginatedResponse<Recipe>,
@@ -97,7 +97,7 @@ export const recipeApi = apiSlice.injectEndpoints({
                 meta,
                 data: recipes.map(recipeMapper),
             }),
-            providesTags: ['Recipe'],
+            providesTags: [{ type: 'Recipe', id: 'LIST' }],
             extraOptions: {
                 errorMetaByStatus: {
                     [HttpStatusCode.NOT_FOUND]: {
@@ -116,7 +116,7 @@ export const recipeApi = apiSlice.injectEndpoints({
                 params,
             }),
             transformResponse: (raw: PaginatedResponse<Recipe>) => raw.data.map(recipeMapper),
-            providesTags: ['Recipe'],
+            providesTags: [{ type: 'Recipe', id: 'LIST' }],
             extraOptions: {
                 errorMetaByStatus: {
                     [HttpStatusCode.NOT_FOUND]: {
@@ -146,7 +146,7 @@ export const recipeApi = apiSlice.injectEndpoints({
                     );
                     return { data: recipes };
                 },
-                providesTags: ['Recipe'],
+                providesTags: [{ type: 'Recipe', id: 'LIST' }],
             },
         ),
     }),
