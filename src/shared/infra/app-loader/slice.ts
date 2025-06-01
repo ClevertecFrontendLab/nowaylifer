@@ -1,39 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { uniqueId } from 'lodash-es';
-
-const defaultId = 'DEFAULT_SUBSCRIBER';
 
 export const slice = createSlice({
     name: 'appLoader',
     initialState: {
-        isRunning: false,
-        subsribers: new Set(),
+        count: 0,
+        overlayCount: 0,
     },
     reducers: (create) => ({
-        start: create.reducer<string | undefined>((state, action) => {
-            state.subsribers.add(action.payload ?? defaultId);
-            state.isRunning = true;
+        startAppLoader: create.reducer<boolean>((state, { payload: withOverlay = true }) => {
+            state.count++;
+            state.overlayCount += withOverlay ? 1 : 0;
         }),
-        stop: create.reducer<string | undefined>((state, action) => {
-            state.subsribers.delete(action.payload ?? defaultId);
-            state.isRunning = state.subsribers.size > 0;
-        }),
-        stopAll: create.reducer((state) => {
-            state.subsribers.clear();
+        stopAppLoader: create.reducer((state) => {
+            state.count = Math.max(0, state.count - 1);
+            state.overlayCount = Math.max(0, state.overlayCount - 1);
         }),
     }),
     selectors: {
-        selectIsAppLoaderRunning: (state, id?: string) =>
-            id ? state.subsribers.has(id) : state.isRunning,
+        selectIsAppLoaderRunning: (state) => state.count > 0,
+        selectIsAppLoaderOverlayEnabled: (state) => state.overlayCount > 0,
     },
 });
 
-export const showAppLoaderWhilePendingThunk =
-    (promise: Promise<unknown>, id = uniqueId('loader')) =>
-    (dispatch: AppDispatch) => {
-        promise.finally(() => dispatch(stopAppLoader(id)));
-        dispatch(startAppLoader(id));
-    };
+export const { startAppLoader, stopAppLoader } = slice.actions;
 
-export const { start: startAppLoader, stop: stopAppLoader } = slice.actions;
-export const { selectIsAppLoaderRunning } = slice.getSelectors(slice.selectSlice);
+export const { selectIsAppLoaderRunning, selectIsAppLoaderOverlayEnabled } = slice.getSelectors(
+    slice.selectSlice,
+);

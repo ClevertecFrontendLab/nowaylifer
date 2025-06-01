@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
 import { isServerError } from '~/shared/api/util';
-import { useShowAppLoader } from '~/shared/infra/app-loader';
+import { useAppLoader } from '~/shared/infra/app-loader';
 import { useModal } from '~/shared/infra/modals-manager';
 import { RoutePath } from '~/shared/router';
 import { TestId } from '~/shared/test-ids';
@@ -28,11 +28,12 @@ export const LoginForm = () => {
         reValidateMode: 'onSubmit',
         resolver: zodResolver(loginSchema),
         defaultValues: { login: '', password: '' },
+        shouldFocusError: false,
     });
 
     const [login, { isLoading }] = authApi.useLoginMutation();
 
-    useShowAppLoader(isLoading);
+    useAppLoader(isLoading);
 
     const handleFormValid = async (values: LoginSchema) => {
         const res = await login(values);

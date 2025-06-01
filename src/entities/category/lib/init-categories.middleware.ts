@@ -1,11 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 import { unstable_MiddlewareFunction } from 'react-router';
 
-import { showAppLoaderWhilePendingThunk } from '~/shared/infra/app-loader';
 import { storeContext } from '~/shared/router';
 
-import { categoryApi, CategoryState } from '../api';
-import { selectCategories } from '../selectors';
+import { categoryApi } from '../api';
+import { CategoryState } from '../types';
+import { selectCategories } from './selectors';
 import { CATEGORY_STORAGE_KEY } from './util';
 
 export const initCategoriesMiddleware: unstable_MiddlewareFunction = async ({ context }, next) => {
@@ -16,7 +16,7 @@ export const initCategoriesMiddleware: unstable_MiddlewareFunction = async ({ co
 
     const storedData = localStorage.getItem(CATEGORY_STORAGE_KEY);
     if (!storedData) {
-        await dispatch(fetchCategoriesThunk);
+        await dispatch(fetchCategories());
         return next();
     }
 
@@ -25,19 +25,19 @@ export const initCategoriesMiddleware: unstable_MiddlewareFunction = async ({ co
         value = JSON.parse(storedData);
     } catch {
         localStorage.removeItem(CATEGORY_STORAGE_KEY);
-        await dispatch(fetchCategoriesThunk);
+        await dispatch(fetchCategories());
         return next();
     }
 
-    dispatch(hydrateCategoriesThunk(value));
-    dispatch(showAppLoaderWhilePendingThunk(dispatch(fetchCategoriesThunk)));
+    dispatch(hydrateCategories(value));
+    dispatch(fetchCategories());
 
     return next();
 };
 
-export const categoriesHydrated = createAction<CategoryState>('category/hydrate');
+export const categoriesHydrated = createAction<CategoryState>('category/hydrated');
 
-const fetchCategoriesThunk = (dispatch: AppDispatch) =>
+const fetchCategories = () => (dispatch: AppDispatch) =>
     dispatch(
         categoryApi.endpoints.categories.initiate(undefined, {
             forceRefetch: true,
@@ -45,7 +45,7 @@ const fetchCategoriesThunk = (dispatch: AppDispatch) =>
         }),
     ).unwrap();
 
-const hydrateCategoriesThunk = (value: CategoryState) => (dispatch: AppDispatch) => {
+const hydrateCategories = (value: CategoryState) => (dispatch: AppDispatch) => {
     dispatch(
         categoryApi.util.upsertQueryEntries([
             { endpointName: 'categories', value, arg: undefined },

@@ -1,8 +1,7 @@
-import { Box, Button, HStack } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 
-import { BookmarkIcon } from '~/shared/ui/icons/bookmark';
 import { ClockIcon } from '~/shared/ui/icons/clock';
-import { EmojiHeartEyesIcon } from '~/shared/ui/icons/emoji-heart-eyes';
+import { PluralForms, pluralizeRu } from '~/shared/util';
 
 import { RecipeCardBadge } from './parts/badge';
 import { RecipeCardBody } from './parts/body';
@@ -14,12 +13,22 @@ import { RecipeCardStats } from './parts/stats';
 import { RecipeCardTitle } from './parts/title';
 import { RecipeCardProps } from './props';
 
-export const DetailedRecipeCard = ({ recipe, ...rootProps }: RecipeCardProps) => (
+const forms: PluralForms = {
+    one: 'минута',
+    few: 'минуты',
+    many: 'минут',
+    other: 'минут',
+};
+
+const formatTime = (timeInMinutes: number) =>
+    `${timeInMinutes} ${pluralizeRu(timeInMinutes, forms)}`;
+
+export const DetailedRecipeCard = ({ recipe, actionSlot, ...rootProps }: RecipeCardProps) => (
     <RecipeCardRoot asLinkBox={false} recipe={recipe} {...rootProps}>
         <RecipeCardImage />
         <RecipeCardBody>
             <Box order={1} flexGrow={1}>
-                <RecipeCardTitle />
+                <RecipeCardTitle asLink={false} />
                 <RecipeCardDescription />
             </Box>
             <HStack order={0} justify='space-between' gap={1}>
@@ -29,24 +38,9 @@ export const DetailedRecipeCard = ({ recipe, ...rootProps }: RecipeCardProps) =>
             <HStack order={2} alignItems='end' wrap={{ base: 'wrap', md: 'nowrap' }} gap={3}>
                 <RecipeCardBadge bg='blackAlpha.100' mr='auto'>
                     <ClockIcon />
-                    {recipe.time}
+                    {formatTime(recipe.time)}
                 </RecipeCardBadge>
-                <HStack gap={{ base: 3, '2xl': 4 }}>
-                    <Button
-                        variant='outline'
-                        size={{ base: 'xs', lg: 'sm', '2xl': 'lg' }}
-                        leftIcon={<EmojiHeartEyesIcon />}
-                    >
-                        Оценить рецепт
-                    </Button>
-                    <Button
-                        bg='lime.400'
-                        size={{ base: 'xs', lg: 'sm', '2xl': 'lg' }}
-                        leftIcon={<BookmarkIcon />}
-                    >
-                        Сохранить в закладки
-                    </Button>
-                </HStack>
+                <HStack gap={{ base: 3, '2xl': 4 }}>{actionSlot}</HStack>
             </HStack>
         </RecipeCardBody>
     </RecipeCardRoot>

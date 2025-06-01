@@ -1,31 +1,21 @@
 import { Box, Center, Heading, useBreakpointValue, VStack } from '@chakra-ui/react';
 
 import { selectCategoriesInvariant } from '~/entities/category';
-import {
-    buildRecipePath,
-    getRecipeRootCategories,
-    recipeApi,
-    RecipeCard,
-    RecipeCardsGrid,
-    selectFromRecipeInfiniteQueryResult,
-} from '~/entities/recipe';
+import { recipeApi, selectFromRecipeInfiniteQueryResult } from '~/entities/recipe';
+import { useEditRecipeEventEffect } from '~/features/edit-recipe';
 import {
     filtersToParams,
     selectAppliedFiltersByGroup,
     selectIsAppliedFromDrawer,
 } from '~/features/filter-recipe';
-import {
-    HighlightSearchMatch,
-    selectAppliedSearchString,
-    useUpdateLastSearchResult,
-} from '~/features/search-recipe';
-import { useShowAppLoader } from '~/shared/infra/app-loader';
+import { selectAppliedSearchString, useUpdateLastSearchResult } from '~/features/search-recipe';
+import { useAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
-import { TestId } from '~/shared/test-ids';
 import { LoadMoreButton } from '~/shared/ui/load-more-button';
 import { Main } from '~/shared/ui/main';
 import { Section, SectionHeading } from '~/shared/ui/section';
 import { NewRecipesSlider } from '~/widgets/new-recipes-slider';
+import { RecipeGrid } from '~/widgets/recipe-grid';
 import { RelevantKitchen } from '~/widgets/relevant-kitchen';
 import { SearchBar } from '~/widgets/search-bar';
 
@@ -57,7 +47,9 @@ export function MainPage() {
     const appLoaderEnabled = showLoader && (!lg || isAppliedFromDrawerRef.current);
 
     useUpdateLastSearchResult(recipes);
-    useShowAppLoader(appLoaderEnabled);
+    useAppLoader(appLoaderEnabled);
+
+    useEditRecipeEventEffect();
 
     return (
         <Main>
@@ -74,25 +66,7 @@ export function MainPage() {
             </VStack>
             {showAllRecipes && (
                 <Box>
-                    <RecipeCardsGrid mb={4}>
-                        {recipes?.map((recipe, idx) => (
-                            <RecipeCard
-                                key={recipe._id}
-                                recipe={recipe}
-                                variant='horizontal'
-                                categories={getRecipeRootCategories(recipe, categoryById)}
-                                recipeLink={buildRecipePath(recipe, categoryById)}
-                                testId={{ root: TestId.recipeCard(idx) }}
-                                renderTitle={(styleProps) => (
-                                    <Heading {...styleProps}>
-                                        <HighlightSearchMatch query={searchString}>
-                                            {recipe.title}
-                                        </HighlightSearchMatch>
-                                    </Heading>
-                                )}
-                            />
-                        ))}
-                    </RecipeCardsGrid>
+                    {recipes && <RecipeGrid mb={4} recipes={recipes} searchString={searchString} />}
                     <Center>
                         {hasNextPage && (
                             <LoadMoreButton

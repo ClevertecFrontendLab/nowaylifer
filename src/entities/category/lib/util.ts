@@ -1,7 +1,9 @@
 import { isString } from 'lodash-es';
 import { Params } from 'react-router';
 
-import { Category, RootCategory, SubCategory } from '../interface';
+import { RouteParam, RoutePath } from '~/shared/router';
+
+import { Category, RootCategory, SubCategory } from '../types';
 
 export const isSubCategory = (value: Category | SubCategory): value is SubCategory =>
     'rootCategoryId' in value && isString(value.rootCategoryId);
@@ -10,29 +12,20 @@ export const isRootCategory = (value: Category | SubCategory): value is RootCate
     !isSubCategory(value);
 
 export const buildCategoryPath = (root: RootCategory, sub: SubCategory) =>
-    `/${root.category}/${sub.category}`;
+    RoutePath.Category.build({ rootCategory: root.category, subCategory: sub.category });
 
-export const CategoryParams = {
-    RootCategory: {
-        param: 'rootcategory',
-        pattern: ':rootcategory',
-    },
-    SubCategory: {
-        param: 'subcategory',
-        pattern: ':subcategory',
-    },
-    get order() {
-        return [this.RootCategory.param, this.SubCategory.param];
-    },
-    getSortedSlugs(params: Params<string>) {
-        const result: string[] = [];
-        for (const param of this.order) {
-            const slug = params[param];
-            if (!slug) break;
-            result.push(slug);
-        }
-        return result;
-    },
+export const categoryParamOrder = [RouteParam.RootCategory, RouteParam.SubCategory];
+
+export const getSortedCategorySlugs = (params: Params) => {
+    const result: string[] = [];
+
+    for (const param of categoryParamOrder) {
+        const slug = params[param];
+        if (!slug) break;
+        result.push(slug);
+    }
+
+    return result;
 };
 
 export type ActiveCategories = [RootCategory, ...SubCategory[]];

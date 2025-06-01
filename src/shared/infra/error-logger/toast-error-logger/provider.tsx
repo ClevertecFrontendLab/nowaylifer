@@ -11,9 +11,9 @@ export const ToastErrorLoggerProvider = (props: PropsWithChildren) => {
     const ctx = useMemo(() => ({ anchorRef }), [anchorRef]);
 
     useEffect(() => {
-        if (error?.meta && !toast.isActive('apiError')) {
+        if (error?.meta && !toast.isActive(`api-error-id-${error.id}`)) {
             toast({
-                id: 'apiError',
+                id: `api-error-id-${error.id}`,
                 status: 'error',
                 ...error.meta,
             });

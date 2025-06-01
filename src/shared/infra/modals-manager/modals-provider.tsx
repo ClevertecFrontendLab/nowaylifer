@@ -35,7 +35,15 @@ export const ModalsProvider = ({ children, defaultModalProps }: ModalsProviderPr
 
     return (
         <ModalsContextProvider value={ctx}>
-            <Modal isOpen={isOpen} onClose={ctx.closeModal} {...modalProps}>
+            <Modal
+                isOpen={isOpen}
+                onClose={ctx.closeModal}
+                onCloseComplete={() => {
+                    currentModalProps?.onCloseComplete?.();
+                    setCurrentModalProps(defaultModalProps);
+                }}
+                {...modalProps}
+            >
                 <ModalOverlay {...overlayProps} />
                 {runIfFn(content, { onClose: ctx.closeModal })}
             </Modal>

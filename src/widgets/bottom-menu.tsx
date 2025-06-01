@@ -1,13 +1,16 @@
 import { Avatar, Box, BoxProps, Circle, HStack, Square } from '@chakra-ui/react';
+import { memo } from 'react';
 
 import userAvatarUrl from '~/shared/assets/user.png';
+import { RoutePath } from '~/shared/router';
 import { TestId } from '~/shared/test-ids';
 import { Button } from '~/shared/ui/button';
 import { HomeIcon } from '~/shared/ui/icons/home';
-import { PenIcon } from '~/shared/ui/icons/pen';
+import { PencilIcon } from '~/shared/ui/icons/pencil';
 import { SearchIcon } from '~/shared/ui/icons/search';
+import { Link } from '~/shared/ui/link';
 
-export const BottomMenu = (props: BoxProps) => (
+export const BottomMenu = memo((props: BoxProps) => (
     <Box
         bg='lime.50'
         height='84px'
@@ -58,6 +61,8 @@ export const BottomMenu = (props: BoxProps) => (
                 Поиск
             </Button>
             <Button
+                as={Link}
+                to={RoutePath.NewRecipe}
                 fontSize='xs'
                 variant='ghost'
                 iconSpacing={1}
@@ -65,7 +70,7 @@ export const BottomMenu = (props: BoxProps) => (
                 color='blackAlpha.700'
                 topIcon={
                     <Square bg='none' size={10}>
-                        <PenIcon boxSize={6} color='blackAlpha.900' />
+                        <PencilIcon boxSize={6} color='blackAlpha.900' />
                     </Square>
                 }
             >
@@ -83,4 +88,4 @@ export const BottomMenu = (props: BoxProps) => (
             </Button>
         </HStack>
     </Box>
-);
+));

@@ -7,7 +7,6 @@ import {
     chakra,
     IconProps,
 } from '@chakra-ui/react';
-import { useRef } from 'react';
 import { Link as ReactRouterLink } from 'react-router';
 
 import { useActiveCategories } from '~/entities/category';
@@ -15,56 +14,69 @@ import { TestId } from '~/shared/test-ids';
 
 import { BreadcrumbData } from './types';
 import { useBreadcrumbs } from './use-breadcrumbs';
-import { useWrappingSeperator } from './use-wrapping-seperator';
+import { useDetectWrap } from './use-detect-wrap';
 
-export interface BreadcrumbsProps extends BreadcrumbProps {
+export interface BreadcrumbsProps extends Omit<BreadcrumbProps, 'isTruncated'> {
     onBreadcrumbClick?: (breadcrumb: BreadcrumbData, isActive: boolean) => void;
-    wrappingSeperatorOffset?: number;
+    wrapSeparatorOffset?: number;
+    truncateAfterChars?: number;
     wrap?: boolean;
 }
 
 export const Breadcrumbs = ({
     onBreadcrumbClick,
-    wrap = true,
-    wrappingSeperatorOffset = 8,
+    wrap = false,
+    wrapSeparatorOffset = 8,
+    truncateAfterChars = 7,
     ...props
 }: BreadcrumbsProps) => {
-    const containerRef = useRef<HTMLDivElement>(null);
     const activeCategories = useActiveCategories();
     const breadcrumbs = useBreadcrumbs(activeCategories);
-
-    useWrappingSeperator(containerRef, wrappingSeperatorOffset, wrap);
+    const { containerRef, setItemRef, wrapInfo } = useDetectWrap([breadcrumbs], wrap);
 
     return (
         <Breadcrumb
             ref={containerRef}
             separator={<BreadcrumbSeparator />}
-            listProps={wrap ? { flexWrap: 'wrap', rowGap: 1 } : undefined}
+            overflow={wrap ? undefined : 'hidden'}
+            listProps={{ w: 'full', ...(wrap && { flexWrap: 'wrap', rowGap: 1 }) }}
             spacing={0}
             data-test-id={TestId.BREADCRUMBS}
             {...props}
         >
-            {breadcrumbs.map((breadcrumb, idx) => (
-                <BreadcrumbItem
-                    key={idx + breadcrumb.label}
-                    isCurrentPage={idx === breadcrumbs.length - 1}
-                >
-                    <chakra.span role='presentation' display='none'>
-                        <BreadcrumbSeparator />
-                    </chakra.span>
-                    <BreadcrumbLink
-                        as={ReactRouterLink}
-                        to={breadcrumb.href}
-                        color='blackAlpha.700'
-                        _activeLink={{ color: 'black' }}
-                        onClick={() =>
-                            onBreadcrumbClick?.(breadcrumb, idx === breadcrumbs.length - 1)
-                        }
+            {breadcrumbs.map((breadcrumb, idx) => {
+                const isCurrent = idx === breadcrumbs.length - 1;
+                const { isWrapped, wrapOrder } = wrapInfo(idx);
+                const isTruncated = isWrapped || breadcrumb.label.length > truncateAfterChars;
+                return (
+                    <BreadcrumbItem
+                        key={idx + breadcrumb.label}
+                        isCurrentPage={isCurrent}
+                        ref={setItemRef(idx)}
+                        overflow={isTruncated ? 'hidden' : undefined}
                     >
-                        {breadcrumb.label}
-                    </BreadcrumbLink>
-                </BreadcrumbItem>
-            ))}
+                        {isWrapped && (
+                            <chakra.span
+                                role='presentation'
+                                ml={`${wrapOrder * wrapSeparatorOffset}px`}
+                            >
+                                <BreadcrumbSeparator />
+                            </chakra.span>
+                        )}
+                        <BreadcrumbLink
+                            as={ReactRouterLink}
+                            to={breadcrumb.href}
+                            whiteSpace='nowrap'
+                            isTruncated={isTruncated}
+                            color='blackAlpha.700'
+                            _activeLink={{ color: 'black' }}
+                            onClick={() => onBreadcrumbClick?.(breadcrumb, isCurrent)}
+                        >
+                            {breadcrumb.label}
+                        </BreadcrumbLink>
+                    </BreadcrumbItem>
+                );
+            })}
         </Breadcrumb>
     );
 };

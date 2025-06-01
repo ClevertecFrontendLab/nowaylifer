@@ -1,32 +1,40 @@
 import { Box, Container, Heading, ListItem, OrderedList, Stack } from '@chakra-ui/react';
 import { useLoaderData } from 'react-router';
 
-import { selectCategoriesInvariant } from '~/entities/category/selectors';
-import { RecipeCard } from '~/entities/recipe';
-import { recipeApi } from '~/entities/recipe/api';
-import { RecipeWithAuthor } from '~/entities/recipe/interface';
+import { selectCategoriesInvariant } from '~/entities/category';
+import { RecipeCard, RecipeWithAuthor } from '~/entities/recipe';
+import { recipeApi } from '~/entities/recipe/api/query';
 import { getRecipeRootCategories } from '~/entities/recipe/util';
+import { useEditRecipeEventEffect } from '~/features/edit-recipe';
+import { selectSessionData } from '~/shared/session/slice';
 import { useAppSelector } from '~/shared/store';
 import { Main } from '~/shared/ui/main';
 import { Section, SectionHeading } from '~/shared/ui/section';
-import { buildImageSrc } from '~/shared/util';
 import { NewRecipesSlider } from '~/widgets/new-recipes-slider';
 
+import { OwnRecipeActionButtons, RecipeActionButtons } from './action-buttons';
 import { AuthorCard } from './author-card';
 import { IngridientTable } from './ingredient-table';
 import { NutritionStat } from './nutrition-stat';
 import { StepCard } from './step-card';
 
 export function RecipePage() {
+    const session = useAppSelector(selectSessionData);
     const initialRecipe = useLoaderData<RecipeWithAuthor>();
     const { data } = recipeApi.useRecipeByIdQuery(initialRecipe._id);
     const { categoryById } = useAppSelector(selectCategoriesInvariant);
     const recipe = data ?? initialRecipe;
 
+    const isOwnRecipe = recipe.authorId === session?.userId;
+    const ActionSlot = isOwnRecipe ? OwnRecipeActionButtons : RecipeActionButtons;
+
+    useEditRecipeEventEffect();
+
     return (
         <Main>
             <RecipeCard
                 variant='detailed'
+                actionSlot={<ActionSlot recipe={recipe} />}
                 categories={getRecipeRootCategories(recipe, categoryById)}
                 recipe={recipe}
                 mb={{ base: 6, lg: 10 }}
@@ -66,7 +74,7 @@ export function RecipePage() {
                         {recipe.steps.map((step) => (
                             <ListItem key={step.stepNumber} _notLast={{ mb: 5 }}>
                                 <StepCard
-                                    image={buildImageSrc(step.image)}
+                                    image={step.image}
                                     stepNumber={step.stepNumber}
                                     description={step.description}
                                 />

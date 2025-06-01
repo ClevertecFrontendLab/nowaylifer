@@ -4,10 +4,6 @@ const { defineMultiStyleConfig } = createMultiStyleConfigHelpers(['container', '
 
 export const loaderTheme = defineMultiStyleConfig({
     baseStyle: {
-        container: {
-            bgGradient:
-                'radial(50% 50% at center, rgba(var(--chakra-colors-lime-300-rgb), 0.7), transparent)',
-        },
         spinner: {
             color: 'black',
         },

@@ -59,6 +59,7 @@ export const SearchBar = ({ isLoading, ...props }: SearchBarProps) => {
                                 Исключить мои аллергены
                             </FormLabel>
                             <FilterSwitch
+                                ml={2}
                                 data-test-id={TestId.ALLERGEN_SWITCH}
                                 appliedFilter
                                 applyOnChange
@@ -76,7 +77,7 @@ export const SearchBar = ({ isLoading, ...props }: SearchBarProps) => {
                             placeholder='Выберите из списка аллергенов...'
                             withFooter
                             withinPortal
-                            disabled={!allergenEnabled}
+                            isDisabled={!allergenEnabled}
                             testId={{
                                 menu: TestId.ALLERGEN_SELECT_MENU,
                                 field: TestId.ALLERGEN_SELECT,

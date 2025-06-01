@@ -8,6 +8,22 @@
     }
 }
 
+.glow-circle {
+    position: relative;
+}
+
+.glow-circle:before {
+    content: '';
+    inset: 0;
+    position: absolute;
+    mask-image: radial-gradient(circle closest-side, black, transparent);
+    background: radial-gradient(
+        circle closest-side,
+        rgba(var(--chakra-colors-lime-300-rgb), 0.7),
+        rgba(255, 255, 255, 0.7)
+    );
+}
+
 .custom-scrollbar::-webkit-scrollbar {
     width: var(--chakra-space-2);
 }

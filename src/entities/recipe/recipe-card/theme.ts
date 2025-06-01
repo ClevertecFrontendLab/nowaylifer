@@ -71,7 +71,7 @@ export const recipeCardTheme = defineMultiStyleConfig({
             root: {
                 flexDir: 'column',
                 h: { base: '220px', lg: '402px', '2xl': '414px' },
-                maxW: { base: '158px', lg: '277px', '2xl': '322px' },
+                w: { base: '158px', lg: '277px', '2xl': '322px' },
             },
             imageContainer: {
                 h: { base: '128px', lg: '230px' },
@@ -177,10 +177,10 @@ export const recipeCardTheme = defineMultiStyleConfig({
         },
         detailed: {
             root: {
+                borderRightRadius: 'none',
                 flexDir: { base: 'column', md: 'row' },
                 border: 'none',
                 minH: { base: 'auto', md: '224px', lg: '410px' },
-                h: { base: 'auto', lg: 0 },
                 _hover: {
                     boxShadow: 'none',
                 },

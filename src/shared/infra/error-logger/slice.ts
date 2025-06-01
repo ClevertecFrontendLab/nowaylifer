@@ -3,11 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import { QueryHttpError } from '~/shared/api';
 
 export interface ErrorMeta {
+    errorId?: string | number | ((error: QueryHttpError) => string | number);
     title: string;
     description?: string;
 }
 
 export interface LoggableError {
+    id: string | number;
     meta: ErrorMeta | null;
     error: QueryHttpError;
     endpoint: string;

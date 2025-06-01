@@ -52,7 +52,7 @@ export const Filters = ({ onClear, onFind }: { onClear: () => void; onFind: () =
                 <FilterSelect
                     filterType='allergens'
                     withFooter
-                    disabled={!allergenEnabled}
+                    isDisabled={!allergenEnabled}
                     footerInputPlaceholder='Другой аллерген'
                     placeholder='Выберите из списка аллергенов...'
                     testId={{

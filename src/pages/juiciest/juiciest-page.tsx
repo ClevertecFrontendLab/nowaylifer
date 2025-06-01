@@ -2,11 +2,7 @@ import { Center, Heading, useBreakpointValue, VStack } from '@chakra-ui/react';
 
 import { selectCategoriesInvariant } from '~/entities/category';
 import {
-    buildRecipePath,
-    getRecipeRootCategories,
     recipeApi,
-    RecipeCard,
-    RecipeCardsGrid,
     RecipeRequestParams,
     selectFromRecipeInfiniteQueryResult,
 } from '~/entities/recipe';
@@ -15,17 +11,13 @@ import {
     selectAppliedFiltersByGroup,
     selectIsAppliedFromDrawer,
 } from '~/features/filter-recipe';
-import {
-    HighlightSearchMatch,
-    selectSearchString,
-    useUpdateLastSearchResult,
-} from '~/features/search-recipe';
-import { useShowAppLoader } from '~/shared/infra/app-loader';
+import { selectSearchString, useUpdateLastSearchResult } from '~/features/search-recipe';
+import { useAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
-import { TestId } from '~/shared/test-ids';
 import { LoadMoreButton } from '~/shared/ui/load-more-button';
 import { Main } from '~/shared/ui/main';
 import { Section } from '~/shared/ui/section';
+import { RecipeGrid } from '~/widgets/recipe-grid';
 import { SearchBar } from '~/widgets/search-bar';
 
 export function JuiciestPage() {
@@ -51,7 +43,7 @@ export function JuiciestPage() {
     const appLoaderEnabled = showLoader && (!lg || isAppliedFromDrawerRef.current);
 
     useUpdateLastSearchResult(recipes);
-    useShowAppLoader(appLoaderEnabled);
+    useAppLoader(appLoaderEnabled);
 
     return (
         <Main>
@@ -62,25 +54,7 @@ export function JuiciestPage() {
                 <SearchBar isLoading={showLoader && !appLoaderEnabled} />
             </VStack>
             <Section>
-                <RecipeCardsGrid mb={4}>
-                    {recipes?.map((recipe, idx) => (
-                        <RecipeCard
-                            key={recipe._id}
-                            recipe={recipe}
-                            variant='horizontal'
-                            categories={getRecipeRootCategories(recipe, categoryById)}
-                            recipeLink={buildRecipePath(recipe, categoryById)}
-                            data-test-id={TestId.recipeCard(idx)}
-                            renderTitle={(styleProps) => (
-                                <Heading {...styleProps}>
-                                    <HighlightSearchMatch query={searchString}>
-                                        {recipe.title}
-                                    </HighlightSearchMatch>
-                                </Heading>
-                            )}
-                        />
-                    ))}
-                </RecipeCardsGrid>
+                {recipes && <RecipeGrid mb={4} searchString={searchString} recipes={recipes} />}
                 <Center>
                     {hasNextPage && (
                         <LoadMoreButton isLoading={isFetchingNextPage} onClick={fetchNextPage} />

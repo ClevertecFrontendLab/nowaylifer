@@ -1,19 +1,19 @@
 import { chakra, HStack, PinInput, PinInputField, SlideFade } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { isClientError } from '~/shared/api/util';
-import { useShowAppLoader } from '~/shared/infra/app-loader';
+import imageUrl from '~/shared/assets/gaming-on-portable-console.png';
+import { useAppLoader } from '~/shared/infra/app-loader';
+import {
+    AppModalBody,
+    AppModalDescription,
+    AppModalImage,
+    AppModalSmallPrint,
+    AppModalTitle,
+} from '~/shared/infra/modals-manager';
 import { TestId } from '~/shared/test-ids';
 
 import { authApi } from '../api';
-import imageUrl from '../assets/gaming-on-portable-console.png';
-import {
-    AuthModalBody,
-    AuthModalDescription,
-    AuthModalImage,
-    AuthModalSmallPrint,
-    AuthModalTitle,
-} from '../common/auth-modal';
 
 const OTP_LENGTH = 6;
 
@@ -22,7 +22,9 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
     const [isInvalid, setIsInvalid] = useState(false);
     const [otp, setOtp] = useState('');
 
-    useShowAppLoader(isLoading);
+    const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+    useAppLoader(isLoading);
 
     const handleOtpComplete = async (otpToken: string) => {
         setIsInvalid(false);
@@ -30,20 +32,21 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
         if (!res.error) return next();
         setIsInvalid(isClientError(res.error));
         setOtp('');
+        inputRefs.current.forEach((el) => el?.blur());
     };
 
     return (
         <SlideFade in={true} offsetY={0} offsetX={64}>
-            <AuthModalBody>
-                <AuthModalImage src={imageUrl} />
-                {isInvalid && <AuthModalTitle>Неверный код</AuthModalTitle>}
-                <AuthModalDescription mb={4}>
+            <AppModalBody>
+                <AppModalImage src={imageUrl} />
+                {isInvalid && <AppModalTitle>Неверный код</AppModalTitle>}
+                <AppModalDescription mb={4}>
                     Мы отправили вам на e-mail
                     <chakra.b display='block' fontWeight='semibold' isTruncated>
                         {email}
                     </chakra.b>
                     шестизначный код. Введите&nbsp;его&nbsp;ниже.
-                </AuthModalDescription>
+                </AppModalDescription>
                 <HStack mb={6} justify='center' gap={1.5}>
                     <PinInput
                         otp
@@ -54,14 +57,20 @@ export const VerifyOtp = ({ next, email }: { next: () => void; email: string }) 
                         onComplete={handleOtpComplete}
                     >
                         {Array.from({ length: OTP_LENGTH }, (_, idx) => (
-                            <PinInputField flexShrink={0} data-test-id={TestId.otpInput(idx)} />
+                            <PinInputField
+                                flexShrink={0}
+                                data-test-id={TestId.otpInput(idx)}
+                                ref={(el) => {
+                                    inputRefs.current[idx] = el;
+                                }}
+                            />
                         ))}
                     </PinInput>
                 </HStack>
-                <AuthModalSmallPrint>
+                <AppModalSmallPrint>
                     Не пришло письмо? Проверьте&nbsp;папку&nbsp;Спам.
-                </AuthModalSmallPrint>
-            </AuthModalBody>
+                </AppModalSmallPrint>
+            </AppModalBody>
         </SlideFade>
     );
 };

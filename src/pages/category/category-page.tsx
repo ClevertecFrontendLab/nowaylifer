@@ -7,25 +7,14 @@ import {
     selectCategoriesInvariant,
     useActiveCategories,
 } from '~/entities/category';
-import {
-    buildRecipePath,
-    getRecipeRootCategories,
-    recipeApi,
-    RecipeCard,
-    RecipeCardsGrid,
-    selectFromRecipeInfiniteQueryResult,
-} from '~/entities/recipe';
+import { recipeApi, selectFromRecipeInfiniteQueryResult } from '~/entities/recipe';
 import {
     filtersToParams,
     selectAppliedFiltersByGroup,
     selectIsAppliedFromDrawer,
 } from '~/features/filter-recipe';
-import {
-    HighlightSearchMatch,
-    selectAppliedSearchString,
-    useUpdateLastSearchResult,
-} from '~/features/search-recipe';
-import { useAppLoader, useShowAppLoader } from '~/shared/infra/app-loader';
+import { selectAppliedSearchString, useUpdateLastSearchResult } from '~/features/search-recipe';
+import { selectIsAppLoaderRunning, useAppLoader } from '~/shared/infra/app-loader';
 import { useAppSelector, useAppSelectorRef } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { LoadMoreButton } from '~/shared/ui/load-more-button';
@@ -33,6 +22,7 @@ import { Main } from '~/shared/ui/main';
 import { Section } from '~/shared/ui/section';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '~/shared/ui/tabs';
 import { isE2E } from '~/shared/util';
+import { RecipeGrid } from '~/widgets/recipe-grid';
 import { RelevantKitchen } from '~/widgets/relevant-kitchen';
 import { SearchBar } from '~/widgets/search-bar';
 
@@ -58,12 +48,12 @@ export function CategoryPage() {
         });
 
     const lg = useBreakpointValue({ base: false, lg: true });
-    const loader = useAppLoader();
-    const showLoader = !loader.isRunning() && isFetching && !isFetchingNextPage;
+    const isAppLoaderRunningRef = useAppSelectorRef(selectIsAppLoaderRunning);
+    const showLoader = !isAppLoaderRunningRef.current && isFetching && !isFetchingNextPage;
     const appLoaderEnabled = showLoader && (!lg || isAppliedFromDrawerRef.current);
 
     useUpdateLastSearchResult(recipes);
-    useShowAppLoader(appLoaderEnabled);
+    useAppLoader(appLoaderEnabled);
 
     const subCategoryIndex = useMemo(
         () => rootCategory.subCategories.indexOf(subCategory),
@@ -110,36 +100,16 @@ export function CategoryPage() {
                     <TabPanels>
                         {rootCategory.subCategories.map((sub) => (
                             <TabPanel key={sub._id}>
-                                <RecipeCardsGrid mb={4}>
-                                    {recipes
-                                        ?.filter((recipe) =>
+                                {recipes && (
+                                    <RecipeGrid
+                                        mb={4}
+                                        searchString={searchString}
+                                        activeCategories={activeCategories}
+                                        recipes={recipes.filter((recipe) =>
                                             isE2E() ? true : recipe.categoriesIds.includes(sub._id),
-                                        )
-                                        .map((recipe, idx) => (
-                                            <RecipeCard
-                                                key={recipe._id}
-                                                recipe={recipe}
-                                                variant='horizontal'
-                                                recipeLink={buildRecipePath(
-                                                    recipe,
-                                                    categoryById,
-                                                    activeCategories,
-                                                )}
-                                                categories={getRecipeRootCategories(
-                                                    recipe,
-                                                    categoryById,
-                                                )}
-                                                renderTitle={(styleProps) => (
-                                                    <Heading {...styleProps}>
-                                                        <HighlightSearchMatch query={searchString}>
-                                                            {recipe.title}
-                                                        </HighlightSearchMatch>
-                                                    </Heading>
-                                                )}
-                                                data-test-id={TestId.recipeCard(idx)}
-                                            />
-                                        ))}
-                                </RecipeCardsGrid>
+                                        )}
+                                    />
+                                )}
                                 <Center>
                                     {hasNextPage && (
                                         <LoadMoreButton

@@ -1,42 +1,65 @@
-import { Avatar, Box, Flex, HStack, Text, useBreakpointValue } from '@chakra-ui/react';
-import { useEffect, useRef } from 'react';
+import {
+    Avatar,
+    Box,
+    cssVar,
+    defineStyle,
+    Flex,
+    HStack,
+    Text,
+    useBreakpointValue,
+} from '@chakra-ui/react';
+import { memo, useEffect, useRef, useState } from 'react';
 
 import { Breadcrumbs } from '~/features/breadcrumbs';
 import userAvatarUrl from '~/shared/assets/user.png';
+import { RoutePath } from '~/shared/router';
 import { TestId } from '~/shared/test-ids';
+import { Link } from '~/shared/ui/link';
 import { Logo } from '~/shared/ui/logo';
 import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/stats';
 
-import classes from './app-header.module.css';
 import { HamburgerMenu, HamburgerMenuButton, HamburgerMenuOverlay } from './hamburger-menu';
 
-const AppHeaderLogo = () => {
-    const variant = useBreakpointValue({ base: 'short', md: 'normal' } as const);
-    return <Logo h={8} w='auto' variant={variant} />;
-};
+const $bg = cssVar('bg');
 
-export const AppHeader = () => {
+const headerBefore = defineStyle({
+    content: "''",
+    pos: 'fixed',
+    inset: 'auto 0',
+    zIndex: -1,
+    height: 'var(--app-header-height)',
+    background: $bg.reference,
+});
+
+export const AppHeader = memo(() => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const lg = useBreakpointValue({ base: false, lg: true });
+    const xl = useBreakpointValue({ base: false, xl: true });
+    const [menuIsOpen, setMenuIsOpen] = useState(false);
 
     useEffect(() => {
-        if (lg) {
-            containerRef.current?.removeAttribute('data-menu-open');
+        if (xl) {
+            setMenuIsOpen(false);
         }
-    }, [lg]);
+    }, [xl]);
 
     return (
         <Flex
             ref={containerRef}
             as='header'
             align='center'
+            data-group
             p={4}
-            className={classes.header}
+            sx={{
+                [$bg.variable]: menuIsOpen ? 'white' : 'colors.lime.50',
+                bg: $bg.reference,
+                pos: 'static !important',
+            }}
+            _before={headerBefore}
             data-test-id={TestId.HEADER}
         >
             <AppHeaderLogo />
-            {lg && <Breadcrumbs ml={{ base: 16, xl: 32 }} />}
-            <HStack hideBelow='lg' ml='auto' mr={{ base: 8, xl: 16 }} gap={3}>
+            {xl && <Breadcrumbs ml={{ base: 16, xl: 32 }} />}
+            <HStack hideBelow='xl' ml='auto' mr={{ base: 8, xl: 16 }} gap={3}>
                 <Avatar size='md' name='bake_and_pie' src={userAvatarUrl} />
                 <Box>
                     <Text fontSize='lg' fontWeight='medium'>
@@ -47,23 +70,35 @@ export const AppHeader = () => {
                     </Text>
                 </Box>
             </HStack>
-            <HStack hideFrom='lg' ml='auto' fontSize='xs' className={classes.stats}>
+            <HStack
+                visibility={menuIsOpen ? 'hidden' : 'visible'}
+                hideFrom='xl'
+                fontSize='xs'
+                ml='auto'
+            >
                 <BookmarksStat px={2} value={185} />
                 <FriendsStat px={2} value={589} />
                 <LikesStat px={2} value={587} />
             </HStack>
             <HamburgerMenu
-                onOpenChange={(isOpen) => {
-                    if (isOpen) {
-                        containerRef.current?.setAttribute('data-menu-open', '');
-                    } else {
-                        containerRef.current?.removeAttribute('data-menu-open');
-                    }
-                }}
+                isOpen={menuIsOpen}
+                onOpenChange={setMenuIsOpen}
+                closeOnBlur={(e) =>
+                    !(e.target instanceof Node && containerRef.current?.contains(e.target))
+                }
             >
-                <HamburgerMenuButton hideFrom='lg' />
+                <HamburgerMenuButton hideFrom='xl' />
                 <HamburgerMenuOverlay />
             </HamburgerMenu>
         </Flex>
+    );
+});
+
+const AppHeaderLogo = () => {
+    const variant = useBreakpointValue({ base: 'short', md: 'normal' } as const);
+    return (
+        <Link to={RoutePath.Main}>
+            <Logo h={8} w='auto' variant={variant} data-test-id={TestId.HEADER_LOGO} />
+        </Link>
     );
 };

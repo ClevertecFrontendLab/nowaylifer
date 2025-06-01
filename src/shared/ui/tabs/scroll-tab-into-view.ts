@@ -12,30 +12,17 @@ export const scrollTabIntoView = ({
     behavior = 'auto',
 }: ScrollTabIntoViewOptions) => {
     const { scrollWidth, offsetWidth: containerWidth, scrollLeft } = container;
-    if (scrollWidth <= containerWidth) {
-        return;
-    }
+    if (scrollWidth <= containerWidth) return;
 
     const { offsetLeft: tabOffsetLeft, offsetWidth: tabOffsetWidth } = tab;
-    const newLeft = tabOffsetLeft - containerWidth / 2 + tabOffsetWidth / 2;
+    const tabCenter = tabOffsetLeft + tabOffsetWidth / 2;
+    const newLeft = tabCenter - containerWidth / 2;
 
-    if (Math.abs(newLeft - scrollLeft) < scrollThreshold) {
-        return;
-    }
+    const path = newLeft - scrollLeft;
 
-    let path = newLeft - scrollLeft;
+    if (Math.abs(path) < scrollThreshold) return;
 
-    if (path < 0) {
-        const remainingPath = -scrollLeft;
-        path = Math.max(path, remainingPath);
-    } else if (path > 0) {
-        const remainingPath = scrollWidth - (scrollLeft + containerWidth);
-        path = Math.min(path, remainingPath);
-    }
+    const target = Math.min(scrollWidth - containerWidth, Math.max(0, scrollLeft + path));
 
-    if (path === 0) {
-        return;
-    }
-
-    container.scrollTo({ left: scrollLeft + path, behavior });
+    container.scrollTo({ left: target, behavior });
 };

@@ -1,4 +1,4 @@
-import { selectActiveCategoriesInvariant } from '~/entities/category/selectors';
+import { selectActiveCategoriesInvariant } from '~/entities/category';
 import { recipeApi } from '~/entities/recipe';
 import { createRouteLoader, storeContext } from '~/shared/router';
 
