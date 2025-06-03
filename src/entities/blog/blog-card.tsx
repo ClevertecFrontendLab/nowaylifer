@@ -1,13 +1,14 @@
 import { Avatar, Box, Card, CardBody, CardProps, HStack, Text } from '@chakra-ui/react';
 
-import { Author } from '~/entities/recipe';
+import { formatUsername, getFullName } from '~/shared/util';
+
+import { Blog } from './interface';
 
 export interface BlogCardProps extends CardProps {
-    author: Author;
-    content: string;
+    blog: Blog;
 }
 
-export const BlogCard = ({ author, content, ...rest }: BlogCardProps) => (
+export const BlogCard = ({ blog, ...props }: BlogCardProps) => (
     <Card
         boxShadow='none'
         borderWidth='1px'
@@ -15,26 +16,25 @@ export const BlogCard = ({ author, content, ...rest }: BlogCardProps) => (
         transitionProperty='box-shadow'
         transitionDuration='normal'
         _hover={{ boxShadow: 'card-hover' }}
-        {...rest}
+        {...props}
     >
         <CardBody px={{ base: 4, '2xl': 6 }} pb={{ base: 4, '2xl': 5 }} pt={{ base: 4, '2xl': 6 }}>
             <HStack gap={{ base: 2, lg: 3 }} mb={{ base: 2, '2xl': 4 }}>
                 <Avatar
-                    src={author.avatar}
-                    name={author.firstName + ' ' + author.lastName}
+                    name={getFullName(blog.firstName, blog.lastName)}
                     size={{ base: 'sm', lg: 'md' }}
                 />
                 <Box>
                     <Box noOfLines={1} fontWeight='medium' fontSize={{ base: 'md', lg: 'lg' }}>
-                        {author.firstName + ' ' + author.lastName}
+                        {getFullName(blog.firstName, blog.lastName)}
                     </Box>
                     <Box noOfLines={1} fontSize='sm' color='blackAlpha.700'>
-                        {`@${author.login}`}
+                        {formatUsername(blog.login)}
                     </Box>
                 </Box>
             </HStack>
             <Text fontSize='sm' noOfLines={3}>
-                {content}
+                {blog.notes[0]?.text}
             </Text>
         </CardBody>
     </Card>

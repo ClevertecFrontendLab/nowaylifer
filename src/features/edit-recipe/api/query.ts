@@ -3,7 +3,7 @@ import HTTPMethod from 'http-method-enum';
 import { Recipe, recipeApi, RecipeEndpointName } from '~/entities/recipe';
 import { ApiEndpoint, apiSlice } from '~/shared/api';
 import { joinPath } from '~/shared/router/util';
-import { HttpMethod, stripEmptyStrings } from '~/shared/util';
+import { HttpMethod, stripEmptyStringsDeep } from '~/shared/util';
 
 import { MeasureUnit, RecipeDraft } from '../types';
 import { EditRecipeEndpointName } from './endpoint-name';
@@ -55,7 +55,7 @@ export const editRecipeApi = apiSlice.injectEndpoints({
             query: (draft) => ({
                 url: ApiEndpoint.RECIPE_DRAFT,
                 method: HttpMethod.POST,
-                body: stripEmptyStrings(draft),
+                body: stripEmptyStringsDeep(draft),
             }),
             extraOptions: { errorMetaByStatus: errorMeta.saveDraft },
         }),

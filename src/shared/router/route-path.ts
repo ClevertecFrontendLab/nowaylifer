@@ -29,4 +29,5 @@ export const RoutePath = {
         ),
     Recipe: definePath<RecipeParams>(recipePattern),
     EditRecipe: definePath<RecipeParams>(joinPath('edit-recipe', recipePattern)),
+    Blogs: '/blogs',
 };
