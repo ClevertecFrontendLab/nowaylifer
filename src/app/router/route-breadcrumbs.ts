@@ -27,3 +27,5 @@ export const categoryCrumbs: RouteBreadcrumbDefinition<ActiveCategories> = (args
 
 export const recipeCrumbs: RouteBreadcrumbDefinition<ActiveCategories, RecipeWithAuthor> = (args) =>
     [rootCategoryCrumb(args), subCategoryCrumb(args), recipeCrumb(args)] as BreadcrumbDefinition[];
+
+export const blogCrumb = 'Блоги';

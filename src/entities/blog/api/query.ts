@@ -4,7 +4,7 @@ import { Blog } from '../interface';
 
 interface BlogsQueryParams {
     currentUserId: string;
-    limit?: number;
+    limit?: number | 'all';
 }
 
 export const blogApi = apiSlice.injectEndpoints({
@@ -12,7 +12,7 @@ export const blogApi = apiSlice.injectEndpoints({
         blogs: build.query<{ others: Blog[]; favorites: Blog[] }, BlogsQueryParams>({
             query: (params) => ({
                 url: ApiEndpoint.BLOGS,
-                params,
+                params: { limit: 9, ...params },
             }),
         }),
     }),

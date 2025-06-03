@@ -8,6 +8,7 @@ import {
 } from '~/entities/category';
 import { recipeLoader } from '~/entities/recipe';
 import { AuthLayout, EmailVerificationCallback, LoginForm, SignupForm } from '~/pages/auth';
+import { BlogsPage } from '~/pages/blogs';
 import { CategoryPage, categoryPageLoader } from '~/pages/category';
 import { CreateRecipePage } from '~/pages/create-recipe/create-recipe-page';
 import { JuiciestPage, juiciestPageLoader } from '~/pages/juiciest';
@@ -95,6 +96,11 @@ const routerConfig: RouteObject[] = [
                     {
                         path: `:${RouteParam.RootCategory}`,
                         Component: NavigateToSubCategory,
+                    },
+                    {
+                        path: RoutePath.Blogs,
+                        handle: { crumb: routeCrumb.blogCrumb },
+                        Component: BlogsPage,
                     },
                 ],
             },
