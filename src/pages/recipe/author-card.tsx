@@ -3,7 +3,7 @@ import { Avatar, Box, Card, CardBody, CardProps, HStack, VStack } from '@chakra-
 import { Author } from '~/entities/recipe/interface';
 import { Button } from '~/shared/ui/button';
 import { SubscribeIcon } from '~/shared/ui/icons/subscribe';
-import { FriendsStat } from '~/shared/ui/stats';
+import { SubscribersStat } from '~/shared/ui/stats';
 
 export interface AuthorCardProps extends CardProps {
     author: Author;
@@ -35,7 +35,7 @@ export const AuthorCard = ({ author, ...cardProps }: AuthorCardProps) => (
                             Подписаться
                         </Button>
                         {!!author.subscribers?.length && (
-                            <FriendsStat
+                            <SubscribersStat
                                 variant='outline'
                                 flex='0'
                                 fontSize='xs'

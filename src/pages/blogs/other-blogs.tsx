@@ -11,10 +11,12 @@ import {
 } from '@chakra-ui/react';
 import { skipToken } from '@reduxjs/toolkit/query';
 
-import { blogApi, BlogCard } from '~/entities/blog';
+import { blogApi } from '~/entities/blog';
 import { useAppLoader } from '~/shared/infra/app-loader';
 import { selectSessionDataInvariant } from '~/shared/session';
 import { useAppSelector } from '~/shared/store';
+
+import { OtherBlogCard } from './other-blog-card';
 
 export const OtherBlogs = (props: BoxProps) => {
     const { userId } = useAppSelector(selectSessionDataInvariant);
@@ -52,7 +54,7 @@ export const OtherBlogs = (props: BoxProps) => {
                 spacingY={{ base: 4, lg: 6 }}
                 mb={{ base: 4, lg: 6 }}
             >
-                {blogsToShow?.map((blog) => <BlogCard h='full' key={blog._id} blog={blog} />)}
+                {blogsToShow?.map((blog) => <OtherBlogCard key={blog._id} blog={blog} h='full' />)}
             </SimpleGrid>
             <Center>
                 {isExpanded ? (

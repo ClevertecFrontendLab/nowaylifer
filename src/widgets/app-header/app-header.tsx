@@ -16,7 +16,7 @@ import { RoutePath } from '~/shared/router';
 import { TestId } from '~/shared/test-ids';
 import { Link } from '~/shared/ui/link';
 import { Logo } from '~/shared/ui/logo';
-import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/stats';
+import { BookmarksStat, LikesStat, SubscribersStat } from '~/shared/ui/stats';
 
 import { HamburgerMenu, HamburgerMenuButton, HamburgerMenuOverlay } from './hamburger-menu';
 
@@ -77,7 +77,7 @@ export const AppHeader = memo(() => {
                 ml='auto'
             >
                 <BookmarksStat px={2} value={185} />
-                <FriendsStat px={2} value={589} />
+                <SubscribersStat px={2} value={589} />
                 <LikesStat px={2} value={587} />
             </HStack>
             <HamburgerMenu

@@ -31,7 +31,7 @@ export const FavoriteBlogs = (props: BoxProps) => {
                 minChildWidth={{ base: '304px', md: '346px', lg: '408px' }}
                 spacing={{ base: 3, lg: 4 }}
             >
-                {favorites?.map((blog) => <BlogCard blog={blog} />)}
+                {favorites?.map((blog) => <BlogCard key={blog._id} blog={blog} />)}
             </SimpleGrid>
         </Box>
     );

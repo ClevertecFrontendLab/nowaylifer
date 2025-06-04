@@ -2,7 +2,9 @@ import {
     IconProps,
     Stat,
     StatLabel,
+    StatLabelProps,
     StatNumber,
+    StatNumberProps,
     StatProps,
     VisuallyHidden,
 } from '@chakra-ui/react';
@@ -21,12 +23,12 @@ export const LikesStat = (props: Omit<BaseStatProps, 'label' | 'icon'>) => (
     <BaseStat label='Количество лайков' icon={<EmojiHeartEyesIcon />} {...props} />
 );
 
-export const FriendsStat = ({
+export const SubscribersStat = ({
     variant = 'solid',
     ...rest
 }: { variant?: 'outline' | 'solid' } & Omit<BaseStatProps, 'label' | 'icon'>) => (
     <BaseStat
-        label='Количество друзей'
+        label='Количество подписчиков'
         icon={variant === 'solid' ? <PeopleIcon /> : <PeopleIconOutline />}
         {...rest}
     />
@@ -36,26 +38,36 @@ interface BaseStatProps extends StatProps {
     icon: React.ReactElement<IconProps>;
     label: string;
     value: string | number;
+    labelProps?: StatLabelProps;
+    numberProps?: StatNumberProps;
 }
 
-const BaseStat = ({ icon, label, value, fontSize = 'inherit', ...rest }: BaseStatProps) => (
+const BaseStat = ({
+    icon,
+    label,
+    value,
+    labelProps,
+    numberProps,
+    fontSize = 'inherit',
+    ...props
+}: BaseStatProps) => (
     <Stat
         p={1}
         fontSize={fontSize}
-        sx={{
-            '& > dl': {
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1.5,
-            },
-        }}
-        {...rest}
+        sx={{ '& > dl': { display: 'flex', alignItems: 'center', gap: 1.5 } }}
+        {...props}
     >
-        <StatLabel lineHeight={0} fontSize='inherit'>
-            {cloneElement<IconProps>(icon, { boxSize: icon.props.boxSize ?? '1em' })}
+        <StatLabel lineHeight='none' fontSize='inherit' {...labelProps}>
             <VisuallyHidden>{label}</VisuallyHidden>
+            {cloneElement<IconProps>(icon, { boxSize: icon.props.boxSize ?? '1em' })}
         </StatLabel>
-        <StatNumber lineHeight='short' fontWeight='semibold' fontSize='inherit' color='lime.600'>
+        <StatNumber
+            lineHeight={4}
+            fontWeight='semibold'
+            fontSize='inherit'
+            color='lime.600'
+            {...numberProps}
+        >
             {value}
         </StatNumber>
     </Stat>
