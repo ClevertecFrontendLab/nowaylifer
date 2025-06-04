@@ -10,20 +10,20 @@ export const recipeLoader = createRouteLoader(async ({ context, params, request 
     const { dispatch } = context.get(storeContext);
     const recipeId = params[RouteParam.RecipeId];
 
-    invariant(recipeId, 'RecipeId param is empty string or undefined');
+    invariant(recipeId, `${RouteParam.RecipeId} param is empty string or undefined`);
 
-    let recipe;
+    const result = await dispatch(
+        recipeApi.endpoints.recipeById.initiate(recipeId, { subscribe: false }),
+    );
 
-    try {
-        recipe = await dispatch(
-            recipeApi.endpoints.recipeById.initiate(recipeId, { subscribe: false }),
-        ).unwrap();
-    } catch (error) {
-        if (isClientError(error)) {
+    if (result.error) {
+        if (isClientError(result.error)) {
             return redirect(RoutePath.NotFound);
         }
-        throw error;
+        throw result.error;
     }
+
+    const recipe = result.data!;
 
     if (recipe._id !== recipeId) {
         return replace(request.url.replace(recipeId, recipe._id));
