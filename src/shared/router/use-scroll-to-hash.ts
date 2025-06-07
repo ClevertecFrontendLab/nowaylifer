@@ -1,19 +1,25 @@
-import { useLatestRef } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useDeepCompareEffect } from '@react-hookz/web';
+import { useRef } from 'react';
 import { useLocation } from 'react-router';
 
-export interface UseScrollToHashProps extends ScrollIntoViewOptions {}
+export interface UseScrollToHashProps extends ScrollIntoViewOptions {
+    enabled?: boolean;
+}
 
 export const useScrollToHash = (options: UseScrollToHashProps = {}) => {
-    const optionsRef = useLatestRef(options);
+    const { enabled, ...scrollOptions } = options;
+    const hasScrolledRef = useRef(false);
     const { hash } = useLocation();
 
-    useEffect(() => {
-        if (!hash) return;
+    useDeepCompareEffect(() => {
+        if (!hash || !enabled || hasScrolledRef.current) return;
 
         const id = hash.slice(1);
         const el = document.getElementById(id);
 
-        if (el) el.scrollIntoView(optionsRef.current);
-    }, [hash, optionsRef]);
+        if (el) {
+            el.scrollIntoView(scrollOptions);
+            hasScrolledRef.current = true;
+        }
+    }, [enabled, scrollOptions]);
 };

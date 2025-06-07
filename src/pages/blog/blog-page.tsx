@@ -1,4 +1,6 @@
 import { Center } from '@chakra-ui/react';
+import { QueryStatus } from '@reduxjs/toolkit/query';
+import { useRef } from 'react';
 import { useLoaderData } from 'react-router';
 
 import { blogApi, BlogInfo } from '~/entities/blog';
@@ -30,16 +32,21 @@ export const BlogPage = () => {
         currentUserId: userId,
     });
 
-    const { data: recipes = [], isLoading: isRecipesLoading } =
-        recipeApi.useRecipesByUserQuery(bloggerId);
+    const { notes = [] } = blog.bloggerInfo;
+
+    const {
+        data: recipes = [],
+        isLoading: isRecipesLoading,
+        status,
+    } = recipeApi.useRecipesByUserQuery(bloggerId);
+
+    const recipesHasResolved = useHasResolved(status);
 
     useAppLoader(isRecipesLoading);
 
-    const { notes = [] } = blog.bloggerInfo;
-
     const handleSubscription = () => toggleSubscription({ bloggerId, currentUserId: userId });
 
-    useScrollToHash({ behavior: 'smooth' });
+    useScrollToHash({ enabled: recipesHasResolved, behavior: 'smooth' });
 
     return (
         <Main>
@@ -58,8 +65,16 @@ export const BlogPage = () => {
                 />
             </Center>
             {recipes.length > 0 && <BlogRecipes recipes={recipes} mb={{ base: 8, lg: 10 }} />}
-            {notes.length > 0 && <NotesSection notes={notes} />}
+            {notes.length > 0 && recipesHasResolved && <NotesSection notes={notes} />}
             <OtherBlogsSection currentBlogId={bloggerId} />
         </Main>
     );
+};
+
+const useHasResolved = (status: QueryStatus) => {
+    const hasResolvedRef = useRef(false);
+    if (status === QueryStatus.fulfilled || status === QueryStatus.rejected) {
+        hasResolvedRef.current = true;
+    }
+    return hasResolvedRef.current;
 };
