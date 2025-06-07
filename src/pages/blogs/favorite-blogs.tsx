@@ -29,10 +29,13 @@ export const FavoriteBlogs = (props: BoxProps) => {
                 Избранные блоги
             </Heading>
             <SimpleGrid
+                autoRows='1fr'
                 minChildWidth={{ base: '304px', md: '346px', lg: '408px' }}
                 spacing={{ base: 3, lg: 4 }}
             >
-                {favorites?.map((blog) => <BlogCard key={blog._id} blog={blog} />)}
+                {favorites?.map((blog) => (
+                    <BlogCard withNewRecipesCount key={blog._id} blog={blog} />
+                ))}
             </SimpleGrid>
         </Section>
     );

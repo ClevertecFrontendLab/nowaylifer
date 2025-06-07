@@ -42,8 +42,8 @@ export const NotesSection = ({ notes, collapsedMaxCount = 3, ...props }: NotesSe
                 </chakra.span>
             </Heading>
             <SimpleGrid
-                minChildWidth={{ base: '224px', lg: '267px', xl: '328px' }}
                 autoRows='1fr'
+                minChildWidth={{ base: '224px', lg: '267px', xl: '328px' }}
                 spacing={{ base: 3, lg: 4 }}
             >
                 {notesToShow.map((note, index) => (

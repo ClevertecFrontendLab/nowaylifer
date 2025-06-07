@@ -11,7 +11,14 @@ export interface NoteProps extends CardProps {
 export const NoteCard = ({ note, ...props }: NoteProps) => (
     <Card borderRadius='lg' {...props}>
         <CardBody p={6}>
-            <chakra.time color='lime.600' fontSize='sm' lineHeight={5} mb={4}>
+            <chakra.time
+                dateTime={note.date}
+                fontSize='sm'
+                lineHeight={5}
+                display='block'
+                color='lime.600'
+                mb={4}
+            >
                 {formatDate(note.date, 'dd MMMM yyyy', { locale: ruLocale })}
             </chakra.time>
             <Text fontSize='sm' lineHeight={5}>
