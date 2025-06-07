@@ -1,4 +1,4 @@
-import { BoxProps, Heading, SimpleGrid } from '@chakra-ui/react';
+import { BoxProps, Button, Heading, SimpleGrid } from '@chakra-ui/react';
 
 import { blogApi, BlogCard } from '~/entities/blog';
 import { useAppLoader } from '~/shared/infra/app-loader';
@@ -34,7 +34,16 @@ export const FavoriteBlogs = (props: BoxProps) => {
                 spacing={{ base: 3, lg: 4 }}
             >
                 {favorites?.map((blog) => (
-                    <BlogCard withNewRecipesCount key={blog._id} blog={blog} />
+                    <BlogCard
+                        actionSlot={
+                            <Button px={3} bg='lime.400' size='xs'>
+                                Рецепты
+                            </Button>
+                        }
+                        withNewRecipesCount
+                        key={blog._id}
+                        blog={blog}
+                    />
                 ))}
             </SimpleGrid>
         </Section>

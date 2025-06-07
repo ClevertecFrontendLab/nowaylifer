@@ -3,6 +3,7 @@ import {
     Badge,
     BadgeProps,
     Box,
+    Button,
     Card,
     CardBody,
     CardProps,
@@ -72,7 +73,7 @@ export const BlogCard = ({
                     pb={{ base: 4, '2xl': 5 }}
                     pt={{ base: renderNewRecipesBadge ? 6 : 4, '2xl': 6 }}
                 >
-                    <HStack gap={{ base: 2, lg: 3 }} mb={{ base: 2, '2xl': 4 }} wrap='wrap'>
+                    <HStack gap={{ base: 2, lg: 3 }} mb={{ base: 2, '2xl': 4 }}>
                         <Avatar name={getFullName(blog.firstName, blog.lastName)} size='md' />
                         <LinkOverlay
                             as={Link}
@@ -91,12 +92,15 @@ export const BlogCard = ({
                             </Box>
                         </LinkOverlay>
                     </HStack>
-                    <Text fontSize='sm' noOfLines={3}>
+                    <Text fontSize='sm' noOfLines={3} mb={4}>
                         {blog.notes?.[0]?.text}
                     </Text>
                     <Spacer />
-                    <Flex wrap='wrap-reverse'>
-                        {actionSlot}
+                    <Flex wrap='wrap-reverse' justify='end' rowGap={4} columnGap={2}>
+                        <Flex gap={2}>
+                            {actionSlot}
+                            <ReadLink blogId={blog._id} />
+                        </Flex>
                         <BlogStats
                             bookmarksCount={blog.bookmarksCount}
                             subsribersCount={blog.subscribersCount}
@@ -109,18 +113,31 @@ export const BlogCard = ({
     );
 };
 
+const ReadLink = ({ blogId: userId }: { blogId: string }) => (
+    <Button
+        size='xs'
+        variant='outline'
+        colorScheme='lime'
+        as={Link}
+        px={3}
+        to={`${RoutePath.Blog.build({ userId })}#notes`}
+    >
+        Читать
+    </Button>
+);
+
 interface NewRecipesBadgeProps extends BadgeProps {
     count: number;
 }
 
 const NewRecipesBadge = ({ count, ...props }: NewRecipesBadgeProps) => (
     <Badge
-        display='inline-block'
-        lineHeight={5}
-        borderRadius='base'
         px={2}
         size='xs'
+        lineHeight={5}
+        borderRadius='base'
         bg='blackAlpha.100'
+        display='inline-block'
         {...props}
     >
         {formatNewRecipesCount(count)}

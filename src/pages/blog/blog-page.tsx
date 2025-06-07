@@ -9,6 +9,7 @@ import {
     useToggleBlogSubscriptionMutation,
 } from '~/features/subscribe-to-blog';
 import { useAppLoader } from '~/shared/infra/app-loader';
+import { useScrollToHash } from '~/shared/router';
 import { selectSessionDataInvariant } from '~/shared/session';
 import { useAppSelector } from '~/shared/store';
 import { Main } from '~/shared/ui/main';
@@ -37,6 +38,8 @@ export const BlogPage = () => {
     const { notes = [] } = blog.bloggerInfo;
 
     const handleSubscription = () => toggleSubscription({ bloggerId, currentUserId: userId });
+
+    useScrollToHash({ behavior: 'smooth' });
 
     return (
         <Main>

@@ -40,7 +40,7 @@ export default function RootLayout() {
             >
                 {xl && <SidebarMenu />}
             </GridItem>
-            <GridItem area='main' minW={0} maxW='full' px={{ base: 4, md: 5, lg: 6 }}>
+            <GridItem area='main' minW={0} maxW='full' pl={{ base: 4, md: 5, lg: 6 }} pr={4}>
                 <Outlet />
             </GridItem>
             <GridItem

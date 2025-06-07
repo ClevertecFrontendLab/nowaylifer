@@ -7,9 +7,6 @@ export const Button = defineStyleConfig({
         },
     },
     variants: {
-        outline: {
-            borderColor: 'blackAlpha.600',
-        },
         inverted: {
             bg: 'black',
             color: 'white',
