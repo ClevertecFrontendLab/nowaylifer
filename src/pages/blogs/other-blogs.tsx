@@ -1,6 +1,5 @@
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import {
-    Box,
     BoxProps,
     Button,
     ButtonProps,
@@ -15,6 +14,7 @@ import { blogApi } from '~/entities/blog';
 import { useAppLoader } from '~/shared/infra/app-loader';
 import { selectSessionDataInvariant } from '~/shared/session';
 import { useAppSelector } from '~/shared/store';
+import { Section } from '~/shared/ui/section';
 import { OtherBlogCard } from '~/widgets/other-blog-card';
 
 export const OtherBlogs = (props: BoxProps) => {
@@ -45,7 +45,7 @@ export const OtherBlogs = (props: BoxProps) => {
         : collapsedData?.others.slice(0, maxBlogsCollapsed);
 
     return (
-        <Box bg='blackAlpha.50' borderRadius='2xl' p={{ base: 4, lg: 6 }} {...props}>
+        <Section bg='blackAlpha.50' borderRadius='2xl' p={{ base: 4, lg: 6 }} {...props}>
             <SimpleGrid
                 minChildWidth={{ base: '296px', md: '340px', lg: '408px', '2xl': '424px' }}
                 autoRows={{ base: '200px', lg: '224px' }}
@@ -62,7 +62,7 @@ export const OtherBlogs = (props: BoxProps) => {
                     <ExpandButton onClick={handleExpand} />
                 )}
             </Center>
-        </Box>
+        </Section>
     );
 };
 

@@ -1,5 +1,4 @@
 import {
-    Box,
     BoxProps,
     Button,
     ButtonProps,
@@ -11,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 
 import { Note, NoteCard } from '~/entities/blog';
+import { Section } from '~/shared/ui/section';
 
 export interface NotesSection extends BoxProps {
     notes: Note[];
@@ -23,7 +23,7 @@ export const NotesSection = ({ notes, collapsedMaxCount = 3, ...props }: NotesSe
     const hasMoreNotes = notes.length > collapsedMaxCount;
 
     return (
-        <Box bg='blackAlpha.50' borderRadius='2xl' p={{ base: 4, lg: 6 }} pb={4} {...props}>
+        <Section bg='blackAlpha.50' borderRadius='2xl' p={{ base: 4, lg: 6 }} pb={4} {...props}>
             <Heading
                 id='notes'
                 as='h2'
@@ -59,7 +59,7 @@ export const NotesSection = ({ notes, collapsedMaxCount = 3, ...props }: NotesSe
                     )}
                 </Center>
             )}
-        </Box>
+        </Section>
     );
 };
 

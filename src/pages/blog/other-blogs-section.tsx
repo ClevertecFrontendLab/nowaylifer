@@ -1,5 +1,5 @@
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Heading } from '@chakra-ui/react';
+import { Button, Flex } from '@chakra-ui/react';
 
 import { blogApi } from '~/entities/blog';
 import { useAppLoader } from '~/shared/infra/app-loader';
@@ -7,6 +7,7 @@ import { RoutePath } from '~/shared/router';
 import { selectSessionDataInvariant } from '~/shared/session/slice';
 import { useAppSelector } from '~/shared/store';
 import { Link } from '~/shared/ui/link';
+import { Section, SectionHeading } from '~/shared/ui/section';
 import { OtherBlogCard } from '~/widgets/other-blog-card';
 
 export interface OtherBlogsProps {
@@ -14,7 +15,7 @@ export interface OtherBlogsProps {
     maxBlogs?: number;
 }
 
-export const OtherBlogs = ({ currentBlogId, maxBlogs = 3 }: OtherBlogsProps) => {
+export const OtherBlogsSection = ({ currentBlogId, maxBlogs = 3 }: OtherBlogsProps) => {
     const { userId } = useAppSelector(selectSessionDataInvariant);
     const { data, isLoading } = blogApi.useOtherBlogsQuery({ currentUserId: userId });
 
@@ -25,15 +26,11 @@ export const OtherBlogs = ({ currentBlogId, maxBlogs = 3 }: OtherBlogsProps) => 
     if (!blogs.length) return null;
 
     return (
-        <Box>
+        <Section>
             <Flex justify='space-between' mb={{ base: 4, lg: 6 }}>
-                <Heading
-                    as='h3'
-                    fontWeight={{ base: 'semibold', lg: 'medium' }}
-                    fontSize={{ base: '2xl', lg: '5xl' }}
-                >
+                <SectionHeading as='h3' fontWeight={{ base: 'semibold', lg: 'medium' }}>
                     Другие блоги
-                </Heading>
+                </SectionHeading>
                 <Button
                     as={Link}
                     variant='ghost'
@@ -49,6 +46,6 @@ export const OtherBlogs = ({ currentBlogId, maxBlogs = 3 }: OtherBlogsProps) => 
                     <OtherBlogCard minH='216px' flex={1} key={blog._id} blog={blog} />
                 ))}
             </Flex>
-        </Box>
+        </Section>
     );
 };

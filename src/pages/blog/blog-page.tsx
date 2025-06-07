@@ -15,7 +15,7 @@ import { Main } from '~/shared/ui/main';
 
 import { BlogRecipes } from './blog-recipes';
 import { NotesSection } from './notes-section';
-import { OtherBlogs } from './other-blogs';
+import { OtherBlogsSection } from './other-blogs-section';
 
 export const BlogPage = () => {
     const [toggleSubscription, { isLoading }] = useToggleBlogSubscriptionMutation();
@@ -56,7 +56,7 @@ export const BlogPage = () => {
             </Center>
             {recipes.length > 0 && <BlogRecipes recipes={recipes} mb={{ base: 8, lg: 10 }} />}
             {notes.length > 0 && <NotesSection notes={notes} />}
-            <OtherBlogs currentBlogId={bloggerId} />
+            <OtherBlogsSection currentBlogId={bloggerId} />
         </Main>
     );
 };

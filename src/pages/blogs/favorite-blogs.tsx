@@ -1,9 +1,10 @@
-import { Box, BoxProps, Heading, SimpleGrid } from '@chakra-ui/react';
+import { BoxProps, Heading, SimpleGrid } from '@chakra-ui/react';
 
 import { blogApi, BlogCard } from '~/entities/blog';
 import { useAppLoader } from '~/shared/infra/app-loader';
 import { selectSessionDataInvariant } from '~/shared/session';
 import { useAppSelector } from '~/shared/store';
+import { Section } from '~/shared/ui/section';
 
 export const FavoriteBlogs = (props: BoxProps) => {
     const { userId } = useAppSelector(selectSessionDataInvariant);
@@ -17,7 +18,7 @@ export const FavoriteBlogs = (props: BoxProps) => {
     if (!favorites || !favorites.length) return null;
 
     return (
-        <Box bg='lime.300' p={{ base: 3, lg: 6 }} borderRadius='2xl' {...props}>
+        <Section bg='lime.300' p={{ base: 3, lg: 6 }} borderRadius='2xl' {...props}>
             <Heading
                 as='h2'
                 fontSize={{ base: '2xl', lg: '4xl' }}
@@ -33,6 +34,6 @@ export const FavoriteBlogs = (props: BoxProps) => {
             >
                 {favorites?.map((blog) => <BlogCard key={blog._id} blog={blog} />)}
             </SimpleGrid>
-        </Box>
+        </Section>
     );
 };
