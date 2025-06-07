@@ -1,4 +1,4 @@
-import { Center } from '@chakra-ui/react';
+import { Center, Spacer } from '@chakra-ui/react';
 import { QueryStatus } from '@reduxjs/toolkit/query';
 import { useRef } from 'react';
 import { useLoaderData } from 'react-router';
@@ -66,6 +66,7 @@ export const BlogPage = () => {
             </Center>
             {recipes.length > 0 && <BlogRecipes recipes={recipes} mb={{ base: 8, lg: 10 }} />}
             {notes.length > 0 && recipesHasResolved && <NotesSection notes={notes} />}
+            <Spacer />
             <OtherBlogsSection currentBlogId={bloggerId} />
         </Main>
     );

@@ -1,9 +1,11 @@
-import { BoxProps, Button, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Box, BoxProps, Button, Heading, LinkOverlay, SimpleGrid } from '@chakra-ui/react';
 
 import { blogApi, BlogCard } from '~/entities/blog';
 import { useAppLoader } from '~/shared/infra/app-loader';
+import { RoutePath } from '~/shared/router';
 import { selectSessionDataInvariant } from '~/shared/session';
 import { useAppSelector } from '~/shared/store';
+import { Link } from '~/shared/ui/link';
 import { Section } from '~/shared/ui/section';
 
 export const FavoriteBlogs = (props: BoxProps) => {
@@ -35,14 +37,16 @@ export const FavoriteBlogs = (props: BoxProps) => {
             >
                 {favorites?.map((blog) => (
                     <BlogCard
-                        actionSlot={
-                            <Button px={3} bg='lime.400' size='xs'>
-                                Рецепты
-                            </Button>
-                        }
-                        withNewRecipesCount
                         key={blog._id}
                         blog={blog}
+                        withNewRecipesCount
+                        actionSlot={
+                            <LinkOverlay as={Link} to={RoutePath.Blog.build({ userId: blog._id })}>
+                                <Button as={Box} px={3} bg='lime.400' size='xs'>
+                                    Рецепты
+                                </Button>
+                            </LinkOverlay>
+                        }
                     />
                 ))}
             </SimpleGrid>

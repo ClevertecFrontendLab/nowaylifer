@@ -2,11 +2,13 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, Button, Center, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
 
 import { blogApi } from '~/entities/blog';
-import { BlogCard } from '~/entities/blog/ui/blog-card';
 import { useAppLoader } from '~/shared/infra/app-loader';
+import { RoutePath } from '~/shared/router';
 import { selectSessionDataInvariant } from '~/shared/session/slice';
 import { useAppSelector } from '~/shared/store';
+import { Link } from '~/shared/ui/link';
 import { Section } from '~/shared/ui/section';
+import { OtherBlogCard } from '~/widgets/other-blog-card';
 
 export const BlogsSection = () => {
     const session = useAppSelector(selectSessionDataInvariant);
@@ -30,6 +32,8 @@ export const BlogsSection = () => {
                         Кулинарные блоги
                     </Heading>
                     <Button
+                        as={Link}
+                        to={RoutePath.Blogs}
                         hideBelow='lg'
                         variant='ghost'
                         size={{ base: 'md', '2xl': 'lg' }}
@@ -44,7 +48,7 @@ export const BlogsSection = () => {
                     mb={{ base: 3, lg: 0 }}
                 >
                     {blogs.others.map((blog) => (
-                        <BlogCard key={blog._id} blog={blog} />
+                        <OtherBlogCard blog={blog} key={blog._id} />
                     ))}
                 </SimpleGrid>
                 <Center hideFrom='lg'>

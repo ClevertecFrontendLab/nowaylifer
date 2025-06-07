@@ -53,7 +53,7 @@ const toggleSubscriptionCacheUpdaters = {
         blog.totalSubscribers += blog.isFavorite ? 1 : -1;
     },
     [BlogEndpointName.Blogs]: (data: Draft<BlogsResponse>, blogId: string) => {
-        const blog = data.others.find((blog) => blog._id === blogId);
+        const blog = [...data.favorites, ...data.others].find((blog) => blog._id === blogId);
         if (!blog) return data;
 
         blog.isFavorite = !blog.isFavorite;
