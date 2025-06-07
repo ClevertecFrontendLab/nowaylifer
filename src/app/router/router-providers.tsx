@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Outlet, ScrollRestoration } from 'react-router';
 
 import { AppLoaderWhileNavigating } from '~/shared/infra/app-loader';
 import { ToastErrorLoggerProvider } from '~/shared/infra/error-logger';
@@ -11,5 +11,6 @@ export const RouterProviders = () => (
                 <Outlet />
             </ModalsProvider>
         </ToastErrorLoggerProvider>
+        <ScrollRestoration />
     </AppLoaderWhileNavigating>
 );
