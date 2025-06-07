@@ -1,2 +1,2 @@
-export { useSubscribeToBlogMutation } from './api';
+export { useToggleBlogSubscriptionMutation } from './api';
 export { BlogSubscriptionButton } from './ui';

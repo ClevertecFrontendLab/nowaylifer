@@ -15,8 +15,7 @@ import { blogApi } from '~/entities/blog';
 import { useAppLoader } from '~/shared/infra/app-loader';
 import { selectSessionDataInvariant } from '~/shared/session';
 import { useAppSelector } from '~/shared/store';
-
-import { OtherBlogCard } from './other-blog-card';
+import { OtherBlogCard } from '~/widgets/other-blog-card';
 
 export const OtherBlogs = (props: BoxProps) => {
     const { userId } = useAppSelector(selectSessionDataInvariant);

@@ -1,22 +1,25 @@
 import {
     Avatar,
     Box,
-    BoxProps,
     Card,
     CardBody,
     CardProps,
     Center,
     Flex,
     HStack,
+    LinkBox,
+    LinkOverlay,
     Spacer,
     Text,
 } from '@chakra-ui/react';
 
+import { RoutePath } from '~/shared/router';
+import { Link } from '~/shared/ui/link';
 import { Loader } from '~/shared/ui/loader';
-import { BookmarksStat, SubscribersStat } from '~/shared/ui/stats';
 import { formatUsername, getFullName } from '~/shared/util';
 
-import { Blog } from './interface';
+import { Blog } from '../interface';
+import { BlogStats } from './blog-stats';
 
 export interface BlogCardProps extends CardProps {
     blog: Blog;
@@ -25,14 +28,15 @@ export interface BlogCardProps extends CardProps {
 }
 
 export const BlogCard = ({ blog, isLoading, actionSlot, ...props }: BlogCardProps) => (
-    <Card
+    <LinkBox
+        as={Card}
         boxShadow='none'
         borderWidth='1px'
         borderColor='blackAlpha.200'
         transitionProperty='box-shadow'
         transitionDuration='normal'
-        pos='relative'
         _hover={{ boxShadow: 'card-hover' }}
+        pos='relative'
         {...props}
     >
         <>
@@ -53,22 +57,26 @@ export const BlogCard = ({ blog, isLoading, actionSlot, ...props }: BlogCardProp
                         name={getFullName(blog.firstName, blog.lastName)}
                         size={{ base: 'sm', lg: 'md' }}
                     />
-                    <Box>
-                        <Box noOfLines={1} fontWeight='medium' fontSize={{ base: 'md', lg: 'lg' }}>
+                    <LinkOverlay
+                        as={Link}
+                        to={RoutePath.Blog.build({ userId: blog._id })}
+                        overflow='hidden'
+                    >
+                        <Box isTruncated fontWeight='medium' fontSize={{ base: 'md', lg: 'lg' }}>
                             {getFullName(blog.firstName, blog.lastName)}
                         </Box>
-                        <Box noOfLines={1} fontSize='sm' color='blackAlpha.700'>
+                        <Box isTruncated fontSize='sm' color='blackAlpha.700'>
                             {formatUsername(blog.login)}
                         </Box>
-                    </Box>
+                    </LinkOverlay>
                 </HStack>
                 <Text fontSize='sm' noOfLines={3}>
-                    {blog.notes[0]?.text}
+                    {blog.notes?.[0]?.text}
                 </Text>
                 <Spacer />
-                <Flex>
+                <Flex wrap='wrap-reverse'>
                     {actionSlot}
-                    <BlogCardStats
+                    <BlogStats
                         bookmarksCount={blog.bookmarksCount}
                         subsribersCount={blog.subscribersCount}
                         ml='auto'
@@ -76,21 +84,5 @@ export const BlogCard = ({ blog, isLoading, actionSlot, ...props }: BlogCardProp
                 </Flex>
             </CardBody>
         </>
-    </Card>
-);
-
-export interface BlogCardStatsProps extends BoxProps {
-    bookmarksCount: number;
-    subsribersCount: number;
-}
-
-export const BlogCardStats = ({
-    bookmarksCount,
-    subsribersCount,
-    ...props
-}: BlogCardStatsProps) => (
-    <Box display='flex' gap={2} fontSize='xs' {...props}>
-        {bookmarksCount > 0 && <BookmarksStat value={bookmarksCount} />}
-        {subsribersCount > 0 && <SubscribersStat variant='outline' value={subsribersCount} />}
-    </Box>
+    </LinkBox>
 );

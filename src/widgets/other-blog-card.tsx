@@ -1,15 +1,20 @@
 import { Flex } from '@chakra-ui/react';
 
 import { BlogCard, BlogCardProps } from '~/entities/blog';
-import { BlogSubscriptionButton, useSubscribeToBlogMutation } from '~/features/subscribe-to-blog';
+import {
+    BlogSubscriptionButton,
+    useToggleBlogSubscriptionMutation,
+} from '~/features/subscribe-to-blog';
 import { selectSessionDataInvariant } from '~/shared/session';
 import { useAppSelector } from '~/shared/store';
 
 export const OtherBlogCard = ({ blog, ...props }: Omit<BlogCardProps, 'actionSlot'>) => {
     const { userId } = useAppSelector(selectSessionDataInvariant);
-    const [subscribe, { isLoading }] = useSubscribeToBlogMutation();
+    const [toggleSubscription, { isLoading }] = useToggleBlogSubscriptionMutation();
 
-    const handleSubscribe = () => subscribe({ currentUserId: userId, blogId: blog._id });
+    const handleSubscription = () => {
+        toggleSubscription({ currentUserId: userId, bloggerId: blog._id });
+    };
 
     return (
         <BlogCard
@@ -18,10 +23,9 @@ export const OtherBlogCard = ({ blog, ...props }: Omit<BlogCardProps, 'actionSlo
             actionSlot={
                 <Flex>
                     <BlogSubscriptionButton
-                        size='xs'
-                        _disabled={{}}
+                        isSubscribed={blog.isFavorite}
                         isDisabled={isLoading}
-                        onClick={handleSubscribe}
+                        onClick={handleSubscription}
                     />
                 </Flex>
             }

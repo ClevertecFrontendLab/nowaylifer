@@ -8,6 +8,7 @@ import {
 } from '~/entities/category';
 import { recipeLoader } from '~/entities/recipe';
 import { AuthLayout, EmailVerificationCallback, LoginForm, SignupForm } from '~/pages/auth';
+import { BlogPage, blogPageLoader } from '~/pages/blog';
 import { BlogsPage } from '~/pages/blogs';
 import { CategoryPage, categoryPageLoader } from '~/pages/category';
 import { CreateRecipePage } from '~/pages/create-recipe/create-recipe-page';
@@ -101,6 +102,12 @@ const routerConfig: RouteObject[] = [
                         path: RoutePath.Blogs,
                         Component: BlogsPage,
                         handle: { crumb: routeCrumb.blogsCrumb },
+                    },
+                    {
+                        path: RoutePath.Blog.pattern,
+                        Component: BlogPage,
+                        loader: blogPageLoader,
+                        handle: { crumb: routeCrumb.blogCrumbs },
                     },
                 ],
             },

@@ -4,6 +4,7 @@ export enum RouteParam {
     RootCategory = 'rootCategory',
     SubCategory = 'subCategory',
     RecipeId = 'recipeId',
+    UserId = 'userId',
 }
 
 type RouteParamSubset<T extends RouteParam> = Pick<Record<RouteParam, string>, T>;
@@ -30,4 +31,7 @@ export const RoutePath = {
     Recipe: definePath<RecipeParams>(recipePattern),
     EditRecipe: definePath<RecipeParams>(joinPath('edit-recipe', recipePattern)),
     Blogs: '/blogs',
+    Blog: definePath<RouteParamSubset<RouteParam.UserId>>(
+        joinPath('blogs', `:${RouteParam.UserId}`),
+    ),
 };

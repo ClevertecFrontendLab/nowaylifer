@@ -2,7 +2,7 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, Button, Center, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
 
 import { blogApi } from '~/entities/blog';
-import { BlogCard } from '~/entities/blog/blog-card';
+import { BlogCard } from '~/entities/blog/ui/blog-card';
 import { useAppLoader } from '~/shared/infra/app-loader';
 import { selectSessionDataInvariant } from '~/shared/session/slice';
 import { useAppSelector } from '~/shared/store';

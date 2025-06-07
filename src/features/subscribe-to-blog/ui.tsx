@@ -8,8 +8,12 @@ export interface BlogSubscriptionButtonProps extends ButtonProps {
 
 export const BlogSubscriptionButton = ({ isSubscribed, ...props }: BlogSubscriptionButtonProps) => (
     <Button
-        leftIcon={<PersonPlusIcon />}
+        size='xs'
+        _disabled={{}}
+        lineHeight={4}
+        iconSpacing={1.5}
         variant={isSubscribed ? 'outline' : 'inverted'}
+        leftIcon={<PersonPlusIcon withPlus={!isSubscribed} />}
         {...props}
     >
         {isSubscribed ? 'Вы подписаны' : 'Подписаться'}

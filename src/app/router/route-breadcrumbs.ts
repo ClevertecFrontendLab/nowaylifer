@@ -1,7 +1,9 @@
+import { BlogDetailed } from '~/entities/blog/interface';
 import { ActiveCategories, buildCategoryPath } from '~/entities/category';
 import { RecipeWithAuthor } from '~/entities/recipe';
 import { BreadcrumbDefinition, createCrumbDefinition } from '~/features/breadcrumbs';
 import { RoutePath } from '~/shared/router';
+import { formatUsername, getFullName } from '~/shared/util';
 
 export const mainCrumb = createCrumbDefinition(({ location }) =>
     location.pathname === RoutePath.NotFound ? undefined : 'Главная',
@@ -36,7 +38,11 @@ export const recipeCrumbs = createCrumbDefinition<ActiveCategories, RecipeWithAu
             recipeCrumb(args),
         ] as BreadcrumbDefinition[],
 );
-export const recipeCrumbs: RouteBreadcrumbDefinition<ActiveCategories, RecipeWithAuthor> = (args) =>
-    [rootCategoryCrumb(args), subCategoryCrumb(args), recipeCrumb(args)] as BreadcrumbDefinition[];
-
+const blogCrumb = createCrumbDefinition<unknown, BlogDetailed>(({ match }) => {
+    const { firstName, lastName, login } = match.data.bloggerInfo;
+    return `${getFullName(firstName, lastName)} (${formatUsername(login)})`;
+});
+export const blogCrumbs = createCrumbDefinition<unknown, BlogDetailed>(
+    (args) => [blogsCrumb, blogCrumb(args)] as BreadcrumbDefinition[],
+);
 export const blogsCrumb = createCrumbDefinition({ label: 'Блоги', href: RoutePath.Blogs });

@@ -48,7 +48,11 @@ export const recipeApi = apiSlice.injectEndpoints({
             transformResponse: recipeMapper,
             providesTags: ['Recipe'],
         }),
-
+        [RecipeEndpointName.RecipesByUser]: build.query<Recipe[], string>({
+            query: (userId) => ({ url: joinPath(ApiEndpoint.RECIPE, 'user', userId) }),
+            transformResponse: (data: { recipes: Recipe[] }) => data.recipes.map(recipeMapper),
+            providesTags: ['Recipe'],
+        }),
         [RecipeEndpointName.PaginatedRecipes]: build.infiniteQuery<
             PaginatedResponse<Recipe>,
             RecipeRequestParams,
