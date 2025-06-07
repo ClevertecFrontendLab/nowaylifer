@@ -1,31 +1,42 @@
 import { ActiveCategories, buildCategoryPath } from '~/entities/category';
 import { RecipeWithAuthor } from '~/entities/recipe';
-import { BreadcrumbDefinition, RouteBreadcrumbDefinition } from '~/features/breadcrumbs';
+import { BreadcrumbDefinition, createCrumbDefinition } from '~/features/breadcrumbs';
 import { RoutePath } from '~/shared/router';
 
-export const mainCrumb: RouteBreadcrumbDefinition = ({ location }) =>
-    location.pathname === RoutePath.NotFound ? undefined : 'Главная';
+export const mainCrumb = createCrumbDefinition(({ location }) =>
+    location.pathname === RoutePath.NotFound ? undefined : 'Главная',
+);
 
-export const juiciestCrumb = 'Самое сочное';
+export const juiciestCrumb = createCrumbDefinition('Самое сочное');
 
-export const newRecipeCrumb = 'Новый рецeпт';
+export const newRecipeCrumb = createCrumbDefinition('Новый рецeпт');
 
-const rootCategoryCrumb: RouteBreadcrumbDefinition<ActiveCategories> = ({ extraArg: [root] }) => ({
+const rootCategoryCrumb = createCrumbDefinition<ActiveCategories>(({ extraArg: [root] }) => ({
     label: root.title,
     href: buildCategoryPath(root, root.subCategories[0]),
-});
+}));
 
-const subCategoryCrumb: RouteBreadcrumbDefinition<ActiveCategories> = ({ extraArg: [_, sub] }) =>
-    sub.title;
+const subCategoryCrumb = createCrumbDefinition<ActiveCategories>(
+    ({ extraArg: [_, sub] }) => sub.title,
+);
 
-const recipeCrumb: RouteBreadcrumbDefinition<ActiveCategories, RecipeWithAuthor> = ({ match }) => ({
+const recipeCrumb = createCrumbDefinition<ActiveCategories, RecipeWithAuthor>(({ match }) => ({
     label: match.data?.title,
-});
+}));
 
-export const categoryCrumbs: RouteBreadcrumbDefinition<ActiveCategories> = (args) =>
-    [rootCategoryCrumb(args), subCategoryCrumb(args)] as BreadcrumbDefinition[];
+export const categoryCrumbs = createCrumbDefinition<ActiveCategories>(
+    (args) => [rootCategoryCrumb(args), subCategoryCrumb(args)] as BreadcrumbDefinition[],
+);
 
+export const recipeCrumbs = createCrumbDefinition<ActiveCategories, RecipeWithAuthor>(
+    (args) =>
+        [
+            rootCategoryCrumb(args),
+            subCategoryCrumb(args),
+            recipeCrumb(args),
+        ] as BreadcrumbDefinition[],
+);
 export const recipeCrumbs: RouteBreadcrumbDefinition<ActiveCategories, RecipeWithAuthor> = (args) =>
     [rootCategoryCrumb(args), subCategoryCrumb(args), recipeCrumb(args)] as BreadcrumbDefinition[];
 
-export const blogCrumb = 'Блоги';
+export const blogsCrumb = createCrumbDefinition({ label: 'Блоги', href: RoutePath.Blogs });

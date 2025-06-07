@@ -99,8 +99,8 @@ const routerConfig: RouteObject[] = [
                     },
                     {
                         path: RoutePath.Blogs,
-                        handle: { crumb: routeCrumb.blogCrumb },
                         Component: BlogsPage,
+                        handle: { crumb: routeCrumb.blogsCrumb },
                     },
                 ],
             },
