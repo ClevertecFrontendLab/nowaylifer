@@ -22,27 +22,24 @@ export const OtherBlogs = (props: BoxProps) => {
     const maxBlogsCollapsed = useBreakpointValue({ base: 8, '3xl': 9 });
     const { isOpen: isExpanded, onClose: collapse, onOpen: expand } = useDisclosure();
 
-    const { data: collapsedData, isLoading: isCollapsedLoading } = blogApi.useBlogsQuery(
-        isExpanded ? skipToken : { currentUserId: userId },
-    );
+    const { data: { others: collapsedBlogs = [] } = {}, isLoading: isCollapsedLoading } =
+        blogApi.useBlogsQuery(isExpanded ? skipToken : { currentUserId: userId });
 
-    const [fetchExpandedBlogs, { data: expandedData, isLoading: isExpandedLoading }] =
-        blogApi.useLazyBlogsQuery();
+    const [
+        fetchExpandedBlogs,
+        { data: { others: expandedBlogs = [] } = {}, isLoading: isExpandedLoading },
+    ] = blogApi.useLazyBlogsQuery();
 
     useAppLoader(isCollapsedLoading || isExpandedLoading);
 
     const handleExpand = async () => {
         const result = await fetchExpandedBlogs({ currentUserId: userId, limit: 'all' }, true);
-        if (result.isSuccess) {
-            expand();
-        }
+        if (result.isSuccess) expand();
     };
 
-    if (!collapsedData) return null;
+    if (!collapsedBlogs.length) return null;
 
-    const blogsToShow = isExpanded
-        ? expandedData?.others
-        : collapsedData?.others.slice(0, maxBlogsCollapsed);
+    const blogsToShow = isExpanded ? expandedBlogs : collapsedBlogs.slice(0, maxBlogsCollapsed);
 
     return (
         <Section bg='blackAlpha.50' borderRadius='2xl' p={{ base: 4, lg: 6 }} {...props}>
@@ -55,13 +52,15 @@ export const OtherBlogs = (props: BoxProps) => {
             >
                 {blogsToShow?.map((blog) => <OtherBlogCard key={blog._id} blog={blog} h='full' />)}
             </SimpleGrid>
-            <Center>
-                {isExpanded ? (
-                    <CollapseButton onClick={collapse} />
-                ) : (
-                    <ExpandButton onClick={handleExpand} />
-                )}
-            </Center>
+            {collapsedBlogs.length !== expandedBlogs.length && (
+                <Center>
+                    {isExpanded ? (
+                        <CollapseButton onClick={collapse} />
+                    ) : (
+                        <ExpandButton onClick={handleExpand} />
+                    )}
+                </Center>
+            )}
         </Section>
     );
 };
