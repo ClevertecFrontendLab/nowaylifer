@@ -1,12 +1,12 @@
 import { Box, Container, Heading, ListItem, OrderedList, Stack } from '@chakra-ui/react';
 import { useLoaderData } from 'react-router';
 
+import { blogApi } from '~/entities/blog';
 import { selectCategoriesInvariant } from '~/entities/category';
-import { RecipeCard, RecipeWithAuthor } from '~/entities/recipe';
-import { recipeApi } from '~/entities/recipe/api/query';
-import { getRecipeRootCategories } from '~/entities/recipe/util';
+import { getRecipeRootCategories, Recipe, recipeApi, RecipeCard } from '~/entities/recipe';
 import { useEditRecipeEventEffect } from '~/features/edit-recipe';
-import { selectSessionData } from '~/shared/session/slice';
+import { useAppLoader } from '~/shared/infra/app-loader';
+import { selectSessionDataInvariant } from '~/shared/session/slice';
 import { useAppSelector } from '~/shared/store';
 import { Main } from '~/shared/ui/main';
 import { Section, SectionHeading } from '~/shared/ui/section';
@@ -19,16 +19,23 @@ import { NutritionStat } from './nutrition-stat';
 import { StepCard } from './step-card';
 
 export function RecipePage() {
-    const session = useAppSelector(selectSessionData);
-    const initialRecipe = useLoaderData<RecipeWithAuthor>();
-    const { data } = recipeApi.useRecipeByIdQuery(initialRecipe._id);
+    const { userId } = useAppSelector(selectSessionDataInvariant);
     const { categoryById } = useAppSelector(selectCategoriesInvariant);
-    const recipe = data ?? initialRecipe;
 
-    const isOwnRecipe = recipe.authorId === session?.userId;
+    const initialRecipe = useLoaderData<Recipe>();
+    const { data: recipe = initialRecipe } = recipeApi.useRecipeByIdQuery(initialRecipe._id);
+
+    const { data: blog, isLoading: isBlogLoading } = blogApi.useBlogQuery({
+        currentUserId: userId,
+        bloggerId: recipe.authorId,
+    });
+
+    const isOwnRecipe = recipe.authorId === userId;
     const ActionSlot = isOwnRecipe ? OwnRecipeActionButtons : RecipeActionButtons;
 
     useEditRecipeEventEffect();
+
+    useAppLoader(isBlogLoading);
 
     return (
         <Main>
@@ -82,7 +89,7 @@ export function RecipePage() {
                         ))}
                     </OrderedList>
                 </Box>
-                {recipe.authorData && <AuthorCard author={recipe.authorData} />}
+                {blog && <AuthorCard isSubscribed={blog.isFavorite} author={blog.bloggerInfo} />}
             </Container>
             <Section>
                 <SectionHeading mb={{ base: 3, lg: 6 }}>Новые рецепты</SectionHeading>

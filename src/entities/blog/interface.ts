@@ -1,12 +1,8 @@
-export interface Blog {
+export interface Blog extends Pick<Blogger, 'firstName' | 'lastName' | 'login' | 'notes'> {
     _id: string;
-    firstName: string;
-    lastName: string;
-    login: string;
     subscribersCount: number;
     bookmarksCount: number;
     isFavorite: boolean;
-    notes?: Note[];
     newRecipesCount: number;
 }
 
@@ -15,8 +11,7 @@ export interface Note {
     text: string;
 }
 
-// TODO: move to user entity directory
-export interface User {
+export interface Blogger {
     _id: string;
     email: string;
     firstName: string;
@@ -29,7 +24,7 @@ export interface User {
 }
 
 export interface BlogDetailed {
-    bloggerInfo: User;
+    bloggerInfo: Blogger;
     isFavorite: boolean;
     totalBookmarks: number;
     totalSubscribers: number;

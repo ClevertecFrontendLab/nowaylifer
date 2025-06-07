@@ -1,9 +1,6 @@
 import {
     Avatar,
-    Badge,
-    BadgeProps,
     Box,
-    Button,
     Card,
     CardBody,
     CardProps,
@@ -19,10 +16,12 @@ import {
 import { RoutePath } from '~/shared/router';
 import { Link } from '~/shared/ui/link';
 import { Loader } from '~/shared/ui/loader';
-import { formatUsername, getFullName, PluralForms, pluralizeRu } from '~/shared/util';
+import { formatUsername, getFullName } from '~/shared/util';
 
-import { Blog } from '../interface';
-import { BlogStats } from './blog-stats';
+import { Blog } from '../../interface';
+import { BlogStats } from '../blog-stats';
+import { NewRecipesBadge } from './new-recipes-badge';
+import { ReadBlogLink } from './read-blog-link';
 
 export interface BlogCardProps extends CardProps {
     blog: Blog;
@@ -99,7 +98,7 @@ export const BlogCard = ({
                     <Flex wrap='wrap-reverse' justify='end' rowGap={4} columnGap={2}>
                         <Flex gap={2}>
                             {actionSlot}
-                            <ReadLink blogId={blog._id} />
+                            <ReadBlogLink blogId={blog._id} />
                         </Flex>
                         <BlogStats
                             bookmarksCount={blog.bookmarksCount}
@@ -112,43 +111,3 @@ export const BlogCard = ({
         </LinkBox>
     );
 };
-
-const ReadLink = ({ blogId: userId }: { blogId: string }) => (
-    <Button
-        size='xs'
-        variant='outline'
-        colorScheme='lime'
-        as={Link}
-        px={3}
-        to={`${RoutePath.Blog.build({ userId })}#notes`}
-    >
-        Читать
-    </Button>
-);
-
-interface NewRecipesBadgeProps extends BadgeProps {
-    count: number;
-}
-
-const NewRecipesBadge = ({ count, ...props }: NewRecipesBadgeProps) => (
-    <Badge
-        px={2}
-        size='xs'
-        lineHeight={5}
-        borderRadius='base'
-        bg='blackAlpha.100'
-        display='inline-block'
-        {...props}
-    >
-        {formatNewRecipesCount(count)}
-    </Badge>
-);
-
-const forms: PluralForms = {
-    one: 'новый рецeпт',
-    few: 'новых рецепта',
-    many: 'новых рецептов',
-    other: 'новых рецептов',
-};
-
-const formatNewRecipesCount = (count: number) => `${count} ${pluralizeRu(count, forms)}`;

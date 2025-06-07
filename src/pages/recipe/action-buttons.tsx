@@ -1,10 +1,10 @@
 import { selectCategoriesInvariant } from '~/entities/category';
-import { RecipeWithAuthor } from '~/entities/recipe';
+import { Recipe } from '~/entities/recipe';
 import { DeleteRecipeButton, UpdateRecipeButton } from '~/features/edit-recipe';
 import { BookmarkRecipeButton, LikeRecipeButton } from '~/features/react-to-recipe';
 import { useAppSelector } from '~/shared/store';
 
-export const OwnRecipeActionButtons = ({ recipe }: { recipe: RecipeWithAuthor }) => {
+export const OwnRecipeActionButtons = ({ recipe }: { recipe: Recipe }) => {
     const { categoryById } = useAppSelector(selectCategoriesInvariant);
     return (
         <>
@@ -14,7 +14,7 @@ export const OwnRecipeActionButtons = ({ recipe }: { recipe: RecipeWithAuthor })
     );
 };
 
-export const RecipeActionButtons = ({ recipe }: { recipe: RecipeWithAuthor }) => (
+export const RecipeActionButtons = ({ recipe }: { recipe: Recipe }) => (
     <>
         <LikeRecipeButton recipe={recipe} />
         <BookmarkRecipeButton recipe={recipe} />
