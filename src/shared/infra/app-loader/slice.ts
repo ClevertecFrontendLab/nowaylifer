@@ -7,10 +7,12 @@ export const slice = createSlice({
         overlayCount: 0,
     },
     reducers: (create) => ({
-        startAppLoader: create.reducer<boolean>((state, { payload: withOverlay = true }) => {
-            state.count++;
-            state.overlayCount += withOverlay ? 1 : 0;
-        }),
+        startAppLoader: create.reducer<boolean | undefined>(
+            (state, { payload: withOverlay = true }) => {
+                state.count++;
+                state.overlayCount += withOverlay ? 1 : 0;
+            },
+        ),
         stopAppLoader: create.reducer((state) => {
             state.count = Math.max(0, state.count - 1);
             state.overlayCount = Math.max(0, state.overlayCount - 1);

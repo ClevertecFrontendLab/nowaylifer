@@ -1,9 +1,4 @@
-import {
-    combineReducers,
-    configureStore,
-    SerializableStateInvariantMiddlewareOptions,
-} from '@reduxjs/toolkit';
-import { enableMapSet } from 'immer';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import { filterRecipeSlice } from '~/features/filter-recipe';
 import { searchRecipeSlice } from '~/features/search-recipe';
@@ -13,8 +8,6 @@ import { errorLoggerSlice } from '~/shared/infra/error-logger';
 import { modalsSlice } from '~/shared/infra/modals-manager';
 import { sessionSlice } from '~/shared/session';
 import { listenerMiddleware } from '~/shared/store';
-
-enableMapSet();
 
 const rootReducer = combineReducers({
     [searchRecipeSlice.name]: searchRecipeSlice.reducer,
@@ -30,14 +23,7 @@ export const store = configureStore({
     devTools: true,
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredPaths: ['appLoader.subsribers'],
-                ignoredActions: ['errorLogger/getOptions'],
-            } satisfies SerializableStateInvariantMiddlewareOptions,
-        })
-            .prepend(listenerMiddleware.middleware)
-            .concat(apiSlice.middleware),
+        getDefaultMiddleware().prepend(listenerMiddleware.middleware).concat(apiSlice.middleware),
 });
 
 declare global {

@@ -1,5 +1,6 @@
 import { Button, Center, chakra, FormControl, VStack } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
@@ -32,14 +33,15 @@ export const LoginForm = () => {
     });
 
     const [login, { isLoading }] = authApi.useLoginMutation();
+    const [isNavigating, startTransition] = useTransition();
 
-    useAppLoader(isLoading);
+    useAppLoader(isLoading || isNavigating);
+
+    const navigateOnLogin = () => startTransition(() => navigate(RoutePath.Main));
 
     const handleFormValid = async (values: LoginSchema) => {
         const res = await login(values);
-        if (!res.error) {
-            return navigate(RoutePath.Main);
-        }
+        if (!res.error) return navigateOnLogin();
 
         if (isServerError(res.error)) {
             openModal({
@@ -51,7 +53,7 @@ export const LoginForm = () => {
                                 closeModal();
                             }
                             if (!res.error) {
-                                navigate(RoutePath.Main);
+                                navigateOnLogin();
                             }
                         }}
                     />
