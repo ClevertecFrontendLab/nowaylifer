@@ -6,7 +6,6 @@ import {
     StatNumber,
     StatNumberProps,
     StatProps,
-    VisuallyHidden,
 } from '@chakra-ui/react';
 import React, { cloneElement } from 'react';
 
@@ -57,8 +56,7 @@ const BaseStat = ({
         sx={{ '& > dl': { display: 'flex', alignItems: 'center', gap: 1.5 } }}
         {...props}
     >
-        <StatLabel lineHeight='none' fontSize='inherit' {...labelProps}>
-            <VisuallyHidden>{label}</VisuallyHidden>
+        <StatLabel aria-label={label} lineHeight='none' fontSize='inherit' {...labelProps}>
             {cloneElement<IconProps>(icon, { boxSize: icon.props.boxSize ?? '1em' })}
         </StatLabel>
         <StatNumber

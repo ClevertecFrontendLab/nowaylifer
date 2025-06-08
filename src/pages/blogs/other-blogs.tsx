@@ -24,7 +24,7 @@ export const OtherBlogs = (props: BoxProps) => {
     const { isOpen: isExpanded, onClose: collapse, onOpen: expand } = useDisclosure();
 
     const { data: { others: collapsedBlogs = [] } = {}, isLoading: isCollapsedLoading } =
-        blogApi.useBlogsQuery(isExpanded ? skipToken : { currentUserId: userId });
+        blogApi.useBlogsQuery(isExpanded ? skipToken : { currentUserId: userId, limit: 9 });
 
     const [
         fetchExpandedBlogs,

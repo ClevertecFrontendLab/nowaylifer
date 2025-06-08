@@ -12,15 +12,14 @@ import { Section } from '~/shared/ui/section';
 import { OtherBlogCard } from '~/widgets/other-blog-card';
 
 export const BlogsSection = () => {
-    const session = useAppSelector(selectSessionDataInvariant);
-    const { data: blogs, isLoading } = blogApi.useBlogsQuery({
-        currentUserId: session.userId,
-        limit: 3,
-    });
+    const { userId } = useAppSelector(selectSessionDataInvariant);
+    const { data, isLoading } = blogApi.useBlogsQuery({ currentUserId: userId, limit: '' });
+
+    const blogs = data?.others ?? [];
 
     useAppLoader(isLoading);
 
-    if (!blogs) return null;
+    if (!blogs.length) return null;
 
     return (
         <Section data-test-id={TestId.MAIN_PAGE_BLOGS_SECTION}>
@@ -50,7 +49,7 @@ export const BlogsSection = () => {
                     spacing={{ base: 3, lg: 4 }}
                     mb={{ base: 3, lg: 0 }}
                 >
-                    {blogs.others.map((blog) => (
+                    {blogs.map((blog) => (
                         <OtherBlogCard blog={blog} key={blog._id} />
                     ))}
                 </SimpleGrid>

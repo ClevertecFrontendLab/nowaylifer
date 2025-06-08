@@ -11,7 +11,7 @@ export interface BlogsResponse {
 
 interface BlogsQueryParams {
     currentUserId: string;
-    limit?: number | 'all';
+    limit?: number | 'all' | '';
 }
 
 export const blogApi = apiSlice.injectEndpoints({
@@ -27,17 +27,11 @@ export const blogApi = apiSlice.injectEndpoints({
             providesTags: ['Blog'],
         }),
         [BlogEndpointName.Blogs]: build.query<BlogsResponse, BlogsQueryParams>({
-            query: (params) => ({
-                url: ApiEndpoint.BLOGS,
-                params: { limit: 9, ...params },
-            }),
+            query: (params) => ({ url: ApiEndpoint.BLOGS, params }),
             providesTags: ['Blog'],
         }),
         [BlogEndpointName.OtherBlogs]: build.query<Blog[], BlogsQueryParams>({
-            query: (params) => ({
-                url: ApiEndpoint.BLOGS,
-                params: { limit: 4, ...params },
-            }),
+            query: (params) => ({ url: ApiEndpoint.BLOGS, params }),
             transformResponse: (data: BlogsResponse) => data.others,
             providesTags: ['Blog'],
         }),

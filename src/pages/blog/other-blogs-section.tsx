@@ -18,7 +18,7 @@ export interface OtherBlogsProps {
 
 export const OtherBlogsSection = ({ currentBlogId, maxBlogs = 3 }: OtherBlogsProps) => {
     const { userId } = useAppSelector(selectSessionDataInvariant);
-    const { data, isLoading } = blogApi.useOtherBlogsQuery({ currentUserId: userId });
+    const { data, isLoading } = blogApi.useOtherBlogsQuery({ currentUserId: userId, limit: '' });
 
     useAppLoader(isLoading);
 
@@ -40,7 +40,7 @@ export const OtherBlogsSection = ({ currentBlogId, maxBlogs = 3 }: OtherBlogsPro
                     rightIcon={<ArrowForwardIcon />}
                     data-test-id={TestId.OTHER_BLOGS_BUTTON}
                 >
-                    Все авторы
+                    Всe авторы
                 </Button>
             </Flex>
             <Flex

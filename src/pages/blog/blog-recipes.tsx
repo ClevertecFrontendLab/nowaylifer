@@ -15,10 +15,11 @@ export const BlogRecipes = ({ recipes, collapsedMaxCount = 8, ...props }: BlogRe
     const hasMoreRecipes = recipes.length > collapsedMaxCount;
 
     return (
-        <Box data-test-id={TestId.BLOGGER_RECIPES} {...props}>
+        <Box {...props}>
             <RecipeGrid
                 mb={{ base: 3, md: 4 }}
                 recipes={isExpanded ? recipes : recipes.slice(0, collapsedMaxCount)}
+                data-test-id={TestId.BLOGGER_RECIPES}
             />
             {hasMoreRecipes && !isExpanded && (
                 <Center>

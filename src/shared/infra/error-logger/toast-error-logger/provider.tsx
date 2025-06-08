@@ -1,19 +1,12 @@
 import { PropsWithChildren, useEffect, useMemo } from 'react';
 
 import { useAppSelector } from '~/shared/store';
-import { TestId } from '~/shared/test-ids';
 
 import { ToastOptions, useToast } from '../../toast';
 import { ToastErrorLoggerContextProvider } from './context';
 
 const toastOptions: ToastOptions = {
     isAnchored: true,
-    testId: {
-        root: TestId.ERROR_TOAST,
-        closeButton: TestId.ERROR_TOAST_CLOSE,
-        title: TestId.ERROR_TOAST_TITLE,
-        description: TestId.ERROR_TOAST_DESCRIPTION,
-    },
 };
 
 export const ToastErrorLoggerProvider = (props: PropsWithChildren) => {

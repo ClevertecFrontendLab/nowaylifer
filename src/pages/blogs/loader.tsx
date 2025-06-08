@@ -12,7 +12,7 @@ export const blogsPageLoader = createRouteLoader(async ({ context }) => {
     const { userId } = selectSessionDataInvariant(getState());
 
     const result = await dispatch(
-        blogApi.endpoints.blogs.initiate({ currentUserId: userId }, { subscribe: false }),
+        blogApi.endpoints.blogs.initiate({ currentUserId: userId, limit: 9 }, { subscribe: false }),
     );
 
     const isLoading = getRouter().state.navigation.state === 'loading';

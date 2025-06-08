@@ -14,6 +14,7 @@ export const FavoriteBlogs = (props: BoxProps) => {
 
     const { data: { favorites } = {}, isLoading } = blogApi.useBlogsQuery({
         currentUserId: userId,
+        limit: 9,
     });
 
     useAppLoader(isLoading);
@@ -52,6 +53,7 @@ export const FavoriteBlogs = (props: BoxProps) => {
 const FavoriteBlogCard = ({ blog, ...props }: BlogCardProps) => (
     <BlogCard
         blog={blog}
+        maxW={{ base: '304px', md: '346px', lg: '408px', '2xl': '648px' }}
         withNewRecipesCount
         actionSlot={
             <LinkOverlay

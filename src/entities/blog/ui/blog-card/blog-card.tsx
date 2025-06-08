@@ -56,7 +56,7 @@ export const BlogCard = ({
             <>
                 {isLoading && (
                     <Center pos='absolute' inset={0}>
-                        <Loader data-test-id={TestId.BLOG_CARD_LOADER} />
+                        <Loader data-test-id={TestId.BLOG_LOADER} />
                     </Center>
                 )}
                 {renderNewRecipesBadge && (

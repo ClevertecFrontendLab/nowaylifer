@@ -28,7 +28,7 @@ export const BlogInfo = ({ blog, actionSlot, isLoading, ...props }: BlogInfoProp
         >
             {isLoading && (
                 <Center pos='absolute' inset={0}>
-                    <Loader />
+                    <Loader data-test-id={TestId.BLOG_LOADER} />
                 </Center>
             )}
             <Avatar size={{ base: 'xl', lg: '2xl' }} name={fullName} />

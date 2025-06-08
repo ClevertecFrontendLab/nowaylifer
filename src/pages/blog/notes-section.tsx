@@ -21,6 +21,7 @@ export interface NotesSection extends BoxProps {
 export const NotesSection = ({ notes, collapsedMaxCount = 3, ...props }: NotesSection) => {
     const { isOpen: isExpanded, onOpen: expand, onClose: collapse } = useDisclosure();
     const notesToShow = isExpanded ? notes : notes.slice(0, collapsedMaxCount);
+    const notesToHide = isExpanded ? [] : notes.slice(collapsedMaxCount);
     const hasMoreNotes = notes.length > collapsedMaxCount;
 
     return (
@@ -58,6 +59,9 @@ export const NotesSection = ({ notes, collapsedMaxCount = 3, ...props }: NotesSe
             >
                 {notesToShow.map((note, index) => (
                     <NoteCard key={index} note={note} />
+                ))}
+                {notesToHide.map((note, index) => (
+                    <NoteCard display='none' key={index} note={note} />
                 ))}
             </SimpleGrid>
             {hasMoreNotes && (
