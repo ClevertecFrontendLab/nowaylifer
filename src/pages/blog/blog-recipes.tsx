@@ -1,6 +1,7 @@
 import { Box, BoxProps, Center, useBoolean } from '@chakra-ui/react';
 
 import { Recipe } from '~/entities/recipe';
+import { TestId } from '~/shared/test-ids';
 import { LoadMoreButton } from '~/shared/ui/load-more-button';
 import { RecipeGrid } from '~/widgets/recipe-grid';
 
@@ -14,7 +15,7 @@ export const BlogRecipes = ({ recipes, collapsedMaxCount = 8, ...props }: BlogRe
     const hasMoreRecipes = recipes.length > collapsedMaxCount;
 
     return (
-        <Box {...props}>
+        <Box data-test-id={TestId.BLOGGER_RECIPES} {...props}>
             <RecipeGrid
                 mb={{ base: 3, md: 4 }}
                 recipes={isExpanded ? recipes : recipes.slice(0, collapsedMaxCount)}

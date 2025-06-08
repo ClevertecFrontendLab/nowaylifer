@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 
 import { Note, NoteCard } from '~/entities/blog';
+import { TestId } from '~/shared/test-ids';
 import { Section } from '~/shared/ui/section';
 
 export interface NotesSection extends BoxProps {
@@ -23,7 +24,14 @@ export const NotesSection = ({ notes, collapsedMaxCount = 3, ...props }: NotesSe
     const hasMoreNotes = notes.length > collapsedMaxCount;
 
     return (
-        <Section bg='blackAlpha.50' borderRadius='2xl' p={{ base: 4, lg: 6 }} pb={4} {...props}>
+        <Section
+            bg='blackAlpha.50'
+            borderRadius='2xl'
+            p={{ base: 4, lg: 6 }}
+            pb={4}
+            data-test-id={TestId.BLOGGER_NOTES_SECTION}
+            {...props}
+        >
             <Heading
                 id='notes'
                 as='h2'
@@ -37,6 +45,7 @@ export const NotesSection = ({ notes, collapsedMaxCount = 3, ...props }: NotesSe
                     color='blackAlpha.600'
                     fontSize={{ base: 'xl', lg: '3xl' }}
                     lineHeight={{ base: 7, lg: 9 }}
+                    data-test-id={TestId.BLOGGER_NOTES_COUNT}
                 >
                     ({notes.length})
                 </chakra.span>
@@ -45,6 +54,7 @@ export const NotesSection = ({ notes, collapsedMaxCount = 3, ...props }: NotesSe
                 autoRows='1fr'
                 minChildWidth={{ base: '224px', lg: '267px', xl: '328px' }}
                 spacing={{ base: 3, lg: 4 }}
+                data-test-id={TestId.BLOGGER_NOTES_GRID}
             >
                 {notesToShow.map((note, index) => (
                     <NoteCard key={index} note={note} />
@@ -53,9 +63,12 @@ export const NotesSection = ({ notes, collapsedMaxCount = 3, ...props }: NotesSe
             {hasMoreNotes && (
                 <Center mt={4}>
                     {isExpanded ? (
-                        <CollapseButton onClick={collapse} />
+                        <CollapseButton
+                            onClick={collapse}
+                            data-test-id={TestId.BLOGGER_NOTES_BUTTON}
+                        />
                     ) : (
-                        <ExpandButton onClick={expand} />
+                        <ExpandButton onClick={expand} data-test-id={TestId.BLOGGER_NOTES_BUTTON} />
                     )}
                 </Center>
             )}

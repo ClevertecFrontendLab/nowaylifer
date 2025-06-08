@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 
 import { RoutePath } from '~/shared/router';
+import { TestId } from '~/shared/test-ids';
 import { Link } from '~/shared/ui/link';
 import { Loader } from '~/shared/ui/loader';
 import { formatUsername, getFullName } from '~/shared/util';
@@ -42,6 +43,7 @@ export const BlogCard = ({
     return (
         <LinkBox
             as={Card}
+            data-test-id={TestId.BLOG_CARD}
             boxShadow='none'
             borderWidth='1px'
             borderColor='blackAlpha.200'
@@ -54,11 +56,12 @@ export const BlogCard = ({
             <>
                 {isLoading && (
                     <Center pos='absolute' inset={0}>
-                        <Loader />
+                        <Loader data-test-id={TestId.BLOG_CARD_LOADER} />
                     </Center>
                 )}
                 {renderNewRecipesBadge && (
                     <NewRecipesBadge
+                        data-test-id={TestId.BLOG_CARD_NEW_RECIPES}
                         count={blog.newRecipesCount}
                         pos='absolute'
                         right={{ base: 1, lg: 2 }}
@@ -83,15 +86,21 @@ export const BlogCard = ({
                                 isTruncated
                                 fontWeight='medium'
                                 fontSize={{ base: 'md', lg: 'lg' }}
+                                data-test-id={TestId.BLOG_CARD_NAME}
                             >
                                 {getFullName(blog.firstName, blog.lastName)}
                             </Box>
-                            <Box isTruncated fontSize='sm' color='blackAlpha.700'>
+                            <Box
+                                isTruncated
+                                fontSize='sm'
+                                color='blackAlpha.700'
+                                data-test-id={TestId.BLOG_CARD_LOGIN}
+                            >
                                 {formatUsername(blog.login)}
                             </Box>
                         </LinkOverlay>
                     </HStack>
-                    <Text fontSize='sm' noOfLines={3} mb={4}>
+                    <Text fontSize='sm' noOfLines={3} mb={4} data-test-id={TestId.BLOG_CARD_NOTE}>
                         {blog.notes?.[0]?.text}
                     </Text>
                     <Spacer />

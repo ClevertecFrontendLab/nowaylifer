@@ -34,7 +34,7 @@ export const SubscribersStat = ({
     />
 );
 
-interface BaseStatProps extends StatProps {
+export interface BaseStatProps extends StatProps {
     icon: React.ReactElement<IconProps>;
     label: string;
     value: string | number;

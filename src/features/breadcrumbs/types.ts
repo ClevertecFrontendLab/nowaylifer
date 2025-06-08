@@ -3,6 +3,7 @@ import { Location, UIMatch } from 'react-router';
 export interface BreadcrumbData {
     label: string;
     href?: string;
+    testId?: string;
 }
 
 export type BreadcrumbDefinition = BreadcrumbData | string;

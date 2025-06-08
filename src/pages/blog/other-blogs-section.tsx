@@ -6,6 +6,7 @@ import { useAppLoader } from '~/shared/infra/app-loader';
 import { RoutePath } from '~/shared/router';
 import { selectSessionDataInvariant } from '~/shared/session/slice';
 import { useAppSelector } from '~/shared/store';
+import { TestId } from '~/shared/test-ids';
 import { Link } from '~/shared/ui/link';
 import { Section, SectionHeading } from '~/shared/ui/section';
 import { OtherBlogCard } from '~/widgets/other-blog-card';
@@ -37,11 +38,16 @@ export const OtherBlogsSection = ({ currentBlogId, maxBlogs = 3 }: OtherBlogsPro
                     to={RoutePath.Blogs}
                     size={{ base: 'xs', lg: 'lg' }}
                     rightIcon={<ArrowForwardIcon />}
+                    data-test-id={TestId.OTHER_BLOGS_BUTTON}
                 >
                     Все авторы
                 </Button>
             </Flex>
-            <Flex gap={{ base: 3, lg: 4 }} direction={{ base: 'column', md: 'row' }}>
+            <Flex
+                gap={{ base: 3, lg: 4 }}
+                direction={{ base: 'column', md: 'row' }}
+                data-test-id={TestId.OTHER_BLOGS_GRID}
+            >
                 {blogs.map((blog) => (
                     <OtherBlogCard minH='216px' flex={1} key={blog._id} blog={blog} />
                 ))}

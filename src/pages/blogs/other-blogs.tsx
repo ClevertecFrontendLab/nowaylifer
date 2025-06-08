@@ -14,6 +14,7 @@ import { blogApi } from '~/entities/blog';
 import { useAppLoader } from '~/shared/infra/app-loader';
 import { selectSessionDataInvariant } from '~/shared/session';
 import { useAppSelector } from '~/shared/store';
+import { TestId } from '~/shared/test-ids';
 import { Section } from '~/shared/ui/section';
 import { OtherBlogCard } from '~/widgets/other-blog-card';
 
@@ -42,22 +43,35 @@ export const OtherBlogs = (props: BoxProps) => {
     const blogsToShow = isExpanded ? expandedBlogs : collapsedBlogs.slice(0, maxBlogsCollapsed);
 
     return (
-        <Section bg='blackAlpha.50' borderRadius='2xl' p={{ base: 4, lg: 6 }} {...props}>
+        <Section
+            bg='blackAlpha.50'
+            borderRadius='2xl'
+            p={{ base: 4, lg: 6 }}
+            data-test-id={TestId.BLOGS_OTHERS_SECTION}
+            {...props}
+        >
             <SimpleGrid
                 minChildWidth={{ base: '296px', md: '340px', lg: '408px', '2xl': '424px' }}
                 autoRows={{ base: '200px', lg: '224px' }}
                 spacingX={4}
                 spacingY={{ base: 4, lg: 6 }}
                 mb={{ base: 4, lg: 6 }}
+                data-test-id={TestId.BLOGS_OTHERS_GRID}
             >
                 {blogsToShow?.map((blog) => <OtherBlogCard key={blog._id} blog={blog} h='full' />)}
             </SimpleGrid>
             {collapsedBlogs.length !== expandedBlogs.length && (
                 <Center>
                     {isExpanded ? (
-                        <CollapseButton onClick={collapse} />
+                        <CollapseButton
+                            onClick={collapse}
+                            data-test-id={TestId.BLOGS_OTHERS_BUTTON}
+                        />
                     ) : (
-                        <ExpandButton onClick={handleExpand} />
+                        <ExpandButton
+                            onClick={handleExpand}
+                            data-test-id={TestId.BLOGS_OTHERS_BUTTON}
+                        />
                     )}
                 </Center>
             )}

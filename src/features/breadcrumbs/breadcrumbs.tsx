@@ -67,6 +67,7 @@ export const Breadcrumbs = ({
                             as={ReactRouterLink}
                             to={breadcrumb.href}
                             whiteSpace='nowrap'
+                            data-test-id={breadcrumb.testId}
                             isTruncated={isTruncated}
                             color='blackAlpha.700'
                             _activeLink={{ color: 'black' }}
