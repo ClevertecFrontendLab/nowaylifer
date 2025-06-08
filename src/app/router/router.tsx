@@ -10,13 +10,14 @@ import { recipeLoader } from '~/entities/recipe';
 import { AuthLayout, EmailVerificationCallback, LoginForm, SignupForm } from '~/pages/auth';
 import { BlogPage, blogPageLoader } from '~/pages/blog';
 import { BlogsPage } from '~/pages/blogs';
+import { blogsPageLoader } from '~/pages/blogs/loader';
 import { CategoryPage, categoryPageLoader } from '~/pages/category';
 import { CreateRecipePage } from '~/pages/create-recipe/create-recipe-page';
 import { JuiciestPage, juiciestPageLoader } from '~/pages/juiciest';
 import { MainPage } from '~/pages/main';
 import { RecipePage } from '~/pages/recipe';
 import { UpdateRecipePage } from '~/pages/update-recipe';
-import { RouteParam, RoutePath, storeContext } from '~/shared/router';
+import { RouteParam, RoutePath, routerContext, storeContext } from '~/shared/router';
 import {
     checkAuthMiddleware,
     hideRouteIfAuthenticatedMiddleware,
@@ -101,6 +102,7 @@ const routerConfig: RouteObject[] = [
                     {
                         path: RoutePath.Blogs,
                         Component: BlogsPage,
+                        loader: blogsPageLoader,
                         handle: { crumb: routeCrumb.blogsCrumb },
                     },
                     {
@@ -115,8 +117,15 @@ const routerConfig: RouteObject[] = [
     },
 ];
 
-export const createRouter = (store: AppStore) =>
-    createBrowserRouter(routerConfig, {
+export const createRouter = (store: AppStore) => {
+    const router = createBrowserRouter(routerConfig, {
         future: { unstable_middleware: true },
-        unstable_getContext: () => new Map([[storeContext, store]]),
+        unstable_getContext: () => {
+            const map = new Map();
+            map.set(storeContext, store);
+            map.set(routerContext, () => router);
+            return map;
+        },
     });
+    return router;
+};

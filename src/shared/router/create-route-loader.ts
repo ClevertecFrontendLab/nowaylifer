@@ -1,31 +1,39 @@
 import { isFunction } from 'lodash-es';
 import { LoaderFunction, LoaderFunctionArgs, replace } from 'react-router';
 
-const defaultShouldNavigateFn = (_error: unknown, args: LoaderFunctionArgs) =>
-    args.request.url === window.location.href;
+import { routerContext } from './route-context';
 
-type LoaderShouldNavigateOnErrorFunction = (
+const defaultShouldNavigateOnError = (_error: unknown, { context }: LoaderFunctionArgs) => {
+    const getRouter = context.get(routerContext);
+    return getRouter().state.navigation.state === 'idle';
+};
+
+type ShouldNavigateOnErrorFunction = (
     error: unknown,
     args: LoaderFunctionArgs,
-    defaultShouldNavigate: typeof defaultShouldNavigateFn,
+    defaultShouldNavigate: typeof defaultShouldNavigateOnError,
 ) => boolean;
 
 export const createRouteLoader =
     (
         loader: LoaderFunction,
         shouldNavigateOnError:
-            | LoaderShouldNavigateOnErrorFunction
-            | boolean = defaultShouldNavigateFn,
+            | ShouldNavigateOnErrorFunction
+            | boolean = defaultShouldNavigateOnError,
     ) =>
     async (args: LoaderFunctionArgs) => {
         try {
             return await loader(args);
         } catch (error) {
             const shouldNavigate = isFunction(shouldNavigateOnError)
-                ? shouldNavigateOnError(error, args, defaultShouldNavigateFn)
+                ? shouldNavigateOnError(error, args, defaultShouldNavigateOnError)
                 : shouldNavigateOnError;
 
             if (shouldNavigate) throw error;
-            return replace(window.location.href);
+
+            const getRouter = args.context.get(routerContext);
+            const { search, pathname, hash } = getRouter().state.location;
+
+            return replace(pathname + search + hash);
         }
     };
