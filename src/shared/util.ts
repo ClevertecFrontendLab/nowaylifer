@@ -9,9 +9,6 @@ export const buildMediaSrc = (path: string) => new URL(path, MEDIA_BASE_URL).hre
 
 export const isE2E = () => !!window.Cypress;
 
-type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
-export type XOR<T, U> = (T & Without<U, T>) | (U & Without<T, U>);
-
 export type PluralForms = Partial<Record<Intl.LDMLPluralRule, string>> & { other: string };
 
 export const pluralizeRu = (number: number, forms: PluralForms): string => {
@@ -20,9 +17,13 @@ export const pluralizeRu = (number: number, forms: PluralForms): string => {
     return forms[category] ?? forms.other;
 };
 
-export const stripEmptyStrings = <T>(value: T): T =>
+export const stripEmptyStringsDeep = <T>(value: T): T =>
     cloneDeepWith(value, (value) => {
         if (isString(value) && value.trim() === '') {
             return null;
         }
     });
+
+export const formatUsername = (username: string) => '@' + username;
+
+export const getFullName = (firstName: string, lastName: string) => firstName + ' ' + lastName;

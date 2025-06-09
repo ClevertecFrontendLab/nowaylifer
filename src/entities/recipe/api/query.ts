@@ -16,7 +16,7 @@ import {
 } from '~/shared/api';
 import { joinPath } from '~/shared/router/util';
 
-import { Recipe, RecipeWithAuthor } from '../interface';
+import { Recipe } from '../interface';
 import { RecipeEndpointName } from './endpoint-name';
 import { errorMeta } from './error-meta';
 import { recipeMapper } from './mapper';
@@ -43,12 +43,16 @@ const defaultRecipeRequestParams: RecipeRequestParams = {
 
 export const recipeApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
-        [RecipeEndpointName.RecipeById]: build.query<RecipeWithAuthor, string>({
+        [RecipeEndpointName.RecipeById]: build.query<Recipe, string>({
             query: (id) => ({ url: joinPath(ApiEndpoint.RECIPE, id) }),
             transformResponse: recipeMapper,
             providesTags: ['Recipe'],
         }),
-
+        [RecipeEndpointName.RecipesByUser]: build.query<Recipe[], string>({
+            query: (userId) => ({ url: joinPath(ApiEndpoint.RECIPE, 'user', userId) }),
+            transformResponse: (data: { recipes: Recipe[] }) => data.recipes.map(recipeMapper),
+            providesTags: ['Recipe'],
+        }),
         [RecipeEndpointName.PaginatedRecipes]: build.infiniteQuery<
             PaginatedResponse<Recipe>,
             RecipeRequestParams,

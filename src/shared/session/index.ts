@@ -5,4 +5,10 @@ export {
     hideRouteIfAuthenticatedMiddleware,
     privateRouteMiddleware,
 } from './router-middlewares';
-export { selectIsAuthenticated, selectToken, slice as sessionSlice, setToken } from './slice';
+export {
+    selectIsAuthenticated,
+    selectSessionDataInvariant,
+    selectToken,
+    slice as sessionSlice,
+    setToken,
+} from './slice';

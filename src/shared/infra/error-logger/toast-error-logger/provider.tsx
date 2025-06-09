@@ -2,12 +2,16 @@ import { PropsWithChildren, useEffect, useMemo } from 'react';
 
 import { useAppSelector } from '~/shared/store';
 
-import { useToast } from '../../toast';
+import { ToastOptions, useToast } from '../../toast';
 import { ToastErrorLoggerContextProvider } from './context';
+
+const toastOptions: ToastOptions = {
+    isAnchored: true,
+};
 
 export const ToastErrorLoggerProvider = (props: PropsWithChildren) => {
     const error = useAppSelector((state) => state.errorLogger.loggableError);
-    const { anchorRef, toast } = useToast({ isAnchored: true });
+    const { anchorRef, toast } = useToast(toastOptions);
     const ctx = useMemo(() => ({ anchorRef }), [anchorRef]);
 
     useEffect(() => {

@@ -13,4 +13,6 @@ export enum ApiEndpoint {
     AUTH_FORGOT_PASSWORD = '/auth/forgot-password',
     AUTH_VERIFY_OTP = '/auth/verify-otp',
     AUTH_RESET_PASSWORD = '/auth/reset-password',
+    BLOGS = '/bloggers',
+    USER_TOGGLE_SUBSCRIPTION = '/users/toggle-subscription',
 }

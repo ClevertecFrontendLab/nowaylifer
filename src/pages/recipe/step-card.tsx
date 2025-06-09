@@ -3,7 +3,7 @@ import { Badge, Card, CardBody, CardProps, Image, Text } from '@chakra-ui/react'
 export interface StepCardProps extends CardProps {
     stepNumber: number;
     description: string;
-    image?: string;
+    image?: string | null;
 }
 
 export const StepCard = ({ stepNumber, description, image }: StepCardProps) => (

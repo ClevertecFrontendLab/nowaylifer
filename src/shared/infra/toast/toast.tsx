@@ -9,11 +9,17 @@ import {
     ToastProps as BaseToastProps,
 } from '@chakra-ui/react';
 
-import { TestId } from '~/shared/test-ids';
+export interface ToastTestId {
+    root: string;
+    title: string;
+    description: string;
+    closeButton: string;
+}
 
 export interface ToastProps extends Omit<BaseToastProps, 'position'> {
     closeButtonProps?: CloseButtonProps;
     ref?: React.Ref<HTMLDivElement>;
+    testId?: Partial<ToastTestId>;
 }
 
 export const Toast = (props: ToastProps) => {
@@ -30,6 +36,7 @@ export const Toast = (props: ToastProps) => {
         colorScheme,
         icon,
         ref,
+        testId,
         ...rest
     } = props;
 
@@ -54,14 +61,22 @@ export const Toast = (props: ToastProps) => {
             textAlign='start'
             w={{ base: '328px', lg: '400px' }}
             colorScheme={colorScheme}
-            data-test-id={TestId.ERROR_ALERT}
+            data-test-id={testId?.root}
             {...rest}
         >
             <AlertIcon>{icon}</AlertIcon>
             <chakra.div flex='1' maxWidth='100%'>
-                {title && <AlertTitle id={ids?.title}>{title}</AlertTitle>}
+                {title && (
+                    <AlertTitle id={ids?.title} data-test-id={testId?.title}>
+                        {title}
+                    </AlertTitle>
+                )}
                 {description && (
-                    <AlertDescription id={ids?.description} display='block'>
+                    <AlertDescription
+                        id={ids?.description}
+                        data-test-id={testId?.description}
+                        display='block'
+                    >
                         {description}
                     </AlertDescription>
                 )}
@@ -72,7 +87,7 @@ export const Toast = (props: ToastProps) => {
                     onClick={onClose}
                     position='absolute'
                     insetEnd={1}
-                    data-test-id={TestId.ERROR_ALERT_CLOSE}
+                    data-test-id={testId?.closeButton}
                     top={1}
                     {...closeButtonProps}
                 />

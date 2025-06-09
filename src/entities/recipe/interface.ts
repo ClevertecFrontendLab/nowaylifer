@@ -34,15 +34,3 @@ export interface Recipe {
     createdAt: string;
     _id: string;
 }
-
-export interface Author {
-    login: string;
-    firstName: string;
-    lastName: string;
-    avatar?: string;
-    subscribers?: string[];
-}
-
-export interface RecipeWithAuthor extends Recipe {
-    authorData?: Author;
-}

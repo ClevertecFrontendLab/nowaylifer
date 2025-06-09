@@ -14,7 +14,7 @@ import { TestId } from '~/shared/test-ids';
 import { isE2E } from '~/shared/util';
 
 export const NewRecipesSlider = memo(() => {
-    const { data: recipes, isLoading } = recipeApi.useRecipesQuery({
+    const { data: recipes = [], isLoading } = recipeApi.useRecipesQuery({
         sortBy: 'createdAt',
         sortOrder: 'desc',
         limit: 10,
@@ -23,6 +23,8 @@ export const NewRecipesSlider = memo(() => {
     const swiperRef = useRef<SwiperRef>(null);
 
     useAppLoader(isLoading);
+
+    if (!recipes.length) return null;
 
     return (
         <Box pos='relative' data-test-id={TestId.CAROUSEL}>

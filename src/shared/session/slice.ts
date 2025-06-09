@@ -1,4 +1,5 @@
 import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
+import invariant from 'invariant';
 import { jwtDecode } from 'jwt-decode';
 
 export interface SessionState {
@@ -52,3 +53,9 @@ export const { setToken } = slice.actions;
 export const { selectToken, selectIsAuthenticated, selectSessionData } = slice.getSelectors(
     slice.selectSlice,
 );
+
+export const selectSessionDataInvariant = (state: RootState) => {
+    const sessionData = selectSessionData(state);
+    invariant(sessionData, 'Session data is undefined');
+    return sessionData;
+};

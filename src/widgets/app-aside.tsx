@@ -6,13 +6,13 @@ import { TestId } from '~/shared/test-ids';
 import { Button } from '~/shared/ui/button';
 import { PencilIcon } from '~/shared/ui/icons/pencil';
 import { Link } from '~/shared/ui/link';
-import { BookmarksStat, FriendsStat, LikesStat } from '~/shared/ui/stats';
+import { BookmarksStat, LikesStat, SubscribersStat } from '~/shared/ui/stats';
 
 export const AppAside = memo((props: StackProps) => (
     <VStack as='aside' h='full' pt={4} {...props}>
         <VStack gap={6}>
             <BookmarksStat fontSize='md' value={185} />
-            <FriendsStat fontSize='md' value={589} />
+            <SubscribersStat fontSize='md' value={589} />
             <LikesStat fontSize='md' value={587} />
         </VStack>
         <Spacer />
