@@ -22,13 +22,13 @@ import { formatUsername, getFullName } from '~/shared/util';
 import { Blog } from '../../interface';
 import { BlogStats } from '../blog-stats';
 import { NewRecipesBadge } from './new-recipes-badge';
-import { ReadBlogLink } from './read-blog-link';
 
 export interface BlogCardProps extends CardProps {
     blog: Blog;
     actionSlot?: React.ReactElement;
     isLoading?: boolean;
     withNewRecipesCount?: boolean;
+    withStats?: boolean;
 }
 
 export const BlogCard = ({
@@ -36,6 +36,7 @@ export const BlogCard = ({
     isLoading,
     actionSlot,
     withNewRecipesCount = false,
+    withStats = true,
     ...props
 }: BlogCardProps) => {
     const renderNewRecipesBadge = withNewRecipesCount && blog.newRecipesCount > 0;
@@ -105,15 +106,14 @@ export const BlogCard = ({
                     </Text>
                     <Spacer />
                     <Flex wrap='wrap-reverse' justify='end' rowGap={4} columnGap={2}>
-                        <Flex gap={2}>
-                            {actionSlot}
-                            <ReadBlogLink blogId={blog._id} />
-                        </Flex>
-                        <BlogStats
-                            bookmarksCount={blog.bookmarksCount}
-                            subsribersCount={blog.subscribersCount}
-                            ml='auto'
-                        />
+                        <Flex gap={2}>{actionSlot}</Flex>
+                        {withStats && (
+                            <BlogStats
+                                bookmarksCount={blog.bookmarksCount}
+                                subsribersCount={blog.subscribersCount}
+                                ml='auto'
+                            />
+                        )}
                     </Flex>
                 </CardBody>
             </>

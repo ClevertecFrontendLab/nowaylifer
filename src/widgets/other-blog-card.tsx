@@ -1,6 +1,5 @@
-import { Flex } from '@chakra-ui/react';
-
 import { BlogCard, BlogCardProps } from '~/entities/blog';
+import { BlogReadLink } from '~/entities/blog/ui/blog-card/blog-read-link';
 import {
     BlogSubscriptionButton,
     useToggleBlogSubscriptionMutation,
@@ -21,13 +20,14 @@ export const OtherBlogCard = ({ blog, ...props }: Omit<BlogCardProps, 'actionSlo
             blog={blog}
             isLoading={isLoading}
             actionSlot={
-                <Flex>
+                <>
                     <BlogSubscriptionButton
-                        isSubscribed={blog.isFavorite}
                         isDisabled={isLoading}
+                        isSubscribed={blog.isFavorite}
                         onClick={handleSubscription}
                     />
-                </Flex>
+                    <BlogReadLink blog={blog} />
+                </>
             }
             {...props}
         />

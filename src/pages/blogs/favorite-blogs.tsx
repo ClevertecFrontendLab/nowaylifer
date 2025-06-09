@@ -1,6 +1,7 @@
 import { Box, BoxProps, Button, Heading, LinkOverlay, SimpleGrid } from '@chakra-ui/react';
 
 import { blogApi, BlogCard, BlogCardProps } from '~/entities/blog';
+import { BlogReadLink } from '~/entities/blog/ui/blog-card/blog-read-link';
 import { useAppLoader } from '~/shared/infra/app-loader';
 import { RoutePath } from '~/shared/router';
 import { selectSessionDataInvariant } from '~/shared/session';
@@ -56,15 +57,18 @@ const FavoriteBlogCard = ({ blog, ...props }: BlogCardProps) => (
         maxW={{ base: '304px', md: '346px', lg: '408px', '2xl': '648px' }}
         withNewRecipesCount
         actionSlot={
-            <LinkOverlay
-                as={Link}
-                to={RoutePath.Blog.build({ userId: blog._id })}
-                data-test-id={TestId.BLOG_CARD_RECIPES_BUTTON}
-            >
-                <Button as={Box} px={3} bg='lime.400' size='xs'>
-                    Рецепты
-                </Button>
-            </LinkOverlay>
+            <>
+                <LinkOverlay
+                    as={Link}
+                    to={RoutePath.Blog.build({ userId: blog._id })}
+                    data-test-id={TestId.BLOG_CARD_RECIPES_BUTTON}
+                >
+                    <Button as={Box} px={3} bg='lime.400' size='xs'>
+                        Рецепты
+                    </Button>
+                </LinkOverlay>
+                <BlogReadLink blog={blog} />
+            </>
         }
         {...props}
     />
