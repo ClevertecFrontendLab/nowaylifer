@@ -17,6 +17,7 @@ export const OtherBlogCard = ({ blog, ...props }: Omit<BlogCardProps, 'actionSlo
 
     return (
         <BlogCard
+            minH={{ base: '208px', lg: '224px' }}
             blog={blog}
             isLoading={isLoading}
             actionSlot={

@@ -76,7 +76,7 @@ export const BlogCard = ({
                     pb={{ base: 4, '2xl': 5 }}
                     pt={{ base: renderNewRecipesBadge ? 6 : 4, '2xl': 6 }}
                 >
-                    <HStack gap={{ base: 2, lg: 3 }} mb={{ base: 2, '2xl': 4 }}>
+                    <HStack gap={{ base: 2, lg: 3 }} mb={{ base: 4, '2xl': 7 }}>
                         <Avatar name={getFullName(blog.firstName, blog.lastName)} size='md' />
                         <LinkOverlay
                             as={Link}

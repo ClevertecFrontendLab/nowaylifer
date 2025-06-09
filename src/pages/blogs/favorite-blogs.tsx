@@ -13,14 +13,16 @@ import { Section } from '~/shared/ui/section';
 export const FavoriteBlogs = (props: BoxProps) => {
     const { userId } = useAppSelector(selectSessionDataInvariant);
 
-    const { data: { favorites } = {}, isLoading } = blogApi.useBlogsQuery({
+    const { data, isLoading } = blogApi.useBlogsQuery({
         currentUserId: userId,
         limit: 9,
     });
 
     useAppLoader(isLoading);
 
-    if (!favorites || !favorites.length) return null;
+    const blogs = data?.favorites ?? [];
+
+    if (!blogs.length) return null;
 
     return (
         <Section
@@ -41,11 +43,16 @@ export const FavoriteBlogs = (props: BoxProps) => {
             </Heading>
             <SimpleGrid
                 autoRows='1fr'
-                minChildWidth={{ base: '304px', md: '346px', lg: '408px' }}
+                minChildWidth={{
+                    base: '304px',
+                    md: '346px',
+                    lg: '408px',
+                    '3xl': blogs.length >= 7 ? '426px' : '648px',
+                }}
                 spacing={{ base: 3, lg: 4 }}
                 data-test-id={TestId.BLOGS_FAVORITES_GRID}
             >
-                {favorites?.map((blog) => <FavoriteBlogCard blog={blog} key={blog._id} />)}
+                {blogs?.map((blog) => <FavoriteBlogCard blog={blog} key={blog._id} />)}
             </SimpleGrid>
         </Section>
     );
@@ -54,7 +61,8 @@ export const FavoriteBlogs = (props: BoxProps) => {
 const FavoriteBlogCard = ({ blog, ...props }: BlogCardProps) => (
     <BlogCard
         blog={blog}
-        maxW={{ base: '304px', md: '346px', lg: '408px', '2xl': '648px' }}
+        maxW={{ '3xl': '648px' }}
+        minH={{ base: '208px', lg: '224px' }}
         withNewRecipesCount
         actionSlot={
             <>

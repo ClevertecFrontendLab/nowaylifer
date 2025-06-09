@@ -51,14 +51,21 @@ export const OtherBlogs = (props: BoxProps) => {
             {...props}
         >
             <SimpleGrid
-                minChildWidth={{ base: '296px', md: '340px', lg: '408px', '2xl': '424px' }}
+                minChildWidth={{
+                    base: '304px',
+                    md: '346px',
+                    lg: '408px',
+                    '2xl': blogsToShow.length >= 7 ? '426px' : '648px',
+                }}
                 autoRows={{ base: '200px', lg: '224px' }}
                 spacingX={4}
                 spacingY={{ base: 4, lg: 6 }}
                 mb={{ base: 4, lg: 6 }}
                 data-test-id={TestId.BLOGS_OTHERS_GRID}
             >
-                {blogsToShow?.map((blog) => <OtherBlogCard key={blog._id} blog={blog} h='full' />)}
+                {blogsToShow?.map((blog) => (
+                    <OtherBlogCard key={blog._id} blog={blog} maxW={{ '3xl': '648px' }} h='full' />
+                ))}
             </SimpleGrid>
             {collapsedBlogs.length !== expandedBlogs.length && (
                 <Center>
