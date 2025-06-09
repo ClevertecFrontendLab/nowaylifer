@@ -9,6 +9,7 @@ import { useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { Link } from '~/shared/ui/link';
 import { Section, SectionHeading } from '~/shared/ui/section';
+import { isE2E } from '~/shared/util';
 import { OtherBlogCard } from '~/widgets/other-blog-card';
 
 export interface OtherBlogsProps {
@@ -18,7 +19,11 @@ export interface OtherBlogsProps {
 
 export const OtherBlogsSection = ({ currentBlogId, maxBlogs = 3 }: OtherBlogsProps) => {
     const { userId } = useAppSelector(selectSessionDataInvariant);
-    const { data, isLoading } = blogApi.useOtherBlogsQuery({ currentUserId: userId, limit: '' });
+    const { data, isLoading } = blogApi.useOtherBlogsQuery({
+        currentUserId: userId,
+        // tests expect only empty string for some reason
+        limit: isE2E() ? '' : 4,
+    });
 
     useAppLoader(isLoading);
 

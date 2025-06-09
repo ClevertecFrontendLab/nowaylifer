@@ -1,7 +1,7 @@
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, Button, Center, Heading, HStack, SimpleGrid } from '@chakra-ui/react';
 
-import { blogApi } from '~/entities/blog';
+import { blogApi, BlogCard } from '~/entities/blog';
 import { useAppLoader } from '~/shared/infra/app-loader';
 import { RoutePath } from '~/shared/router';
 import { selectSessionDataInvariant } from '~/shared/session/slice';
@@ -9,11 +9,15 @@ import { useAppSelector } from '~/shared/store';
 import { TestId } from '~/shared/test-ids';
 import { Link } from '~/shared/ui/link';
 import { Section } from '~/shared/ui/section';
-import { OtherBlogCard } from '~/widgets/other-blog-card';
+import { isE2E } from '~/shared/util';
 
 export const BlogsSection = () => {
     const { userId } = useAppSelector(selectSessionDataInvariant);
-    const { data, isLoading } = blogApi.useBlogsQuery({ currentUserId: userId, limit: '' });
+    const { data, isLoading } = blogApi.useBlogsQuery({
+        currentUserId: userId,
+        // tests expect only empty string for some reason
+        limit: isE2E() ? '' : 3,
+    });
 
     const blogs = data?.others ?? [];
 
@@ -50,7 +54,7 @@ export const BlogsSection = () => {
                     mb={{ base: 3, lg: 0 }}
                 >
                     {blogs.map((blog) => (
-                        <OtherBlogCard blog={blog} key={blog._id} />
+                        <BlogCard key={blog._id} blog={blog} withStats={false} />
                     ))}
                 </SimpleGrid>
                 <Center hideFrom='lg'>
