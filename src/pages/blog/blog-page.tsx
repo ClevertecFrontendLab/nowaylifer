@@ -65,7 +65,7 @@ export const BlogPage = () => {
                 />
             </Center>
             {recipes.length > 0 && <BlogRecipes recipes={recipes} mb={{ base: 8, lg: 10 }} />}
-            {notes.length > 0 && recipesHasResolved && <NotesSection notes={notes} />}
+            {recipesHasResolved && <NotesSection notes={notes} />}
             <Spacer />
             <OtherBlogsSection currentBlogId={bloggerId} />
         </Main>

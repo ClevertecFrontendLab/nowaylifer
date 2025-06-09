@@ -39,7 +39,7 @@ export const NotesSection = ({ notes, collapsedMaxCount = 3, ...props }: NotesSe
                 fontWeight='normal'
                 fontSize={{ base: 'xl', lg: '4xl' }}
                 lineHeight={{ base: 7, lg: 10 }}
-                mb={4}
+                mb={notes.length > 0 ? 4 : undefined}
             >
                 Заметки{' '}
                 <chakra.span
